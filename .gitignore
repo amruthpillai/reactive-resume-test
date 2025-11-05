@@ -1,0 +1,8 @@
+!.env.example
+.DS_Store
+.env*
+.nitro
+.output
+.tanstack
+dist
+node_modules

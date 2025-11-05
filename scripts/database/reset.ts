@@ -1,0 +1,28 @@
+import { sql } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/bun-sql";
+import { env } from "@/utils/env";
+
+export async function resetDatabase() {
+	console.log("⌛ Resetting database...");
+
+	const client = new Bun.SQL(env.DATABASE_URL);
+	const db = drizzle(client);
+
+	try {
+		await db.transaction(async (tx) => {
+			await tx.execute(sql`DROP SCHEMA public CASCADE`);
+			await tx.execute(sql`CREATE SCHEMA public`);
+			await tx.execute(sql`GRANT ALL ON SCHEMA public TO postgres`);
+		});
+
+		console.log("✅ Database reset completed");
+	} catch (error) {
+		console.error("🚨 Database reset failed:", error);
+	} finally {
+		await client.end();
+	}
+}
+
+if (import.meta.main) {
+	await resetDatabase();
+}

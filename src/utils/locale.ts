@@ -1,0 +1,40 @@
+import { i18n, type MessageDescriptor } from "@lingui/core";
+import { msg } from "@lingui/core/macro";
+import { createServerFn } from "@tanstack/react-start";
+import { getCookie, setCookie } from "@tanstack/react-start/server";
+import z from "zod";
+
+export const localeSchema = z.union([z.literal("en-US"), z.literal("de-DE")]);
+
+export type Locale = z.infer<typeof localeSchema>;
+
+const storageKey = "locale";
+const defaultLocale: Locale = "en-US";
+
+export const localeMap = {
+	"en-US": msg`English`,
+	"de-DE": msg`German`,
+} satisfies Record<Locale, MessageDescriptor>;
+
+export function isLocale(locale: string): locale is Locale {
+	return localeSchema.safeParse(locale).success;
+}
+
+export const getLocaleServerFn = createServerFn().handler(async () => {
+	const cookieLocale = getCookie(storageKey);
+	if (!cookieLocale || !isLocale(cookieLocale)) return defaultLocale;
+
+	return cookieLocale;
+});
+
+export const setLocaleServerFn = createServerFn({ method: "POST" })
+	.inputValidator(localeSchema)
+	.handler(async ({ data }) => {
+		setCookie(storageKey, data);
+	});
+
+export const loadLocale = async (locale: Locale) => {
+	const { messages } = await import(`../../locales/${locale}.po`);
+	i18n.load(locale, messages);
+	i18n.activate(locale);
+};
