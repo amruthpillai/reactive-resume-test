@@ -17,12 +17,36 @@ msgstr ""
 msgid "<0>Finally,</0><1>A free and open-source resume builder</1>"
 msgstr ""
 
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:87
+msgid "1 Column"
+msgstr ""
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:90
+msgid "2 Columns"
+msgstr ""
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:93
+msgid "3 Columns"
+msgstr ""
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:96
+msgid "4 Columns"
+msgstr ""
+
 #: src/routes/dashboard/settings/profile.tsx:82
 msgid "A confirmation link has been sent to your current email address. Please check your inbox to confirm the change."
 msgstr ""
 
 #: src/routes/dashboard/settings/profile.tsx:103
 msgid "A new verification link has been sent to your email address. Please check your inbox to verify your account."
+msgstr ""
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom-fields.tsx:98
+msgid "Add a custom field"
+msgstr ""
+
+#: src/components/input/url-input.tsx:65
+msgid "Add a label to the URL"
 msgstr ""
 
 #: src/routes/auth/register.tsx:87
@@ -63,7 +87,12 @@ msgstr ""
 msgid "Backup codes copied to clipboard."
 msgstr ""
 
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:32
+msgid "Basics"
+msgstr ""
+
 #: src/dialogs/auth/enable-two-factor.tsx:269
+#: src/hooks/use-prompt.tsx:106
 #: src/routes/dashboard/settings/danger-zone.tsx:34
 #: src/routes/dashboard/settings/profile.tsx:226
 msgid "Cancel"
@@ -85,6 +114,11 @@ msgstr ""
 msgid "Check your email for a link to verify your account."
 msgstr ""
 
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:81
+msgid "Columns"
+msgstr ""
+
+#: src/hooks/use-prompt.tsx:107
 #: src/routes/dashboard/settings/danger-zone.tsx:33
 msgid "Confirm"
 msgstr ""
@@ -248,6 +282,14 @@ msgstr ""
 msgid "Get Started"
 msgstr ""
 
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:70
+msgid "Hide"
+msgstr ""
+
+#: src/components/input/url-input.tsx:73
+msgid "Label"
+msgstr ""
+
 #: src/components/user/dropdown-menu.tsx:71
 #: src/routes/dashboard/settings/preferences.tsx:35
 msgid "Language"
@@ -268,6 +310,10 @@ msgstr ""
 
 #: src/routes/dashboard/settings/authentication/-components/hooks.tsx:70
 msgid "Linking your {providerName} account..."
+msgstr ""
+
+#: src/components/layout/loading-screen.tsx:9
+msgid "Loading..."
 msgstr ""
 
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:137
@@ -311,6 +357,10 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
+#: src/components/input/rich-input.tsx:209
+msgid "Please enter the URL you want to link to:"
+msgstr ""
+
 #: src/routes/dashboard/-components/sidebar.tsx:58
 #: src/routes/dashboard/settings/preferences.tsx:19
 msgid "Preferences"
@@ -329,6 +379,7 @@ msgstr ""
 msgid "Remember your password? <0><1>Sign in now <2/></1></0>"
 msgstr ""
 
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:75
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:132
 msgid "Rename"
 msgstr ""
@@ -395,6 +446,10 @@ msgstr ""
 msgid "Setup Authenticator App"
 msgstr ""
 
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:70
+msgid "Show"
+msgstr ""
+
 #: src/routes/auth/login.tsx:158
 msgid "Sign in"
 msgstr ""
@@ -433,6 +488,10 @@ msgstr ""
 msgid "Start building your resume from scratch"
 msgstr ""
 
+#: src/components/input/rich-input.tsx:219
+msgid "The URL you entered is not valid."
+msgstr ""
+
 #: src/components/user/dropdown-menu.tsx:87
 #: src/routes/dashboard/settings/preferences.tsx:28
 msgid "Theme"
@@ -449,6 +508,10 @@ msgstr ""
 #: src/dialogs/resume/create.tsx:142
 #: src/dialogs/resume/rename.tsx:143
 msgid "This is a URL-friendly name for your resume."
+msgstr ""
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/summary.tsx:38
+msgid "This section is hidden from the resume."
 msgstr ""
 
 #: src/routes/auth/register.tsx:214
@@ -510,6 +573,10 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
+#: src/components/input/rich-input.tsx:220
+msgid "Valid URLs must start with http:// or https://."
+msgstr ""
+
 #: src/routes/dashboard/settings/profile.tsx:195
 msgid "Verified"
 msgstr ""
@@ -525,6 +592,10 @@ msgstr ""
 
 #: src/routes/auth/register.tsx:217
 msgid "Verifying your email is required when resetting your password."
+msgstr ""
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:38
+msgid "What do you want to rename this section to?"
 msgstr ""
 
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:65

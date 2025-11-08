@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_home")({
 function RouteComponent() {
 	return (
 		<>
-			<header className="fixed inset-x-0 top-0 py-2">
+			<header className="fixed inset-x-0 top-0 z-20 py-2">
 				<div className="container mx-auto flex items-center gap-x-2">
 					<BrandIcon className="size-12" />
 

@@ -1,5 +1,3 @@
-import { UserIcon } from "@phosphor-icons/react";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { BuilderSidebarEdge } from "../edge";
 
@@ -7,12 +5,14 @@ export function BuilderSidebarRight() {
 	return (
 		<>
 			<BuilderSidebarEdge side="right">
-				<Button size="icon" variant="ghost">
-					<UserIcon />
-				</Button>
+				<div />
+
+				<div />
+
+				<div />
 			</BuilderSidebarEdge>
 
-			<ScrollArea className="h-svh sm:mr-12">
+			<ScrollArea className="h-full sm:mr-12">
 				<div className="flex flex-col space-y-4 p-4">
 					<p>Right Sidebar</p>
 

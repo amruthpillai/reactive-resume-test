@@ -1,4 +1,5 @@
 import { boolean, index, jsonb, pgTable, text, timestamp, unique } from "drizzle-orm/pg-core";
+import { defaultResumeData, type ResumeData } from "@/schema/resume";
 import { generateId } from "@/utils/string";
 
 export const user = pgTable("user", {
@@ -82,9 +83,6 @@ export const verification = pgTable("verification", {
 		.$onUpdate(() => /* @__PURE__ */ new Date()),
 });
 
-// biome-ignore lint/complexity/noBannedTypes: This is a workaround to avoid the linter error
-type ResumePayload = {};
-
 export const resume = pgTable(
 	"resume",
 	{
@@ -95,7 +93,10 @@ export const resume = pgTable(
 		slug: text("slug").notNull(),
 		isPublic: boolean("is_public").notNull().default(false),
 		isLocked: boolean("is_locked").notNull().default(false),
-		payload: jsonb("payload").notNull().$type<ResumePayload>().default({}),
+		data: jsonb("data")
+			.notNull()
+			.$type<ResumeData>()
+			.$defaultFn(() => defaultResumeData),
 		userId: text("user_id")
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),

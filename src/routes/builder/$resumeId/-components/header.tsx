@@ -4,11 +4,11 @@ import { useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useBuilderSidebar } from "../-store/builder";
-import { useResumeData } from "../-store/resume";
+import { useResumeStore } from "../-store/resume";
 
 export function BuilderHeader() {
-	const resume = useResumeData();
 	const isMobile = useIsMobile();
+	const resume = useResumeStore((state) => state.resume);
 	const { leftSidebar, rightSidebar } = useBuilderSidebar();
 
 	const defaultSidebarSize = useMemo(() => (isMobile ? 95 : 30), [isMobile]);
@@ -26,7 +26,7 @@ export function BuilderHeader() {
 	}, [rightSidebar, defaultSidebarSize]);
 
 	return (
-		<div className="fixed inset-x-0 top-0 z-10 flex h-14 items-center justify-between bg-popover px-1.5">
+		<div className="fixed inset-x-0 top-0 z-10 flex h-12 items-center justify-between bg-popover px-1.5 shadow-sm">
 			<Button size="icon" variant="ghost" onClick={toggleLeftSidebar}>
 				<SidebarSimpleIcon />
 			</Button>
@@ -38,7 +38,7 @@ export function BuilderHeader() {
 					</Link>
 				</Button>
 				<span className="mr-2.5 text-muted-foreground">/</span>
-				<h2 className="font-medium">{resume.name}</h2>
+				<h2 className="font-medium">{resume?.name}</h2>
 				<Button size="icon" variant="ghost">
 					<CaretDownIcon />
 				</Button>

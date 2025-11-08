@@ -29,6 +29,8 @@ const formSchema = z.object({
 		.string()
 		.min(3)
 		.max(64)
+		.trim()
+		.toLowerCase()
 		.regex(/^[a-z0-9._-]+$/, {
 			message: "Username can only contain lowercase letters, numbers, dots, hyphens and underscores.",
 		}),

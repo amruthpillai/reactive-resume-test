@@ -1,0 +1,878 @@
+import z from "zod";
+
+export const urlSchema = z.object({
+	url: z.url().or(z.literal("")),
+	label: z.string(),
+});
+
+export const pictureSchema = z.object({
+	url: z.url().or(z.literal("")),
+	size: z.number().default(64),
+	aspectRatio: z.number().default(1),
+	borderRadius: z.number().default(0),
+	hidden: z.boolean().default(false),
+	shadow: z.boolean().default(false),
+	grayscale: z.boolean().default(false),
+	border: z.object({
+		width: z.number().default(4),
+		color: z.string().default("rgba(0, 0, 0, 1)"),
+		style: z.enum(["solid", "dashed", "dotted"]).default("solid"),
+	}),
+});
+
+export const customFieldSchema = z.object({
+	id: z.string(),
+	icon: z.string(),
+	text: z.string(),
+});
+
+export const basicsSchema = z.object({
+	name: z.string(),
+	headline: z.string(),
+	email: z.email().or(z.literal("")),
+	phone: z.string(),
+	location: z.string(),
+	website: urlSchema,
+	customFields: z.array(customFieldSchema),
+});
+
+export const baseSectionSchema = z.object({
+	title: z.string(),
+	columns: z.number().default(1),
+	hidden: z.boolean().default(false),
+});
+
+export const awardsSectionSchema = baseSectionSchema.extend({
+	items: z.array(
+		z.object({
+			title: z.string(),
+			awarder: z.string(),
+			date: z.string(),
+			website: urlSchema,
+			description: z.string(),
+		}),
+	),
+});
+
+export const certificationsSectionSchema = baseSectionSchema.extend({
+	items: z.array(
+		z.object({
+			title: z.string(),
+			issuer: z.string(),
+			date: z.string(),
+			website: urlSchema,
+			description: z.string(),
+		}),
+	),
+});
+
+export const educationSectionSchema = baseSectionSchema.extend({
+	items: z.array(
+		z.object({
+			school: z.string(),
+			degree: z.string(),
+			area: z.string(),
+			grade: z.string(),
+			location: z.string(),
+			period: z.string(),
+			website: urlSchema,
+			description: z.string(),
+		}),
+	),
+});
+
+export const experienceSectionSchema = baseSectionSchema.extend({
+	items: z.array(
+		z.object({
+			company: z.string(),
+			position: z.string(),
+			location: z.string(),
+			period: z.string(),
+			website: urlSchema,
+			description: z.string(),
+		}),
+	),
+});
+
+export const interestsSectionSchema = baseSectionSchema.extend({
+	items: z.array(z.string()),
+});
+
+export const languagesSectionSchema = baseSectionSchema.extend({
+	items: z.array(
+		z.object({
+			language: z.string(),
+			fluency: z.string(),
+			level: z.number().min(0).max(5).default(0),
+		}),
+	),
+});
+
+export const profilesSectionSchema = baseSectionSchema.extend({
+	items: z.array(
+		z.object({
+			network: z.string(),
+			username: z.string(),
+			url: urlSchema,
+		}),
+	),
+});
+
+export const projectsSectionSchema = baseSectionSchema.extend({
+	items: z.array(
+		z.object({
+			name: z.string(),
+			period: z.string(),
+			url: urlSchema,
+			description: z.string(),
+		}),
+	),
+});
+
+export const publicationsSectionSchema = baseSectionSchema.extend({
+	items: z.array(
+		z.object({
+			title: z.string(),
+			publisher: z.string(),
+			date: z.string(),
+			url: urlSchema,
+			description: z.string(),
+		}),
+	),
+});
+
+export const referencesSectionSchema = baseSectionSchema.extend({
+	items: z.array(
+		z.object({
+			name: z.string(),
+			description: z.string(),
+		}),
+	),
+});
+
+export const skillsSectionSchema = baseSectionSchema.extend({
+	items: z.array(
+		z.object({
+			name: z.string(),
+			proficiency: z.string(),
+			level: z.number().min(0).max(5).default(0),
+		}),
+	),
+});
+
+export const summarySectionSchema = baseSectionSchema.extend({
+	content: z.string(),
+});
+
+export const volunteerSectionSchema = baseSectionSchema.extend({
+	items: z.array(
+		z.object({
+			organization: z.string(),
+			location: z.string(),
+			period: z.string(),
+			url: urlSchema,
+			description: z.string(),
+		}),
+	),
+});
+
+export const sectionsSchema = z.object({
+	awards: awardsSectionSchema,
+	certifications: certificationsSectionSchema,
+	education: educationSectionSchema,
+	experience: experienceSectionSchema,
+	interests: interestsSectionSchema,
+	languages: languagesSectionSchema,
+	profiles: profilesSectionSchema,
+	projects: projectsSectionSchema,
+	publications: publicationsSectionSchema,
+	references: referencesSectionSchema,
+	skills: skillsSectionSchema,
+	summary: summarySectionSchema,
+	volunteer: volunteerSectionSchema,
+});
+
+export type SectionType = keyof z.infer<typeof sectionsSchema>;
+export type SectionData = z.infer<typeof sectionsSchema>[SectionType];
+
+export const customSectionSchema = baseSectionSchema.extend({
+	id: z.string(),
+	content: z.string(),
+});
+
+export const customSectionsSchema = z.array(customSectionSchema);
+
+export const typographySchema = z.object({
+	fontFamily: z.string().default("IBM Plex Serif"),
+	fontVariants: z.string(),
+	fontSize: z.number().default(16),
+	lineHeight: z.number().default(1.5),
+});
+
+export const metadataSchema = z.object({
+	template: z.string(),
+	layout: z.object({
+		main: z.array(z.string()),
+		aside: z.array(z.string()),
+	}),
+	css: z.object({
+		enabled: z.boolean().default(false),
+		value: z.string().default("* {\n\toutline: 1px solid #000;\n\toutline-offset: 4px;\n}"),
+	}),
+	page: z.object({
+		marginX: z.number().default(18),
+		marginY: z.number().default(18),
+		format: z.enum(["a4", "letter"]).default("a4"),
+	}),
+	theme: z.object({
+		background: z.string().default("#ffffff"),
+		text: z.string().default("#000000"),
+		accent: z.string().default("#dc2626"),
+	}),
+	typography: z.object({
+		body: typographySchema,
+		heading: typographySchema,
+	}),
+	notes: z.string(),
+});
+
+export const resumeSchema = z.object({
+	picture: pictureSchema,
+	basics: basicsSchema,
+	sections: sectionsSchema,
+	customSections: customSectionsSchema,
+	metadata: metadataSchema,
+});
+
+export type ResumeData = z.infer<typeof resumeSchema>;
+
+export const defaultResumeData: ResumeData = {
+	picture: {
+		url: "",
+		size: 64,
+		aspectRatio: 1,
+		borderRadius: 0,
+		hidden: false,
+		shadow: false,
+		grayscale: false,
+		border: { width: 4, color: "rgba(0, 0, 0, 1)", style: "solid" },
+	},
+	basics: {
+		name: "",
+		headline: "",
+		email: "",
+		phone: "",
+		location: "",
+		website: { url: "", label: "" },
+		customFields: [],
+	},
+	sections: {
+		awards: {
+			title: "Awards",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		certifications: {
+			title: "Certifications",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		education: {
+			title: "Education",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		experience: {
+			title: "Experience",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		interests: {
+			title: "Interests",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		languages: {
+			title: "Languages",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		profiles: {
+			title: "Profiles",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		projects: {
+			title: "Projects",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		publications: {
+			title: "Publications",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		references: {
+			title: "References",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		skills: {
+			title: "Skills",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		summary: {
+			title: "Summary",
+			columns: 1,
+			hidden: false,
+			content: "",
+		},
+		volunteer: {
+			title: "Volunteer",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+	},
+	customSections: [],
+	metadata: {
+		template: "",
+		layout: { main: [], aside: [] },
+		css: { enabled: false, value: "" },
+		page: { marginX: 18, marginY: 18, format: "a4" },
+		theme: { background: "#ffffff", text: "#000000", accent: "#dc2626" },
+		typography: {
+			body: {
+				fontFamily: "IBM Plex Serif",
+				fontVariants: "regular",
+				fontSize: 16,
+				lineHeight: 1.5,
+			},
+			heading: {
+				fontFamily: "IBM Plex Serif",
+				fontVariants: "regular",
+				fontSize: 16,
+				lineHeight: 1.5,
+			},
+		},
+		notes: "",
+	},
+};
+
+export const sampleResumeData: ResumeData = {
+	picture: {
+		url: "https://i.pravatar.cc/300",
+		size: 64,
+		aspectRatio: 1,
+		borderRadius: 50,
+		hidden: false,
+		shadow: true,
+		grayscale: false,
+		border: {
+			width: 2,
+			color: "rgba(59, 130, 246, 1)",
+			style: "solid",
+		},
+	},
+	basics: {
+		name: "Sarah Chen",
+		headline: "Senior Full-Stack Developer & Technical Lead",
+		email: "sarah.chen@email.com",
+		phone: "+1 (555) 123-4567",
+		location: "San Francisco, CA",
+		website: {
+			url: "https://sarahchen.dev",
+			label: "sarahchen.dev",
+		},
+		customFields: [
+			{
+				id: "linkedin",
+				icon: "linkedin",
+				text: "linkedin.com/in/sarahchen",
+			},
+			{
+				id: "github",
+				icon: "github",
+				text: "github.com/sarahchen",
+			},
+			{
+				id: "portfolio",
+				icon: "globe",
+				text: "portfolio.sarahchen.dev",
+			},
+		],
+	},
+	sections: {
+		summary: {
+			title: "Professional Summary",
+			columns: 1,
+			hidden: false,
+			content:
+				"<p>Experienced full-stack developer with 8+ years of expertise in building scalable web applications. Specialized in React, TypeScript, Node.js, and cloud infrastructure. Proven track record of leading cross-functional teams, architecting microservices, and delivering high-impact products used by millions of users. Passionate about developer experience, code quality, and mentoring junior engineers.</p>",
+		},
+		experience: {
+			title: "Work Experience",
+			columns: 1,
+			hidden: false,
+			items: [
+				{
+					company: "TechFlow Inc.",
+					position: "Senior Full-Stack Engineer & Tech Lead",
+					location: "San Francisco, CA",
+					period: "January 2021 - Present",
+					website: {
+						url: "https://techflow.com",
+						label: "techflow.com",
+					},
+					description:
+						"Leading a team of 6 engineers developing a real-time collaboration platform serving 2M+ users. Architected microservices infrastructure using Node.js, TypeScript, and Kubernetes. Implemented CI/CD pipelines reducing deployment time by 60%. Mentored junior developers and conducted technical interviews. Key technologies: React, TypeScript, GraphQL, PostgreSQL, Redis, AWS.",
+				},
+				{
+					company: "DataSync Solutions",
+					position: "Full-Stack Developer",
+					location: "Seattle, WA",
+					period: "March 2019 - December 2020",
+					website: {
+						url: "https://datasync.io",
+						label: "datasync.io",
+					},
+					description:
+						"Developed and maintained data integration platform connecting 50+ third-party APIs. Built responsive web applications using React and TypeScript. Optimized database queries improving performance by 40%. Collaborated with product managers and designers in agile environment. Technologies: React, Node.js, Express, MongoDB, Docker.",
+				},
+				{
+					company: "StartupLab",
+					position: "Junior Software Developer",
+					location: "Austin, TX",
+					period: "June 2017 - February 2019",
+					website: {
+						url: "https://startuplab.co",
+						label: "startuplab.co",
+					},
+					description:
+						"Contributed to multiple client projects building custom web applications. Implemented RESTful APIs and database schemas. Participated in code reviews and pair programming sessions. Gained experience in full software development lifecycle. Stack: JavaScript, React, Python, Django, PostgreSQL.",
+				},
+			],
+		},
+		education: {
+			title: "Education",
+			columns: 1,
+			hidden: false,
+			items: [
+				{
+					school: "University of California, Berkeley",
+					degree: "Bachelor of Science",
+					area: "Computer Science",
+					grade: "3.8 GPA",
+					location: "Berkeley, CA",
+					period: "September 2013 - May 2017",
+					website: {
+						url: "https://berkeley.edu",
+						label: "berkeley.edu",
+					},
+					description:
+						"Relevant coursework: Data Structures, Algorithms, Database Systems, Web Development, Machine Learning, Software Engineering. Dean's List all semesters. Member of ACM and Women in Computer Science.",
+				},
+				{
+					school: "Stanford University",
+					degree: "Certificate",
+					area: "Machine Learning Specialization",
+					grade: "",
+					location: "Online",
+					period: "January 2022 - June 2022",
+					website: {
+						url: "https://online.stanford.edu",
+						label: "online.stanford.edu",
+					},
+					description:
+						"Completed intensive program covering supervised learning, neural networks, and practical ML implementation. Final project: Built recommendation system achieving 92% accuracy.",
+				},
+			],
+		},
+		skills: {
+			title: "Technical Skills",
+			columns: 2,
+			hidden: false,
+			items: [
+				{
+					name: "JavaScript / TypeScript",
+					proficiency: "Expert",
+					level: 5,
+				},
+				{
+					name: "React / Next.js",
+					proficiency: "Expert",
+					level: 5,
+				},
+				{
+					name: "Node.js / Express",
+					proficiency: "Advanced",
+					level: 4,
+				},
+				{
+					name: "PostgreSQL / MongoDB",
+					proficiency: "Advanced",
+					level: 4,
+				},
+				{
+					name: "AWS / Docker / Kubernetes",
+					proficiency: "Advanced",
+					level: 4,
+				},
+				{
+					name: "GraphQL / REST APIs",
+					proficiency: "Advanced",
+					level: 4,
+				},
+				{
+					name: "Python / Django",
+					proficiency: "Intermediate",
+					level: 3,
+				},
+				{
+					name: "Redis / ElasticSearch",
+					proficiency: "Intermediate",
+					level: 3,
+				},
+			],
+		},
+		projects: {
+			title: "Notable Projects",
+			columns: 1,
+			hidden: false,
+			items: [
+				{
+					name: "DevCollab - Real-time Code Collaboration Tool",
+					period: "2023",
+					url: {
+						url: "https://github.com/sarahchen/devcollab",
+						label: "github.com/sarahchen/devcollab",
+					},
+					description:
+						"Open-source real-time collaborative code editor with video chat integration. Built with React, WebRTC, and operational transformation algorithms. 2.5K GitHub stars, featured in JavaScript Weekly.",
+				},
+				{
+					name: "TaskFlow - Project Management API",
+					period: "2022",
+					url: {
+						url: "https://github.com/sarahchen/taskflow",
+						label: "github.com/sarahchen/taskflow",
+					},
+					description:
+						"RESTful API for project management with advanced filtering and analytics. Implemented with Node.js, Express, PostgreSQL, and Redis caching. Comprehensive documentation and test coverage >90%.",
+				},
+				{
+					name: "UI Component Library",
+					period: "2021-Present",
+					url: {
+						url: "https://components.sarahchen.dev",
+						label: "components.sarahchen.dev",
+					},
+					description:
+						"Accessible, customizable React component library with TypeScript support. Published to NPM with 15K+ weekly downloads. Includes Storybook documentation and comprehensive testing suite.",
+				},
+			],
+		},
+		publications: {
+			title: "Publications",
+			columns: 1,
+			hidden: false,
+			items: [
+				{
+					title: "Scaling Real-Time Collaboration with WebRTC and OT",
+					publisher: "Smashing Magazine",
+					date: "April 2023",
+					url: {
+						url: "https://www.smashingmagazine.com/2023/04/scaling-realtime-collaboration-webrtc-ot/",
+						label: "smashingmagazine.com/2023/04/scaling-realtime-collaboration-webrtc-ot/",
+					},
+					description:
+						"Explored architecture, challenges, and best practices for building scalable collaborative applications using WebRTC and operational transformation algorithms, based on lessons learned from DevCollab.",
+				},
+				{
+					title: "Designing Accessible React Component Libraries",
+					publisher: "DEV Community",
+					date: "October 2022",
+					url: {
+						url: "https://dev.to/sarahchen/designing-accessible-react-component-libraries-4j2h",
+						label: "dev.to/sarahchen/designing-accessible-react-component-libraries-4j2h",
+					},
+					description:
+						"Discussed key strategies for building accessible, tested, and customizable UI components for React, with a focus on usability and open-source processes.",
+				},
+				{
+					title: "Modern Project Management APIs in Node.js",
+					publisher: "Javascript Weekly",
+					date: "July 2022",
+					url: {
+						url: "https://javascriptweekly.com/issues/599#feature",
+						label: "javascriptweekly.com/issues/599#feature",
+					},
+					description:
+						"Featured article detailing the design, implementation, and test strategies behind the TaskFlow API, including performance and analytics considerations.",
+				},
+			],
+		},
+		volunteer: {
+			title: "Volunteer",
+			columns: 1,
+			hidden: false,
+			items: [
+				{
+					organization: "Open Source Mentorship Program",
+					location: "Remote",
+					period: "2021 - Present",
+					url: {
+						url: "https://opensourcementor.org",
+						label: "opensourcementor.org",
+					},
+					description:
+						"Mentor emerging developers worldwide on contributions to React and Node.js projects, helping them gain confidence and technical proficiency in open source.",
+				},
+				{
+					organization: "Women Who Code San Francisco",
+					location: "San Francisco, CA",
+					period: "2019 - Present",
+					url: {
+						url: "https://womenwhocode.com/sf",
+						label: "womenwhocode.com/sf",
+					},
+					description:
+						"Lead career workshops and technical sessions focused on empowering women in technology, including talks on cloud architecture and agile development.",
+				},
+				{
+					organization: "Local Food Bank",
+					location: "San Francisco, CA",
+					period: "2018 - 2020",
+					url: {
+						url: "",
+						label: "",
+					},
+					description:
+						"Volunteered in weekend food drives, supporting logistics and community outreach to serve underprivileged neighborhoods.",
+				},
+			],
+		},
+		certifications: {
+			title: "Certifications",
+			columns: 2,
+			hidden: false,
+			items: [
+				{
+					title: "AWS Certified Solutions Architect - Associate",
+					issuer: "Amazon Web Services",
+					date: "March 2023",
+					website: {
+						url: "https://aws.amazon.com/certification",
+						label: "AWS Certification",
+					},
+					description:
+						"Demonstrated expertise in designing distributed systems on AWS platform, including compute, networking, storage, and database services.",
+				},
+				{
+					title: "Kubernetes Administrator (CKA)",
+					issuer: "Cloud Native Computing Foundation",
+					date: "September 2022",
+					website: {
+						url: "https://www.cncf.io/certification/cka",
+						label: "CNCF Certification",
+					},
+					description:
+						"Certified in deploying, managing, and troubleshooting Kubernetes clusters in production environments.",
+				},
+				{
+					title: "Professional Scrum Master I (PSM I)",
+					issuer: "Scrum.org",
+					date: "January 2021",
+					website: {
+						url: "https://www.scrum.org/assessments/professional-scrum-master-i-certification",
+						label: "Scrum.org",
+					},
+					description:
+						"Validated understanding of Scrum framework, roles, events, and artifacts for effective agile project management.",
+				},
+			],
+		},
+		awards: {
+			title: "Awards & Recognition",
+			columns: 1,
+			hidden: false,
+			items: [
+				{
+					title: "Tech Excellence Award",
+					awarder: "TechFlow Inc.",
+					date: "December 2023",
+					website: {
+						url: "",
+						label: "",
+					},
+					description:
+						"Recognized for outstanding technical leadership and significant contributions to platform scalability improvements that reduced infrastructure costs by 35%.",
+				},
+				{
+					title: "Best Open Source Project",
+					awarder: "DevCon 2023",
+					date: "June 2023",
+					website: {
+						url: "https://devcon.tech",
+						label: "devcon.tech",
+					},
+					description:
+						"DevCollab project won first place in open source category at annual developer conference, competing against 150+ projects.",
+				},
+				{
+					title: "Hackathon Winner - FinTech Challenge",
+					awarder: "San Francisco Tech Week",
+					date: "October 2022",
+					website: {
+						url: "https://sftechweek.com",
+						label: "sftechweek.com",
+					},
+					description:
+						"Led team of 4 to build AI-powered financial literacy app in 48 hours. Won $10K prize and mentorship opportunity with venture capital firm.",
+				},
+			],
+		},
+		languages: {
+			title: "Languages",
+			columns: 2,
+			hidden: false,
+			items: [
+				{
+					language: "English",
+					fluency: "Native",
+					level: 5,
+				},
+				{
+					language: "Mandarin Chinese",
+					fluency: "Native",
+					level: 5,
+				},
+				{
+					language: "Spanish",
+					fluency: "Professional Working",
+					level: 3,
+				},
+			],
+		},
+		profiles: {
+			title: "Online Profiles",
+			columns: 2,
+			hidden: false,
+			items: [
+				{
+					network: "LinkedIn",
+					username: "sarahchen",
+					url: {
+						url: "https://linkedin.com/in/sarahchen",
+						label: "linkedin.com/in/sarahchen",
+					},
+				},
+				{
+					network: "GitHub",
+					username: "sarahchen",
+					url: {
+						url: "https://github.com/sarahchen",
+						label: "github.com/sarahchen",
+					},
+				},
+				{
+					network: "Twitter",
+					username: "@sarahcodes",
+					url: {
+						url: "https://twitter.com/sarahcodes",
+						label: "twitter.com/sarahcodes",
+					},
+				},
+			],
+		},
+		interests: {
+			title: "Interests",
+			columns: 2,
+			hidden: false,
+			items: [
+				"Open Source Contribution",
+				"Technical Writing & Blogging",
+				"Rock Climbing",
+				"Photography",
+				"Cooking & Recipe Development",
+				"Mentoring Women in Tech",
+			],
+		},
+		references: {
+			title: "References",
+			columns: 1,
+			hidden: false,
+			items: [
+				{
+					name: "Michael Rodriguez - Engineering Manager at TechFlow Inc.",
+					description:
+						"Sarah is an exceptional technical leader who consistently delivers high-quality work. Her ability to mentor junior engineers while architecting complex systems is remarkable. She's been instrumental in our platform's success.",
+				},
+				{
+					name: "Jennifer Liu - CTO at DataSync Solutions",
+					description:
+						"Working with Sarah was a pleasure. She quickly became one of our most reliable engineers, tackling challenging problems with creativity and precision. Her communication skills and technical expertise made her invaluable to our team.",
+				},
+			],
+		},
+	},
+	customSections: [],
+	metadata: {
+		template: "modern",
+		layout: {
+			main: ["summary", "experience", "projects", "volunteering"],
+			aside: [
+				"skills",
+				"education",
+				"certifications",
+				"awards",
+				"languages",
+				"interests",
+				"publications",
+				"references",
+			],
+		},
+		css: {
+			enabled: false,
+			value: "",
+		},
+		page: {
+			marginX: 18,
+			marginY: 18,
+			format: "a4",
+		},
+		theme: {
+			background: "#ffffff",
+			text: "#1f2937",
+			accent: "#3b82f6",
+		},
+		typography: {
+			body: {
+				fontFamily: "Inter",
+				fontVariants: "400",
+				fontSize: 16,
+				lineHeight: 1.5,
+			},
+			heading: {
+				fontFamily: "Inter",
+				fontVariants: "600",
+				fontSize: 20,
+				lineHeight: 1.5,
+			},
+		},
+		notes:
+			"Resume for senior full-stack developer positions. Emphasis on technical leadership and open source contributions. Please note that these notes are for my own reference and are not displayed in the resume.",
+	},
+};

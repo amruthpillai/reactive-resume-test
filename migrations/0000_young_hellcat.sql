@@ -20,7 +20,7 @@ CREATE TABLE "resume" (
 	"slug" text NOT NULL,
 	"is_public" boolean DEFAULT false NOT NULL,
 	"is_locked" boolean DEFAULT false NOT NULL,
-	"payload" jsonb DEFAULT '{}'::jsonb NOT NULL,
+	"data" jsonb NOT NULL,
 	"user_id" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,

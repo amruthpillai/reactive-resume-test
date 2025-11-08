@@ -12,8 +12,9 @@ import { cn } from "@/utils/style";
 import { BuilderHeader } from "./-components/header";
 import { BuilderSidebarLeft } from "./-components/sidebar/left";
 import { BuilderSidebarRight } from "./-components/sidebar/right";
+import { useResume } from "./-hooks/resume";
 import { useBuilderStore } from "./-store/builder";
-import { useResume } from "./-store/resume";
+import { useResumeStore } from "./-store/resume";
 
 export const Route = createFileRoute("/builder/$resumeId")({
 	component: RouteComponent,
@@ -28,7 +29,9 @@ export const Route = createFileRoute("/builder/$resumeId")({
 });
 
 function RouteComponent() {
-	const { resume } = useResume();
+	const resume = useResume();
+	const storeResume = useResumeStore((state) => state.resume);
+
 	const isMobile = useIsMobile();
 	const { width } = useWindowSize();
 	const [isDragging, setDragging] = useState(false);
@@ -50,19 +53,20 @@ function RouteComponent() {
 		setBuilderLayoutServerFn({ data: layout });
 	}, []);
 
-	if (!resume) return <LoadingScreen />;
+	// Wait for both the query data and the store to be populated before rendering children
+	if (!resume || !storeResume) return <LoadingScreen />;
 
 	return (
 		<div className="flex flex-col">
 			<BuilderHeader />
 
-			<ResizablePanelGroup direction="horizontal" className="relative mt-14 w-svw" onLayout={onLayout}>
+			<ResizablePanelGroup direction="horizontal" className="relative mt-12 w-svw" onLayout={onLayout}>
 				<ResizablePanel
 					ref={leftSidebarRef}
 					collapsible
-					minSize={15}
-					defaultSize={isMobile ? 0 : initialLayout[0]}
+					defaultSize={isMobile ? 0 : Math.max(collapsedSidebarSize, initialLayout[0])}
 					maxSize={maxSidebarSize}
+					minSize={collapsedSidebarSize}
 					collapsedSize={collapsedSidebarSize}
 					className={cn("h-[calc(100svh-3.5rem)]", !isDragging && "transition-all")}
 				>
@@ -79,9 +83,9 @@ function RouteComponent() {
 				<ResizablePanel
 					ref={rightSidebarRef}
 					collapsible
-					minSize={15}
-					defaultSize={isMobile ? 0 : initialLayout[2]}
+					defaultSize={isMobile ? 0 : Math.max(collapsedSidebarSize, initialLayout[2])}
 					maxSize={maxSidebarSize}
+					minSize={collapsedSidebarSize}
 					collapsedSize={collapsedSidebarSize}
 					className={cn("h-[calc(100svh-3.5rem)]", !isDragging && "transition-all")}
 				>

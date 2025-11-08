@@ -196,7 +196,7 @@ function RouteComponent() {
 										</p>
 									))
 									.with(false, () => (
-										<p className="flex items-center gap-x-1.5 text-xs text-yellow-700">
+										<p className="flex items-center gap-x-1.5 text-warning text-xs">
 											<WarningIcon className="size-3.5" />
 											<Trans>Unverified</Trans>
 											<span>|</span>

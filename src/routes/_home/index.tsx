@@ -11,7 +11,7 @@ function RouteComponent() {
 	return (
 		<div>
 			{/* Hero */}
-			<div className="flex h-dvh items-center justify-center">
+			<div id="hero" className="relative flex h-dvh flex-col items-center justify-center">
 				<div className="flex max-w-xl flex-col items-center gap-y-8 px-4 xs:px-0 text-center">
 					<div>
 						<Trans>

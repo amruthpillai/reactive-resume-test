@@ -1,3 +1,5 @@
+import "@phosphor-icons/web/regular/style.css";
+
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { IconContext } from "@phosphor-icons/react";
@@ -7,6 +9,7 @@ import { ThemeProvider } from "@/components/theme/provider";
 import { Toaster } from "@/components/ui/sonner";
 import { DialogManager } from "@/dialogs/manager";
 import { ConfirmDialogProvider } from "@/hooks/use-confirm";
+import { PromptDialogProvider } from "@/hooks/use-prompt";
 import { getSessionServerFn } from "@/integrations/auth/functions";
 import type { Session } from "@/integrations/auth/types";
 import type { orpc } from "@/integrations/orpc/client";
@@ -61,10 +64,12 @@ function RootDocument({ children }: Props) {
 					<IconContext.Provider value={{ size: 16, weight: "regular" }}>
 						<ThemeProvider theme={theme}>
 							<ConfirmDialogProvider>
-								{children}
+								<PromptDialogProvider>
+									{children}
 
-								<Toaster />
-								<DialogManager />
+									<Toaster />
+									<DialogManager />
+								</PromptDialogProvider>
 							</ConfirmDialogProvider>
 						</ThemeProvider>
 					</IconContext.Provider>

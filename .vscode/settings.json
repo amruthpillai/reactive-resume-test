@@ -1,4 +1,6 @@
 {
+	"tailwindCSS.classFunctions": ["cn", "cva"],
+	"tailwindCSS.experimental.classRegex": ["class:\\s*?[\"'`]([^\"'`]*).*?,"],
 	"[css]": {
 		"editor.defaultFormatter": "biomejs.biome"
 	},

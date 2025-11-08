@@ -4,6 +4,7 @@ import { and, desc, eq } from "drizzle-orm";
 import z from "zod";
 import { schema } from "@/integrations/drizzle";
 import { db } from "@/integrations/drizzle/client";
+import { defaultResumeData, resumeSchema } from "@/schema/resume";
 import { protectedProcedure } from "../context";
 
 export const resumeRouter = {
@@ -46,7 +47,12 @@ export const resumeRouter = {
 			}),
 		)
 		.handler(async ({ context, input }) => {
-			await db.insert(schema.resume).values({ name: input.name, slug: input.slug, userId: context.user.id });
+			await db.insert(schema.resume).values({
+				name: input.name,
+				slug: input.slug,
+				userId: context.user.id,
+				data: defaultResumeData,
+			});
 		}),
 
 	rename: protectedProcedure
@@ -73,6 +79,15 @@ export const resumeRouter = {
 						eq(schema.resume.userId, context.user.id),
 					),
 				);
+		}),
+
+	updateData: protectedProcedure
+		.input(z.object({ id: z.string(), data: resumeSchema }))
+		.handler(async ({ context, input }) => {
+			await db
+				.update(schema.resume)
+				.set({ data: input.data })
+				.where(and(eq(schema.resume.id, input.id), eq(schema.resume.userId, context.user.id)));
 		}),
 
 	setLocked: protectedProcedure
