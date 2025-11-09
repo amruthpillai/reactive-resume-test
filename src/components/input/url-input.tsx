@@ -3,7 +3,7 @@ import { Trans } from "@lingui/react/macro";
 import { TagIcon } from "@phosphor-icons/react";
 import { useCallback, useMemo } from "react";
 import type z from "zod";
-import type { urlSchema } from "@/schema/resume";
+import type { urlSchema } from "@/schema/resume/data";
 import { cn } from "@/utils/style";
 import { Input } from "../ui/input";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGroupText } from "../ui/input-group";
@@ -17,6 +17,7 @@ function stripPrefix(url: string) {
 }
 
 function ensurePrefix(url: string) {
+	if (url === "") return "";
 	return url.startsWith(PREFIX) ? url : PREFIX + url;
 }
 
@@ -52,7 +53,6 @@ export function URLInput({ value, onChange, ...props }: Props) {
 			</InputGroupAddon>
 
 			<InputGroupInput
-				type="url"
 				value={urlValue}
 				className={cn(props.className, "pl-0!")}
 				onChange={handleUrlChange}

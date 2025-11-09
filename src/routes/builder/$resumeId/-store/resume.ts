@@ -3,7 +3,7 @@ import { produce } from "immer";
 import { create } from "zustand";
 import type { RouterOutput } from "@/integrations/orpc/client";
 import { orpc } from "@/integrations/orpc/client";
-import type { ResumeData } from "@/schema/resume";
+import type { ResumeData } from "@/schema/resume/data";
 
 export type Resume = RouterOutput["resume"]["getById"];
 

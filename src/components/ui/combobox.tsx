@@ -3,35 +3,15 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useControllableState } from "@/hooks/use-controllable-state";
 import { cn } from "@/utils/style";
 
 type ComboboxOption<TValue extends string | number = string> = {
 	value: TValue;
 	label: React.ReactNode;
 	keywords?: string[];
+	disabled?: boolean;
 };
-
-function useControllableState<T>(params: { value?: T; defaultValue: T; onChange?: (next: T) => void }) {
-	const { value, defaultValue, onChange } = params;
-	const isControlled = value !== undefined;
-	const [uncontrolledValue, setUncontrolledValue] = React.useState<T>(defaultValue);
-
-	React.useEffect(() => {
-		if (!isControlled) setUncontrolledValue(defaultValue);
-	}, [defaultValue, isControlled]);
-
-	const currentValue = isControlled ? (value as T) : uncontrolledValue;
-
-	const setValue = React.useCallback(
-		(next: T) => {
-			if (!isControlled) setUncontrolledValue(next);
-			onChange?.(next);
-		},
-		[isControlled, onChange],
-	);
-
-	return [currentValue, setValue] as const;
-}
 
 type ComboboxProps<TValue extends string | number = string> = Omit<
 	React.ComponentProps<typeof PopoverContent>,
@@ -85,7 +65,7 @@ function Combobox<TValue extends string | number = string>({
 				<Button
 					role="combobox"
 					variant="outline"
-					className={cn("justify-between active:scale-100", buttonProps?.className)}
+					className={cn("justify-between font-normal active:scale-100", buttonProps?.className)}
 					aria-expanded={open}
 					{...buttonProps}
 				>
@@ -114,6 +94,7 @@ function Combobox<TValue extends string | number = string>({
 										key={String(option.value)}
 										value={String(option.value)}
 										keywords={option.keywords}
+										disabled={option.disabled}
 										onSelect={onSelect}
 									>
 										<span>{option.label}</span>

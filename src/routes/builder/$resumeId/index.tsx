@@ -12,7 +12,7 @@ function RouteComponent() {
 
 	return (
 		<ScrollArea className="h-full">
-			<div className="light m-4 space-y-6 rounded-sm bg-background p-4 text-foreground">
+			<div className="m-4 space-y-6 rounded-md bg-popover p-4 text-foreground">
 				<TiptapContent content={resume.sections.summary.content} />
 
 				<pre className="whitespace-pre-wrap font-mono text-xs">{JSON.stringify(resume, null, 2)}</pre>

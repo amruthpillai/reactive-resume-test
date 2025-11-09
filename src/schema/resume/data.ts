@@ -7,16 +7,16 @@ export const urlSchema = z.object({
 
 export const pictureSchema = z.object({
 	url: z.url().or(z.literal("")),
-	size: z.number().default(64),
-	aspectRatio: z.number().default(1),
-	borderRadius: z.number().default(0),
-	hidden: z.boolean().default(false),
-	shadow: z.boolean().default(false),
-	grayscale: z.boolean().default(false),
+	size: z.number(),
+	aspectRatio: z.number(),
+	borderRadius: z.number(),
+	hidden: z.boolean(),
+	shadow: z.boolean(),
+	grayscale: z.boolean(),
 	border: z.object({
-		width: z.number().default(4),
-		color: z.string().default("rgba(0, 0, 0, 1)"),
-		style: z.enum(["solid", "dashed", "dotted"]).default("solid"),
+		width: z.number(),
+		color: z.string(),
+		style: z.enum(["solid", "dashed", "dotted"]),
 	}),
 });
 
@@ -36,128 +36,145 @@ export const basicsSchema = z.object({
 	customFields: z.array(customFieldSchema),
 });
 
+export const baseItemSchema = z.object({
+	id: z.string(),
+	hidden: z.boolean(),
+});
+
+export const awardItemSchema = baseItemSchema.extend({
+	title: z.string(),
+	awarder: z.string(),
+	date: z.string(),
+	website: urlSchema,
+	description: z.string(),
+});
+
+export const certificationItemSchema = baseItemSchema.extend({
+	title: z.string(),
+	issuer: z.string(),
+	date: z.string(),
+	website: urlSchema,
+	description: z.string(),
+});
+
+export const educationItemSchema = baseItemSchema.extend({
+	school: z.string(),
+	degree: z.string(),
+	area: z.string(),
+	grade: z.string(),
+	location: z.string(),
+	period: z.string(),
+	website: urlSchema,
+	description: z.string(),
+});
+
+export const experienceItemSchema = baseItemSchema.extend({
+	company: z.string(),
+	position: z.string(),
+	location: z.string(),
+	period: z.string(),
+	website: urlSchema,
+	description: z.string(),
+});
+
+export const interestItemSchema = baseItemSchema.extend({
+	name: z.string(),
+});
+
+export const languageItemSchema = baseItemSchema.extend({
+	language: z.string(),
+	fluency: z.string(),
+	level: z.number().min(0).max(5),
+});
+
+export const profileItemSchema = baseItemSchema.extend({
+	network: z.string().min(1),
+	username: z.string().min(1),
+	website: urlSchema,
+});
+
+export const projectItemSchema = baseItemSchema.extend({
+	name: z.string(),
+	period: z.string(),
+	website: urlSchema,
+	description: z.string(),
+});
+
+export const publicationItemSchema = baseItemSchema.extend({
+	title: z.string(),
+	publisher: z.string(),
+	date: z.string(),
+	website: urlSchema,
+	description: z.string(),
+});
+
+export const referenceItemSchema = baseItemSchema.extend({
+	name: z.string(),
+	description: z.string(),
+});
+
+export const skillItemSchema = baseItemSchema.extend({
+	name: z.string(),
+	proficiency: z.string(),
+	level: z.number().min(0).max(5),
+});
+
+export const volunteerItemSchema = baseItemSchema.extend({
+	organization: z.string(),
+	location: z.string(),
+	period: z.string(),
+	website: urlSchema,
+	description: z.string(),
+});
+
 export const baseSectionSchema = z.object({
 	title: z.string(),
-	columns: z.number().default(1),
-	hidden: z.boolean().default(false),
+	columns: z.number(),
+	hidden: z.boolean(),
 });
 
 export const awardsSectionSchema = baseSectionSchema.extend({
-	items: z.array(
-		z.object({
-			title: z.string(),
-			awarder: z.string(),
-			date: z.string(),
-			website: urlSchema,
-			description: z.string(),
-		}),
-	),
+	items: z.array(awardItemSchema),
 });
 
 export const certificationsSectionSchema = baseSectionSchema.extend({
-	items: z.array(
-		z.object({
-			title: z.string(),
-			issuer: z.string(),
-			date: z.string(),
-			website: urlSchema,
-			description: z.string(),
-		}),
-	),
+	items: z.array(certificationItemSchema),
 });
 
 export const educationSectionSchema = baseSectionSchema.extend({
-	items: z.array(
-		z.object({
-			school: z.string(),
-			degree: z.string(),
-			area: z.string(),
-			grade: z.string(),
-			location: z.string(),
-			period: z.string(),
-			website: urlSchema,
-			description: z.string(),
-		}),
-	),
+	items: z.array(educationItemSchema),
 });
 
 export const experienceSectionSchema = baseSectionSchema.extend({
-	items: z.array(
-		z.object({
-			company: z.string(),
-			position: z.string(),
-			location: z.string(),
-			period: z.string(),
-			website: urlSchema,
-			description: z.string(),
-		}),
-	),
+	items: z.array(experienceItemSchema),
 });
 
 export const interestsSectionSchema = baseSectionSchema.extend({
-	items: z.array(z.string()),
+	items: z.array(interestItemSchema),
 });
 
 export const languagesSectionSchema = baseSectionSchema.extend({
-	items: z.array(
-		z.object({
-			language: z.string(),
-			fluency: z.string(),
-			level: z.number().min(0).max(5).default(0),
-		}),
-	),
+	items: z.array(languageItemSchema),
 });
 
 export const profilesSectionSchema = baseSectionSchema.extend({
-	items: z.array(
-		z.object({
-			network: z.string(),
-			username: z.string(),
-			url: urlSchema,
-		}),
-	),
+	items: z.array(profileItemSchema),
 });
 
 export const projectsSectionSchema = baseSectionSchema.extend({
-	items: z.array(
-		z.object({
-			name: z.string(),
-			period: z.string(),
-			url: urlSchema,
-			description: z.string(),
-		}),
-	),
+	items: z.array(projectItemSchema),
 });
 
 export const publicationsSectionSchema = baseSectionSchema.extend({
-	items: z.array(
-		z.object({
-			title: z.string(),
-			publisher: z.string(),
-			date: z.string(),
-			url: urlSchema,
-			description: z.string(),
-		}),
-	),
+	items: z.array(publicationItemSchema),
 });
 
 export const referencesSectionSchema = baseSectionSchema.extend({
-	items: z.array(
-		z.object({
-			name: z.string(),
-			description: z.string(),
-		}),
-	),
+	items: z.array(referenceItemSchema),
 });
 
 export const skillsSectionSchema = baseSectionSchema.extend({
-	items: z.array(
-		z.object({
-			name: z.string(),
-			proficiency: z.string(),
-			level: z.number().min(0).max(5).default(0),
-		}),
-	),
+	items: z.array(skillItemSchema),
 });
 
 export const summarySectionSchema = baseSectionSchema.extend({
@@ -165,15 +182,7 @@ export const summarySectionSchema = baseSectionSchema.extend({
 });
 
 export const volunteerSectionSchema = baseSectionSchema.extend({
-	items: z.array(
-		z.object({
-			organization: z.string(),
-			location: z.string(),
-			period: z.string(),
-			url: urlSchema,
-			description: z.string(),
-		}),
-	),
+	items: z.array(volunteerItemSchema),
 });
 
 export const sectionsSchema = z.object({
@@ -195,6 +204,8 @@ export const sectionsSchema = z.object({
 export type SectionType = keyof z.infer<typeof sectionsSchema>;
 export type SectionData = z.infer<typeof sectionsSchema>[SectionType];
 
+export type SectionItem = z.infer<typeof sectionsSchema>[Exclude<SectionType, "summary">]["items"][number];
+
 export const customSectionSchema = baseSectionSchema.extend({
 	id: z.string(),
 	content: z.string(),
@@ -203,10 +214,10 @@ export const customSectionSchema = baseSectionSchema.extend({
 export const customSectionsSchema = z.array(customSectionSchema);
 
 export const typographySchema = z.object({
-	fontFamily: z.string().default("IBM Plex Serif"),
+	fontFamily: z.string(),
 	fontVariants: z.string(),
-	fontSize: z.number().default(16),
-	lineHeight: z.number().default(1.5),
+	fontSize: z.number(),
+	lineHeight: z.number(),
 });
 
 export const metadataSchema = z.object({
@@ -216,18 +227,18 @@ export const metadataSchema = z.object({
 		aside: z.array(z.string()),
 	}),
 	css: z.object({
-		enabled: z.boolean().default(false),
-		value: z.string().default("* {\n\toutline: 1px solid #000;\n\toutline-offset: 4px;\n}"),
+		enabled: z.boolean(),
+		value: z.string(),
 	}),
 	page: z.object({
-		marginX: z.number().default(18),
-		marginY: z.number().default(18),
-		format: z.enum(["a4", "letter"]).default("a4"),
+		marginX: z.number(),
+		marginY: z.number(),
+		format: z.enum(["a4", "letter"]),
 	}),
 	theme: z.object({
-		background: z.string().default("#ffffff"),
-		text: z.string().default("#000000"),
-		accent: z.string().default("#dc2626"),
+		background: z.string(),
+		text: z.string(),
+		accent: z.string(),
 	}),
 	typography: z.object({
 		body: typographySchema,
@@ -236,7 +247,7 @@ export const metadataSchema = z.object({
 	notes: z.string(),
 });
 
-export const resumeSchema = z.object({
+export const resumeDataSchema = z.object({
 	picture: pictureSchema,
 	basics: basicsSchema,
 	sections: sectionsSchema,
@@ -244,7 +255,7 @@ export const resumeSchema = z.object({
 	metadata: metadataSchema,
 });
 
-export type ResumeData = z.infer<typeof resumeSchema>;
+export type ResumeData = z.infer<typeof resumeDataSchema>;
 
 export const defaultResumeData: ResumeData = {
 	picture: {
@@ -378,7 +389,7 @@ export const sampleResumeData: ResumeData = {
 		aspectRatio: 1,
 		borderRadius: 50,
 		hidden: false,
-		shadow: true,
+		shadow: false,
 		grayscale: false,
 		border: {
 			width: 2,
@@ -428,6 +439,8 @@ export const sampleResumeData: ResumeData = {
 			hidden: false,
 			items: [
 				{
+					id: "experience-1",
+					hidden: false,
 					company: "TechFlow Inc.",
 					position: "Senior Full-Stack Engineer & Tech Lead",
 					location: "San Francisco, CA",
@@ -440,6 +453,8 @@ export const sampleResumeData: ResumeData = {
 						"Leading a team of 6 engineers developing a real-time collaboration platform serving 2M+ users. Architected microservices infrastructure using Node.js, TypeScript, and Kubernetes. Implemented CI/CD pipelines reducing deployment time by 60%. Mentored junior developers and conducted technical interviews. Key technologies: React, TypeScript, GraphQL, PostgreSQL, Redis, AWS.",
 				},
 				{
+					id: "experience-2",
+					hidden: false,
 					company: "DataSync Solutions",
 					position: "Full-Stack Developer",
 					location: "Seattle, WA",
@@ -452,6 +467,8 @@ export const sampleResumeData: ResumeData = {
 						"Developed and maintained data integration platform connecting 50+ third-party APIs. Built responsive web applications using React and TypeScript. Optimized database queries improving performance by 40%. Collaborated with product managers and designers in agile environment. Technologies: React, Node.js, Express, MongoDB, Docker.",
 				},
 				{
+					id: "experience-3",
+					hidden: false,
 					company: "StartupLab",
 					position: "Junior Software Developer",
 					location: "Austin, TX",
@@ -471,6 +488,8 @@ export const sampleResumeData: ResumeData = {
 			hidden: false,
 			items: [
 				{
+					id: "education-1",
+					hidden: false,
 					school: "University of California, Berkeley",
 					degree: "Bachelor of Science",
 					area: "Computer Science",
@@ -485,6 +504,8 @@ export const sampleResumeData: ResumeData = {
 						"Relevant coursework: Data Structures, Algorithms, Database Systems, Web Development, Machine Learning, Software Engineering. Dean's List all semesters. Member of ACM and Women in Computer Science.",
 				},
 				{
+					id: "education-2",
+					hidden: false,
 					school: "Stanford University",
 					degree: "Certificate",
 					area: "Machine Learning Specialization",
@@ -506,41 +527,57 @@ export const sampleResumeData: ResumeData = {
 			hidden: false,
 			items: [
 				{
+					id: "skill-1",
+					hidden: false,
 					name: "JavaScript / TypeScript",
 					proficiency: "Expert",
 					level: 5,
 				},
 				{
+					id: "skill-2",
+					hidden: false,
 					name: "React / Next.js",
 					proficiency: "Expert",
 					level: 5,
 				},
 				{
+					id: "skill-3",
+					hidden: false,
 					name: "Node.js / Express",
 					proficiency: "Advanced",
 					level: 4,
 				},
 				{
+					id: "skill-4",
+					hidden: false,
 					name: "PostgreSQL / MongoDB",
 					proficiency: "Advanced",
 					level: 4,
 				},
 				{
+					id: "skill-5",
+					hidden: false,
 					name: "AWS / Docker / Kubernetes",
 					proficiency: "Advanced",
 					level: 4,
 				},
 				{
+					id: "skill-6",
+					hidden: false,
 					name: "GraphQL / REST APIs",
 					proficiency: "Advanced",
 					level: 4,
 				},
 				{
+					id: "skill-7",
+					hidden: false,
 					name: "Python / Django",
 					proficiency: "Intermediate",
 					level: 3,
 				},
 				{
+					id: "skill-8",
+					hidden: false,
 					name: "Redis / ElasticSearch",
 					proficiency: "Intermediate",
 					level: 3,
@@ -553,9 +590,11 @@ export const sampleResumeData: ResumeData = {
 			hidden: false,
 			items: [
 				{
+					id: "project-1",
+					hidden: false,
 					name: "DevCollab - Real-time Code Collaboration Tool",
 					period: "2023",
-					url: {
+					website: {
 						url: "https://github.com/sarahchen/devcollab",
 						label: "github.com/sarahchen/devcollab",
 					},
@@ -563,9 +602,11 @@ export const sampleResumeData: ResumeData = {
 						"Open-source real-time collaborative code editor with video chat integration. Built with React, WebRTC, and operational transformation algorithms. 2.5K GitHub stars, featured in JavaScript Weekly.",
 				},
 				{
+					id: "project-2",
+					hidden: false,
 					name: "TaskFlow - Project Management API",
 					period: "2022",
-					url: {
+					website: {
 						url: "https://github.com/sarahchen/taskflow",
 						label: "github.com/sarahchen/taskflow",
 					},
@@ -573,9 +614,11 @@ export const sampleResumeData: ResumeData = {
 						"RESTful API for project management with advanced filtering and analytics. Implemented with Node.js, Express, PostgreSQL, and Redis caching. Comprehensive documentation and test coverage >90%.",
 				},
 				{
+					id: "project-3",
+					hidden: false,
 					name: "UI Component Library",
 					period: "2021-Present",
-					url: {
+					website: {
 						url: "https://components.sarahchen.dev",
 						label: "components.sarahchen.dev",
 					},
@@ -590,10 +633,12 @@ export const sampleResumeData: ResumeData = {
 			hidden: false,
 			items: [
 				{
+					id: "publication-1",
+					hidden: false,
 					title: "Scaling Real-Time Collaboration with WebRTC and OT",
 					publisher: "Smashing Magazine",
 					date: "April 2023",
-					url: {
+					website: {
 						url: "https://www.smashingmagazine.com/2023/04/scaling-realtime-collaboration-webrtc-ot/",
 						label: "smashingmagazine.com/2023/04/scaling-realtime-collaboration-webrtc-ot/",
 					},
@@ -601,10 +646,12 @@ export const sampleResumeData: ResumeData = {
 						"Explored architecture, challenges, and best practices for building scalable collaborative applications using WebRTC and operational transformation algorithms, based on lessons learned from DevCollab.",
 				},
 				{
+					id: "publication-2",
+					hidden: false,
 					title: "Designing Accessible React Component Libraries",
 					publisher: "DEV Community",
 					date: "October 2022",
-					url: {
+					website: {
 						url: "https://dev.to/sarahchen/designing-accessible-react-component-libraries-4j2h",
 						label: "dev.to/sarahchen/designing-accessible-react-component-libraries-4j2h",
 					},
@@ -612,10 +659,12 @@ export const sampleResumeData: ResumeData = {
 						"Discussed key strategies for building accessible, tested, and customizable UI components for React, with a focus on usability and open-source processes.",
 				},
 				{
+					id: "publication-3",
+					hidden: false,
 					title: "Modern Project Management APIs in Node.js",
 					publisher: "Javascript Weekly",
 					date: "July 2022",
-					url: {
+					website: {
 						url: "https://javascriptweekly.com/issues/599#feature",
 						label: "javascriptweekly.com/issues/599#feature",
 					},
@@ -630,10 +679,12 @@ export const sampleResumeData: ResumeData = {
 			hidden: false,
 			items: [
 				{
+					id: "volunteer-1",
+					hidden: false,
 					organization: "Open Source Mentorship Program",
 					location: "Remote",
 					period: "2021 - Present",
-					url: {
+					website: {
 						url: "https://opensourcementor.org",
 						label: "opensourcementor.org",
 					},
@@ -641,10 +692,12 @@ export const sampleResumeData: ResumeData = {
 						"Mentor emerging developers worldwide on contributions to React and Node.js projects, helping them gain confidence and technical proficiency in open source.",
 				},
 				{
+					id: "volunteer-2",
+					hidden: false,
 					organization: "Women Who Code San Francisco",
 					location: "San Francisco, CA",
 					period: "2019 - Present",
-					url: {
+					website: {
 						url: "https://womenwhocode.com/sf",
 						label: "womenwhocode.com/sf",
 					},
@@ -652,10 +705,12 @@ export const sampleResumeData: ResumeData = {
 						"Lead career workshops and technical sessions focused on empowering women in technology, including talks on cloud architecture and agile development.",
 				},
 				{
+					id: "volunteer-3",
+					hidden: false,
 					organization: "Local Food Bank",
 					location: "San Francisco, CA",
 					period: "2018 - 2020",
-					url: {
+					website: {
 						url: "",
 						label: "",
 					},
@@ -670,6 +725,8 @@ export const sampleResumeData: ResumeData = {
 			hidden: false,
 			items: [
 				{
+					id: "certification-1",
+					hidden: false,
 					title: "AWS Certified Solutions Architect - Associate",
 					issuer: "Amazon Web Services",
 					date: "March 2023",
@@ -681,6 +738,8 @@ export const sampleResumeData: ResumeData = {
 						"Demonstrated expertise in designing distributed systems on AWS platform, including compute, networking, storage, and database services.",
 				},
 				{
+					id: "certification-2",
+					hidden: false,
 					title: "Kubernetes Administrator (CKA)",
 					issuer: "Cloud Native Computing Foundation",
 					date: "September 2022",
@@ -692,6 +751,8 @@ export const sampleResumeData: ResumeData = {
 						"Certified in deploying, managing, and troubleshooting Kubernetes clusters in production environments.",
 				},
 				{
+					id: "certification-3",
+					hidden: false,
 					title: "Professional Scrum Master I (PSM I)",
 					issuer: "Scrum.org",
 					date: "January 2021",
@@ -710,6 +771,8 @@ export const sampleResumeData: ResumeData = {
 			hidden: false,
 			items: [
 				{
+					id: "award-1",
+					hidden: false,
 					title: "Tech Excellence Award",
 					awarder: "TechFlow Inc.",
 					date: "December 2023",
@@ -721,6 +784,8 @@ export const sampleResumeData: ResumeData = {
 						"Recognized for outstanding technical leadership and significant contributions to platform scalability improvements that reduced infrastructure costs by 35%.",
 				},
 				{
+					id: "award-2",
+					hidden: false,
 					title: "Best Open Source Project",
 					awarder: "DevCon 2023",
 					date: "June 2023",
@@ -732,6 +797,8 @@ export const sampleResumeData: ResumeData = {
 						"DevCollab project won first place in open source category at annual developer conference, competing against 150+ projects.",
 				},
 				{
+					id: "award-3",
+					hidden: false,
 					title: "Hackathon Winner - FinTech Challenge",
 					awarder: "San Francisco Tech Week",
 					date: "October 2022",
@@ -750,16 +817,22 @@ export const sampleResumeData: ResumeData = {
 			hidden: false,
 			items: [
 				{
+					id: "language-1",
+					hidden: false,
 					language: "English",
 					fluency: "Native",
 					level: 5,
 				},
 				{
+					id: "language-2",
+					hidden: false,
 					language: "Mandarin Chinese",
 					fluency: "Native",
 					level: 5,
 				},
 				{
+					id: "language-3",
+					hidden: false,
 					language: "Spanish",
 					fluency: "Professional Working",
 					level: 3,
@@ -772,25 +845,31 @@ export const sampleResumeData: ResumeData = {
 			hidden: false,
 			items: [
 				{
+					id: "profile-1",
+					hidden: false,
 					network: "LinkedIn",
 					username: "sarahchen",
-					url: {
+					website: {
 						url: "https://linkedin.com/in/sarahchen",
 						label: "linkedin.com/in/sarahchen",
 					},
 				},
 				{
+					id: "profile-2",
+					hidden: false,
 					network: "GitHub",
 					username: "sarahchen",
-					url: {
+					website: {
 						url: "https://github.com/sarahchen",
 						label: "github.com/sarahchen",
 					},
 				},
 				{
+					id: "profile-3",
+					hidden: false,
 					network: "Twitter",
 					username: "@sarahcodes",
-					url: {
+					website: {
 						url: "https://twitter.com/sarahcodes",
 						label: "twitter.com/sarahcodes",
 					},
@@ -802,12 +881,12 @@ export const sampleResumeData: ResumeData = {
 			columns: 2,
 			hidden: false,
 			items: [
-				"Open Source Contribution",
-				"Technical Writing & Blogging",
-				"Rock Climbing",
-				"Photography",
-				"Cooking & Recipe Development",
-				"Mentoring Women in Tech",
+				{ id: "interest-1", hidden: false, name: "Open Source Contribution" },
+				{ id: "interest-2", hidden: false, name: "Technical Writing & Blogging" },
+				{ id: "interest-3", hidden: false, name: "Rock Climbing" },
+				{ id: "interest-4", hidden: false, name: "Photography" },
+				{ id: "interest-5", hidden: false, name: "Cooking & Recipe Development" },
+				{ id: "interest-6", hidden: false, name: "Mentoring Women in Tech" },
 			],
 		},
 		references: {
@@ -816,11 +895,15 @@ export const sampleResumeData: ResumeData = {
 			hidden: false,
 			items: [
 				{
+					id: "reference-1",
+					hidden: false,
 					name: "Michael Rodriguez - Engineering Manager at TechFlow Inc.",
 					description:
 						"Sarah is an exceptional technical leader who consistently delivers high-quality work. Her ability to mentor junior engineers while architecting complex systems is remarkable. She's been instrumental in our platform's success.",
 				},
 				{
+					id: "reference-2",
+					hidden: false,
 					name: "Jennifer Liu - CTO at DataSync Solutions",
 					description:
 						"Working with Sarah was a pleasure. She quickly became one of our most reliable engineers, tackling challenging problems with creativity and precision. Her communication skills and technical expertise made her invaluable to our team.",

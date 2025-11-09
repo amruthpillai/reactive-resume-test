@@ -55,8 +55,8 @@ export function ResumeCard({ resume, index, ...props }: ResumeCardProps) {
 		return new Date(resume.updatedAt).toLocaleDateString();
 	}, [resume.updatedAt]);
 
-	const handleRename = () => {
-		openDialog("resume.rename", { id: resume.id, name: resume.name, slug: resume.slug });
+	const handleUpdate = () => {
+		openDialog("resume.update", { id: resume.id, name: resume.name, slug: resume.slug, tags: resume.tags });
 	};
 
 	const handleToggleLock = async () => {
@@ -127,9 +127,9 @@ export function ResumeCard({ resume, index, ...props }: ResumeCardProps) {
 						</Link>
 					</DropdownMenuItem>
 
-					<DropdownMenuItem disabled={resume.isLocked} onSelect={handleRename}>
+					<DropdownMenuItem disabled={resume.isLocked} onSelect={handleUpdate}>
 						<PencilSimpleLineIcon />
-						<Trans>Rename</Trans>
+						<Trans>Update</Trans>
 					</DropdownMenuItem>
 
 					<DropdownMenuItem onSelect={handleToggleLock}>

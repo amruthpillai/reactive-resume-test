@@ -14,7 +14,7 @@ export function BaseCard({ title, description, className, children, ...props }: 
 			<div
 				{...props}
 				className={cn(
-					"relative flex aspect-page size-full cursor-pointer overflow-hidden rounded-md bg-popover shadow",
+					"relative flex aspect-page size-full cursor-pointer overflow-hidden rounded-md border bg-popover",
 					className,
 				)}
 			>

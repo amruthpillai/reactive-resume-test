@@ -2,7 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { useLayoutEffect, useRef } from "react";
 import { orpc } from "@/integrations/orpc/client";
-import type { ResumeData } from "@/schema/resume";
+import type { ResumeData } from "@/schema/resume/data";
 import { type Resume, useResumeStore } from "../-store/resume";
 
 /**

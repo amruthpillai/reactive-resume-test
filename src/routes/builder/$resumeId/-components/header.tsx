@@ -26,7 +26,7 @@ export function BuilderHeader() {
 	}, [rightSidebar, defaultSidebarSize]);
 
 	return (
-		<div className="fixed inset-x-0 top-0 z-10 flex h-12 items-center justify-between bg-popover px-1.5 shadow-sm">
+		<div className="absolute inset-x-0 top-0 z-10 flex h-14 items-center justify-between bg-popover px-1.5 shadow">
 			<Button size="icon" variant="ghost" onClick={toggleLeftSidebar}>
 				<SidebarSimpleIcon />
 			</Button>

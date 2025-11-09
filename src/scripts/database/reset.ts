@@ -10,6 +10,10 @@ export async function resetDatabase() {
 
 	try {
 		await db.transaction(async (tx) => {
+			await tx.execute(sql`DROP SCHEMA drizzle CASCADE`);
+			await tx.execute(sql`CREATE SCHEMA drizzle`);
+			await tx.execute(sql`GRANT ALL ON SCHEMA drizzle TO postgres`);
+
 			await tx.execute(sql`DROP SCHEMA public CASCADE`);
 			await tx.execute(sql`CREATE SCHEMA public`);
 			await tx.execute(sql`GRANT ALL ON SCHEMA public TO postgres`);

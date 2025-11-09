@@ -2,12 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Trans } from "@lingui/react/macro";
 import { useForm } from "react-hook-form";
 import type z from "zod";
+import { useResumeData } from "@/builder/-hooks/resume";
 import { useResumeStore } from "@/builder/-store/resume";
 import { URLInput } from "@/components/input/url-input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useResumeData } from "@/routes/builder/$resumeId/-hooks/resume";
-import { basicsSchema } from "@/schema/resume";
+import { basicsSchema } from "@/schema/resume/data";
 import { CustomFieldsSection } from "./custom-fields";
 
 export function BasicsSectionBuilder() {

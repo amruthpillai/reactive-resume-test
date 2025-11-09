@@ -23,16 +23,15 @@
 	--info-foreground: var(--color-blue-50);
 	--info: var(--color-blue-600);
 	--foreground: var(--color-zinc-950);
-	--input: var(--color-zinc-200);
 	--muted-foreground: var(--color-zinc-500);
 	--muted: var(--color-zinc-100);
 	--popover-foreground: var(--color-zinc-950);
 	--popover: var(--color-zinc-50);
 	--primary-foreground: var(--color-zinc-50);
 	--primary: var(--color-zinc-800);
-	--ring: var(--color-zinc-200);
+	--ring: var(--color-zinc-800);
 	--secondary-foreground: var(--color-zinc-800);
-	--secondary: var(--color-zinc-100);
+	--secondary: var(--color-zinc-200);
 	--sidebar-accent-foreground: var(--color-zinc-800);
 	--sidebar-accent: var(--color-zinc-100);
 	--sidebar-border: var(--color-zinc-200);
@@ -47,7 +46,7 @@
 	--accent-foreground: var(--color-zinc-50);
 	--accent: var(--color-zinc-800);
 	--background: var(--color-zinc-950);
-	--border: var(--color-zinc-800);
+	--border: var(--color-zinc-900);
 	--card-foreground: var(--color-zinc-50);
 	--card: var(--color-zinc-950);
 	--destructive-foreground: var(--color-red-50);
@@ -59,14 +58,13 @@
 	--info-foreground: var(--color-blue-50);
 	--info: var(--color-blue-600);
 	--foreground: var(--color-zinc-50);
-	--input: var(--color-zinc-800);
 	--muted-foreground: var(--color-zinc-400);
 	--muted: var(--color-zinc-800);
 	--popover-foreground: var(--color-zinc-50);
-	--popover: var(--color-zinc-900);
+	--popover: var(--color-zinc-925);
 	--primary-foreground: var(--color-zinc-800);
 	--primary: var(--color-zinc-100);
-	--ring: var(--color-zinc-800);
+	--ring: var(--color-zinc-200);
 	--secondary-foreground: var(--color-zinc-50);
 	--secondary: var(--color-zinc-800);
 	--sidebar-accent-foreground: var(--color-zinc-50);
@@ -85,6 +83,8 @@
 	--breakpoint-3xl: 112rem;
 	--font-sans: "IBM Plex Sans Variable", sans-serif;
 
+	--color-zinc-925: oklch(17.55% 0 285.854);
+
 	--color-accent-foreground: var(--accent-foreground);
 	--color-accent: var(--accent);
 	--color-background: var(--background);
@@ -100,7 +100,6 @@
 	--color-info-foreground: var(--info-foreground);
 	--color-info: var(--info);
 	--color-foreground: var(--foreground);
-	--color-input: var(--input);
 	--color-muted-foreground: var(--muted-foreground);
 	--color-muted: var(--muted);
 	--color-popover-foreground: var(--popover-foreground);

@@ -61,7 +61,7 @@ const extensions = [
 	}),
 	Highlight.configure({
 		HTMLAttributes: {
-			class: "bg-yellow-200 group-data-editor:text-zinc-950! rounded-sm px-0.5 py-px",
+			class: "bg-yellow-200 group-data-editor:text-zinc-950! rounded-md px-0.5 py-px",
 		},
 	}),
 	TextAlign.configure({ types: ["heading", "paragraph"] }),
@@ -84,7 +84,8 @@ export function RichInput({ value, onChange, ...options }: Props) {
 				"data-editor": "true",
 				class: cn(
 					"group tiptap-content",
-					"max-h-[420px] min-h-[120px] overflow-y-auto rounded-sm rounded-t-none border border-input border-t-0 px-3 py-2 focus:outline-none",
+					"max-h-[320px] min-h-[100px] overflow-y-auto px-3 pt-5 focus:outline-none",
+					"rounded-md rounded-t-none border focus-visible:border-ring",
 				),
 			},
 		},
@@ -100,7 +101,7 @@ export function RichInput({ value, onChange, ...options }: Props) {
 
 	return (
 		<EditorContext value={providerValue}>
-			<div>
+			<div className="rounded-md">
 				<EditorToolbar editor={editor} />
 				<EditorContent editor={editor} />
 			</div>
@@ -250,17 +251,33 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 	});
 
 	return (
-		<div className="flex flex-wrap items-center gap-y-0.5 rounded-t-sm border border-input p-0.5">
-			<Toggle size="sm" pressed={state.isBold} disabled={!state.canBold} onPressedChange={state.toggleBold}>
+		<div className="flex flex-wrap items-center gap-y-0.5 rounded-md rounded-b-none border border-b-0">
+			<Toggle
+				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
+				pressed={state.isBold}
+				disabled={!state.canBold}
+				onPressedChange={state.toggleBold}
+			>
 				<TextBolderIcon className="size-3.5" />
 			</Toggle>
 
-			<Toggle size="sm" pressed={state.isItalic} disabled={!state.canItalic} onPressedChange={state.toggleItalic}>
+			<Toggle
+				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
+				pressed={state.isItalic}
+				disabled={!state.canItalic}
+				onPressedChange={state.toggleItalic}
+			>
 				<TextItalicIcon className="size-3.5" />
 			</Toggle>
 
 			<Toggle
 				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
 				pressed={state.isUnderline}
 				disabled={!state.canUnderline}
 				onPressedChange={state.toggleUnderline}
@@ -268,12 +285,21 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 				<TextUnderlineIcon className="size-3.5" />
 			</Toggle>
 
-			<Toggle size="sm" pressed={state.isStrike} disabled={!state.canStrike} onPressedChange={state.toggleStrike}>
+			<Toggle
+				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
+				pressed={state.isStrike}
+				disabled={!state.canStrike}
+				onPressedChange={state.toggleStrike}
+			>
 				<TextStrikethroughIcon className="size-3.5" />
 			</Toggle>
 
 			<Toggle
 				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
 				pressed={state.isHighlight}
 				disabled={!state.canHighlight}
 				onPressedChange={state.toggleHighlight}
@@ -281,32 +307,69 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 				<HighlighterCircleIcon className="size-3.5" />
 			</Toggle>
 
-			<div className="mx-1 h-4 w-px bg-border" />
-
-			<Toggle size="sm" pressed={state.isHeading1} disabled={!state.canHeading1} onPressedChange={state.toggleHeading1}>
-				<TextHOneIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle size="sm" pressed={state.isHeading2} disabled={!state.canHeading2} onPressedChange={state.toggleHeading2}>
-				<TextHTwoIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle size="sm" pressed={state.isHeading3} disabled={!state.canHeading3} onPressedChange={state.toggleHeading3}>
-				<TextHThreeIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle size="sm" pressed={state.isHeading4} disabled={!state.canHeading4} onPressedChange={state.toggleHeading4}>
-				<TextHFourIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle size="sm" pressed={state.isParagraph} disabled={!state.canParagraph} onPressedChange={state.setParagraph}>
-				<ParagraphIcon className="size-3.5" />
-			</Toggle>
-
-			<div className="mx-1 h-4 w-px bg-border" />
+			<div className="mx-1 h-5 w-px bg-border" />
 
 			<Toggle
 				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
+				pressed={state.isHeading1}
+				disabled={!state.canHeading1}
+				onPressedChange={state.toggleHeading1}
+			>
+				<TextHOneIcon className="size-3.5" />
+			</Toggle>
+
+			<Toggle
+				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
+				pressed={state.isHeading2}
+				disabled={!state.canHeading2}
+				onPressedChange={state.toggleHeading2}
+			>
+				<TextHTwoIcon className="size-3.5" />
+			</Toggle>
+
+			<Toggle
+				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
+				pressed={state.isHeading3}
+				disabled={!state.canHeading3}
+				onPressedChange={state.toggleHeading3}
+			>
+				<TextHThreeIcon className="size-3.5" />
+			</Toggle>
+
+			<Toggle
+				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
+				pressed={state.isHeading4}
+				disabled={!state.canHeading4}
+				onPressedChange={state.toggleHeading4}
+			>
+				<TextHFourIcon className="size-3.5" />
+			</Toggle>
+
+			<Toggle
+				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
+				pressed={state.isParagraph}
+				disabled={!state.canParagraph}
+				onPressedChange={state.setParagraph}
+			>
+				<ParagraphIcon className="size-3.5" />
+			</Toggle>
+
+			<div className="mx-1 h-5 w-px bg-border" />
+
+			<Toggle
+				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
 				pressed={state.isLeftAlign}
 				disabled={!state.canLeftAlign}
 				onPressedChange={state.toggleLeftAlign}
@@ -316,6 +379,8 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 
 			<Toggle
 				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
 				pressed={state.isCenterAlign}
 				disabled={!state.canCenterAlign}
 				onPressedChange={state.toggleCenterAlign}
@@ -325,6 +390,8 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 
 			<Toggle
 				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
 				pressed={state.isRightAlign}
 				disabled={!state.canRightAlign}
 				onPressedChange={state.toggleRightAlign}
@@ -334,6 +401,8 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 
 			<Toggle
 				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
 				pressed={state.isJustifyAlign}
 				disabled={!state.canJustifyAlign}
 				onPressedChange={state.toggleJustifyAlign}
@@ -341,10 +410,12 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 				<TextAlignJustifyIcon className="size-3.5" />
 			</Toggle>
 
-			<div className="mx-1 h-4 w-px bg-border" />
+			<div className="mx-1 h-5 w-px bg-border" />
 
 			<Toggle
 				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
 				pressed={state.isBulletList}
 				disabled={!state.canBulletList}
 				onPressedChange={state.toggleBulletList}
@@ -354,6 +425,8 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 
 			<Toggle
 				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
 				pressed={state.isOrderedList}
 				disabled={!state.canOrderedList}
 				onPressedChange={state.toggleOrderedList}
@@ -361,28 +434,44 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 				<ListNumbersIcon className="size-3.5" />
 			</Toggle>
 
-			<Button size="sm" variant="ghost" disabled={!state.canLiftListItem} onClick={state.liftListItem}>
+			<Button
+				size="sm"
+				tabIndex={-1}
+				variant="ghost"
+				className="rounded-none"
+				disabled={!state.canLiftListItem}
+				onClick={state.liftListItem}
+			>
 				<TextOutdentIcon className="size-3.5" />
 			</Button>
 
-			<Button size="sm" variant="ghost" disabled={!state.canSinkListItem} onClick={state.sinkListItem}>
+			<Button
+				size="sm"
+				tabIndex={-1}
+				variant="ghost"
+				className="rounded-none"
+				disabled={!state.canSinkListItem}
+				onClick={state.sinkListItem}
+			>
 				<TextIndentIcon className="size-3.5" />
 			</Button>
 
-			<div className="mx-1 h-4 w-px bg-border" />
+			<div className="mx-1 h-5 w-px bg-border" />
 
 			{state.isLink ? (
-				<Button size="sm" variant="ghost" onClick={state.unsetLink}>
+				<Button size="sm" tabIndex={-1} variant="ghost" className="rounded-none" onClick={state.unsetLink}>
 					<LinkBreakIcon className="size-3.5" />
 				</Button>
 			) : (
-				<Button size="sm" variant="ghost" onClick={state.setLink}>
+				<Button size="sm" tabIndex={-1} variant="ghost" className="rounded-none" onClick={state.setLink}>
 					<LinkIcon className="size-3.5" />
 				</Button>
 			)}
 
 			<Toggle
 				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
 				pressed={state.isInlineCode}
 				disabled={!state.canInlineCode}
 				onPressedChange={state.toggleInlineCode}
@@ -392,6 +481,8 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 
 			<Toggle
 				size="sm"
+				tabIndex={-1}
+				className="rounded-none"
 				pressed={state.isCodeBlock}
 				disabled={!state.canCodeBlock}
 				onPressedChange={state.toggleCodeBlock}
@@ -399,11 +490,11 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 				<CodeBlockIcon className="size-3.5" />
 			</Toggle>
 
-			<Button size="sm" variant="ghost" onClick={state.setHardBreak}>
+			<Button size="sm" tabIndex={-1} variant="ghost" className="rounded-none" onClick={state.setHardBreak}>
 				<KeyReturnIcon className="size-3.5" />
 			</Button>
 
-			<Button size="sm" variant="ghost" onClick={state.setHorizontalRule}>
+			<Button size="sm" tabIndex={-1} variant="ghost" className="rounded-none" onClick={state.setHorizontalRule}>
 				<MinusIcon className="size-3.5" />
 			</Button>
 		</div>
@@ -413,6 +504,7 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 type TiptapContentProps = React.ComponentProps<"div"> & {
 	content: string;
 };
+
 export function TiptapContent({ content, className, ...props }: TiptapContentProps) {
 	// biome-ignore lint/security/noDangerouslySetInnerHtml: Safe to render HTML content
 	return <div className={cn("tiptap-content", className)} dangerouslySetInnerHTML={{ __html: content }} {...props} />;

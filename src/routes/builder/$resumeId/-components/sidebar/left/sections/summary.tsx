@@ -1,6 +1,6 @@
+import { useResumeData } from "@/builder/-hooks/resume";
+import { useResumeStore } from "@/builder/-store/resume";
 import { RichInput } from "@/components/input/rich-input";
-import { useResumeData } from "@/routes/builder/$resumeId/-hooks/resume";
-import { useResumeStore } from "@/routes/builder/$resumeId/-store/resume";
 import { SectionBase } from "../shared/section-base";
 
 export function SummarySectionBuilder() {

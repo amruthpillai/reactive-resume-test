@@ -1,9 +1,11 @@
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
+import { isPlainObject } from "es-toolkit";
 import * as React from "react";
 import {
 	Controller,
 	type ControllerProps,
+	type FieldError,
 	type FieldPath,
 	type FieldValues,
 	FormProvider,
@@ -117,7 +119,23 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
 
 function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 	const { error, formMessageId } = useFormField();
-	const body = error ? String(error?.message ?? "") : props.children;
+
+	function extractMessage(obj: FieldError | undefined): string | undefined {
+		if (!obj || typeof obj !== "object") return undefined;
+
+		if (isPlainObject(obj) && "message" in obj && typeof obj.message === "string") {
+			return obj.message;
+		}
+
+		for (const value of Object.values(obj)) {
+			const found = extractMessage(value as FieldError);
+			if (found) return found;
+		}
+
+		return undefined;
+	}
+
+	const body = extractMessage(error);
 
 	if (!body) return null;
 

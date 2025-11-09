@@ -4,7 +4,7 @@ import { and, desc, eq } from "drizzle-orm";
 import z from "zod";
 import { schema } from "@/integrations/drizzle";
 import { db } from "@/integrations/drizzle/client";
-import { defaultResumeData, resumeSchema } from "@/schema/resume";
+import { defaultResumeData, resumeDataSchema } from "@/schema/resume/data";
 import { protectedProcedure } from "../context";
 
 export const resumeRouter = {
@@ -14,6 +14,7 @@ export const resumeRouter = {
 				id: schema.resume.id,
 				name: schema.resume.name,
 				slug: schema.resume.slug,
+				tags: schema.resume.tags,
 				isPublic: schema.resume.isPublic,
 				isLocked: schema.resume.isLocked,
 				createdAt: schema.resume.createdAt,
@@ -37,6 +38,7 @@ export const resumeRouter = {
 	create: protectedProcedure
 		.input(
 			z.object({
+				id: z.string().optional(),
 				name: z.string().trim().min(1).max(64),
 				slug: z
 					.string()
@@ -44,18 +46,20 @@ export const resumeRouter = {
 					.min(1)
 					.max(64)
 					.transform((value) => slugify(value)),
+				tags: z.array(z.string().trim().min(1).max(64)),
 			}),
 		)
 		.handler(async ({ context, input }) => {
 			await db.insert(schema.resume).values({
 				name: input.name,
 				slug: input.slug,
+				tags: input.tags,
 				userId: context.user.id,
 				data: defaultResumeData,
 			});
 		}),
 
-	rename: protectedProcedure
+	update: protectedProcedure
 		.input(
 			z.object({
 				id: z.string(),
@@ -66,12 +70,13 @@ export const resumeRouter = {
 					.min(1)
 					.max(64)
 					.transform((value) => slugify(value)),
+				tags: z.array(z.string().trim().min(1).max(64)),
 			}),
 		)
 		.handler(async ({ context, input }) => {
 			await db
 				.update(schema.resume)
-				.set({ name: input.name, slug: input.slug })
+				.set({ name: input.name, slug: input.slug, tags: input.tags })
 				.where(
 					and(
 						eq(schema.resume.id, input.id),
@@ -82,7 +87,7 @@ export const resumeRouter = {
 		}),
 
 	updateData: protectedProcedure
-		.input(z.object({ id: z.string(), data: resumeSchema }))
+		.input(z.object({ id: z.string(), data: resumeDataSchema }))
 		.handler(async ({ context, input }) => {
 			await db
 				.update(schema.resume)

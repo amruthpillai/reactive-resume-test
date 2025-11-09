@@ -54,7 +54,7 @@ function IconCellComponent({ columnIndex, rowIndex, style, icons, onChange }: Ic
 			style={style}
 			tabIndex={-1}
 			onClick={() => onChange(icon)}
-			className="flex size-full items-center justify-center transition-colors hover:bg-accent"
+			className="flex size-full items-center justify-center hover:bg-accent"
 		>
 			<i className={cn("ph text-base", `ph-${icon}`)} />
 		</button>
@@ -75,7 +75,7 @@ function useIconSearch() {
 	return search;
 }
 
-type IconPickerProps = Omit<React.ComponentProps<typeof Button>, "onChange"> & {
+type IconPickerProps = Omit<React.ComponentProps<typeof Button>, "value" | "onChange"> & {
 	value: string;
 	onChange: (icon: string) => void;
 };

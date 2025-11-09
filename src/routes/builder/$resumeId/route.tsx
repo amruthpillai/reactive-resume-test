@@ -57,41 +57,43 @@ function RouteComponent() {
 	if (!resume || !storeResume) return <LoadingScreen />;
 
 	return (
-		<div className="flex flex-col">
+		<div className="flex h-dvh flex-col">
 			<BuilderHeader />
 
-			<ResizablePanelGroup direction="horizontal" className="relative mt-12 w-svw" onLayout={onLayout}>
-				<ResizablePanel
-					ref={leftSidebarRef}
-					collapsible
-					defaultSize={isMobile ? 0 : Math.max(collapsedSidebarSize, initialLayout[0])}
-					maxSize={maxSidebarSize}
-					minSize={collapsedSidebarSize}
-					collapsedSize={collapsedSidebarSize}
-					className={cn("h-[calc(100svh-3.5rem)]", !isDragging && "transition-all")}
-				>
-					<BuilderSidebarLeft />
-				</ResizablePanel>
-				<ResizableHandle withHandle onDragging={setDragging} />
-				<ResizablePanel
-					defaultSize={initialLayout[1]}
-					className={cn("h-[calc(100svh-3.5rem)]", !isDragging && "transition-all")}
-				>
-					<Outlet />
-				</ResizablePanel>
-				<ResizableHandle withHandle onDragging={setDragging} />
-				<ResizablePanel
-					ref={rightSidebarRef}
-					collapsible
-					defaultSize={isMobile ? 0 : Math.max(collapsedSidebarSize, initialLayout[2])}
-					maxSize={maxSidebarSize}
-					minSize={collapsedSidebarSize}
-					collapsedSize={collapsedSidebarSize}
-					className={cn("h-[calc(100svh-3.5rem)]", !isDragging && "transition-all")}
-				>
-					<BuilderSidebarRight />
-				</ResizablePanel>
-			</ResizablePanelGroup>
+			<div className="mt-14 flex-1">
+				<ResizablePanelGroup direction="horizontal" onLayout={onLayout}>
+					<ResizablePanel
+						ref={leftSidebarRef}
+						collapsible
+						defaultSize={isMobile ? 0 : Math.max(collapsedSidebarSize, initialLayout[0])}
+						maxSize={maxSidebarSize}
+						minSize={collapsedSidebarSize}
+						collapsedSize={collapsedSidebarSize}
+						className={cn("h-[calc(100svh-3.5rem)]", !isDragging && "transition-all")}
+					>
+						<BuilderSidebarLeft />
+					</ResizablePanel>
+					<ResizableHandle withHandle onDragging={setDragging} />
+					<ResizablePanel
+						defaultSize={initialLayout[1]}
+						className={cn("h-[calc(100svh-3.5rem)]", !isDragging && "transition-all")}
+					>
+						<Outlet />
+					</ResizablePanel>
+					<ResizableHandle withHandle onDragging={setDragging} />
+					<ResizablePanel
+						ref={rightSidebarRef}
+						collapsible
+						defaultSize={isMobile ? 0 : Math.max(collapsedSidebarSize, initialLayout[2])}
+						maxSize={maxSidebarSize}
+						minSize={collapsedSidebarSize}
+						collapsedSize={collapsedSidebarSize}
+						className={cn("h-[calc(100svh-3.5rem)]", !isDragging && "transition-all")}
+					>
+						<BuilderSidebarRight />
+					</ResizablePanel>
+				</ResizablePanelGroup>
+			</div>
 		</div>
 	);
 }

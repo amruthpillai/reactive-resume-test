@@ -7,7 +7,7 @@ import { IconPicker } from "@/components/input/icon-picker";
 import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import type { basicsSchema } from "@/schema/resume";
+import type { basicsSchema } from "@/schema/resume/data";
 import { generateId } from "@/utils/string";
 
 type CustomField = z.infer<typeof basicsSchema>["customFields"][number];
@@ -76,7 +76,7 @@ export function CustomFieldsSection({ onSubmit }: Props) {
 								<FormControl>
 									<Input
 										{...field}
-										className="rounded-l-none! border-l-0! focus-visible:border-input focus-visible:ring-0"
+										className="rounded-l-none! border-l-0! focus-visible:border-border focus-visible:ring-0"
 										onChange={(e) => {
 											field.onChange(e.target.value);
 											form.handleSubmit(onSubmit)();

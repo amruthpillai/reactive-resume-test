@@ -1,6 +1,8 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ColumnsIcon, EyeClosedIcon, EyeIcon, ListIcon, PencilSimpleLineIcon } from "@phosphor-icons/react";
+import { useResumeData } from "@/builder/-hooks/resume";
+import { useResumeStore } from "@/builder/-store/resume";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -15,9 +17,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePrompt } from "@/hooks/use-prompt";
-import { useResumeData } from "@/routes/builder/$resumeId/-hooks/resume";
-import { useResumeStore } from "@/routes/builder/$resumeId/-store/resume";
-import type { SectionType } from "@/schema/resume";
+import type { SectionType } from "@/schema/resume/data";
 
 type Props = {
 	type: SectionType;

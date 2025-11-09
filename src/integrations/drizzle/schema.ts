@@ -1,9 +1,12 @@
+import slugify from "@sindresorhus/slugify";
 import { boolean, index, jsonb, pgTable, text, timestamp, unique } from "drizzle-orm/pg-core";
-import { defaultResumeData, type ResumeData } from "@/schema/resume";
+import z from "zod";
+import { defaultResumeData, type ResumeData } from "@/schema/resume/data";
 import { generateId } from "@/utils/string";
 
 export const user = pgTable("user", {
 	id: text("id")
+		.notNull()
 		.primaryKey()
 		.$defaultFn(() => generateId()),
 	image: text("image"),
@@ -24,6 +27,7 @@ export const session = pgTable(
 	"session",
 	{
 		id: text("id")
+			.notNull()
 			.primaryKey()
 			.$defaultFn(() => generateId()),
 		token: text("token").notNull().unique(),
@@ -46,6 +50,7 @@ export const account = pgTable(
 	"account",
 	{
 		id: text("id")
+			.notNull()
 			.primaryKey()
 			.$defaultFn(() => generateId()),
 		accountId: text("account_id").notNull(),
@@ -71,6 +76,7 @@ export const account = pgTable(
 
 export const verification = pgTable("verification", {
 	id: text("id")
+		.notNull()
 		.primaryKey()
 		.$defaultFn(() => generateId()),
 	identifier: text("identifier").notNull().unique(),
@@ -87,10 +93,12 @@ export const resume = pgTable(
 	"resume",
 	{
 		id: text("id")
+			.notNull()
 			.primaryKey()
 			.$defaultFn(() => generateId()),
 		name: text("name").notNull(),
 		slug: text("slug").notNull(),
+		tags: text("tags").array().notNull().default([]),
 		isPublic: boolean("is_public").notNull().default(false),
 		isLocked: boolean("is_locked").notNull().default(false),
 		data: jsonb("data")
@@ -109,10 +117,23 @@ export const resume = pgTable(
 	(t) => [unique().on(t.slug, t.userId)],
 );
 
+export const resumeSchema = z.object({
+	id: z.string(),
+	name: z.string().trim().min(1).max(64),
+	slug: z
+		.string()
+		.trim()
+		.min(1)
+		.max(64)
+		.transform((value) => slugify(value)),
+	tags: z.array(z.string().trim().min(1).max(64)),
+});
+
 export const twoFactor = pgTable(
 	"two_factor",
 	{
 		id: text("id")
+			.notNull()
 			.primaryKey()
 			.$defaultFn(() => generateId()),
 		userId: text("user_id")
