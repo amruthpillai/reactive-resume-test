@@ -18,16 +18,13 @@
 	"assist": {
 		"actions": {
 			"source": {
-				"organizeImports": "on"
+				"organizeImports": "on",
+				"useSortedProperties": "on"
 			}
 		}
 	},
 	"linter": {
 		"enabled": true,
-		"domains": {
-			"react": "recommended",
-			"test": "recommended"
-		},
 		"rules": {
 			"a11y": "off",
 			"recommended": true,
