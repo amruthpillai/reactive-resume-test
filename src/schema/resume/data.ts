@@ -1,3 +1,5 @@
+import { t } from "@lingui/core/macro";
+import { match } from "ts-pattern";
 import z from "zod";
 
 export const urlSchema = z.object({
@@ -205,6 +207,24 @@ export type SectionType = keyof z.infer<typeof sectionsSchema>;
 export type SectionData = z.infer<typeof sectionsSchema>[SectionType];
 
 export type SectionItem = z.infer<typeof sectionsSchema>[Exclude<SectionType, "summary">]["items"][number];
+
+export const getSectionTitle = (type: SectionType): string => {
+	return match(type)
+		.with("awards", () => t`Awards`)
+		.with("certifications", () => t`Certifications`)
+		.with("education", () => t`Education`)
+		.with("experience", () => t`Experience`)
+		.with("interests", () => t`Interests`)
+		.with("languages", () => t`Languages`)
+		.with("profiles", () => t`Profiles`)
+		.with("projects", () => t`Projects`)
+		.with("publications", () => t`Publications`)
+		.with("references", () => t`References`)
+		.with("skills", () => t`Skills`)
+		.with("summary", () => t`Summary`)
+		.with("volunteer", () => t`Volunteer`)
+		.exhaustive();
+};
 
 export const customSectionSchema = baseSectionSchema.extend({
 	id: z.string(),

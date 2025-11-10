@@ -33,7 +33,7 @@ export function BuilderHeader() {
 
 			<div className="flex items-center gap-x-1">
 				<Button asChild size="icon" variant="ghost">
-					<Link to="/dashboard/resumes">
+					<Link to="/dashboard/resumes" search={{ sort: "lastUpdatedAt", tags: [] }}>
 						<HouseSimpleIcon />
 					</Link>
 				</Button>

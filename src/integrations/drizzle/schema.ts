@@ -1,8 +1,7 @@
-import slugify from "@sindresorhus/slugify";
 import { boolean, index, jsonb, pgTable, text, timestamp, unique } from "drizzle-orm/pg-core";
 import z from "zod";
 import { defaultResumeData, type ResumeData } from "@/schema/resume/data";
-import { generateId } from "@/utils/string";
+import { generateId, slugify } from "@/utils/string";
 
 export const user = pgTable("user", {
 	id: text("id")
@@ -126,7 +125,14 @@ export const resumeSchema = z.object({
 		.min(1)
 		.max(64)
 		.transform((value) => slugify(value)),
-	tags: z.array(z.string().trim().min(1).max(64)),
+	tags: z.array(
+		z
+			.string()
+			.trim()
+			.min(1)
+			.max(64)
+			.transform((value) => slugify(value)),
+	),
 });
 
 export const twoFactor = pgTable(

@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { CaretDownIcon, MagicWandIcon, PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
-import slugify from "@sindresorhus/slugify";
 import { useMutation } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { useEffect, useMemo } from "react";
@@ -25,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import { resumeSchema } from "@/integrations/drizzle/schema";
 import { orpc } from "@/integrations/orpc/client";
-import { generateId, generateRandomName } from "@/utils/string";
+import { generateId, generateRandomName, slugify } from "@/utils/string";
 import { type DialogProps, useDialogStore } from "../store";
 
 const formSchema = resumeSchema;
@@ -59,7 +58,7 @@ export function CreateResumeDialog({ open, onOpenChange }: DialogProps<"resume.c
 
 		createResume(data, {
 			onSuccess: async () => {
-				await queryClient.invalidateQueries(orpc.resume.list.queryOptions());
+				await queryClient.invalidateQueries({ queryKey: orpc.resume.list.key() });
 				toast.success(t`Your resume has been created successfully.`, { id: toastId });
 				closeDialog();
 			},
@@ -131,7 +130,7 @@ export function UpdateResumeDialog({ open, onOpenChange, data }: DialogProps<"re
 
 		updateResume(data, {
 			onSuccess: async () => {
-				await queryClient.invalidateQueries(orpc.resume.list.queryOptions());
+				await queryClient.invalidateQueries({ queryKey: orpc.resume.list.key() });
 				toast.success(t`Your resume has been updated successfully.`, { id: toastId });
 				closeDialog();
 			},
@@ -242,7 +241,13 @@ export function ResumeForm() {
 							<Trans>Tags</Trans>
 						</FormLabel>
 						<FormControl>
-							<ChipInput {...field} />
+							<ChipInput
+								{...field}
+								onChange={(values) => {
+									const formattedValues = new Set(values.map((value) => slugify(value)));
+									field.onChange(Array.from(formattedValues));
+								}}
+							/>
 						</FormControl>
 						<FormMessage />
 						<FormDescription>

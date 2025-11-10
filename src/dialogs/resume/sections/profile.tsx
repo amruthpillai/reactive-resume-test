@@ -181,7 +181,9 @@ export function ProfileForm() {
 				name="website"
 				render={({ field }) => (
 					<FormItem className="sm:col-span-full">
-						<FormLabel>Website</FormLabel>
+						<FormLabel>
+							<Trans>Website</Trans>
+						</FormLabel>
 						<FormControl>
 							<URLInput {...field} value={field.value} onChange={field.onChange} />
 						</FormControl>

@@ -1,6 +1,4 @@
 {
-	"tailwindCSS.classFunctions": ["cn", "cva"],
-	"tailwindCSS.experimental.classRegex": ["class:\\s*?[\"'`]([^\"'`]*).*?,"],
 	"[css]": {
 		"editor.defaultFormatter": "biomejs.biome"
 	},
@@ -35,8 +33,13 @@
 		"**/routeTree.gen.ts": true,
 		"pnpm-lock.yaml": true
 	},
+	"i18n-ally.enabledParsers": ["po"],
+	"i18n-ally.localesPaths": ["locales"],
+	"i18n-ally.sourceLanguage": "en-US",
 	"search.exclude": {
 		"**/routeTree.gen.ts": true,
 		"pnpm-lock.yaml": true
-	}
+	},
+	"tailwindCSS.classFunctions": ["cn", "cva"],
+	"tailwindCSS.experimental.classRegex": ["class:\\s*?[\"'`]([^\"'`]*).*?,"]
 }

@@ -4,7 +4,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getCookie, setCookie } from "@tanstack/react-start/server";
 import z from "zod";
 
-export const localeSchema = z.union([z.literal("en-US"), z.literal("de-DE")]);
+export const localeSchema = z.union([z.literal("en-US"), z.literal("de-DE"), z.literal("zu-ZA")]);
 
 export type Locale = z.infer<typeof localeSchema>;
 
@@ -14,6 +14,7 @@ const defaultLocale: Locale = "en-US";
 export const localeMap = {
 	"en-US": msg`English`,
 	"de-DE": msg`German`,
+	"zu-ZA": msg`Zulu`,
 } satisfies Record<Locale, MessageDescriptor>;
 
 export function isLocale(locale: string): locale is Locale {

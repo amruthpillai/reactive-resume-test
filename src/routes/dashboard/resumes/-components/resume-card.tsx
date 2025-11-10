@@ -19,31 +19,17 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useDialogStore } from "@/dialogs/store";
 import { useConfirm } from "@/hooks/use-confirm";
 import { orpc, type RouterOutput } from "@/integrations/orpc/client";
 import { cn } from "@/utils/style";
 import { BaseCard } from "./base-card";
 
-type ResumeSkeletonProps = React.ComponentProps<"div"> & {
-	index: number;
-};
-
-export function ResumeSkeleton({ index, ...props }: ResumeSkeletonProps) {
-	return (
-		<div {...props}>
-			<Skeleton className="size-full" />
-		</div>
-	);
-}
-
 type ResumeCardProps = React.ComponentProps<"div"> & {
-	index: number;
 	resume: RouterOutput["resume"]["list"][number];
 };
 
-export function ResumeCard({ resume, index, ...props }: ResumeCardProps) {
+export function ResumeCard({ resume, ...props }: ResumeCardProps) {
 	const confirm = useConfirm();
 	const { openDialog } = useDialogStore();
 	const { queryClient } = useRouteContext({ from: "/dashboard" });
@@ -72,7 +58,7 @@ export function ResumeCard({ resume, index, ...props }: ResumeCardProps) {
 			{ id: resume.id, isLocked: !resume.isLocked },
 			{
 				onSuccess: async () => {
-					await queryClient.invalidateQueries(orpc.resume.list.queryOptions());
+					await queryClient.invalidateQueries({ queryKey: orpc.resume.list.key() });
 				},
 				onError: (error) => {
 					toast.error(error.message);
@@ -94,7 +80,7 @@ export function ResumeCard({ resume, index, ...props }: ResumeCardProps) {
 			{ id: resume.id },
 			{
 				onSuccess: async () => {
-					await queryClient.invalidateQueries(orpc.resume.list.queryOptions());
+					await queryClient.invalidateQueries({ queryKey: orpc.resume.list.key() });
 					toast.success(t`Your resume has been deleted successfully.`, { id: toastId });
 				},
 				onError: (error) => {
@@ -108,7 +94,7 @@ export function ResumeCard({ resume, index, ...props }: ResumeCardProps) {
 		<div {...props}>
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<BaseCard title={resume.name} description={t`Last updated on ${updatedAt}`}>
+					<BaseCard title={resume.name} description={t`Last updated on ${updatedAt}`} tags={resume.tags}>
 						<img
 							alt={resume.name}
 							src="https://picsum.photos/849/1200"

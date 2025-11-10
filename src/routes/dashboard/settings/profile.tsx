@@ -205,7 +205,7 @@ function RouteComponent() {
 												className="h-auto gap-x-1.5 p-0! text-inherit"
 												onClick={handleResendVerificationEmail}
 											>
-												Resend verification email
+												<Trans>Resend verification email</Trans>
 											</Button>
 										</p>
 									))

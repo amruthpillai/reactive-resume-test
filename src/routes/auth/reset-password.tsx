@@ -3,6 +3,7 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { EyeIcon, EyeSlashIcon } from "@phosphor-icons/react";
 import { createFileRoute, redirect, SearchParamError, useNavigate } from "@tanstack/react-router";
+import { zodValidator } from "@tanstack/zod-adapter";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useToggle } from "usehooks-ts";
@@ -12,13 +13,15 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/integrations/auth/client";
 
+const searchSchema = z.object({ token: z.string().min(1) });
+
 export const Route = createFileRoute("/auth/reset-password")({
 	component: RouteComponent,
 	beforeLoad: async ({ context }) => {
 		if (context.session) throw redirect({ to: "/dashboard", replace: true });
 		return { session: null };
 	},
-	validateSearch: z.object({ token: z.string().min(1) }),
+	validateSearch: zodValidator(searchSchema),
 	onError: (error) => {
 		if (error instanceof SearchParamError) {
 			throw redirect({ to: "/auth/login" });

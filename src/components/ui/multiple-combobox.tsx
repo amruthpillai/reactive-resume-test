@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import { CaretUpDownIcon, CheckIcon } from "@phosphor-icons/react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,7 @@ type MultipleComboboxOption<TValue extends string | number = string> = {
 	disabled?: boolean;
 };
 
-type BasePopoverProps = Omit<React.ComponentProps<typeof PopoverContent>, "defaultValue" | "children">;
+type BasePopoverProps = Omit<React.ComponentProps<typeof PopoverContent>, "value" | "defaultValue" | "children">;
 
 type MultipleComboboxProps<TValue extends string | number = string> = BasePopoverProps & {
 	options: MultipleComboboxOption<TValue>[];
@@ -39,16 +40,17 @@ type MultipleComboboxProps<TValue extends string | number = string> = BasePopove
 	disableClear?: boolean;
 };
 
-const CLEAR_COMMAND_VALUE = "__command-clear-multi-select";
+const CLEAR_COMMAND_VALUE = "__command-clear-multi-select-combobox";
 
 function MultipleCombobox<TValue extends string | number = string>({
 	options,
 	value,
 	defaultValue,
-	placeholder = "Select...",
-	searchPlaceholder = "Search...",
-	emptyMessage = "No results found.",
-	clearLabel = "Clear selection",
+	placeholder = t`Select...`,
+	searchPlaceholder = t`Search...`,
+	emptyMessage = t`No results found.`,
+	clearLabel = t`Clear selection`,
+	className,
 	buttonProps,
 	onValueChange,
 	onOpenChange,
@@ -89,9 +91,7 @@ function MultipleCombobox<TValue extends string | number = string>({
 
 	const toggleOption = React.useCallback(
 		(option: MultipleComboboxOption<TValue>) => {
-			if (option.disabled) {
-				return;
-			}
+			if (option.disabled) return;
 
 			const isSelected = selectionSet.has(option.value);
 			const nextValues = isSelected
@@ -111,10 +111,7 @@ function MultipleCombobox<TValue extends string | number = string>({
 			}
 
 			const option = optionsByStringValue.get(current);
-			if (!option) {
-				return;
-			}
-
+			if (!option) return;
 			toggleOption(option);
 		},
 		[optionsByStringValue, toggleOption, setSelectedValues],
@@ -143,9 +140,9 @@ function MultipleCombobox<TValue extends string | number = string>({
 			<PopoverTrigger asChild>
 				<Button
 					role="combobox"
-					aria-expanded={open}
-					aria-label="Multi select combobox"
 					variant="outline"
+					aria-expanded={open}
+					aria-label="Multi-select Combobox"
 					className={cn("justify-between gap-2 font-normal active:scale-100", buttonClassName)}
 					{...buttonRest}
 				>
@@ -155,15 +152,16 @@ function MultipleCombobox<TValue extends string | number = string>({
 
 			<PopoverContent
 				align="start"
-				className={cn("w-[260px] p-0", popoverProps.className)}
 				role="listbox"
-				aria-MultipleComboboxable="true"
+				className={cn("w-[260px] p-0", className)}
+				aria-multiselectable="true"
 				{...popoverProps}
 			>
 				<Command>
 					<CommandInput placeholder={searchPlaceholder} />
 					<CommandList>
 						<CommandEmpty>{emptyMessage}</CommandEmpty>
+
 						<CommandGroup>
 							{options.map((option) => {
 								const stringValue = String(option.value);
@@ -189,6 +187,7 @@ function MultipleCombobox<TValue extends string | number = string>({
 								);
 							})}
 						</CommandGroup>
+
 						{canClear ? (
 							<>
 								<CommandSeparator />

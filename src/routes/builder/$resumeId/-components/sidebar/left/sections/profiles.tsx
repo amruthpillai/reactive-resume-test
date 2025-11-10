@@ -45,7 +45,7 @@ export function ProfilesSectionBuilder() {
 				onClick={() => openDialog("resume.sections.profiles.create", undefined)}
 			>
 				<PlusIcon />
-				<Trans>Add a new item</Trans>
+				<Trans>Add a new profile</Trans>
 			</Button>
 		</SectionBase>
 	);

@@ -1,19 +1,57 @@
+import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
-import { ReadCvLogoIcon } from "@phosphor-icons/react";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { ReadCvLogoIcon, SortAscendingIcon, TagIcon } from "@phosphor-icons/react";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, stripSearchParams, useNavigate } from "@tanstack/react-router";
+import { zodValidator } from "@tanstack/zod-adapter";
 import { AnimatePresence, motion } from "motion/react";
+import { useMemo } from "react";
+import z from "zod";
+import { Badge } from "@/components/ui/badge";
+import { Combobox } from "@/components/ui/combobox";
+import { MultipleCombobox } from "@/components/ui/multiple-combobox";
 import { Separator } from "@/components/ui/separator";
 import { orpc } from "@/integrations/orpc/client";
 import { CreateResumeCard } from "./-components/create-card";
 import { ResumeCard } from "./-components/resume-card";
 
+type SortOption = "lastUpdatedAt" | "createdAt" | "name";
+
+const searchSchema = z.object({
+	tags: z.array(z.string()).catch([]),
+	sort: z.enum(["lastUpdatedAt", "createdAt", "name"]).catch("lastUpdatedAt"),
+});
+
 export const Route = createFileRoute("/dashboard/resumes/")({
 	component: RouteComponent,
+	validateSearch: zodValidator(searchSchema),
+	search: {
+		middlewares: [stripSearchParams({ tags: [], sort: "lastUpdatedAt" })],
+	},
 });
 
 function RouteComponent() {
-	const { data: resumes } = useSuspenseQuery(orpc.resume.list.queryOptions());
+	const { i18n } = useLingui();
+	const { tags, sort } = Route.useSearch();
+	const navigate = useNavigate({ from: Route.fullPath });
+	const { data: resumes } = useQuery(orpc.resume.list.queryOptions({ input: { tags, sort } }));
+
+	const tagOptions = useMemo(() => {
+		if (!resumes) return [];
+		const uniqueTags = new Set(resumes.flatMap((resume) => resume.tags));
+		return Array.from(uniqueTags)
+			.sort()
+			.map((tag) => ({ value: tag, label: tag }));
+	}, [resumes]);
+
+	const sortOptions = useMemo(() => {
+		return [
+			{ value: "lastUpdatedAt", label: i18n._("Last Updated") },
+			{ value: "createdAt", label: i18n._("Created") },
+			{ value: "name", label: i18n._("Name") },
+		];
+	}, [i18n]);
 
 	return (
 		<div className="space-y-4">
@@ -26,12 +64,55 @@ function RouteComponent() {
 
 			<Separator />
 
+			<div className="flex items-center">
+				<Combobox
+					value={sort}
+					options={sortOptions}
+					onValueChange={(value) => {
+						if (!value) return;
+						navigate({ search: { tags, sort: value as SortOption } });
+					}}
+					buttonProps={{
+						title: t`Sort by`,
+						variant: "ghost",
+						children: (_, option) => (
+							<>
+								<SortAscendingIcon />
+								{option?.label}
+							</>
+						),
+					}}
+				/>
+
+				<MultipleCombobox
+					options={tagOptions}
+					value={tags}
+					onValueChange={(value) => {
+						navigate({ search: { tags: value, sort } });
+					}}
+					buttonProps={{
+						variant: "ghost",
+						title: t`Filter by`,
+						children: (_, options) => (
+							<>
+								<TagIcon />
+								{options.map((option) => (
+									<Badge key={option.value} variant="outline">
+										{option.label}
+									</Badge>
+								))}
+							</>
+						),
+					}}
+				/>
+			</div>
+
 			<div className="grid 3xl:grid-cols-6 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
 				<motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}>
 					<CreateResumeCard />
 				</motion.div>
 
-				<AnimatePresence>
+				<AnimatePresence presenceAffectsLayout>
 					{resumes?.map((resume, index) => (
 						<motion.div
 							layout
@@ -39,9 +120,9 @@ function RouteComponent() {
 							initial={{ opacity: 0, x: -50 }}
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, y: -50, filter: "blur(12px)" }}
-							transition={{ delay: (index + 1) * 0.1 }}
+							transition={{ delay: (index + 1) * 0.05 }}
 						>
-							<ResumeCard resume={resume} index={index} />
+							<ResumeCard resume={resume} />
 						</motion.div>
 					))}
 				</AnimatePresence>

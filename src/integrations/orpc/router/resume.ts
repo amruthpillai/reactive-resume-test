@@ -1,29 +1,50 @@
 import { ORPCError } from "@orpc/client";
-import slugify from "@sindresorhus/slugify";
-import { and, desc, eq } from "drizzle-orm";
+import { and, arrayContains, asc, desc, eq } from "drizzle-orm";
+import { match } from "ts-pattern";
 import z from "zod";
 import { schema } from "@/integrations/drizzle";
 import { db } from "@/integrations/drizzle/client";
 import { defaultResumeData, resumeDataSchema } from "@/schema/resume/data";
+import { slugify } from "@/utils/string";
 import { protectedProcedure } from "../context";
 
 export const resumeRouter = {
-	list: protectedProcedure.handler(({ context }) => {
-		return db
-			.select({
-				id: schema.resume.id,
-				name: schema.resume.name,
-				slug: schema.resume.slug,
-				tags: schema.resume.tags,
-				isPublic: schema.resume.isPublic,
-				isLocked: schema.resume.isLocked,
-				createdAt: schema.resume.createdAt,
-				updatedAt: schema.resume.updatedAt,
-			})
-			.from(schema.resume)
-			.where(eq(schema.resume.userId, context.user.id))
-			.orderBy(desc(schema.resume.updatedAt));
-	}),
+	list: protectedProcedure
+		.input(
+			z.object({
+				tags: z.array(z.string()).catch([]),
+				sort: z.enum(["lastUpdatedAt", "createdAt", "name"]).catch("lastUpdatedAt"),
+			}),
+		)
+		.handler(({ input, context }) => {
+			return db
+				.select({
+					id: schema.resume.id,
+					name: schema.resume.name,
+					slug: schema.resume.slug,
+					tags: schema.resume.tags,
+					isPublic: schema.resume.isPublic,
+					isLocked: schema.resume.isLocked,
+					createdAt: schema.resume.createdAt,
+					updatedAt: schema.resume.updatedAt,
+				})
+				.from(schema.resume)
+				.where(
+					and(
+						eq(schema.resume.userId, context.user.id),
+						match(input.tags.length)
+							.with(0, () => undefined)
+							.otherwise(() => arrayContains(schema.resume.tags, input.tags)),
+					),
+				)
+				.orderBy(
+					match(input.sort)
+						.with("lastUpdatedAt", () => desc(schema.resume.updatedAt))
+						.with("createdAt", () => asc(schema.resume.createdAt))
+						.with("name", () => asc(schema.resume.name))
+						.exhaustive(),
+				);
+		}),
 
 	getById: protectedProcedure.input(z.object({ id: z.string() })).handler(async ({ context, input }) => {
 		const resume = await db.query.resume.findFirst({
@@ -46,7 +67,14 @@ export const resumeRouter = {
 					.min(1)
 					.max(64)
 					.transform((value) => slugify(value)),
-				tags: z.array(z.string().trim().min(1).max(64)),
+				tags: z.array(
+					z
+						.string()
+						.trim()
+						.min(1)
+						.max(64)
+						.transform((value) => slugify(value)),
+				),
 			}),
 		)
 		.handler(async ({ context, input }) => {
@@ -70,7 +98,14 @@ export const resumeRouter = {
 					.min(1)
 					.max(64)
 					.transform((value) => slugify(value)),
-				tags: z.array(z.string().trim().min(1).max(64)),
+				tags: z.array(
+					z
+						.string()
+						.trim()
+						.min(1)
+						.max(64)
+						.transform((value) => slugify(value)),
+				),
 			}),
 		)
 		.handler(async ({ context, input }) => {

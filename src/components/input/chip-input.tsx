@@ -1,33 +1,41 @@
 import { XIcon } from "@phosphor-icons/react";
 import * as React from "react";
 import { Badge } from "@/components/ui/badge";
+import { useControllableState } from "@/hooks/use-controllable-state";
 import { cn } from "@/utils/style";
 
 type Props = Omit<React.ComponentProps<"div">, "value" | "onChange"> & {
-	value: string[];
-	onChange: (value: string[]) => void;
+	value?: string[];
+	defaultValue?: string[];
+	onChange?: (value: string[]) => void;
 };
 
-export function ChipInput({ value, onChange, className, ...props }: Props) {
+export function ChipInput({ value, defaultValue = [], onChange, className, ...props }: Props) {
+	const [chips, setChips] = useControllableState<string[]>({
+		value,
+		defaultValue,
+		onChange,
+	});
+
 	const [input, setInput] = React.useState("");
 	const inputRef = React.useRef<HTMLInputElement>(null);
 
 	const addChip = React.useCallback(
 		(chip: string) => {
 			const trimmed = chip.trim();
-			if (trimmed && !value.includes(trimmed)) {
-				onChange([...value, trimmed]);
+			if (trimmed && !chips.includes(trimmed)) {
+				setChips([...chips, trimmed]);
 			}
 		},
-		[value, onChange],
+		[chips, setChips],
 	);
 
 	const removeChip = React.useCallback(
 		(index: number) => {
-			if (index < 0 || index >= value.length) return;
-			onChange(value.filter((_, i) => i !== index));
+			if (index < 0 || index >= chips.length) return;
+			setChips(chips.filter((_, i) => i !== index));
 		},
-		[value, onChange],
+		[chips, setChips],
 	);
 
 	const handleInputChange = React.useCallback(
@@ -50,11 +58,11 @@ export function ChipInput({ value, onChange, className, ...props }: Props) {
 				e.preventDefault();
 				addChip(input);
 				setInput("");
-			} else if (e.key === "Backspace" && input === "" && value.length > 0) {
-				removeChip(value.length - 1);
+			} else if (e.key === "Backspace" && input === "" && chips.length > 0) {
+				removeChip(chips.length - 1);
 			}
 		},
-		[input, value.length, addChip, removeChip],
+		[input, chips.length, addChip, removeChip],
 	);
 
 	const handleWrapperClick = React.useCallback(() => {
@@ -71,23 +79,27 @@ export function ChipInput({ value, onChange, className, ...props }: Props) {
 			)}
 			{...props}
 		>
-			{value.map((chip, idx) => (
-				<Badge key={chip + idx} variant="outline" className="flex items-center gap-1 pr-1 pl-2">
-					<span>{chip}</span>
-					<button
-						type="button"
-						tabIndex={-1}
-						aria-label={`Remove ${chip}`}
-						onClick={(e) => {
-							e.stopPropagation();
-							removeChip(idx);
-						}}
-						className="ml-0.5 hover:text-destructive focus:outline-none"
-					>
-						<XIcon className="size-3" />
-					</button>
-				</Badge>
-			))}
+			<div className="flex flex-wrap items-center gap-1.5">
+				{chips.map((chip, idx) => (
+					<div key={chip + idx} className="relative">
+						<Badge variant="outline" className="flex select-none items-center gap-1 pr-1 pl-2">
+							<span>{chip}</span>
+							<button
+								type="button"
+								tabIndex={-1}
+								aria-label={`Remove ${chip}`}
+								onClick={(e) => {
+									e.stopPropagation();
+									removeChip(idx);
+								}}
+								className="ml-0.5 hover:text-destructive focus:outline-none"
+							>
+								<XIcon className="size-3" />
+							</button>
+						</Badge>
+					</div>
+				))}
+			</div>
 
 			<input
 				type="text"

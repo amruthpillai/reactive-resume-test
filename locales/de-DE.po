@@ -13,636 +13,793 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+#: src/routes/dashboard/resumes/index.tsx:50
+msgid "Last Updated"
+msgstr "Zuletzt aktualisiert"
+
+#. js-lingui-explicit-id
+#: src/routes/dashboard/resumes/index.tsx:51
+msgid "Created"
+msgstr "Erstellt"
+
+#. js-lingui-explicit-id
+#: src/routes/dashboard/resumes/index.tsx:52
+msgid "Name"
+msgstr "Name"
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:91
+msgid "{column, plural, one {# Column} other {# Columns}}"
+msgstr "{column, plural, one {# Spalte} other {# Spalten}}"
+
 #: src/routes/_home/index.tsx:17
 msgid "<0>Finally,</0><1>A free and open-source resume builder</1>"
-msgstr ""
-
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:87
-msgid "1 Column"
-msgstr ""
-
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:90
-msgid "2 Columns"
-msgstr ""
-
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:93
-msgid "3 Columns"
-msgstr ""
-
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:96
-msgid "4 Columns"
-msgstr ""
+msgstr "<0>Endlich,</0><1>ein kostenloser und quelloffener Lebenslauf-Builder</1>"
 
 #: src/routes/dashboard/settings/profile.tsx:82
 msgid "A confirmation link has been sent to your current email address. Please check your inbox to confirm the change."
-msgstr ""
+msgstr "Ein Bestätigungslink wurde an Ihre aktuelle E-Mail-Adresse gesendet. Bitte prüfen Sie Ihren Posteingang, um die Änderung zu bestätigen."
 
 #: src/routes/dashboard/settings/profile.tsx:103
 msgid "A new verification link has been sent to your email address. Please check your inbox to verify your account."
-msgstr ""
+msgstr "Ein neuer Verifizierungslink wurde an Ihre E-Mail-Adresse gesendet. Bitte prüfen Sie Ihren Posteingang, um Ihr Konto zu verifizieren."
 
 #: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom-fields.tsx:98
 msgid "Add a custom field"
-msgstr ""
+msgstr "Ein benutzerdefiniertes Feld hinzufügen"
 
 #: src/components/input/url-input.tsx:65
 msgid "Add a label to the URL"
-msgstr ""
+msgstr "Der URL eine Bezeichnung hinzufügen"
 
-#: src/routes/auth/register.tsx:87
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/profiles.tsx:48
+msgid "Add a new profile"
+msgstr "Ein neues Profil hinzufügen"
+
+#: src/routes/auth/register.tsx:89
 msgid "Already have an account? <0><1>Sign in now <2/></1></0>"
-msgstr ""
+msgstr "Sie haben bereits ein Konto? <0><1>Jetzt anmelden <2/></1></0>"
 
 #: src/routes/dashboard/-components/sidebar.tsx:127
 msgid "App"
-msgstr ""
+msgstr "App"
 
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:85
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:71
 msgid "Are you sure you want to delete this resume?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie diesen Lebenslauf löschen möchten?"
 
 #: src/routes/dashboard/settings/danger-zone.tsx:31
 msgid "Are you sure you want to delete your account?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?"
 
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:64
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:50
 msgid "Are you sure you want to lock this resume?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie diesen Lebenslauf sperren möchten?"
 
 #: src/routes/dashboard/-components/sidebar.tsx:68
 #: src/routes/dashboard/settings/ai.tsx:16
 msgid "Artificial Intelligence"
-msgstr ""
+msgstr "Künstliche Intelligenz"
 
 #: src/routes/dashboard/-components/sidebar.tsx:63
 #: src/routes/dashboard/settings/authentication/index.tsx:35
 msgid "Authentication"
-msgstr ""
+msgstr "Authentifizierung"
+
+#: src/schema/resume/data.ts:213
+msgid "Awards"
+msgstr "Auszeichnungen"
 
 #: src/routes/auth/verify-2fa.tsx:97
 msgid "Back to Login"
-msgstr ""
+msgstr "Zurück zum Login"
 
 #: src/dialogs/auth/enable-two-factor.tsx:133
 msgid "Backup codes copied to clipboard."
-msgstr ""
+msgstr "Backup-Codes wurden in die Zwischenablage kopiert."
 
 #: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:32
 msgid "Basics"
-msgstr ""
+msgstr "Grundlagen"
 
 #: src/dialogs/auth/enable-two-factor.tsx:269
+#: src/dialogs/resume/sections/profile.tsx:66
+#: src/dialogs/resume/sections/profile.tsx:120
 #: src/hooks/use-prompt.tsx:106
 #: src/routes/dashboard/settings/danger-zone.tsx:34
 #: src/routes/dashboard/settings/profile.tsx:226
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
+
+#: src/schema/resume/data.ts:214
+msgid "Certifications"
+msgstr "Zertifizierungen"
 
 #: src/routes/dashboard/settings/authentication/-components/password-section.tsx:41
 msgid "Change Password"
-msgstr ""
+msgstr "Passwort ändern"
 
-#: src/dialogs/resume/rename.tsx:94
+#: src/dialogs/resume/index.tsx:152
 msgid "Changed your mind? Rename your resume to something more descriptive."
-msgstr ""
+msgstr "Sie haben es sich anders überlegt? Benennen Sie Ihren Lebenslauf in etwas Aussagekräftigeres um."
 
 #: src/routes/auth/forgot-password.tsx:113
 msgid "Check your email for a link to reset your password."
-msgstr ""
+msgstr "Bitte prüfen Sie Ihre E-Mails auf einen Link zum Zurücksetzen Ihres Passworts."
 
-#: src/routes/auth/register.tsx:208
+#: src/routes/auth/register.tsx:210
 msgid "Check your email for a link to verify your account."
-msgstr ""
+msgstr "Bitte prüfen Sie Ihre E-Mails auf einen Link, um Ihr Konto zu verifizieren."
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:81
+#: src/components/ui/multiple-combobox.tsx:52
+msgid "Clear selection"
+msgstr "Auswahl löschen"
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:84
 msgid "Columns"
-msgstr ""
+msgstr "Spalten"
 
 #: src/hooks/use-prompt.tsx:107
 #: src/routes/dashboard/settings/danger-zone.tsx:33
 msgid "Confirm"
-msgstr ""
+msgstr "Bestätigen"
 
 #: src/routes/dashboard/settings/authentication/-components/social-provider-section.tsx:65
 msgid "Connect"
-msgstr ""
+msgstr "Verbinden"
 
 #: src/dialogs/auth/enable-two-factor.tsx:214
 #: src/dialogs/auth/enable-two-factor.tsx:272
 #: src/dialogs/auth/enable-two-factor.tsx:307
-#: src/routes/auth/register.tsx:223
+#: src/routes/auth/register.tsx:225
 msgid "Continue"
-msgstr ""
+msgstr "Weiter"
 
 #: src/dialogs/auth/enable-two-factor.tsx:299
 msgid "Copy"
-msgstr ""
+msgstr "Kopieren"
 
 #: src/dialogs/auth/enable-two-factor.tsx:175
 msgid "Copy and store these backup codes in case you lose your device."
-msgstr ""
+msgstr "Kopieren Sie diese Backup-Codes und bewahren Sie sie auf, falls Sie Ihr Gerät verlieren."
 
 #: src/dialogs/auth/enable-two-factor.tsx:158
 msgid "Copy Backup Codes"
-msgstr ""
+msgstr "Backup-Codes kopieren"
 
-#: src/routes/auth/register.tsx:83
+#: src/dialogs/resume/sections/profile.tsx:70
+#: src/dialogs/resume/sections/profile.tsx:124
+msgid "Create"
+msgstr "Erstellen"
+
+#: src/routes/auth/register.tsx:85
 msgid "Create a new account"
-msgstr ""
+msgstr "Ein neues Konto erstellen"
 
-#: src/dialogs/resume/create.tsx:90
+#: src/dialogs/resume/sections/profile.tsx:55
+msgid "Create a new profile"
+msgstr "Ein neues Profil erstellen"
+
+#: src/dialogs/resume/index.tsx:77
 #: src/routes/dashboard/resumes/-components/create-card.tsx:11
 msgid "Create a new resume"
-msgstr ""
+msgstr "Einen neuen Lebenslauf erstellen"
 
-#: src/dialogs/resume/create.tsx:66
+#: src/dialogs/resume/index.tsx:57
 msgid "Creating your resume..."
-msgstr ""
+msgstr "Ihr Lebenslauf wird erstellt..."
 
 #: src/dialogs/auth/change-password.tsx:91
 msgid "Current Password"
-msgstr ""
+msgstr "Aktuelles Passwort"
 
 #: src/routes/dashboard/-components/sidebar.tsx:73
 #: src/routes/dashboard/settings/danger-zone.tsx:58
 msgid "Danger Zone"
-msgstr ""
+msgstr "Gefahrenbereich"
 
 #: src/components/user/dropdown-menu.tsx:95
 #: src/utils/theme.ts:16
 msgid "Dark"
-msgstr ""
+msgstr "Dunkel"
 
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:144
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-item.tsx:111
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:130
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: src/routes/dashboard/settings/danger-zone.tsx:84
 msgid "Delete Account"
-msgstr ""
+msgstr "Konto löschen"
 
 #: src/routes/dashboard/settings/danger-zone.tsx:39
 msgid "Deleting your account..."
-msgstr ""
+msgstr "Ihr Konto wird gelöscht..."
 
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:91
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:77
 msgid "Deleting your resume..."
-msgstr ""
+msgstr "Ihr Lebenslauf wird gelöscht..."
 
 #: src/routes/dashboard/settings/authentication/-components/two-factor-section.tsx:48
 msgid "Disable"
-msgstr ""
+msgstr "Deaktivieren"
 
 #: src/dialogs/auth/disable-two-factor.tsx:106
 msgid "Disable 2FA"
-msgstr ""
+msgstr "2FA deaktivieren"
 
 #: src/dialogs/auth/disable-two-factor.tsx:64
 msgid "Disable Two-Factor Authentication"
-msgstr ""
+msgstr "Zwei-Faktor-Authentifizierung deaktivieren"
 
 #: src/dialogs/auth/disable-two-factor.tsx:43
 msgid "Disabling two-factor authentication..."
-msgstr ""
+msgstr "Die Zwei-Faktor-Authentifizierung wird deaktiviert..."
 
 #: src/routes/dashboard/settings/authentication/-components/social-provider-section.tsx:59
 msgid "Disconnect"
-msgstr ""
+msgstr "Trennen"
 
 #: src/routes/auth/login.tsx:89
 msgid "Don't have an account? <0><1>Create one now <2/></1></0>"
-msgstr ""
+msgstr "Sie haben noch kein Konto? <0><1>Jetzt erstellen <2/></1></0>"
 
 #: src/dialogs/auth/enable-two-factor.tsx:295
 msgid "Download"
-msgstr ""
+msgstr "Herunterladen"
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-item.tsx:102
+msgid "Duplicate"
+msgstr "Duplizieren"
+
+#: src/schema/resume/data.ts:215
+msgid "Education"
+msgstr "Ausbildung"
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:75
+msgid "Email"
+msgstr "E-Mail"
 
 #: src/routes/auth/forgot-password.tsx:86
 #: src/routes/auth/login.tsx:108
-#: src/routes/auth/register.tsx:145
+#: src/routes/auth/register.tsx:147
 #: src/routes/dashboard/settings/profile.tsx:179
 msgid "Email Address"
-msgstr ""
+msgstr "E-Mail-Adresse"
 
 #: src/routes/dashboard/settings/authentication/-components/two-factor-section.tsx:53
 msgid "Enable"
-msgstr ""
+msgstr "Aktivieren"
 
 #: src/dialogs/auth/enable-two-factor.tsx:156
 msgid "Enable Two-Factor Authentication"
-msgstr ""
+msgstr "Zwei-Faktor-Authentifizierung aktivieren"
 
 #: src/dialogs/auth/enable-two-factor.tsx:71
 msgid "Enabling two-factor authentication..."
-msgstr ""
+msgstr "Die Zwei-Faktor-Authentifizierung wird aktiviert..."
 
 #: src/utils/locale.ts:15
 msgid "English"
-msgstr ""
+msgstr "Englisch"
 
 #: src/routes/auth/verify-2fa.tsx:62
 msgid "Enter the verification code from your authenticator app"
-msgstr ""
+msgstr "Geben Sie den Verifizierungscode aus Ihrer Authenticator-App ein"
 
 #: src/dialogs/auth/change-password.tsx:79
 msgid "Enter your current password and a new password to update your account."
-msgstr ""
+msgstr "Geben Sie Ihr aktuelles Passwort und ein neues Passwort ein, um Ihr Konto zu aktualisieren."
 
 #: src/dialogs/auth/enable-two-factor.tsx:164
 msgid "Enter your password to confirm setting up two-factor authentication. When enabled, you'll need to enter a code from your authenticator app every time you log in."
-msgstr ""
+msgstr "Geben Sie Ihr Passwort ein, um die Einrichtung der Zwei-Faktor-Authentifizierung zu bestätigen. Wenn sie aktiviert ist, müssen Sie bei jeder Anmeldung einen Code aus Ihrer Authenticator-App eingeben."
 
 #: src/dialogs/auth/disable-two-factor.tsx:67
 msgid "Enter your password to disable two-factor authentication. Your account will be less secure without 2FA enabled."
-msgstr ""
+msgstr "Geben Sie Ihr Passwort ein, um die Zwei-Faktor-Authentifizierung zu deaktivieren. Ihr Konto ist ohne 2FA weniger sicher."
+
+#: src/schema/resume/data.ts:216
+msgid "Experience"
+msgstr "Erfahrung"
 
 #: src/dialogs/auth/enable-two-factor.tsx:89
 msgid "Failed to setup two-factor authentication."
-msgstr ""
+msgstr "Die Einrichtung der Zwei-Faktor-Authentifizierung ist fehlgeschlagen."
+
+#: src/routes/dashboard/resumes/index.tsx:95
+msgid "Filter by"
+msgstr "Filtern nach"
 
 #: src/routes/auth/login.tsx:133
 msgid "Forgot Password?"
-msgstr ""
+msgstr "Passwort vergessen?"
 
 #: src/routes/auth/forgot-password.tsx:63
 msgid "Forgot your password?"
-msgstr ""
+msgstr "Passwort vergessen?"
 
-#: src/dialogs/resume/create.tsx:112
-#: src/dialogs/resume/rename.tsx:113
+#: src/dialogs/resume/index.tsx:199
 msgid "Generate a random name"
-msgstr ""
+msgstr "Zufälligen Namen generieren"
 
 #: src/utils/locale.ts:16
 msgid "German"
-msgstr ""
+msgstr "Deutsch"
 
 #: src/routes/_home/index.tsx:33
 #: src/routes/_home/route.tsx:36
 msgid "Get Started"
-msgstr ""
+msgstr "Jetzt starten"
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:70
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:59
+msgid "Headline"
+msgstr "Überschrift"
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:73
 msgid "Hide"
-msgstr ""
+msgstr "Ausblenden"
+
+#: src/schema/resume/data.ts:217
+msgid "Interests"
+msgstr "Interessen"
 
 #: src/components/input/url-input.tsx:73
 msgid "Label"
-msgstr ""
+msgstr "Beschriftung"
 
 #: src/components/user/dropdown-menu.tsx:71
 #: src/routes/dashboard/settings/preferences.tsx:35
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:111
+#: src/schema/resume/data.ts:218
+msgid "Languages"
+msgstr "Sprachen"
+
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:97
 msgid "Last updated on {updatedAt}"
-msgstr ""
+msgstr "Zuletzt aktualisiert am {updatedAt}"
 
 #: src/routes/_home/index.tsx:40
 msgid "Learn More"
-msgstr ""
+msgstr "Mehr erfahren"
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:39
+msgid "Leave empty to reset the title to the original."
+msgstr "Leer lassen, um den Titel auf den Original zurückzusetzen."
 
 #: src/components/user/dropdown-menu.tsx:92
 #: src/utils/theme.ts:15
 msgid "Light"
-msgstr ""
+msgstr "Hell"
 
 #: src/routes/dashboard/settings/authentication/-components/hooks.tsx:70
 msgid "Linking your {providerName} account..."
-msgstr ""
+msgstr "Ihr {providerName}-Konto wird verknüpft..."
 
 #: src/components/layout/loading-screen.tsx:9
 msgid "Loading..."
-msgstr ""
+msgstr "Wird geladen..."
 
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:137
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:107
+msgid "Location"
+msgstr "Standort"
+
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:123
 msgid "Lock"
-msgstr ""
+msgstr "Sperren"
 
 #: src/components/user/dropdown-menu.tsx:106
 msgid "Logout"
-msgstr ""
+msgstr "Abmelden"
 
-#: src/dialogs/resume/create.tsx:105
-#: src/dialogs/resume/rename.tsx:106
-#: src/routes/auth/register.tsx:106
+#: src/dialogs/resume/index.tsx:192
+#: src/routes/auth/register.tsx:108
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:43
 #: src/routes/dashboard/settings/profile.tsx:140
 msgid "Name"
-msgstr ""
+msgstr "Name"
+
+#: src/dialogs/resume/sections/profile.tsx:145
+msgid "Network"
+msgstr "Netzwerk"
 
 #: src/dialogs/auth/change-password.tsx:119
 msgid "New Password"
-msgstr ""
+msgstr "Neues Passwort"
 
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:126
+#: src/components/ui/combobox.tsx:39
+#: src/components/ui/multiple-combobox.tsx:51
+msgid "No results found."
+msgstr "Keine Ergebnisse gefunden."
+
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:112
 msgid "Open"
-msgstr ""
+msgstr "Öffnen"
 
 #: src/routes/auth/forgot-password.tsx:119
 msgid "Open Email Client"
-msgstr ""
+msgstr "E-Mail-Programm öffnen"
 
 #: src/routes/auth/-components/social-auth.tsx:40
 msgctxt "Choose to authenticate with a social provider (Google, GitHub, etc.) instead of email and password"
 msgid "or continue with"
-msgstr ""
+msgstr "oder weiter mit"
 
 #: src/dialogs/auth/disable-two-factor.tsx:82
 #: src/dialogs/auth/enable-two-factor.tsx:190
 #: src/routes/auth/login.tsx:128
-#: src/routes/auth/register.tsx:167
-#: src/routes/auth/reset-password.tsx:82
+#: src/routes/auth/register.tsx:169
+#: src/routes/auth/reset-password.tsx:85
 #: src/routes/dashboard/settings/authentication/-components/password-section.tsx:35
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
-#: src/components/input/rich-input.tsx:209
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:91
+msgid "Phone"
+msgstr "Telefon"
+
+#: src/components/input/rich-input.tsx:210
 msgid "Please enter the URL you want to link to:"
-msgstr ""
+msgstr "Bitte geben Sie die URL ein, zu der Sie verlinken möchten:"
 
 #: src/routes/dashboard/-components/sidebar.tsx:58
 #: src/routes/dashboard/settings/preferences.tsx:19
 msgid "Preferences"
-msgstr ""
+msgstr "Einstellungen"
 
 #: src/routes/dashboard/-components/sidebar.tsx:53
 #: src/routes/dashboard/settings/profile.tsx:120
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
+
+#: src/schema/resume/data.ts:219
+msgid "Profiles"
+msgstr "Profile"
+
+#: src/schema/resume/data.ts:220
+msgid "Projects"
+msgstr "Projekte"
+
+#: src/schema/resume/data.ts:221
+msgid "Publications"
+msgstr "Veröffentlichungen"
 
 #: src/routes/_home/index.tsx:24
 msgid "Reactive Resume is a free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
-msgstr ""
+msgstr "Reactive Resume ist ein kostenloser und quelloffener Lebenslauf-Builder, der das Erstellen, Aktualisieren und Teilen Ihres Lebenslaufs vereinfacht."
+
+#: src/schema/resume/data.ts:222
+msgid "References"
+msgstr "Referenzen"
 
 #: src/routes/auth/forgot-password.tsx:67
 msgid "Remember your password? <0><1>Sign in now <2/></1></0>"
-msgstr ""
+msgstr "Sie erinnern sich wieder an Ihr Passwort? <0><1>Jetzt anmelden <2/></1></0>"
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:75
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:132
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:78
 msgid "Rename"
-msgstr ""
+msgstr "Umbenennen"
 
-#: src/dialogs/resume/rename.tsx:91
-msgid "Rename Resume"
-msgstr ""
-
-#: src/dialogs/resume/rename.tsx:67
-msgid "Renaming your resume..."
-msgstr ""
+#: src/routes/dashboard/settings/profile.tsx:208
+msgid "Resend verification email"
+msgstr "Verifizierungs-E-Mail erneut senden"
 
 #: src/routes/dashboard/settings/profile.tsx:96
 msgid "Resending verification email..."
-msgstr ""
+msgstr "Verifizierungs-E-Mail wird erneut gesendet..."
 
-#: src/routes/auth/reset-password.tsx:105
+#: src/routes/auth/reset-password.tsx:108
 msgid "Reset Password"
-msgstr ""
+msgstr "Passwort zurücksetzen"
 
-#: src/routes/auth/reset-password.tsx:71
+#: src/routes/auth/reset-password.tsx:74
 msgid "Reset your password"
-msgstr ""
+msgstr "Setzen Sie Ihr Passwort zurück"
 
-#: src/routes/auth/reset-password.tsx:48
+#: src/routes/auth/reset-password.tsx:51
 msgid "Resetting your password..."
-msgstr ""
+msgstr "Ihr Passwort wird zurückgesetzt..."
 
 #: src/routes/dashboard/-components/sidebar.tsx:45
-#: src/routes/dashboard/resumes/index.tsx:23
+#: src/routes/dashboard/resumes/index.tsx:61
 msgid "Resumes"
-msgstr ""
+msgstr "Lebensläufe"
 
-#: src/dialogs/resume/rename.tsx:151
+#: src/dialogs/resume/index.tsx:162
 #: src/routes/dashboard/settings/profile.tsx:230
 msgid "Save Changes"
-msgstr ""
+msgstr "Änderungen speichern"
 
 #: src/dialogs/auth/enable-two-factor.tsx:170
 msgid "Scan the QR code below with your preferred authenticator app. Then, enter the 6 digit code that the app provides to continue. You can also copy the secret below and paste it into your app."
-msgstr ""
+msgstr "Scannen Sie den QR-Code unten mit Ihrer bevorzugten Authenticator-App. Geben Sie anschließend den 6-stelligen Code ein, den die App bereitstellt. Alternativ können Sie das untenstehende Geheimnis kopieren und in Ihre App einfügen."
+
+#: src/components/input/icon-picker.tsx:24
+#: src/components/input/icon-picker.tsx:30
+msgid "Search for an icon"
+msgstr "Nach einem Symbol suchen"
+
+#: src/components/ui/combobox.tsx:38
+#: src/components/ui/multiple-combobox.tsx:50
+msgid "Search..."
+msgstr "Suchen..."
 
 #: src/dialogs/auth/enable-two-factor.tsx:127
 msgid "Secret copied to clipboard."
-msgstr ""
+msgstr "Geheimnis wurde in die Zwischenablage kopiert."
+
+#: src/components/ui/combobox.tsx:37
+#: src/components/ui/multiple-combobox.tsx:49
+msgid "Select..."
+msgstr "Auswählen..."
 
 #: src/routes/auth/forgot-password.tsx:97
 msgid "Send Password Reset Email"
-msgstr ""
+msgstr "E-Mail zum Zurücksetzen des Passworts senden"
 
 #: src/routes/auth/forgot-password.tsx:40
 msgid "Sending password reset email..."
-msgstr ""
+msgstr "E-Mail zum Zurücksetzen des Passworts wird gesendet..."
 
 #: src/routes/dashboard/settings/authentication/-components/password-section.tsx:47
 msgid "Set Password"
-msgstr ""
+msgstr "Passwort festlegen"
 
 #: src/routes/dashboard/-components/sidebar.tsx:136
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 #: src/dialogs/auth/enable-two-factor.tsx:157
 msgid "Setup Authenticator App"
-msgstr ""
+msgstr "Authenticator-App einrichten"
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:70
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:73
 msgid "Show"
-msgstr ""
+msgstr "Einblenden"
 
 #: src/routes/auth/login.tsx:158
 msgid "Sign in"
-msgstr ""
+msgstr "Anmelden"
 
 #: src/routes/auth/login.tsx:85
 msgid "Sign in to your account"
-msgstr ""
+msgstr "Melden Sie sich bei Ihrem Konto an"
 
-#: src/routes/auth/register.tsx:190
+#: src/routes/auth/register.tsx:192
 msgid "Sign up"
-msgstr ""
+msgstr "Registrieren"
 
 #: src/routes/auth/-components/social-auth.tsx:17
 #: src/routes/auth/login.tsx:46
 msgid "Signing in..."
-msgstr ""
+msgstr "Anmeldung läuft..."
 
 #: src/components/user/dropdown-menu.tsx:47
 msgid "Signing out..."
-msgstr ""
+msgstr "Abmeldung läuft..."
 
-#: src/routes/auth/register.tsx:56
+#: src/routes/auth/register.tsx:58
 msgid "Signing up..."
-msgstr ""
+msgstr "Registrierung läuft..."
 
-#: src/dialogs/resume/create.tsx:130
-#: src/dialogs/resume/rename.tsx:131
+#: src/schema/resume/data.ts:223
+msgid "Skills"
+msgstr "Fähigkeiten"
+
+#: src/dialogs/resume/index.tsx:217
 msgid "Slug"
-msgstr ""
+msgstr "Slug"
 
-#: src/dialogs/resume/create.tsx:93
+#: src/routes/dashboard/resumes/index.tsx:76
+msgid "Sort by"
+msgstr "Sortieren nach"
+
+#: src/dialogs/resume/index.tsx:80
 msgid "Start building your resume by giving it a name."
-msgstr ""
+msgstr "Beginnen Sie mit dem Erstellen Ihres Lebenslaufs, indem Sie ihm einen Namen geben."
 
 #: src/routes/dashboard/resumes/-components/create-card.tsx:12
 msgid "Start building your resume from scratch"
-msgstr ""
+msgstr "Erstellen Sie Ihren Lebenslauf von Grund auf"
 
-#: src/components/input/rich-input.tsx:219
+#: src/schema/resume/data.ts:224
+msgid "Summary"
+msgstr "Zusammenfassung"
+
+#: src/dialogs/resume/index.tsx:241
+msgid "Tags"
+msgstr "Stichwörter"
+
+#: src/dialogs/resume/index.tsx:254
+msgid "Tags can be used to categorize your resume by keywords."
+msgstr "Stichwörter können genutzt werden, um Ihren Lebenslauf nach Schlüsselwörtern zu kategorisieren."
+
+#: src/components/input/rich-input.tsx:220
 msgid "The URL you entered is not valid."
-msgstr ""
+msgstr "Die eingegebene URL ist nicht gültig."
 
 #: src/components/user/dropdown-menu.tsx:87
 #: src/routes/dashboard/settings/preferences.tsx:28
 msgid "Theme"
-msgstr ""
+msgstr "Design"
 
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:86
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:72
 msgid "This action cannot be undone."
-msgstr ""
+msgstr "Diese Aktion kann nicht rückgängig gemacht werden."
 
 #: src/routes/dashboard/settings/danger-zone.tsx:32
 msgid "This action cannot be undone. All your data will be permanently deleted."
-msgstr ""
+msgstr "Diese Aktion kann nicht rückgängig gemacht werden. Alle Ihre Daten werden dauerhaft gelöscht."
 
-#: src/dialogs/resume/create.tsx:142
-#: src/dialogs/resume/rename.tsx:143
+#: src/dialogs/resume/index.tsx:229
 msgid "This is a URL-friendly name for your resume."
-msgstr ""
+msgstr "Dies ist ein URL-freundlicher Name für Ihren Lebenslauf."
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/summary.tsx:38
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-base.tsx:36
 msgid "This section is hidden from the resume."
-msgstr ""
+msgstr "Dieser Abschnitt wird im Lebenslauf ausgeblendet."
 
-#: src/routes/auth/register.tsx:214
+#: src/routes/auth/register.tsx:216
 msgid "This step is optional, but recommended."
-msgstr ""
+msgstr "Dieser Schritt ist optional, aber empfohlen."
 
-#: src/dialogs/resume/create.tsx:118
-#: src/dialogs/resume/rename.tsx:119
+#: src/dialogs/resume/index.tsx:205
 msgid "Tip: You can name the resume referring to the position you are applying for."
-msgstr ""
+msgstr "Tipp: Benennen Sie den Lebenslauf nach der Position, auf die Sie sich bewerben."
 
 #: src/routes/dashboard/settings/danger-zone.tsx:67
 msgid "To delete your account, you need to enter the confirmation text and click the button below."
-msgstr ""
+msgstr "Um Ihr Konto zu löschen, müssen Sie den Bestätigungstext eingeben und unten auf die Schaltfläche klicken."
 
 #: src/routes/auth/verify-2fa.tsx:59
 #: src/routes/dashboard/settings/authentication/-components/two-factor-section.tsx:42
 msgid "Two-Factor Authentication"
-msgstr ""
+msgstr "Zwei-Faktor-Authentifizierung"
 
 #: src/dialogs/auth/disable-two-factor.tsx:52
 msgid "Two-factor authentication has been disabled successfully."
-msgstr ""
+msgstr "Die Zwei-Faktor-Authentifizierung wurde erfolgreich deaktiviert."
 
 #: src/dialogs/auth/enable-two-factor.tsx:108
 msgid "Two-factor authentication has been setup successfully."
-msgstr ""
+msgstr "Die Zwei-Faktor-Authentifizierung wurde erfolgreich eingerichtet."
 
 #: src/routes/dashboard/settings/danger-zone.tsx:74
 msgid "Type \"{CONFIRMATION_TEXT}\" to confirm"
-msgstr ""
+msgstr "Geben Sie \"{CONFIRMATION_TEXT}\" ein, um zu bestätigen"
 
 #: src/routes/dashboard/settings/authentication/-components/hooks.tsx:93
 msgid "Unlinking your {providerName} account..."
-msgstr ""
+msgstr "Die Verknüpfung Ihres {providerName}-Kontos wird aufgehoben..."
 
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:137
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:123
 msgid "Unlock"
-msgstr ""
+msgstr "Entsperren"
 
 #: src/routes/dashboard/settings/profile.tsx:201
 msgid "Unverified"
-msgstr ""
+msgstr "Nicht verifiziert"
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-item.tsx:97
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:118
+msgid "Update"
+msgstr "Aktualisieren"
+
+#: src/dialogs/resume/sections/profile.tsx:109
+msgid "Update an existing profile"
+msgstr "Ein bestehendes Profil aktualisieren"
 
 #: src/dialogs/auth/change-password.tsx:143
 msgid "Update Password"
-msgstr ""
+msgstr "Passwort aktualisieren"
+
+#: src/dialogs/resume/index.tsx:149
+msgid "Update Resume"
+msgstr "Lebenslauf aktualisieren"
 
 #: src/dialogs/auth/change-password.tsx:76
 msgid "Update your password"
-msgstr ""
+msgstr "Aktualisieren Sie Ihr Passwort"
 
 #: src/dialogs/auth/change-password.tsx:51
 msgid "Updating your password..."
-msgstr ""
+msgstr "Ihr Passwort wird aktualisiert..."
 
-#: src/routes/auth/register.tsx:122
+#: src/dialogs/resume/index.tsx:129
+msgid "Updating your resume..."
+msgstr "Ihr Lebenslauf wird aktualisiert..."
+
+#: src/dialogs/resume/sections/profile.tsx:161
+#: src/routes/auth/register.tsx:124
 #: src/routes/dashboard/settings/profile.tsx:156
 msgid "Username"
-msgstr ""
+msgstr "Benutzername"
 
-#: src/components/input/rich-input.tsx:220
+#: src/components/input/rich-input.tsx:221
 msgid "Valid URLs must start with http:// or https://."
-msgstr ""
+msgstr "Gültige URLs müssen mit http:// oder https:// beginnen."
 
 #: src/routes/dashboard/settings/profile.tsx:195
 msgid "Verified"
-msgstr ""
+msgstr "Verifiziert"
 
 #: src/routes/auth/verify-2fa.tsx:103
 msgid "Verify"
-msgstr ""
+msgstr "Verifizieren"
 
 #: src/dialogs/auth/enable-two-factor.tsx:94
 #: src/routes/auth/verify-2fa.tsx:39
 msgid "Verifying code..."
-msgstr ""
+msgstr "Code wird verifiziert..."
 
-#: src/routes/auth/register.tsx:217
+#: src/routes/auth/register.tsx:219
 msgid "Verifying your email is required when resetting your password."
-msgstr ""
+msgstr "Die Verifizierung Ihrer E-Mail ist beim Zurücksetzen Ihres Passworts erforderlich."
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/section-menu.tsx:38
+#: src/schema/resume/data.ts:225
+msgid "Volunteer"
+msgstr "Freiwillige Arbeit"
+
+#: src/dialogs/resume/sections/profile.tsx:185
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:123
+msgid "Website"
+msgstr "Website"
+
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:38
 msgid "What do you want to rename this section to?"
-msgstr ""
+msgstr "Wie möchten Sie diesen Abschnitt umbenennen?"
 
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:65
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:51
 msgid "When locked, the resume cannot be updated or deleted."
-msgstr ""
+msgstr "Wenn gesperrt, kann der Lebenslauf nicht aktualisiert oder gelöscht werden."
 
 #: src/routes/auth/login.tsx:115
 msgid "You can also use your username to login."
-msgstr ""
+msgstr "Sie können sich auch mit Ihrem Benutzernamen anmelden."
 
 #: src/routes/auth/forgot-password.tsx:110
-#: src/routes/auth/register.tsx:205
+#: src/routes/auth/register.tsx:207
 msgid "You've got mail!"
-msgstr ""
+msgstr "Sie haben Post!"
 
 #: src/routes/dashboard/settings/authentication/-components/hooks.tsx:79
 msgid "Your {providerName} account has been linked successfully."
-msgstr ""
+msgstr "Ihr {providerName}-Konto wurde erfolgreich verknüpft."
 
 #: src/routes/dashboard/settings/authentication/-components/hooks.tsx:102
 msgid "Your {providerName} account has been unlinked successfully."
-msgstr ""
+msgstr "Die Verknüpfung Ihres {providerName}-Kontos wurde erfolgreich aufgehoben."
 
 #: src/routes/dashboard/settings/danger-zone.tsx:43
 msgid "Your account has been deleted successfully."
-msgstr ""
+msgstr "Ihr Konto wurde erfolgreich gelöscht."
 
-#: src/routes/auth/reset-password.tsx:55
+#: src/routes/auth/reset-password.tsx:58
 msgid "Your password has been reset successfully. You can now sign in with your new password."
-msgstr ""
+msgstr "Ihr Passwort wurde erfolgreich zurückgesetzt. Sie können sich nun mit Ihrem neuen Passwort anmelden."
 
 #: src/dialogs/auth/change-password.tsx:59
 msgid "Your password has been updated successfully."
-msgstr ""
+msgstr "Ihr Passwort wurde erfolgreich aktualisiert."
 
 #: src/routes/dashboard/settings/profile.tsx:65
 msgid "Your profile has been updated successfully."
-msgstr ""
+msgstr "Ihr Profil wurde erfolgreich aktualisiert."
 
-#: src/dialogs/resume/create.tsx:71
+#: src/dialogs/resume/index.tsx:62
 msgid "Your resume has been created successfully."
-msgstr ""
+msgstr "Ihr Lebenslauf wurde erfolgreich erstellt."
 
-#: src/routes/dashboard/resumes/-components/resume-card.tsx:98
+#: src/routes/dashboard/resumes/-components/resume-card.tsx:84
 msgid "Your resume has been deleted successfully."
-msgstr ""
+msgstr "Ihr Lebenslauf wurde erfolgreich gelöscht."
 
-#: src/dialogs/resume/rename.tsx:72
-msgid "Your resume has been renamed successfully."
-msgstr ""
+#: src/dialogs/resume/index.tsx:134
+msgid "Your resume has been updated successfully."
+msgstr "Ihr Lebenslauf wurde erfolgreich aktualisiert."
+
+#: src/utils/locale.ts:17
+msgid "Zulu"
+msgstr "Zulu"

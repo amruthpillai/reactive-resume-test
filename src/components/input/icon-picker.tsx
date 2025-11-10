@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import Fuse from "fuse.js";
 import { memo, useCallback, useMemo, useState } from "react";
 import { type CellComponentProps, Grid } from "react-window";
@@ -20,13 +21,13 @@ function _IconSearchInput(props: IconSearchInputProps) {
 	return (
 		<Input
 			className={cn("rounded-none border-0 focus-visible:ring-0", props.className)}
-			placeholder="Search for an icon"
+			placeholder={t`Search for an icon`}
 			autoFocus
 			spellCheck={false}
 			inputMode="search"
 			value={props.value}
 			onChange={(e) => props.onChange(e.currentTarget.value)}
-			aria-label="Search icons"
+			aria-label={t`Search for an icon`}
 		/>
 	);
 }

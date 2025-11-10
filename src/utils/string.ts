@@ -1,3 +1,4 @@
+import _slugify from "@sindresorhus/slugify";
 import { adjectives, animals, colors, uniqueNamesGenerator } from "unique-names-generator";
 import { v7 as uuidv7 } from "uuid";
 
@@ -7,6 +8,15 @@ import { v7 as uuidv7 } from "uuid";
  */
 export function generateId() {
 	return uuidv7();
+}
+
+/** Slugifies a string, with some pre-defined options.
+ *
+ * @param value - The value to slugify.
+ * @returns The slugified value.
+ */
+export function slugify(value: string) {
+	return _slugify(value, { decamelize: false });
 }
 
 /**

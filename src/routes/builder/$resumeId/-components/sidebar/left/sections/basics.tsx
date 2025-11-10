@@ -39,7 +39,9 @@ export function BasicsSectionBuilder() {
 						name="name"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Name</FormLabel>
+								<FormLabel>
+									<Trans>Name</Trans>
+								</FormLabel>
 								<FormControl>
 									<Input {...field} />
 								</FormControl>
@@ -53,7 +55,9 @@ export function BasicsSectionBuilder() {
 						name="headline"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Headline</FormLabel>
+								<FormLabel>
+									<Trans>Headline</Trans>
+								</FormLabel>
 								<FormControl>
 									<Input {...field} />
 								</FormControl>
@@ -67,7 +71,9 @@ export function BasicsSectionBuilder() {
 						name="email"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Email</FormLabel>
+								<FormLabel>
+									<Trans>Email</Trans>
+								</FormLabel>
 								<FormControl>
 									<Input type="email" {...field} />
 								</FormControl>
@@ -81,7 +87,9 @@ export function BasicsSectionBuilder() {
 						name="phone"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Phone</FormLabel>
+								<FormLabel>
+									<Trans>Phone</Trans>
+								</FormLabel>
 								<FormControl>
 									<Input {...field} />
 								</FormControl>
@@ -95,7 +103,9 @@ export function BasicsSectionBuilder() {
 						name="location"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Location</FormLabel>
+								<FormLabel>
+									<Trans>Location</Trans>
+								</FormLabel>
 								<FormControl>
 									<Input {...field} />
 								</FormControl>
@@ -109,7 +119,9 @@ export function BasicsSectionBuilder() {
 						name="website"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Website</FormLabel>
+								<FormLabel>
+									<Trans>Website</Trans>
+								</FormLabel>
 								<FormControl>
 									<URLInput {...field} value={field.value} onChange={field.onChange} />
 								</FormControl>

@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import { CaretUpDownIcon, CheckIcon } from "@phosphor-icons/react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
@@ -15,12 +16,14 @@ type ComboboxOption<TValue extends string | number = string> = {
 
 type ComboboxProps<TValue extends string | number = string> = Omit<
 	React.ComponentProps<typeof PopoverContent>,
-	"defaultValue" | "children"
+	"value" | "defaultValue" | "children"
 > & {
 	options: ReadonlyArray<ComboboxOption<TValue>>;
 	value?: TValue | null;
 	defaultValue?: TValue | null;
-	className?: string;
+	placeholder?: React.ReactNode;
+	searchPlaceholder?: string;
+	emptyMessage?: React.ReactNode;
 	buttonProps?: Omit<React.ComponentProps<typeof Button>, "children"> & {
 		children?: (value: TValue | null, option: ComboboxOption<TValue> | null) => React.ReactNode;
 	};
@@ -31,6 +34,10 @@ function Combobox<TValue extends string | number = string>({
 	options,
 	value,
 	defaultValue = null,
+	placeholder = t`Select...`,
+	searchPlaceholder = t`Search...`,
+	emptyMessage = t`No results found.`,
+	className,
 	buttonProps,
 	onValueChange,
 	...props
@@ -65,26 +72,30 @@ function Combobox<TValue extends string | number = string>({
 				<Button
 					role="combobox"
 					variant="outline"
-					className={cn("justify-between font-normal active:scale-100", buttonProps?.className)}
 					aria-expanded={open}
 					{...buttonProps}
+					className={cn(
+						"font-normal active:scale-100",
+						typeof buttonProps?.children === "function" ? "" : "justify-between",
+						buttonProps?.className,
+					)}
 				>
 					{typeof buttonProps?.children === "function" ? (
 						buttonProps.children(selectedValue, selectedOption)
 					) : (
 						<>
-							{selectedLabel ?? "Select..."}
+							{selectedLabel ?? placeholder}
 							<CaretUpDownIcon className="ml-2 shrink-0 opacity-50" />
 						</>
 					)}
 				</Button>
 			</PopoverTrigger>
 
-			<PopoverContent align="start" className={cn("w-[200px] p-0", props.className)} {...props}>
+			<PopoverContent align="start" className={cn("w-[200px] p-0", className)} {...props}>
 				<Command>
-					<CommandInput placeholder="Search..." />
+					<CommandInput placeholder={searchPlaceholder} />
 					<CommandList>
-						<CommandEmpty>No results found.</CommandEmpty>
+						<CommandEmpty>{emptyMessage}</CommandEmpty>
 						<CommandGroup>
 							{options.map((option) => {
 								const isSelected = selectedValue === option.value;
@@ -111,4 +122,5 @@ function Combobox<TValue extends string | number = string>({
 }
 
 export type { ComboboxOption, ComboboxProps };
+
 export { Combobox };

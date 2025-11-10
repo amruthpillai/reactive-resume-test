@@ -1,5 +1,5 @@
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Plural, Trans } from "@lingui/react/macro";
 import { ColumnsIcon, EyeClosedIcon, EyeIcon, ListIcon, PencilSimpleLineIcon } from "@phosphor-icons/react";
 import { useResumeData } from "@/builder/-hooks/resume";
 import { useResumeStore } from "@/builder/-store/resume";
@@ -17,7 +17,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePrompt } from "@/hooks/use-prompt";
-import type { SectionType } from "@/schema/resume/data";
+import { getSectionTitle, type SectionType } from "@/schema/resume/data";
 
 type Props = {
 	type: SectionType;
@@ -36,11 +36,14 @@ export function SectionDropdownMenu({ type }: Props) {
 
 	const onRenameSection = async () => {
 		const newTitle = await prompt(t`What do you want to rename this section to?`, {
+			description: t`Leave empty to reset the title to the original.`,
 			defaultValue: section.title,
 		});
 
 		if (!newTitle) {
-			// TODO: Reset the title to the original title
+			updateResume((draft) => {
+				draft.sections[type].title = getSectionTitle(type);
+			});
 			return;
 		}
 
@@ -83,18 +86,11 @@ export function SectionDropdownMenu({ type }: Props) {
 
 						<DropdownMenuSubContent>
 							<DropdownMenuRadioGroup value={section.columns.toString()} onValueChange={onSetColumns}>
-								<DropdownMenuRadioItem value="1">
-									<Trans>1 Column</Trans>
-								</DropdownMenuRadioItem>
-								<DropdownMenuRadioItem value="2">
-									<Trans>2 Columns</Trans>
-								</DropdownMenuRadioItem>
-								<DropdownMenuRadioItem value="3">
-									<Trans>3 Columns</Trans>
-								</DropdownMenuRadioItem>
-								<DropdownMenuRadioItem value="4">
-									<Trans>4 Columns</Trans>
-								</DropdownMenuRadioItem>
+								{[1, 2, 3, 4].map((column) => (
+									<DropdownMenuRadioItem key={column} value={column.toString()}>
+										<Plural value={column} one="# Column" other="# Columns" />
+									</DropdownMenuRadioItem>
+								))}
 							</DropdownMenuRadioGroup>
 						</DropdownMenuSubContent>
 					</DropdownMenuSub>
