@@ -22,9 +22,7 @@
 		"db:push": "drizzle-kit push",
 		"db:pull": "drizzle-kit pull",
 		"db:studio": "drizzle-kit studio",
-		"lingui:extract": "lingui extract --clean --overwrite",
-		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"lingui:extract": "lingui extract --clean --overwrite"
 	},
 	"dependencies": {
 		"@fontsource-variable/ibm-plex-sans": "^5.2.8",
@@ -100,16 +98,9 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.4",
-		"@chromatic-com/storybook": "^4.1.2",
 		"@lingui/babel-plugin-lingui-macro": "^5.5.2",
 		"@lingui/cli": "^5.5.2",
 		"@lingui/vite-plugin": "^5.5.2",
-		"@storybook/addon-a11y": "^10.0.6",
-		"@storybook/addon-docs": "^10.0.6",
-		"@storybook/addon-onboarding": "^10.0.6",
-		"@storybook/addon-themes": "^10.0.6",
-		"@storybook/addon-vitest": "^10.0.6",
-		"@storybook/react-vite": "^10.0.6",
 		"@tailwindcss/typography": "^0.5.19",
 		"@testing-library/dom": "^10.4.1",
 		"@testing-library/react": "^16.3.0",
@@ -124,7 +115,6 @@
 		"nitro": "^3.0.1-alpha.0",
 		"npm-check-updates": "^19.1.2",
 		"playwright": "^1.56.1",
-		"storybook": "^10.0.6",
 		"tsx": "^4.20.6",
 		"typescript": "^5.9.3",
 		"vite": "^7.2.2",
