@@ -1,4 +1,7 @@
 import z from "zod";
+import type { IconName } from "@/components/input/icon-picker";
+
+export const iconSchema = z.custom<IconName>().or(z.literal(""));
 
 export const urlSchema = z.object({
 	url: z.url().or(z.literal("")),
@@ -22,7 +25,7 @@ export const pictureSchema = z.object({
 
 export const customFieldSchema = z.object({
 	id: z.string(),
-	icon: z.string(),
+	icon: iconSchema,
 	text: z.string(),
 });
 
@@ -85,13 +88,15 @@ export const experienceItemSchema = baseItemSchema.extend({
 });
 
 export const interestItemSchema = baseItemSchema.extend({
+	icon: iconSchema,
 	name: z.string().min(1),
+	keywords: z.array(z.string()).catch([]),
 });
 
 export const languageItemSchema = baseItemSchema.extend({
 	language: z.string().min(1),
 	fluency: z.string(),
-	level: z.number().min(0).max(5),
+	level: z.number().min(0).max(5).catch(0),
 });
 
 export const profileItemSchema = baseItemSchema.extend({
@@ -121,10 +126,11 @@ export const referenceItemSchema = baseItemSchema.extend({
 });
 
 export const skillItemSchema = baseItemSchema.extend({
+	icon: iconSchema,
 	name: z.string().min(1),
 	proficiency: z.string(),
-	level: z.number().min(0).max(5),
-	keywords: z.array(z.string()),
+	level: z.number().min(0).max(5).catch(0),
+	keywords: z.array(z.string()).catch([]),
 });
 
 export const volunteerItemSchema = baseItemSchema.extend({
@@ -190,18 +196,18 @@ export const volunteerSectionSchema = baseSectionSchema.extend({
 });
 
 export const sectionsSchema = z.object({
+	profiles: profilesSectionSchema,
+	experience: experienceSectionSchema,
+	education: educationSectionSchema,
+	projects: projectsSectionSchema,
+	skills: skillsSectionSchema,
+	languages: languagesSectionSchema,
+	interests: interestsSectionSchema,
 	awards: awardsSectionSchema,
 	certifications: certificationsSectionSchema,
-	education: educationSectionSchema,
-	experience: experienceSectionSchema,
-	interests: interestsSectionSchema,
-	languages: languagesSectionSchema,
-	profiles: profilesSectionSchema,
-	projects: projectsSectionSchema,
 	publications: publicationsSectionSchema,
-	references: referencesSectionSchema,
-	skills: skillsSectionSchema,
 	volunteer: volunteerSectionSchema,
+	references: referencesSectionSchema,
 });
 
 export type SectionType = keyof z.infer<typeof sectionsSchema>;
@@ -287,6 +293,48 @@ export const defaultResumeData: ResumeData = {
 		content: "",
 	},
 	sections: {
+		profiles: {
+			title: "Profiles",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		experience: {
+			title: "Experience",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		education: {
+			title: "Education",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		projects: {
+			title: "Projects",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		skills: {
+			title: "Skills",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		languages: {
+			title: "Languages",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		interests: {
+			title: "Interests",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
 		awards: {
 			title: "Awards",
 			columns: 1,
@@ -299,62 +347,20 @@ export const defaultResumeData: ResumeData = {
 			hidden: false,
 			items: [],
 		},
-		education: {
-			title: "Education",
-			columns: 1,
-			hidden: false,
-			items: [],
-		},
-		experience: {
-			title: "Experience",
-			columns: 1,
-			hidden: false,
-			items: [],
-		},
-		interests: {
-			title: "Interests",
-			columns: 1,
-			hidden: false,
-			items: [],
-		},
-		languages: {
-			title: "Languages",
-			columns: 1,
-			hidden: false,
-			items: [],
-		},
-		profiles: {
-			title: "Profiles",
-			columns: 1,
-			hidden: false,
-			items: [],
-		},
-		projects: {
-			title: "Projects",
-			columns: 1,
-			hidden: false,
-			items: [],
-		},
 		publications: {
 			title: "Publications",
 			columns: 1,
 			hidden: false,
 			items: [],
 		},
-		references: {
-			title: "References",
-			columns: 1,
-			hidden: false,
-			items: [],
-		},
-		skills: {
-			title: "Skills",
-			columns: 1,
-			hidden: false,
-			items: [],
-		},
 		volunteer: {
 			title: "Volunteer",
+			columns: 1,
+			hidden: false,
+			items: [],
+		},
+		references: {
+			title: "References",
 			columns: 1,
 			hidden: false,
 			items: [],
@@ -413,12 +419,12 @@ export const sampleResumeData: ResumeData = {
 		customFields: [
 			{
 				id: "linkedin",
-				icon: "linkedin",
+				icon: "linkedin-logo",
 				text: "linkedin.com/in/sarahchen",
 			},
 			{
 				id: "github",
-				icon: "github",
+				icon: "github-logo",
 				text: "github.com/sarahchen",
 			},
 			{
@@ -436,6 +442,43 @@ export const sampleResumeData: ResumeData = {
 			"<p>Experienced full-stack developer with 8+ years of expertise in building scalable web applications. Specialized in React, TypeScript, Node.js, and cloud infrastructure. Proven track record of leading cross-functional teams, architecting microservices, and delivering high-impact products used by millions of users. Passionate about developer experience, code quality, and mentoring junior engineers.</p>",
 	},
 	sections: {
+		profiles: {
+			title: "Online Profiles",
+			columns: 2,
+			hidden: false,
+			items: [
+				{
+					id: "profile-1",
+					hidden: false,
+					network: "LinkedIn",
+					username: "sarahchen",
+					website: {
+						url: "https://linkedin.com/in/sarahchen",
+						label: "linkedin.com/in/sarahchen",
+					},
+				},
+				{
+					id: "profile-2",
+					hidden: false,
+					network: "GitHub",
+					username: "sarahchen",
+					website: {
+						url: "https://github.com/sarahchen",
+						label: "github.com/sarahchen",
+					},
+				},
+				{
+					id: "profile-3",
+					hidden: false,
+					network: "Twitter",
+					username: "@sarahcodes",
+					website: {
+						url: "https://twitter.com/sarahcodes",
+						label: "twitter.com/sarahcodes",
+					},
+				},
+			],
+		},
 		experience: {
 			title: "Work Experience",
 			columns: 1,
@@ -524,61 +567,6 @@ export const sampleResumeData: ResumeData = {
 				},
 			],
 		},
-		skills: {
-			title: "Technical Skills",
-			columns: 2,
-			hidden: false,
-			items: [
-				{
-					id: "skill-1",
-					hidden: false,
-					name: "JavaScript (ES2021+)",
-					proficiency: "Expert",
-					level: 5,
-					keywords: ["Asynchronous", "Promises", "Event Loop", "Testing"],
-				},
-				{
-					id: "skill-2",
-					hidden: false,
-					name: "TypeScript",
-					proficiency: "Expert",
-					level: 5,
-					keywords: ["Types", "Generics", "Type Inference", "Type Safety"],
-				},
-				{
-					id: "skill-3",
-					hidden: false,
-					name: "React",
-					proficiency: "Expert",
-					level: 5,
-					keywords: ["Hooks", "Context API", "State Management", "Component Design"],
-				},
-				{
-					id: "skill-4",
-					hidden: false,
-					name: "Next.js",
-					proficiency: "Advanced",
-					level: 4,
-					keywords: ["SSR", "Static Generation", "API Routes", "Middleware"],
-				},
-				{
-					id: "skill-5",
-					hidden: false,
-					name: "Node.js",
-					proficiency: "Advanced",
-					level: 4,
-					keywords: ["Express", "Performance", "Streams", "Process Management"],
-				},
-				{
-					id: "skill-6",
-					hidden: false,
-					name: "PostgreSQL",
-					proficiency: "Advanced",
-					level: 4,
-					keywords: ["Query Optimization", "Indices", "JSONB", "Migrations"],
-				},
-			],
-		},
 		projects: {
 			title: "Notable Projects",
 			columns: 1,
@@ -619,6 +607,236 @@ export const sampleResumeData: ResumeData = {
 					},
 					description:
 						"Accessible, customizable React component library with TypeScript support. Published to NPM with 15K+ weekly downloads. Includes Storybook documentation and comprehensive testing suite.",
+				},
+			],
+		},
+		skills: {
+			title: "Technical Skills",
+			columns: 2,
+			hidden: false,
+			items: [
+				{
+					id: "skill-1",
+					hidden: false,
+					icon: "file-js",
+					name: "JavaScript (ES2021+)",
+					proficiency: "Expert",
+					level: 5,
+					keywords: ["ES2021 Features", "Asynchronous", "Promises", "Event Loop"],
+				},
+				{
+					id: "skill-2",
+					hidden: false,
+					icon: "file-ts",
+					name: "TypeScript",
+					proficiency: "Expert",
+					level: 5,
+					keywords: ["Types", "Generics", "Type Safety", "Type Guards"],
+				},
+				{
+					id: "skill-3",
+					hidden: false,
+					icon: "atom",
+					name: "React",
+					proficiency: "Expert",
+					level: 5,
+					keywords: ["Hooks", "Context API", "State Management", "Component Design"],
+				},
+				{
+					id: "skill-4",
+					hidden: false,
+					icon: "function",
+					name: "Next.js",
+					proficiency: "Advanced",
+					level: 4,
+					keywords: ["SSR", "Static Generation", "API Routes", "App Router"],
+				},
+				{
+					id: "skill-5",
+					hidden: false,
+					icon: "leaf",
+					name: "Node.js",
+					proficiency: "Advanced",
+					level: 4,
+					keywords: ["Express", "Performance", "REST APIs", "CLI Tools"],
+				},
+				{
+					id: "skill-6",
+					hidden: false,
+					icon: "database",
+					name: "PostgreSQL",
+					proficiency: "Advanced",
+					level: 4,
+					keywords: ["Query Optimization", "Indices", "JSONB", "Migrations"],
+				},
+			],
+		},
+		languages: {
+			title: "Languages",
+			columns: 2,
+			hidden: false,
+			items: [
+				{
+					id: "language-1",
+					hidden: false,
+					language: "English",
+					fluency: "Native",
+					level: 5,
+				},
+				{
+					id: "language-2",
+					hidden: false,
+					language: "Mandarin Chinese",
+					fluency: "Native",
+					level: 5,
+				},
+				{
+					id: "language-3",
+					hidden: false,
+					language: "Spanish",
+					fluency: "Professional Working",
+					level: 3,
+				},
+			],
+		},
+		interests: {
+			title: "Interests",
+			columns: 2,
+			hidden: false,
+			items: [
+				{
+					id: "interest-1",
+					hidden: false,
+					icon: "github-logo",
+					name: "Open Source Contribution",
+					keywords: ["GitHub", "Pull Requests", "Community"],
+				},
+				{
+					id: "interest-2",
+					hidden: false,
+					icon: "pen-nib",
+					name: "Technical Writing",
+					keywords: ["Documentation", "Blogging", "Content Creation"],
+				},
+				{
+					id: "interest-3",
+					hidden: false,
+					icon: "mountains",
+					name: "Rock Climbing",
+					keywords: ["Bouldering", "Sport Climbing", "Outdoor Activities"],
+				},
+				{
+					id: "interest-4",
+					hidden: false,
+					icon: "camera",
+					name: "Photography",
+					keywords: ["Travel", "Portrait", "Landscape"],
+				},
+				{
+					id: "interest-5",
+					hidden: false,
+					icon: "cooking-pot",
+					name: "Cooking",
+					keywords: ["International Cuisine", "Recipe Development", "Home Cooking"],
+				},
+				{
+					id: "interest-6",
+					hidden: false,
+					icon: "chalkboard-teacher",
+					name: "Mentoring",
+					keywords: ["Women in Tech", "Peer Mentorship", "Coaching"],
+				},
+			],
+		},
+		awards: {
+			title: "Awards & Recognition",
+			columns: 1,
+			hidden: false,
+			items: [
+				{
+					id: "award-1",
+					hidden: false,
+					title: "Tech Excellence Award",
+					awarder: "TechFlow Inc.",
+					date: "December 2023",
+					website: {
+						url: "",
+						label: "",
+					},
+					description:
+						"Recognized for outstanding technical leadership and significant contributions to platform scalability improvements that reduced infrastructure costs by 35%.",
+				},
+				{
+					id: "award-2",
+					hidden: false,
+					title: "Best Open Source Project",
+					awarder: "DevCon 2023",
+					date: "June 2023",
+					website: {
+						url: "https://devcon.tech",
+						label: "devcon.tech",
+					},
+					description:
+						"DevCollab project won first place in open source category at annual developer conference, competing against 150+ projects.",
+				},
+				{
+					id: "award-3",
+					hidden: false,
+					title: "Hackathon Winner - FinTech Challenge",
+					awarder: "San Francisco Tech Week",
+					date: "October 2022",
+					website: {
+						url: "https://sftechweek.com",
+						label: "sftechweek.com",
+					},
+					description:
+						"Led team of 4 to build AI-powered financial literacy app in 48 hours. Won $10K prize and mentorship opportunity with venture capital firm.",
+				},
+			],
+		},
+		certifications: {
+			title: "Certifications",
+			columns: 2,
+			hidden: false,
+			items: [
+				{
+					id: "certification-1",
+					hidden: false,
+					title: "AWS Certified Solutions Architect - Associate",
+					issuer: "Amazon Web Services",
+					date: "March 2023",
+					website: {
+						url: "https://aws.amazon.com/certification",
+						label: "AWS Certification",
+					},
+					description:
+						"Demonstrated expertise in designing distributed systems on AWS platform, including compute, networking, storage, and database services.",
+				},
+				{
+					id: "certification-2",
+					hidden: false,
+					title: "Kubernetes Administrator (CKA)",
+					issuer: "Cloud Native Computing Foundation",
+					date: "September 2022",
+					website: {
+						url: "https://www.cncf.io/certification/cka",
+						label: "CNCF Certification",
+					},
+					description:
+						"Certified in deploying, managing, and troubleshooting Kubernetes clusters in production environments.",
+				},
+				{
+					id: "certification-3",
+					hidden: false,
+					title: "Professional Scrum Master I (PSM I)",
+					issuer: "Scrum.org",
+					date: "January 2021",
+					website: {
+						url: "https://www.scrum.org/assessments/professional-scrum-master-i-certification",
+						label: "Scrum.org",
+					},
+					description:
+						"Validated understanding of Scrum framework, roles, events, and artifacts for effective agile project management.",
 				},
 			],
 		},
@@ -712,176 +930,6 @@ export const sampleResumeData: ResumeData = {
 					description:
 						"Volunteered in weekend food drives, supporting logistics and community outreach to serve underprivileged neighborhoods.",
 				},
-			],
-		},
-		certifications: {
-			title: "Certifications",
-			columns: 2,
-			hidden: false,
-			items: [
-				{
-					id: "certification-1",
-					hidden: false,
-					title: "AWS Certified Solutions Architect - Associate",
-					issuer: "Amazon Web Services",
-					date: "March 2023",
-					website: {
-						url: "https://aws.amazon.com/certification",
-						label: "AWS Certification",
-					},
-					description:
-						"Demonstrated expertise in designing distributed systems on AWS platform, including compute, networking, storage, and database services.",
-				},
-				{
-					id: "certification-2",
-					hidden: false,
-					title: "Kubernetes Administrator (CKA)",
-					issuer: "Cloud Native Computing Foundation",
-					date: "September 2022",
-					website: {
-						url: "https://www.cncf.io/certification/cka",
-						label: "CNCF Certification",
-					},
-					description:
-						"Certified in deploying, managing, and troubleshooting Kubernetes clusters in production environments.",
-				},
-				{
-					id: "certification-3",
-					hidden: false,
-					title: "Professional Scrum Master I (PSM I)",
-					issuer: "Scrum.org",
-					date: "January 2021",
-					website: {
-						url: "https://www.scrum.org/assessments/professional-scrum-master-i-certification",
-						label: "Scrum.org",
-					},
-					description:
-						"Validated understanding of Scrum framework, roles, events, and artifacts for effective agile project management.",
-				},
-			],
-		},
-		awards: {
-			title: "Awards & Recognition",
-			columns: 1,
-			hidden: false,
-			items: [
-				{
-					id: "award-1",
-					hidden: false,
-					title: "Tech Excellence Award",
-					awarder: "TechFlow Inc.",
-					date: "December 2023",
-					website: {
-						url: "",
-						label: "",
-					},
-					description:
-						"Recognized for outstanding technical leadership and significant contributions to platform scalability improvements that reduced infrastructure costs by 35%.",
-				},
-				{
-					id: "award-2",
-					hidden: false,
-					title: "Best Open Source Project",
-					awarder: "DevCon 2023",
-					date: "June 2023",
-					website: {
-						url: "https://devcon.tech",
-						label: "devcon.tech",
-					},
-					description:
-						"DevCollab project won first place in open source category at annual developer conference, competing against 150+ projects.",
-				},
-				{
-					id: "award-3",
-					hidden: false,
-					title: "Hackathon Winner - FinTech Challenge",
-					awarder: "San Francisco Tech Week",
-					date: "October 2022",
-					website: {
-						url: "https://sftechweek.com",
-						label: "sftechweek.com",
-					},
-					description:
-						"Led team of 4 to build AI-powered financial literacy app in 48 hours. Won $10K prize and mentorship opportunity with venture capital firm.",
-				},
-			],
-		},
-		languages: {
-			title: "Languages",
-			columns: 2,
-			hidden: false,
-			items: [
-				{
-					id: "language-1",
-					hidden: false,
-					language: "English",
-					fluency: "Native",
-					level: 5,
-				},
-				{
-					id: "language-2",
-					hidden: false,
-					language: "Mandarin Chinese",
-					fluency: "Native",
-					level: 5,
-				},
-				{
-					id: "language-3",
-					hidden: false,
-					language: "Spanish",
-					fluency: "Professional Working",
-					level: 3,
-				},
-			],
-		},
-		profiles: {
-			title: "Online Profiles",
-			columns: 2,
-			hidden: false,
-			items: [
-				{
-					id: "profile-1",
-					hidden: false,
-					network: "LinkedIn",
-					username: "sarahchen",
-					website: {
-						url: "https://linkedin.com/in/sarahchen",
-						label: "linkedin.com/in/sarahchen",
-					},
-				},
-				{
-					id: "profile-2",
-					hidden: false,
-					network: "GitHub",
-					username: "sarahchen",
-					website: {
-						url: "https://github.com/sarahchen",
-						label: "github.com/sarahchen",
-					},
-				},
-				{
-					id: "profile-3",
-					hidden: false,
-					network: "Twitter",
-					username: "@sarahcodes",
-					website: {
-						url: "https://twitter.com/sarahcodes",
-						label: "twitter.com/sarahcodes",
-					},
-				},
-			],
-		},
-		interests: {
-			title: "Interests",
-			columns: 2,
-			hidden: false,
-			items: [
-				{ id: "interest-1", hidden: false, name: "Open Source Contribution" },
-				{ id: "interest-2", hidden: false, name: "Technical Writing & Blogging" },
-				{ id: "interest-3", hidden: false, name: "Rock Climbing" },
-				{ id: "interest-4", hidden: false, name: "Photography" },
-				{ id: "interest-5", hidden: false, name: "Cooking & Recipe Development" },
-				{ id: "interest-6", hidden: false, name: "Mentoring Women in Tech" },
 			],
 		},
 		references: {

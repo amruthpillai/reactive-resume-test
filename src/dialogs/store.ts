@@ -1,7 +1,20 @@
 import z from "zod";
 import { create } from "zustand";
 import { resumeSchema } from "@/integrations/drizzle/schema";
-import { educationItemSchema, experienceItemSchema, profileItemSchema, skillItemSchema } from "@/schema/resume/data";
+import {
+	awardItemSchema,
+	certificationItemSchema,
+	educationItemSchema,
+	experienceItemSchema,
+	interestItemSchema,
+	languageItemSchema,
+	profileItemSchema,
+	projectItemSchema,
+	publicationItemSchema,
+	referenceItemSchema,
+	skillItemSchema,
+	volunteerItemSchema,
+} from "@/schema/resume/data";
 
 const dialogTypeSchema = z.discriminatedUnion("type", [
 	z.object({ type: z.literal("auth.change-password"), data: z.undefined() }),
@@ -16,8 +29,24 @@ const dialogTypeSchema = z.discriminatedUnion("type", [
 	z.object({ type: z.literal("resume.sections.experience.update"), data: experienceItemSchema }),
 	z.object({ type: z.literal("resume.sections.education.create"), data: educationItemSchema.optional() }),
 	z.object({ type: z.literal("resume.sections.education.update"), data: educationItemSchema }),
+	z.object({ type: z.literal("resume.sections.projects.create"), data: projectItemSchema.optional() }),
+	z.object({ type: z.literal("resume.sections.projects.update"), data: projectItemSchema }),
 	z.object({ type: z.literal("resume.sections.skills.create"), data: skillItemSchema.optional() }),
 	z.object({ type: z.literal("resume.sections.skills.update"), data: skillItemSchema }),
+	z.object({ type: z.literal("resume.sections.languages.create"), data: languageItemSchema.optional() }),
+	z.object({ type: z.literal("resume.sections.languages.update"), data: languageItemSchema }),
+	z.object({ type: z.literal("resume.sections.awards.create"), data: awardItemSchema.optional() }),
+	z.object({ type: z.literal("resume.sections.awards.update"), data: awardItemSchema }),
+	z.object({ type: z.literal("resume.sections.certifications.create"), data: certificationItemSchema.optional() }),
+	z.object({ type: z.literal("resume.sections.certifications.update"), data: certificationItemSchema }),
+	z.object({ type: z.literal("resume.sections.publications.create"), data: publicationItemSchema.optional() }),
+	z.object({ type: z.literal("resume.sections.publications.update"), data: publicationItemSchema }),
+	z.object({ type: z.literal("resume.sections.interests.create"), data: interestItemSchema.optional() }),
+	z.object({ type: z.literal("resume.sections.interests.update"), data: interestItemSchema }),
+	z.object({ type: z.literal("resume.sections.volunteer.create"), data: volunteerItemSchema.optional() }),
+	z.object({ type: z.literal("resume.sections.volunteer.update"), data: volunteerItemSchema }),
+	z.object({ type: z.literal("resume.sections.references.create"), data: referenceItemSchema.optional() }),
+	z.object({ type: z.literal("resume.sections.references.update"), data: referenceItemSchema }),
 ]);
 
 type DialogType = z.infer<typeof dialogTypeSchema>;

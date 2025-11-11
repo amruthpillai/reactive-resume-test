@@ -1,5 +1,6 @@
 import { useRouteContext } from "@tanstack/react-router";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
+import { useBuilderSidebar } from "@/builder/-context/builder";
 import { useResumeData } from "@/builder/-hooks/resume";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -10,25 +11,39 @@ import type { SectionType } from "@/schema/resume/data";
 import { getSectionIcon, getSectionTitle } from "@/utils/resume/section";
 import { getInitials } from "@/utils/string";
 import { BuilderSidebarEdge } from "../edge";
+import { AwardsSectionBuilder } from "./sections/awards";
 import { BasicsSectionBuilder } from "./sections/basics";
+import { CertificationsSectionBuilder } from "./sections/certifications";
 import { EducationSectionBuilder } from "./sections/education";
 import { ExperienceSectionBuilder } from "./sections/experience";
+import { InterestsSectionBuilder } from "./sections/interests";
+import { LanguagesSectionBuilder } from "./sections/languages";
 import { ProfilesSectionBuilder } from "./sections/profiles";
+import { ProjectsSectionBuilder } from "./sections/projects";
+import { PublicationsSectionBuilder } from "./sections/publications";
+import { ReferencesSectionBuilder } from "./sections/references";
 import { SkillsSectionBuilder } from "./sections/skills";
 import { SummarySectionBuilder } from "./sections/summary";
+import { VolunteerSectionBuilder } from "./sections/volunteer";
 
 export function BuilderSidebarLeft() {
 	const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
+	const { leftSidebar, toggleLeftSidebar } = useBuilderSidebar();
 	const sections = useResumeData((data) => data.sections);
 	const { session } = useRouteContext({ from: "/builder/$resumeId" });
 
-	function scrollToSection(section: "basics" | "summary" | SectionType) {
-		if (!scrollAreaRef.current) return;
-		const sectionElement = scrollAreaRef.current.querySelector(`#sidebar-${section}`);
-		if (!sectionElement) return;
-		sectionElement.scrollIntoView({ behavior: "smooth" });
-	}
+	const scrollToSection = useCallback(
+		(section: "basics" | "summary" | SectionType) => {
+			if (!scrollAreaRef.current || !leftSidebar.current) return;
+
+			if (leftSidebar.current.isCollapsed()) toggleLeftSidebar();
+
+			const sectionElement = scrollAreaRef.current.querySelector(`#sidebar-${section}`);
+			sectionElement?.scrollIntoView({ behavior: "smooth" });
+		},
+		[leftSidebar, toggleLeftSidebar],
+	);
 
 	return (
 		<>
@@ -89,8 +104,23 @@ export function BuilderSidebarLeft() {
 					<Separator />
 					<EducationSectionBuilder />
 					<Separator />
+					<ProjectsSectionBuilder />
+					<Separator />
 					<SkillsSectionBuilder />
 					<Separator />
+					<LanguagesSectionBuilder />
+					<Separator />
+					<InterestsSectionBuilder />
+					<Separator />
+					<AwardsSectionBuilder />
+					<Separator />
+					<CertificationsSectionBuilder />
+					<Separator />
+					<PublicationsSectionBuilder />
+					<Separator />
+					<VolunteerSectionBuilder />
+					<Separator />
+					<ReferencesSectionBuilder />
 				</div>
 			</ScrollArea>
 		</>

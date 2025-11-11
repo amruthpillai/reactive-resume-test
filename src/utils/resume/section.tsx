@@ -27,16 +27,15 @@ export const getSectionTitle = (type: "basics" | "summary" | SectionType): strin
 		.with("profiles", () => t`Profiles`)
 		.with("experience", () => t`Experience`)
 		.with("education", () => t`Education`)
+		.with("projects", () => t`Projects`)
 		.with("skills", () => t`Skills`)
-
+		.with("languages", () => t`Languages`)
+		.with("interests", () => t`Interests`)
 		.with("awards", () => t`Awards`)
 		.with("certifications", () => t`Certifications`)
-		.with("interests", () => t`Interests`)
-		.with("languages", () => t`Languages`)
-		.with("projects", () => t`Projects`)
 		.with("publications", () => t`Publications`)
-		.with("references", () => t`References`)
 		.with("volunteer", () => t`Volunteer`)
+		.with("references", () => t`References`)
 		.exhaustive();
 };
 
@@ -49,15 +48,14 @@ export const getSectionIcon = (type: "basics" | "summary" | SectionType, props?:
 		.with("profiles", () => <MessengerLogoIcon {...iconProps} />)
 		.with("experience", () => <BriefcaseIcon {...iconProps} />)
 		.with("education", () => <GraduationCapIcon {...iconProps} />)
+		.with("projects", () => <CodeSimpleIcon {...iconProps} />)
 		.with("skills", () => <CompassToolIcon {...iconProps} />)
-
+		.with("languages", () => <TranslateIcon {...iconProps} />)
+		.with("interests", () => <FootballIcon {...iconProps} />)
 		.with("awards", () => <TrophyIcon {...iconProps} />)
 		.with("certifications", () => <CertificateIcon {...iconProps} />)
-		.with("interests", () => <FootballIcon {...iconProps} />)
-		.with("languages", () => <TranslateIcon {...iconProps} />)
-		.with("projects", () => <CodeSimpleIcon {...iconProps} />)
 		.with("publications", () => <BooksIcon {...iconProps} />)
-		.with("references", () => <PhoneIcon {...iconProps} />)
 		.with("volunteer", () => <HandHeartIcon {...iconProps} />)
+		.with("references", () => <PhoneIcon {...iconProps} />)
 		.exhaustive();
 };

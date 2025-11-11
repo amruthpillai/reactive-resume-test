@@ -84,7 +84,7 @@ export function RichInput({ value, onChange, ...options }: Props) {
 				"data-editor": "true",
 				class: cn(
 					"group tiptap-content",
-					"max-h-[320px] min-h-[100px] overflow-y-auto px-3 pt-5 focus:outline-none",
+					"max-h-[320px] min-h-[100px] overflow-y-auto p-3 pb-0 focus:outline-none",
 					"rounded-md rounded-t-none border focus-visible:border-ring",
 				),
 			},

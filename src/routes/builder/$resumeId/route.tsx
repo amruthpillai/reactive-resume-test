@@ -1,9 +1,7 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie, setCookie } from "@tanstack/react-start/server";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { ImperativePanelHandle } from "react-resizable-panels";
-import { useWindowSize } from "usehooks-ts";
+import { useCallback } from "react";
 import z from "zod";
 import { LoadingScreen } from "@/components/layout/loading-screen";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
@@ -12,8 +10,8 @@ import { cn } from "@/utils/style";
 import { BuilderHeader } from "./-components/header";
 import { BuilderSidebarLeft } from "./-components/sidebar/left";
 import { BuilderSidebarRight } from "./-components/sidebar/right";
+import { BuilderProvider, useBuilderContext } from "./-context/builder";
 import { useResume } from "./-hooks/resume";
-import { useBuilderStore } from "./-store/builder";
 import { useResumeStore } from "./-store/resume";
 
 export const Route = createFileRoute("/builder/$resumeId")({
@@ -30,30 +28,27 @@ export const Route = createFileRoute("/builder/$resumeId")({
 
 function RouteComponent() {
 	const resume = useResume();
-	const storeResume = useResumeStore((state) => state.resume);
+	const resumeFromStore = useResumeStore((state) => state.resume);
 
+	if (!resume || !resumeFromStore) return <LoadingScreen />;
+
+	return (
+		<BuilderProvider>
+			<BuilderLayout />
+		</BuilderProvider>
+	);
+}
+
+function BuilderLayout() {
 	const isMobile = useIsMobile();
-	const { width } = useWindowSize();
-	const [isDragging, setDragging] = useState(false);
 	const { layout: initialLayout } = Route.useLoaderData();
 
-	const leftSidebarRef = useRef<ImperativePanelHandle>(null);
-	const rightSidebarRef = useRef<ImperativePanelHandle>(null);
-	const { setLeftSidebarRef, setRightSidebarRef } = useBuilderStore();
-
-	const maxSidebarSize = useMemo(() => Math.round((600 / width) * 100), [width]);
-	const collapsedSidebarSize = useMemo(() => (isMobile ? 0 : (48 / width) * 100), [width, isMobile]);
-
-	useEffect(() => {
-		setLeftSidebarRef(leftSidebarRef);
-		setRightSidebarRef(rightSidebarRef);
-	}, [setLeftSidebarRef, setRightSidebarRef]);
+	const { leftSidebar, rightSidebar, isDragging, setDragging, maxSidebarSize, collapsedSidebarSize } =
+		useBuilderContext();
 
 	const onLayout = useCallback((layout: number[]) => {
 		setBuilderLayoutServerFn({ data: layout });
 	}, []);
-
-	if (!resume || !storeResume) return <LoadingScreen />;
 
 	return (
 		<div className="flex h-dvh flex-col">
@@ -62,9 +57,9 @@ function RouteComponent() {
 			<div className="mt-14 flex-1">
 				<ResizablePanelGroup direction="horizontal" onLayout={onLayout}>
 					<ResizablePanel
-						id="left-sidebar"
-						ref={leftSidebarRef}
 						collapsible
+						id="left-sidebar"
+						ref={leftSidebar}
 						maxSize={maxSidebarSize}
 						minSize={collapsedSidebarSize}
 						collapsedSize={collapsedSidebarSize}
@@ -83,9 +78,9 @@ function RouteComponent() {
 					</ResizablePanel>
 					<ResizableHandle withHandle onDragging={setDragging} />
 					<ResizablePanel
-						id="right-sidebar"
-						ref={rightSidebarRef}
 						collapsible
+						id="right-sidebar"
+						ref={rightSidebar}
 						maxSize={maxSidebarSize}
 						minSize={collapsedSidebarSize}
 						collapsedSize={collapsedSidebarSize}

@@ -37,8 +37,8 @@ const IconSearchInput = memo(_IconSearchInput);
 IconSearchInput.displayName = "IconSearchInput";
 
 type IconCellComponentProps = CellComponentProps & {
-	icons: readonly string[];
-	onChange: (icon: string) => void;
+	icons: IconName[];
+	onChange: (icon: IconName | "") => void;
 };
 
 function IconCellComponent({ columnIndex, rowIndex, style, icons, onChange }: IconCellComponentProps) {
@@ -66,7 +66,7 @@ function useIconSearch() {
 	const fuse = useMemo(() => new Fuse(icons, { threshold: 0.35 }), []);
 
 	const search = useCallback(
-		(query: string): string[] => {
+		(query: string): IconName[] => {
 			if (!query.trim()) return Array.from(icons);
 			return fuse.search(query).map((result) => result.item);
 		},
@@ -77,11 +77,12 @@ function useIconSearch() {
 }
 
 type IconPickerProps = Omit<React.ComponentProps<typeof Button>, "value" | "onChange"> & {
-	value: string;
-	onChange: (icon: string) => void;
+	value: IconName | "";
+	onChange: (icon: IconName | "") => void;
+	popoverProps?: React.ComponentProps<typeof Popover>;
 };
 
-export function IconPicker({ value, onChange, ...props }: IconPickerProps) {
+export function IconPicker({ value, onChange, popoverProps, ...props }: IconPickerProps) {
 	const searchIcons = useIconSearch();
 
 	const [search, setSearch] = useState("");
@@ -90,7 +91,7 @@ export function IconPicker({ value, onChange, ...props }: IconPickerProps) {
 	const rowCount = useMemo(() => Math.ceil(searchedIcons.length / columnCount), [searchedIcons]);
 
 	return (
-		<Popover>
+		<Popover {...popoverProps}>
 			<PopoverTrigger asChild>
 				<Button size="icon" variant="outline" {...props}>
 					<i className={cn("ph text-base", `ph-${value}`)} />
@@ -1648,3 +1649,5 @@ const icons = [
 	"yin-yang",
 	"youtube-logo",
 ] as const;
+
+export type IconName = (typeof icons)[number];

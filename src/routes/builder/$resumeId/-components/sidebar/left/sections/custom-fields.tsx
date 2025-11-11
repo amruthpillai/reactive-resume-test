@@ -52,7 +52,7 @@ export function CustomFieldsSection({ onSubmit }: Props) {
 						control={form.control}
 						name={`customFields.${index}.icon`}
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className="shrink-0">
 								<FormControl>
 									<IconPicker
 										{...field}

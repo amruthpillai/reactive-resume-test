@@ -43,7 +43,6 @@ export function SectionDropdownMenu({ type }: Props) {
 	const updateResume = useResumeStore((state) => state.updateResume);
 
 	const onAddItem = () => {
-		// @ts-expect-error - Expected to throw an error until all section types are supported
 		openDialog(`resume.sections.${type}.create`, undefined);
 	};
 

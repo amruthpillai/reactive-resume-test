@@ -34,12 +34,10 @@ export function SectionItem<T extends SectionItemType>({ type, item, title, subt
 	const updateResume = useResumeStore((state) => state.updateResume);
 
 	const onUpdate = () => {
-		// @ts-expect-error - Expected to throw an error until all section types are supported
 		openDialog(`resume.sections.${type}.update`, item);
 	};
 
 	const onDuplicate = () => {
-		// @ts-expect-error - Expected to throw an error until all section types are supported
 		openDialog(`resume.sections.${type}.create`, item);
 	};
 

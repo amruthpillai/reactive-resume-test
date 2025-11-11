@@ -18,13 +18,15 @@ interface ResumeStoreActions {
 
 type ResumeStore = ResumeStoreState & ResumeStoreActions;
 
-const syncResume = debounce(async (id: string, data: ResumeData) => {
+const syncResume = async (id: string, data: ResumeData) => {
 	try {
 		await orpc.resume.updateData.call({ id, data });
 	} catch (err) {
 		console.error("Failed to update resume in backend:", err);
 	}
-}, 500);
+};
+
+const debouncedSyncResume = debounce(syncResume, 500);
 
 export const useResumeStore = create<ResumeStore>((set) => ({
 	resume: null,
@@ -33,7 +35,7 @@ export const useResumeStore = create<ResumeStore>((set) => ({
 		set((state) => {
 			if (!state.resume) return state;
 			const updatedData = produce(state.resume.data, fn);
-			syncResume(state.resume.id, updatedData);
+			debouncedSyncResume(state.resume.id, updatedData);
 			return { resume: { ...state.resume, data: updatedData } };
 		});
 	},
