@@ -30,7 +30,7 @@ import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import { authClient } from "@/integrations/auth/client";
 import { resumeSchema } from "@/integrations/drizzle/schema";
-import { orpc } from "@/integrations/orpc/client";
+import { orpc, type RouterInput } from "@/integrations/orpc/client";
 import { generateId, generateRandomName, slugify } from "@/utils/string";
 import { type DialogProps, useDialogStore } from "../store";
 
@@ -76,9 +76,17 @@ export function CreateResumeDialog({ open, onOpenChange }: DialogProps<"resume.c
 	};
 
 	const onCreateSampleResume = () => {
-		const toastId = toast.loading(t`Creating your resume...`);
+		const values = form.getValues();
+		const randomName = generateRandomName();
 
-		const data = { ...form.getValues(), withSampleData: true };
+		const data = {
+			name: values.name || randomName,
+			slug: values.slug || slugify(randomName),
+			tags: values.tags,
+			withSampleData: true,
+		} satisfies RouterInput["resume"]["create"];
+
+		const toastId = toast.loading(t`Creating your resume...`);
 
 		createResume(data, {
 			onSuccess: () => {
