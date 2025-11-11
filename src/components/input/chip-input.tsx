@@ -2,15 +2,17 @@ import { XIcon } from "@phosphor-icons/react";
 import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import { useControllableState } from "@/hooks/use-controllable-state";
+import { slugify } from "@/utils/string";
 import { cn } from "@/utils/style";
 
 type Props = Omit<React.ComponentProps<"div">, "value" | "onChange"> & {
 	value?: string[];
 	defaultValue?: string[];
 	onChange?: (value: string[]) => void;
+	mode?: "default" | "slugify";
 };
 
-export function ChipInput({ value, defaultValue = [], onChange, className, ...props }: Props) {
+export function ChipInput({ value, defaultValue = [], onChange, mode = "default", className, ...props }: Props) {
 	const [chips, setChips] = useControllableState<string[]>({
 		value,
 		defaultValue,
@@ -22,18 +24,19 @@ export function ChipInput({ value, defaultValue = [], onChange, className, ...pr
 
 	const addChip = React.useCallback(
 		(chip: string) => {
-			const trimmed = chip.trim();
-			if (trimmed && !chips.includes(trimmed)) {
-				setChips([...chips, trimmed]);
-			}
+			const trimmed = mode === "slugify" ? slugify(chip.trim()) : chip.trim();
+			if (!trimmed) return;
+			const newChips = Array.from(new Set([...chips, trimmed]));
+			setChips(newChips);
 		},
-		[chips, setChips],
+		[chips, setChips, mode],
 	);
 
 	const removeChip = React.useCallback(
 		(index: number) => {
 			if (index < 0 || index >= chips.length) return;
-			setChips(chips.filter((_, i) => i !== index));
+			const newChips = chips.slice(0, index).concat(chips.slice(index + 1));
+			setChips(Array.from(new Set(newChips)));
 		},
 		[chips, setChips],
 	);

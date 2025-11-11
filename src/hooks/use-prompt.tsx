@@ -34,6 +34,8 @@ type PromptContextType = {
 const PromptContext = React.createContext<PromptContextType | null>(null);
 
 export function PromptDialogProvider({ children }: { children: React.ReactNode }) {
+	const inputRef = React.useRef<HTMLInputElement>(null);
+
 	const [state, setState] = React.useState<PromptState>({
 		open: false,
 		resolve: null,
@@ -45,6 +47,14 @@ export function PromptDialogProvider({ children }: { children: React.ReactNode }
 		confirmText: undefined,
 		cancelText: undefined,
 	});
+
+	React.useEffect(() => {
+		if (!state.open) return;
+		setTimeout(() => {
+			if (!inputRef.current) return;
+			inputRef.current.focus();
+		}, 0);
+	}, [state.open]);
 
 	const prompt = React.useCallback(async (title: string, options?: PromptOptions): Promise<string | null> => {
 		return new Promise<string | null>((resolve) => {
@@ -95,13 +105,15 @@ export function PromptDialogProvider({ children }: { children: React.ReactNode }
 						<AlertDialogTitle>{state.title}</AlertDialogTitle>
 						{state.description && <AlertDialogDescription>{state.description}</AlertDialogDescription>}
 					</AlertDialogHeader>
+
 					<Input
-						autoFocus
+						ref={inputRef}
 						value={state.value}
 						onKeyDown={handleKeyDown}
 						onChange={handleValueChange}
 						placeholder={state.placeholder}
 					/>
+
 					<AlertDialogFooter>
 						<AlertDialogCancel onClick={handleCancel}>{state.cancelText ?? t`Cancel`}</AlertDialogCancel>
 						<AlertDialogAction onClick={handleConfirm}>{state.confirmText ?? t`Confirm`}</AlertDialogAction>

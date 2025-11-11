@@ -25,7 +25,6 @@ export function CustomFieldsSection({ onSubmit }: Props) {
 		control: form.control,
 		keyName: "key",
 		name: "customFields",
-		shouldUnregister: false,
 	});
 
 	function handleReorder(newFields: CustomField[]) {

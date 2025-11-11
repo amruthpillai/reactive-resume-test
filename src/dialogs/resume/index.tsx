@@ -58,7 +58,7 @@ export function CreateResumeDialog({ open, onOpenChange }: DialogProps<"resume.c
 
 		createResume(data, {
 			onSuccess: async () => {
-				await queryClient.invalidateQueries({ queryKey: orpc.resume.list.key() });
+				await queryClient.invalidateQueries({ queryKey: orpc.resume.key() });
 				toast.success(t`Your resume has been created successfully.`, { id: toastId });
 				closeDialog();
 			},
@@ -130,7 +130,7 @@ export function UpdateResumeDialog({ open, onOpenChange, data }: DialogProps<"re
 
 		updateResume(data, {
 			onSuccess: async () => {
-				await queryClient.invalidateQueries({ queryKey: orpc.resume.list.key() });
+				await queryClient.invalidateQueries({ queryKey: orpc.resume.key() });
 				toast.success(t`Your resume has been updated successfully.`, { id: toastId });
 				closeDialog();
 			},
@@ -160,6 +160,73 @@ export function UpdateResumeDialog({ open, onOpenChange, data }: DialogProps<"re
 						<DialogFooter>
 							<Button type="submit" disabled={isPending}>
 								<Trans>Save Changes</Trans>
+							</Button>
+						</DialogFooter>
+					</form>
+				</Form>
+			</DialogContent>
+		</Dialog>
+	);
+}
+
+export function DuplicateResumeDialog({ open, onOpenChange, data }: DialogProps<"resume.duplicate">) {
+	const { closeDialog } = useDialogStore();
+	const { queryClient } = useRouteContext({ from: "/dashboard" });
+
+	const { mutate: duplicateResume, isPending } = useMutation(orpc.resume.duplicate.mutationOptions());
+
+	const form = useForm<FormValues>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			id: data.id,
+			name: `${data.name} (Copy)`,
+			slug: `${data.slug}-copy`,
+			tags: data.tags,
+		},
+	});
+
+	const name = useWatch({ control: form.control, name: "name" });
+
+	useEffect(() => {
+		if (!name) return;
+		form.setValue("slug", slugify(name), { shouldDirty: true });
+	}, [form, name]);
+
+	const onSubmit = (data: FormValues) => {
+		const toastId = toast.loading(t`Duplicating your resume...`);
+
+		duplicateResume(data, {
+			onSuccess: async () => {
+				await queryClient.invalidateQueries({ queryKey: orpc.resume.key() });
+				toast.success(t`Your resume has been duplicated successfully.`, { id: toastId });
+				closeDialog();
+			},
+			onError: (error) => {
+				toast.error(error.message, { id: toastId });
+			},
+		});
+	};
+
+	return (
+		<Dialog open={open} onOpenChange={onOpenChange}>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle className="flex items-center gap-x-2">
+						<PencilSimpleLineIcon />
+						<Trans>Duplicate Resume</Trans>
+					</DialogTitle>
+					<DialogDescription>
+						<Trans>Duplicate your resume to create a new one, just like the original.</Trans>
+					</DialogDescription>
+				</DialogHeader>
+
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-2">
+						<ResumeForm />
+
+						<DialogFooter>
+							<Button type="submit" disabled={isPending}>
+								<Trans>Duplicate</Trans>
 							</Button>
 						</DialogFooter>
 					</form>
@@ -241,13 +308,7 @@ export function ResumeForm() {
 							<Trans>Tags</Trans>
 						</FormLabel>
 						<FormControl>
-							<ChipInput
-								{...field}
-								onChange={(values) => {
-									const formattedValues = new Set(values.map((value) => slugify(value)));
-									field.onChange(Array.from(formattedValues));
-								}}
-							/>
+							<ChipInput mode="slugify" {...field} />
 						</FormControl>
 						<FormMessage />
 						<FormDescription>

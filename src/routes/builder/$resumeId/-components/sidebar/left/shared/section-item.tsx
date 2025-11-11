@@ -67,27 +67,30 @@ export function SectionItem<T extends SectionItemType>({ type, item, title, subt
 			initial={{ opacity: 0, y: -10 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: -10 }}
-			className="group flex h-18 select-none border-b last:border-b-0"
+			className="group flex h-18 select-none border-b"
 			dragListener={false}
 			dragControls={controls}
 		>
 			<div
-				className="flex cursor-ns-resize items-center px-1.5 opacity-20 transition-[background-color,opacity] hover:bg-secondary/20 group-hover:opacity-100"
+				className="flex cursor-ns-resize items-center px-1.5 opacity-40 transition-[background-color,opacity] hover:bg-secondary/20 group-hover:opacity-100"
 				onPointerDown={(e) => controls.start(e)}
 			>
 				<DotsSixVerticalIcon />
 			</div>
 
-			<div onClick={onUpdate} className="flex flex-1 flex-col justify-center space-y-0.5 pl-3 hover:bg-secondary/20">
+			<button
+				className="flex flex-1 flex-col items-start justify-center space-y-0.5 pl-3 hover:bg-secondary/20 focus:outline-none focus-visible:ring-1"
+				onClick={onUpdate}
+			>
 				<div className="font-medium">{title}</div>
 				{subtitle && <div className="text-muted-foreground text-xs">{subtitle}</div>}
-			</div>
+			</button>
 
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<div className="flex cursor-context-menu items-center px-1.5 opacity-20 transition-[background-color,opacity] hover:bg-secondary/20 group-hover:opacity-100">
+					<button className="flex cursor-context-menu items-center px-1.5 opacity-40 transition-[background-color,opacity] hover:bg-secondary/20 focus:outline-none focus-visible:ring-1 group-hover:opacity-100">
 						<DotsThreeVerticalIcon />
-					</div>
+					</button>
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent align="end">

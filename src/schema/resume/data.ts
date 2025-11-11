@@ -1,5 +1,3 @@
-import { t } from "@lingui/core/macro";
-import { match } from "ts-pattern";
 import z from "zod";
 
 export const urlSchema = z.object({
@@ -38,13 +36,20 @@ export const basicsSchema = z.object({
 	customFields: z.array(customFieldSchema),
 });
 
+export const summarySchema = z.object({
+	title: z.string(),
+	columns: z.number(),
+	hidden: z.boolean(),
+	content: z.string(),
+});
+
 export const baseItemSchema = z.object({
 	id: z.string(),
 	hidden: z.boolean(),
 });
 
 export const awardItemSchema = baseItemSchema.extend({
-	title: z.string(),
+	title: z.string().min(1),
 	awarder: z.string(),
 	date: z.string(),
 	website: urlSchema,
@@ -52,7 +57,7 @@ export const awardItemSchema = baseItemSchema.extend({
 });
 
 export const certificationItemSchema = baseItemSchema.extend({
-	title: z.string(),
+	title: z.string().min(1),
 	issuer: z.string(),
 	date: z.string(),
 	website: urlSchema,
@@ -60,7 +65,7 @@ export const certificationItemSchema = baseItemSchema.extend({
 });
 
 export const educationItemSchema = baseItemSchema.extend({
-	school: z.string(),
+	school: z.string().min(1),
 	degree: z.string(),
 	area: z.string(),
 	grade: z.string(),
@@ -71,7 +76,7 @@ export const educationItemSchema = baseItemSchema.extend({
 });
 
 export const experienceItemSchema = baseItemSchema.extend({
-	company: z.string(),
+	company: z.string().min(1),
 	position: z.string(),
 	location: z.string(),
 	period: z.string(),
@@ -80,30 +85,30 @@ export const experienceItemSchema = baseItemSchema.extend({
 });
 
 export const interestItemSchema = baseItemSchema.extend({
-	name: z.string(),
+	name: z.string().min(1),
 });
 
 export const languageItemSchema = baseItemSchema.extend({
-	language: z.string(),
+	language: z.string().min(1),
 	fluency: z.string(),
 	level: z.number().min(0).max(5),
 });
 
 export const profileItemSchema = baseItemSchema.extend({
 	network: z.string().min(1),
-	username: z.string().min(1),
+	username: z.string(),
 	website: urlSchema,
 });
 
 export const projectItemSchema = baseItemSchema.extend({
-	name: z.string(),
+	name: z.string().min(1),
 	period: z.string(),
 	website: urlSchema,
 	description: z.string(),
 });
 
 export const publicationItemSchema = baseItemSchema.extend({
-	title: z.string(),
+	title: z.string().min(1),
 	publisher: z.string(),
 	date: z.string(),
 	website: urlSchema,
@@ -111,18 +116,19 @@ export const publicationItemSchema = baseItemSchema.extend({
 });
 
 export const referenceItemSchema = baseItemSchema.extend({
-	name: z.string(),
+	name: z.string().min(1),
 	description: z.string(),
 });
 
 export const skillItemSchema = baseItemSchema.extend({
-	name: z.string(),
+	name: z.string().min(1),
 	proficiency: z.string(),
 	level: z.number().min(0).max(5),
+	keywords: z.array(z.string()),
 });
 
 export const volunteerItemSchema = baseItemSchema.extend({
-	organization: z.string(),
+	organization: z.string().min(1),
 	location: z.string(),
 	period: z.string(),
 	website: urlSchema,
@@ -179,10 +185,6 @@ export const skillsSectionSchema = baseSectionSchema.extend({
 	items: z.array(skillItemSchema),
 });
 
-export const summarySectionSchema = baseSectionSchema.extend({
-	content: z.string(),
-});
-
 export const volunteerSectionSchema = baseSectionSchema.extend({
 	items: z.array(volunteerItemSchema),
 });
@@ -199,32 +201,12 @@ export const sectionsSchema = z.object({
 	publications: publicationsSectionSchema,
 	references: referencesSectionSchema,
 	skills: skillsSectionSchema,
-	summary: summarySectionSchema,
 	volunteer: volunteerSectionSchema,
 });
 
 export type SectionType = keyof z.infer<typeof sectionsSchema>;
 export type SectionData = z.infer<typeof sectionsSchema>[SectionType];
-
-export type SectionItem = z.infer<typeof sectionsSchema>[Exclude<SectionType, "summary">]["items"][number];
-
-export const getSectionTitle = (type: SectionType): string => {
-	return match(type)
-		.with("awards", () => t`Awards`)
-		.with("certifications", () => t`Certifications`)
-		.with("education", () => t`Education`)
-		.with("experience", () => t`Experience`)
-		.with("interests", () => t`Interests`)
-		.with("languages", () => t`Languages`)
-		.with("profiles", () => t`Profiles`)
-		.with("projects", () => t`Projects`)
-		.with("publications", () => t`Publications`)
-		.with("references", () => t`References`)
-		.with("skills", () => t`Skills`)
-		.with("summary", () => t`Summary`)
-		.with("volunteer", () => t`Volunteer`)
-		.exhaustive();
-};
+export type SectionItem = SectionData["items"][number];
 
 export const customSectionSchema = baseSectionSchema.extend({
 	id: z.string(),
@@ -270,6 +252,7 @@ export const metadataSchema = z.object({
 export const resumeDataSchema = z.object({
 	picture: pictureSchema,
 	basics: basicsSchema,
+	summary: summarySchema,
 	sections: sectionsSchema,
 	customSections: customSectionsSchema,
 	metadata: metadataSchema,
@@ -296,6 +279,12 @@ export const defaultResumeData: ResumeData = {
 		location: "",
 		website: { url: "", label: "" },
 		customFields: [],
+	},
+	summary: {
+		title: "Summary",
+		columns: 1,
+		hidden: false,
+		content: "",
 	},
 	sections: {
 		awards: {
@@ -363,12 +352,6 @@ export const defaultResumeData: ResumeData = {
 			columns: 1,
 			hidden: false,
 			items: [],
-		},
-		summary: {
-			title: "Summary",
-			columns: 1,
-			hidden: false,
-			content: "",
 		},
 		volunteer: {
 			title: "Volunteer",
@@ -445,14 +428,14 @@ export const sampleResumeData: ResumeData = {
 			},
 		],
 	},
+	summary: {
+		title: "Professional Summary",
+		columns: 1,
+		hidden: false,
+		content:
+			"<p>Experienced full-stack developer with 8+ years of expertise in building scalable web applications. Specialized in React, TypeScript, Node.js, and cloud infrastructure. Proven track record of leading cross-functional teams, architecting microservices, and delivering high-impact products used by millions of users. Passionate about developer experience, code quality, and mentoring junior engineers.</p>",
+	},
 	sections: {
-		summary: {
-			title: "Professional Summary",
-			columns: 1,
-			hidden: false,
-			content:
-				"<p>Experienced full-stack developer with 8+ years of expertise in building scalable web applications. Specialized in React, TypeScript, Node.js, and cloud infrastructure. Proven track record of leading cross-functional teams, architecting microservices, and delivering high-impact products used by millions of users. Passionate about developer experience, code quality, and mentoring junior engineers.</p>",
-		},
 		experience: {
 			title: "Work Experience",
 			columns: 1,
@@ -549,58 +532,50 @@ export const sampleResumeData: ResumeData = {
 				{
 					id: "skill-1",
 					hidden: false,
-					name: "JavaScript / TypeScript",
+					name: "JavaScript (ES2021+)",
 					proficiency: "Expert",
 					level: 5,
+					keywords: ["Asynchronous", "Promises", "Event Loop", "Testing"],
 				},
 				{
 					id: "skill-2",
 					hidden: false,
-					name: "React / Next.js",
+					name: "TypeScript",
 					proficiency: "Expert",
 					level: 5,
+					keywords: ["Types", "Generics", "Type Inference", "Type Safety"],
 				},
 				{
 					id: "skill-3",
 					hidden: false,
-					name: "Node.js / Express",
-					proficiency: "Advanced",
-					level: 4,
+					name: "React",
+					proficiency: "Expert",
+					level: 5,
+					keywords: ["Hooks", "Context API", "State Management", "Component Design"],
 				},
 				{
 					id: "skill-4",
 					hidden: false,
-					name: "PostgreSQL / MongoDB",
+					name: "Next.js",
 					proficiency: "Advanced",
 					level: 4,
+					keywords: ["SSR", "Static Generation", "API Routes", "Middleware"],
 				},
 				{
 					id: "skill-5",
 					hidden: false,
-					name: "AWS / Docker / Kubernetes",
+					name: "Node.js",
 					proficiency: "Advanced",
 					level: 4,
+					keywords: ["Express", "Performance", "Streams", "Process Management"],
 				},
 				{
 					id: "skill-6",
 					hidden: false,
-					name: "GraphQL / REST APIs",
+					name: "PostgreSQL",
 					proficiency: "Advanced",
 					level: 4,
-				},
-				{
-					id: "skill-7",
-					hidden: false,
-					name: "Python / Django",
-					proficiency: "Intermediate",
-					level: 3,
-				},
-				{
-					id: "skill-8",
-					hidden: false,
-					name: "Redis / ElasticSearch",
-					proficiency: "Intermediate",
-					level: 3,
+					keywords: ["Query Optimization", "Indices", "JSONB", "Migrations"],
 				},
 			],
 		},

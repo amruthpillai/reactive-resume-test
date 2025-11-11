@@ -53,7 +53,6 @@ function RouteComponent() {
 		setBuilderLayoutServerFn({ data: layout });
 	}, []);
 
-	// Wait for both the query data and the store to be populated before rendering children
 	if (!resume || !storeResume) return <LoadingScreen />;
 
 	return (
@@ -63,18 +62,20 @@ function RouteComponent() {
 			<div className="mt-14 flex-1">
 				<ResizablePanelGroup direction="horizontal" onLayout={onLayout}>
 					<ResizablePanel
+						id="left-sidebar"
 						ref={leftSidebarRef}
 						collapsible
-						defaultSize={isMobile ? 0 : Math.max(collapsedSidebarSize, initialLayout[0])}
 						maxSize={maxSidebarSize}
 						minSize={collapsedSidebarSize}
 						collapsedSize={collapsedSidebarSize}
+						defaultSize={isMobile ? 0 : initialLayout[0]}
 						className={cn("h-[calc(100svh-3.5rem)]", !isDragging && "transition-all")}
 					>
 						<BuilderSidebarLeft />
 					</ResizablePanel>
 					<ResizableHandle withHandle onDragging={setDragging} />
 					<ResizablePanel
+						id="artboard"
 						defaultSize={initialLayout[1]}
 						className={cn("h-[calc(100svh-3.5rem)]", !isDragging && "transition-all")}
 					>
@@ -82,12 +83,13 @@ function RouteComponent() {
 					</ResizablePanel>
 					<ResizableHandle withHandle onDragging={setDragging} />
 					<ResizablePanel
+						id="right-sidebar"
 						ref={rightSidebarRef}
 						collapsible
-						defaultSize={isMobile ? 0 : Math.max(collapsedSidebarSize, initialLayout[2])}
 						maxSize={maxSidebarSize}
 						minSize={collapsedSidebarSize}
 						collapsedSize={collapsedSidebarSize}
+						defaultSize={isMobile ? 0 : initialLayout[2]}
 						className={cn("h-[calc(100svh-3.5rem)]", !isDragging && "transition-all")}
 					>
 						<BuilderSidebarRight />

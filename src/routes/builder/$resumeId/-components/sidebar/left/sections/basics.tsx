@@ -8,6 +8,7 @@ import { URLInput } from "@/components/input/url-input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { basicsSchema } from "@/schema/resume/data";
+import { getSectionIcon, getSectionTitle } from "@/utils/resume/section";
 import { CustomFieldsSection } from "./custom-fields";
 
 export function BasicsSectionBuilder() {
@@ -27,10 +28,11 @@ export function BasicsSectionBuilder() {
 	};
 
 	return (
-		<div id="basics" className="space-y-4">
-			<h2 className="font-bold text-2xl tracking-tight">
-				<Trans>Basics</Trans>
-			</h2>
+		<div id="sidebar-basics" className="space-y-4">
+			<div className="flex items-center gap-x-4">
+				{getSectionIcon("basics")}
+				<h2 className="line-clamp-1 font-bold text-2xl tracking-tight">{getSectionTitle("basics")}</h2>
+			</div>
 
 			<Form {...form}>
 				<form onChange={form.handleSubmit(onSubmit)} className="space-y-4">

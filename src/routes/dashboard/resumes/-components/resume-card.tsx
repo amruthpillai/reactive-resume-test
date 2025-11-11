@@ -1,6 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import {
+	CopySimpleIcon,
 	FolderOpenIcon,
 	LockSimpleIcon,
 	LockSimpleOpenIcon,
@@ -13,12 +14,12 @@ import { AnimatePresence, motion } from "motion/react";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+	ContextMenu,
+	ContextMenuContent,
+	ContextMenuItem,
+	ContextMenuSeparator,
+	ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 import { useDialogStore } from "@/dialogs/store";
 import { useConfirm } from "@/hooks/use-confirm";
 import { orpc, type RouterOutput } from "@/integrations/orpc/client";
@@ -42,7 +43,11 @@ export function ResumeCard({ resume, ...props }: ResumeCardProps) {
 	}, [resume.updatedAt]);
 
 	const handleUpdate = () => {
-		openDialog("resume.update", { id: resume.id, name: resume.name, slug: resume.slug, tags: resume.tags });
+		openDialog("resume.update", resume);
+	};
+
+	const handleDuplicate = () => {
+		openDialog("resume.duplicate", resume);
 	};
 
 	const handleToggleLock = async () => {
@@ -58,7 +63,7 @@ export function ResumeCard({ resume, ...props }: ResumeCardProps) {
 			{ id: resume.id, isLocked: !resume.isLocked },
 			{
 				onSuccess: async () => {
-					await queryClient.invalidateQueries({ queryKey: orpc.resume.list.key() });
+					await queryClient.invalidateQueries({ queryKey: orpc.resume.key() });
 				},
 				onError: (error) => {
 					toast.error(error.message);
@@ -80,7 +85,7 @@ export function ResumeCard({ resume, ...props }: ResumeCardProps) {
 			{ id: resume.id },
 			{
 				onSuccess: async () => {
-					await queryClient.invalidateQueries({ queryKey: orpc.resume.list.key() });
+					await queryClient.invalidateQueries({ queryKey: orpc.resume.key() });
 					toast.success(t`Your resume has been deleted successfully.`, { id: toastId });
 				},
 				onError: (error) => {
@@ -92,45 +97,54 @@ export function ResumeCard({ resume, ...props }: ResumeCardProps) {
 
 	return (
 		<div {...props}>
-			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
-					<BaseCard title={resume.name} description={t`Last updated on ${updatedAt}`} tags={resume.tags}>
-						<img
-							alt={resume.name}
-							src="https://picsum.photos/849/1200"
-							className={cn("size-full object-cover transition-all", resume.isLocked && "blur-xs")}
-						/>
+			<ContextMenu>
+				<ContextMenuTrigger asChild>
+					<Link to="/builder/$resumeId" params={{ resumeId: resume.id }} className="cursor-default">
+						<BaseCard title={resume.name} description={t`Last updated on ${updatedAt}`} tags={resume.tags}>
+							<img
+								alt={resume.name}
+								src="https://picsum.photos/849/1200"
+								className={cn("size-full object-cover transition-all", resume.isLocked && "blur-xs")}
+							/>
 
-						<ResumeLockOverlay isLocked={resume.isLocked} />
-					</BaseCard>
-				</DropdownMenuTrigger>
+							<ResumeLockOverlay isLocked={resume.isLocked} />
+						</BaseCard>
+					</Link>
+				</ContextMenuTrigger>
 
-				<DropdownMenuContent>
-					<DropdownMenuItem asChild>
+				<ContextMenuContent>
+					<ContextMenuItem asChild>
 						<Link to="/builder/$resumeId" params={{ resumeId: resume.id }}>
 							<FolderOpenIcon />
 							<Trans>Open</Trans>
 						</Link>
-					</DropdownMenuItem>
+					</ContextMenuItem>
 
-					<DropdownMenuItem disabled={resume.isLocked} onSelect={handleUpdate}>
+					<ContextMenuSeparator />
+
+					<ContextMenuItem disabled={resume.isLocked} onSelect={handleUpdate}>
 						<PencilSimpleLineIcon />
 						<Trans>Update</Trans>
-					</DropdownMenuItem>
+					</ContextMenuItem>
 
-					<DropdownMenuItem onSelect={handleToggleLock}>
+					<ContextMenuItem disabled={resume.isLocked} onSelect={handleDuplicate}>
+						<CopySimpleIcon />
+						<Trans>Duplicate</Trans>
+					</ContextMenuItem>
+
+					<ContextMenuItem onSelect={handleToggleLock}>
 						{resume.isLocked ? <LockSimpleOpenIcon /> : <LockSimpleIcon />}
 						{resume.isLocked ? <Trans>Unlock</Trans> : <Trans>Lock</Trans>}
-					</DropdownMenuItem>
+					</ContextMenuItem>
 
-					<DropdownMenuSeparator />
+					<ContextMenuSeparator />
 
-					<DropdownMenuItem variant="destructive" disabled={resume.isLocked} onSelect={handleDelete}>
+					<ContextMenuItem variant="destructive" disabled={resume.isLocked} onSelect={handleDelete}>
 						<TrashSimpleIcon />
 						<Trans>Delete</Trans>
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
+					</ContextMenuItem>
+				</ContextMenuContent>
+			</ContextMenu>
 		</div>
 	);
 }

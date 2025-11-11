@@ -4,11 +4,28 @@ import { match } from "ts-pattern";
 import z from "zod";
 import { schema } from "@/integrations/drizzle";
 import { db } from "@/integrations/drizzle/client";
+import { resumeSchema } from "@/integrations/drizzle/schema";
 import { defaultResumeData, resumeDataSchema } from "@/schema/resume/data";
-import { slugify } from "@/utils/string";
+import { generateId } from "@/utils/string";
 import { protectedProcedure } from "../context";
 
+const tagsRouter = {
+	list: protectedProcedure.handler(async ({ context }) => {
+		const result = await db
+			.select({ tags: schema.resume.tags })
+			.from(schema.resume)
+			.where(eq(schema.resume.userId, context.user.id));
+
+		const uniqueTags = new Set(result.flatMap((tag) => tag.tags));
+		const sortedTags = Array.from(uniqueTags).sort((a, b) => a.localeCompare(b));
+
+		return sortedTags;
+	}),
+};
+
 export const resumeRouter = {
+	tags: tagsRouter,
+
 	list: protectedProcedure
 		.input(
 			z.object({
@@ -56,70 +73,33 @@ export const resumeRouter = {
 		return resume;
 	}),
 
-	create: protectedProcedure
-		.input(
-			z.object({
-				id: z.string().optional(),
-				name: z.string().trim().min(1).max(64),
-				slug: z
-					.string()
-					.trim()
-					.min(1)
-					.max(64)
-					.transform((value) => slugify(value)),
-				tags: z.array(
-					z
-						.string()
-						.trim()
-						.min(1)
-						.max(64)
-						.transform((value) => slugify(value)),
-				),
-			}),
-		)
-		.handler(async ({ context, input }) => {
-			await db.insert(schema.resume).values({
-				name: input.name,
-				slug: input.slug,
-				tags: input.tags,
-				userId: context.user.id,
-				data: defaultResumeData,
-			});
-		}),
+	create: protectedProcedure.input(resumeSchema.omit({ id: true })).handler(async ({ context, input }) => {
+		const id = generateId();
 
-	update: protectedProcedure
-		.input(
-			z.object({
-				id: z.string(),
-				name: z.string().trim().min(1).max(64),
-				slug: z
-					.string()
-					.trim()
-					.min(1)
-					.max(64)
-					.transform((value) => slugify(value)),
-				tags: z.array(
-					z
-						.string()
-						.trim()
-						.min(1)
-						.max(64)
-						.transform((value) => slugify(value)),
+		await db.insert(schema.resume).values({
+			id,
+			name: input.name,
+			slug: input.slug,
+			tags: input.tags,
+			userId: context.user.id,
+			data: defaultResumeData,
+		});
+
+		return id;
+	}),
+
+	update: protectedProcedure.input(resumeSchema).handler(async ({ context, input }) => {
+		await db
+			.update(schema.resume)
+			.set({ name: input.name, slug: input.slug, tags: input.tags })
+			.where(
+				and(
+					eq(schema.resume.id, input.id),
+					eq(schema.resume.isLocked, false),
+					eq(schema.resume.userId, context.user.id),
 				),
-			}),
-		)
-		.handler(async ({ context, input }) => {
-			await db
-				.update(schema.resume)
-				.set({ name: input.name, slug: input.slug, tags: input.tags })
-				.where(
-					and(
-						eq(schema.resume.id, input.id),
-						eq(schema.resume.isLocked, false),
-						eq(schema.resume.userId, context.user.id),
-					),
-				);
-		}),
+			);
+	}),
 
 	updateData: protectedProcedure
 		.input(z.object({ id: z.string(), data: resumeDataSchema }))
@@ -137,6 +117,36 @@ export const resumeRouter = {
 				.update(schema.resume)
 				.set({ isLocked: input.isLocked })
 				.where(and(eq(schema.resume.id, input.id), eq(schema.resume.userId, context.user.id)));
+		}),
+
+	duplicate: protectedProcedure
+		.input(resumeSchema.partial().extend({ id: z.string() }))
+		.handler(async ({ context, input }) => {
+			const result = await db
+				.select({
+					name: schema.resume.name,
+					slug: schema.resume.slug,
+					tags: schema.resume.tags,
+					data: schema.resume.data,
+				})
+				.from(schema.resume)
+				.where(and(eq(schema.resume.id, input.id), eq(schema.resume.userId, context.user.id)));
+
+			if (result.length === 0) throw new ORPCError("NOT_FOUND");
+
+			const original = result[0];
+			const id = generateId();
+
+			await db.insert(schema.resume).values({
+				id,
+				name: input.name ?? original.name,
+				slug: input.slug ?? original.slug,
+				tags: input.tags ?? original.tags,
+				data: original.data,
+				userId: context.user.id,
+			});
+
+			return id;
 		}),
 
 	delete: protectedProcedure.input(z.object({ id: z.string() })).handler(async ({ context, input }) => {

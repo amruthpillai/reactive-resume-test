@@ -13,6 +13,7 @@ import { Combobox } from "@/components/ui/combobox";
 import { MultipleCombobox } from "@/components/ui/multiple-combobox";
 import { Separator } from "@/components/ui/separator";
 import { orpc } from "@/integrations/orpc/client";
+import { cn } from "@/utils/style";
 import { CreateResumeCard } from "./-components/create-card";
 import { ResumeCard } from "./-components/resume-card";
 
@@ -35,15 +36,14 @@ function RouteComponent() {
 	const { i18n } = useLingui();
 	const { tags, sort } = Route.useSearch();
 	const navigate = useNavigate({ from: Route.fullPath });
+
+	const { data: allTags } = useQuery(orpc.resume.tags.list.queryOptions());
 	const { data: resumes } = useQuery(orpc.resume.list.queryOptions({ input: { tags, sort } }));
 
 	const tagOptions = useMemo(() => {
-		if (!resumes) return [];
-		const uniqueTags = new Set(resumes.flatMap((resume) => resume.tags));
-		return Array.from(uniqueTags)
-			.sort()
-			.map((tag) => ({ value: tag, label: tag }));
-	}, [resumes]);
+		if (!allTags) return [];
+		return allTags.map((tag) => ({ value: tag, label: tag }));
+	}, [allTags]);
 
 	const sortOptions = useMemo(() => {
 		return [
@@ -85,14 +85,15 @@ function RouteComponent() {
 				/>
 
 				<MultipleCombobox
-					options={tagOptions}
 					value={tags}
+					options={tagOptions}
 					onValueChange={(value) => {
 						navigate({ search: { tags: value, sort } });
 					}}
 					buttonProps={{
 						variant: "ghost",
 						title: t`Filter by`,
+						className: cn({ hidden: tagOptions.length === 0 }),
 						children: (_, options) => (
 							<>
 								<TagIcon />

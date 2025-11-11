@@ -19,7 +19,7 @@ const config = defineConfig({
 		tsconfigPaths(),
 		tailwindcss(),
 		tanstackStart({ router: { semicolons: true, quoteStyle: "double" } }),
-		process.env.VITEST ? undefined : nitro({ config: { preset: "bun" } }),
+		process.env.VITEST ? undefined : nitro({ preset: "bun" }),
 		viteReact({
 			babel: {
 				compact: false,
