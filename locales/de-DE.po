@@ -109,6 +109,15 @@ msgstr ""
 msgid "Add a new volunteer experience"
 msgstr ""
 
+#. placeholder {0}: passkey.createdAt.toLocaleDateString()
+#: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:110
+msgid "Added on {0}"
+msgstr ""
+
+#: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:24
+msgid "Adding your passkey..."
+msgstr ""
+
 #: src/routes/auth/register.tsx:89
 msgid "Already have an account? <0><1>Sign in now <2/></1></0>"
 msgstr "Sie haben bereits ein Konto? <0><1>Jetzt anmelden <2/></1></0>"
@@ -116,6 +125,10 @@ msgstr "Sie haben bereits ein Konto? <0><1>Jetzt anmelden <2/></1></0>"
 #: src/routes/dashboard/-components/sidebar.tsx:126
 msgid "App"
 msgstr "App"
+
+#: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:75
+msgid "Are you sure you want to delete this passkey?"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/header.tsx:114
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:76
@@ -141,7 +154,7 @@ msgid "Artificial Intelligence"
 msgstr "Künstliche Intelligenz"
 
 #: src/routes/dashboard/-components/sidebar.tsx:63
-#: src/routes/dashboard/settings/authentication/index.tsx:35
+#: src/routes/dashboard/settings/authentication/index.tsx:36
 msgid "Authentication"
 msgstr "Authentifizierung"
 
@@ -203,10 +216,6 @@ msgstr "Abbrechen"
 msgid "Certifications"
 msgstr "Zertifizierungen"
 
-#: src/routes/dashboard/settings/authentication/-components/password-section.tsx:41
-msgid "Change Password"
-msgstr "Passwort ändern"
-
 #: src/dialogs/resume/index.tsx:196
 msgid "Changed your mind? Rename your resume to something more descriptive."
 msgstr "Sie haben es sich anders überlegt? Benennen Sie Ihren Lebenslauf in etwas Aussagekräftigeres um."
@@ -237,7 +246,7 @@ msgstr ""
 msgid "Confirm"
 msgstr "Bestätigen"
 
-#: src/routes/dashboard/settings/authentication/-components/social-provider-section.tsx:65
+#: src/routes/dashboard/settings/authentication/-components/social-provider.tsx:65
 msgid "Connect"
 msgstr "Verbinden"
 
@@ -393,6 +402,10 @@ msgstr "Konto löschen"
 msgid "Deleting your account..."
 msgstr "Ihr Konto wird gelöscht..."
 
+#: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:84
+msgid "Deleting your passkey..."
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/header.tsx:120
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:82
 msgid "Deleting your resume..."
@@ -409,11 +422,8 @@ msgstr "Ihr Lebenslauf wird gelöscht..."
 msgid "Description"
 msgstr ""
 
-#: src/routes/dashboard/settings/authentication/-components/two-factor-section.tsx:48
-msgid "Disable"
-msgstr "Deaktivieren"
-
 #: src/dialogs/auth/disable-two-factor.tsx:106
+#: src/routes/dashboard/settings/authentication/-components/two-factor.tsx:49
 msgid "Disable 2FA"
 msgstr "2FA deaktivieren"
 
@@ -425,7 +435,7 @@ msgstr "Zwei-Faktor-Authentifizierung deaktivieren"
 msgid "Disabling two-factor authentication..."
 msgstr "Die Zwei-Faktor-Authentifizierung wird deaktiviert..."
 
-#: src/routes/dashboard/settings/authentication/-components/social-provider-section.tsx:59
+#: src/routes/dashboard/settings/authentication/-components/social-provider.tsx:59
 msgid "Disconnect"
 msgstr "Trennen"
 
@@ -472,9 +482,9 @@ msgstr "E-Mail"
 msgid "Email Address"
 msgstr "E-Mail-Adresse"
 
-#: src/routes/dashboard/settings/authentication/-components/two-factor-section.tsx:53
-msgid "Enable"
-msgstr "Aktivieren"
+#: src/routes/dashboard/settings/authentication/-components/two-factor.tsx:55
+msgid "Enable 2FA"
+msgstr ""
 
 #: src/dialogs/auth/enable-two-factor.tsx:156
 msgid "Enable Two-Factor Authentication"
@@ -666,7 +676,7 @@ msgstr "Öffnen"
 msgid "Open Email Client"
 msgstr "E-Mail-Programm öffnen"
 
-#: src/routes/auth/-components/social-auth.tsx:40
+#: src/routes/auth/-components/social-auth.tsx:57
 msgctxt "Choose to authenticate with a social provider (Google, GitHub, etc.) instead of email and password"
 msgid "or continue with"
 msgstr "oder weiter mit"
@@ -675,12 +685,16 @@ msgstr "oder weiter mit"
 msgid "Organization"
 msgstr ""
 
+#: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:48
+msgid "Passkeys"
+msgstr ""
+
 #: src/dialogs/auth/disable-two-factor.tsx:82
 #: src/dialogs/auth/enable-two-factor.tsx:190
 #: src/routes/auth/login.tsx:128
 #: src/routes/auth/register.tsx:169
 #: src/routes/auth/reset-password.tsx:84
-#: src/routes/dashboard/settings/authentication/-components/password-section.tsx:35
+#: src/routes/dashboard/settings/authentication/-components/password.tsx:35
 msgid "Password"
 msgstr "Passwort"
 
@@ -740,6 +754,10 @@ msgstr "Reactive Resume ist ein kostenloser und quelloffener Lebenslauf-Builder,
 #: src/utils/resume/section.tsx:39
 msgid "References"
 msgstr "Referenzen"
+
+#: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:53
+msgid "Register New Device"
+msgstr ""
 
 #: src/routes/auth/forgot-password.tsx:67
 msgid "Remember your password? <0><1>Sign in now <2/></1></0>"
@@ -832,7 +850,7 @@ msgstr "E-Mail zum Zurücksetzen des Passworts senden"
 msgid "Sending password reset email..."
 msgstr "E-Mail zum Zurücksetzen des Passworts wird gesendet..."
 
-#: src/routes/dashboard/settings/authentication/-components/password-section.tsx:47
+#: src/routes/dashboard/settings/authentication/-components/password.tsx:48
 msgid "Set Password"
 msgstr "Passwort festlegen"
 
@@ -862,7 +880,8 @@ msgstr "Melden Sie sich bei Ihrem Konto an"
 msgid "Sign up"
 msgstr "Registrieren"
 
-#: src/routes/auth/-components/social-auth.tsx:17
+#: src/routes/auth/-components/social-auth.tsx:19
+#: src/routes/auth/-components/social-auth.tsx:35
 #: src/routes/auth/login.tsx:46
 msgid "Signing in..."
 msgstr "Anmeldung läuft..."
@@ -953,7 +972,7 @@ msgid "To delete your account, you need to enter the confirmation text and click
 msgstr "Um Ihr Konto zu löschen, müssen Sie den Bestätigungstext eingeben und unten auf die Schaltfläche klicken."
 
 #: src/routes/auth/verify-2fa.tsx:59
-#: src/routes/dashboard/settings/authentication/-components/two-factor-section.tsx:42
+#: src/routes/dashboard/settings/authentication/-components/two-factor.tsx:42
 msgid "Two-Factor Authentication"
 msgstr "Zwei-Faktor-Authentifizierung"
 
@@ -1042,6 +1061,7 @@ msgid "Update an existing volunteer experience"
 msgstr ""
 
 #: src/dialogs/auth/change-password.tsx:143
+#: src/routes/dashboard/settings/authentication/-components/password.tsx:42
 msgid "Update Password"
 msgstr "Passwort aktualisieren"
 
@@ -1104,6 +1124,10 @@ msgstr "Freiwillige Arbeit"
 msgid "Website"
 msgstr "Website"
 
+#: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:21
+msgid "What do you want to call this passkey?"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/sidebar/left/sections/summary.tsx:66
 #: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:56
 msgid "What do you want to rename this section to?"
@@ -1117,6 +1141,11 @@ msgstr "Wenn gesperrt, kann der Lebenslauf nicht aktualisiert oder gelöscht wer
 #: src/routes/auth/login.tsx:115
 msgid "You can also use your username to login."
 msgstr "Sie können sich auch mit Ihrem Benutzernamen anmelden."
+
+#. placeholder {0}: passkey.name ?? "(WebAuthn Device)"
+#: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:76
+msgid "You cannot use the passkey \"{0}\" anymore to sign in after deletion. This action cannot be undone."
+msgstr ""
 
 #: src/routes/auth/forgot-password.tsx:110
 #: src/routes/auth/register.tsx:207
@@ -1134,6 +1163,14 @@ msgstr "Die Verknüpfung Ihres {providerName}-Kontos wurde erfolgreich aufgehobe
 #: src/routes/dashboard/settings/danger-zone.tsx:43
 msgid "Your account has been deleted successfully."
 msgstr "Ihr Konto wurde erfolgreich gelöscht."
+
+#: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:29
+msgid "Your passkey has been added successfully."
+msgstr ""
+
+#: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:91
+msgid "Your passkey has been deleted successfully."
+msgstr ""
 
 #: src/routes/auth/reset-password.tsx:58
 msgid "Your password has been reset successfully. You can now sign in with your new password."

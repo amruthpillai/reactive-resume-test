@@ -2,6 +2,7 @@ import { createServerOnlyFn } from "@tanstack/react-start";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { twoFactor } from "better-auth/plugins";
+import { passkey } from "better-auth/plugins/passkey";
 import { username } from "better-auth/plugins/username";
 import { reactStartCookies } from "better-auth/react-start";
 import { db } from "@/integrations/drizzle/client";
@@ -110,6 +111,7 @@ const getAuthServerFn = createServerOnlyFn(() => {
 				validationOrder: { username: "post-normalization", displayUsername: "post-normalization" },
 			}),
 			twoFactor({ issuer: "Reactive Resume" }),
+			passkey({ rpName: "Reactive Resume", rpID: "localhost" }),
 			reactStartCookies(),
 		],
 	});

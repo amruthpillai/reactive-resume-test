@@ -2,7 +2,7 @@ import { t } from "@lingui/core/macro";
 import { GithubLogoIcon, GoogleLogoIcon, PasswordIcon } from "@phosphor-icons/react";
 import { useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { match } from "ts-pattern";
 import { authClient } from "@/integrations/auth/client";
@@ -130,5 +130,21 @@ export function useEnabledProviders() {
 	return {
 		enabledProviders,
 		isProviderEnabled,
+	};
+}
+
+/**
+ * Hook to list user passkeys
+ */
+export function useUserPasskeys() {
+	const { data } = useQuery({
+		queryKey: ["auth", "passkeys"],
+		queryFn: () => authClient.passkey.listUserPasskeys(),
+	});
+
+	const passkeys = useMemo(() => data?.data ?? [], [data]);
+
+	return {
+		passkeys,
 	};
 }

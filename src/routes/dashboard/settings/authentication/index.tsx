@@ -4,9 +4,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { Separator } from "@/components/ui/separator";
 import { useAuthAccounts, useAuthProviderActions, useEnabledProviders } from "./-components/hooks";
-import { PasswordSection } from "./-components/password-section";
-import { SocialProviderSection } from "./-components/social-provider-section";
-import { TwoFactorSection } from "./-components/two-factor-section";
+import { PasskeysSection } from "./-components/passkeys";
+import { PasswordSection } from "./-components/password";
+import { SocialProviderSection } from "./-components/social-provider";
+import { TwoFactorSection } from "./-components/two-factor";
 
 export const Route = createFileRoute("/dashboard/settings/authentication/")({
 	component: RouteComponent,
@@ -43,13 +44,15 @@ function RouteComponent() {
 
 				<TwoFactorSection hasPassword={hasPassword} />
 
+				<PasskeysSection />
+
 				{isGoogleEnabled && (
 					<SocialProviderSection
 						provider="google"
 						isConnected={hasGoogle}
 						accountId={googleAccount?.accountId}
-						onConnect={handleLinkSocial}
-						onDisconnect={handleUnlinkSocial}
+						onLink={handleLinkSocial}
+						onUnlink={handleUnlinkSocial}
 						animationDelay={0.2}
 					/>
 				)}
@@ -59,8 +62,8 @@ function RouteComponent() {
 						provider="github"
 						isConnected={hasGitHub}
 						accountId={githubAccount?.accountId}
-						onConnect={handleLinkSocial}
-						onDisconnect={handleUnlinkSocial}
+						onLink={handleLinkSocial}
+						onUnlink={handleUnlinkSocial}
 						animationDelay={0.3}
 					/>
 				)}

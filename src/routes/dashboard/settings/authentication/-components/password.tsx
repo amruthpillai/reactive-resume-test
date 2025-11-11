@@ -1,5 +1,5 @@
 import { Trans } from "@lingui/react/macro";
-import { PasswordIcon } from "@phosphor-icons/react";
+import { PasswordIcon, PencilSimpleLineIcon } from "@phosphor-icons/react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useCallback } from "react";
@@ -15,7 +15,7 @@ export function PasswordSection({ hasPassword }: PasswordSectionProps) {
 	const navigate = useNavigate();
 	const { openDialog } = useDialogStore();
 
-	const handlePasswordAction = useCallback(() => {
+	const handleUpdatePassword = useCallback(() => {
 		if (hasPassword) {
 			openDialog("auth.change-password", undefined);
 		} else {
@@ -37,8 +37,9 @@ export function PasswordSection({ hasPassword }: PasswordSectionProps) {
 
 			{match(hasPassword)
 				.with(true, () => (
-					<Button variant="outline" onClick={handlePasswordAction}>
-						<Trans>Change Password</Trans>
+					<Button variant="outline" onClick={handleUpdatePassword}>
+						<PencilSimpleLineIcon />
+						<Trans>Update Password</Trans>
 					</Button>
 				))
 				.with(false, () => (

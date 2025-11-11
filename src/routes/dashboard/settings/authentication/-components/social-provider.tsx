@@ -12,8 +12,8 @@ type SocialProviderSectionProps = {
 	provider: AuthProvider;
 	isConnected: boolean;
 	accountId?: string;
-	onConnect: (provider: AuthProvider) => void;
-	onDisconnect: (provider: AuthProvider, accountId: string) => void;
+	onLink: (provider: AuthProvider) => void;
+	onUnlink: (provider: AuthProvider, accountId: string) => void;
 	animationDelay?: number;
 };
 
@@ -21,22 +21,22 @@ export function SocialProviderSection({
 	provider,
 	isConnected,
 	accountId,
-	onConnect,
-	onDisconnect,
+	onLink,
+	onUnlink,
 	animationDelay = 0,
 }: SocialProviderSectionProps) {
 	const providerName = useMemo(() => getProviderName(provider), [provider]);
 	const providerIcon = useMemo(() => getProviderIcon(provider), [provider]);
 
-	const handleConnect = useCallback(() => {
-		onConnect(provider);
-	}, [onConnect, provider]);
+	const handleLink = useCallback(() => {
+		onLink(provider);
+	}, [onLink, provider]);
 
-	const handleDisconnect = useCallback(() => {
+	const handleUnlink = useCallback(() => {
 		if (accountId) {
-			onDisconnect(provider, accountId);
+			onUnlink(provider, accountId);
 		}
-	}, [accountId, onDisconnect, provider]);
+	}, [accountId, onUnlink, provider]);
 
 	return (
 		<motion.div
@@ -54,13 +54,13 @@ export function SocialProviderSection({
 
 				{match(isConnected)
 					.with(true, () => (
-						<Button variant="outline" onClick={handleDisconnect}>
+						<Button variant="outline" onClick={handleUnlink}>
 							<LinkBreakIcon />
 							<Trans>Disconnect</Trans>
 						</Button>
 					))
 					.with(false, () => (
-						<Button variant="outline" onClick={handleConnect}>
+						<Button variant="outline" onClick={handleLink}>
 							<LinkIcon />
 							<Trans>Connect</Trans>
 						</Button>

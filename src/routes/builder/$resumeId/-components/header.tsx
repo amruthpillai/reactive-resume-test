@@ -50,7 +50,7 @@ export function BuilderHeader() {
 					</Link>
 				</Button>
 				<span className="mr-2.5 text-muted-foreground">/</span>
-				<h2 className="font-medium">{resumeName}</h2>
+				<h2 className="flex-1 truncate font-medium">{resumeName}</h2>
 				{isLocked && <LockSimpleIcon className="ml-2 text-muted-foreground" />}
 				<BuilderHeaderDropdown resumeId={resumeId} isLocked={isLocked} />
 			</div>

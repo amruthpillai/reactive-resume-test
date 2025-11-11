@@ -1,4 +1,4 @@
-import { boolean, index, jsonb, pgTable, text, timestamp, unique } from "drizzle-orm/pg-core";
+import { boolean, index, integer, jsonb, pgTable, text, timestamp, unique } from "drizzle-orm/pg-core";
 import z from "zod";
 import { defaultResumeData, type ResumeData } from "@/schema/resume/data";
 import { generateId, slugify } from "@/utils/string";
@@ -88,6 +88,54 @@ export const verification = pgTable("verification", {
 		.$onUpdate(() => /* @__PURE__ */ new Date()),
 });
 
+export const twoFactor = pgTable(
+	"two_factor",
+	{
+		id: text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		userId: text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		secret: text("secret"),
+		backupCodes: text("backup_codes"),
+		createdAt: timestamp("created_at").notNull().defaultNow(),
+		updatedAt: timestamp("updated_at")
+			.notNull()
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date()),
+	},
+	(t) => [index().on(t.userId)],
+);
+
+export const passkey = pgTable(
+	"passkey",
+	{
+		id: text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		name: text("name"),
+		aaguid: text("aaguid"),
+		publicKey: text("public_key").notNull(),
+		credentialID: text("credential_id").notNull(),
+		counter: integer("counter").notNull(),
+		deviceType: text("device_type").notNull(),
+		backedUp: boolean("backed_up").notNull().default(false),
+		transports: text("transports").notNull(),
+		userId: text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		createdAt: timestamp("created_at").notNull().defaultNow(),
+		updatedAt: timestamp("updated_at")
+			.notNull()
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date()),
+	},
+	(t) => [index().on(t.userId)],
+);
+
 export const resume = pgTable(
 	"resume",
 	{
@@ -134,24 +182,3 @@ export const resumeSchema = z.object({
 			.transform((value) => slugify(value)),
 	),
 });
-
-export const twoFactor = pgTable(
-	"two_factor",
-	{
-		id: text("id")
-			.notNull()
-			.primaryKey()
-			.$defaultFn(() => generateId()),
-		userId: text("user_id")
-			.notNull()
-			.references(() => user.id, { onDelete: "cascade" }),
-		secret: text("secret"),
-		backupCodes: text("backup_codes"),
-		createdAt: timestamp("created_at").notNull().defaultNow(),
-		updatedAt: timestamp("updated_at")
-			.notNull()
-			.defaultNow()
-			.$onUpdate(() => /* @__PURE__ */ new Date()),
-	},
-	(t) => [index().on(t.userId)],
-);

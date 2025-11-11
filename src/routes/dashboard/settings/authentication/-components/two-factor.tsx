@@ -1,5 +1,5 @@
 import { Trans } from "@lingui/react/macro";
-import { KeyIcon, LockOpenIcon } from "@phosphor-icons/react";
+import { KeyIcon, LockOpenIcon, ToggleLeftIcon, ToggleRightIcon } from "@phosphor-icons/react";
 import { motion } from "motion/react";
 import { useCallback, useMemo } from "react";
 import { match } from "ts-pattern";
@@ -45,12 +45,14 @@ export function TwoFactorSection({ hasPassword }: TwoFactorSectionProps) {
 				{match(twoFactorEnabled)
 					.with(true, () => (
 						<Button variant="outline" onClick={handleTwoFactorAction}>
-							<Trans>Disable</Trans>
+							<ToggleLeftIcon />
+							<Trans>Disable 2FA</Trans>
 						</Button>
 					))
 					.with(false, () => (
 						<Button variant="outline" onClick={handleTwoFactorAction}>
-							<Trans>Enable</Trans>
+							<ToggleRightIcon />
+							<Trans>Enable 2FA</Trans>
 						</Button>
 					))
 					.exhaustive()}

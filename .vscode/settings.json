@@ -41,5 +41,6 @@
 		"pnpm-lock.yaml": true
 	},
 	"tailwindCSS.classFunctions": ["cn", "cva"],
-	"tailwindCSS.experimental.classRegex": ["class:\\s*?[\"'`]([^\"'`]*).*?,"]
+	"tailwindCSS.experimental.classRegex": ["class:\\s*?[\"'`]([^\"'`]*).*?,"],
+	"i18n-ally.keystyle": "nested"
 }
