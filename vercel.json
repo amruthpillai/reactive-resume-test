@@ -2,7 +2,8 @@
 	"$schema": "https://openapi.vercel.sh/vercel.json",
 	"version": 2,
 	"bunVersion": "1.x",
-	"outputDirectory": "dist",
+	"outputDirectory": ".output",
 	"framework": "tanstack-start",
-	"installCommand": "bun install"
+	"installCommand": "bun install",
+	"buildCommand": "VERCEL=1 vite build"
 }

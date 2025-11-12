@@ -39,4 +39,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
 
 EXPOSE 3000
 
-CMD ["bun", "run", "server.ts"]
+CMD ["bun", "--bun", "run", "entrypoint.ts"]
