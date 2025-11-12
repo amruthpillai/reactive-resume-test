@@ -38,7 +38,7 @@ export function PasskeysSection() {
 		<motion.div
 			initial={{ opacity: 0, y: -20 }}
 			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.3, delay: 0.1 }}
+			transition={{ duration: 0.3, delay: 0.3 }}
 		>
 			<Separator />
 
@@ -54,7 +54,7 @@ export function PasskeysSection() {
 				</Button>
 			</div>
 
-			<AnimatePresence presenceAffectsLayout>
+			<AnimatePresence>
 				{passkeys.map((passkey) => (
 					<PasskeyItem key={passkey.id} passkey={passkey} />
 				))}

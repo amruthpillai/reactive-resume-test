@@ -207,8 +207,6 @@ export const sectionsSchema = z.object({
 });
 
 export type SectionType = keyof z.infer<typeof sectionsSchema>;
-export type ExtendedSectionType = "picture" | "basics" | "summary" | SectionType | "custom";
-
 export type SectionData = z.infer<typeof sectionsSchema>[SectionType];
 export type SectionItem = SectionData["items"][number];
 

@@ -33,12 +33,12 @@ function RouteComponent() {
 
 				<PasskeysSection />
 
-				{"google" in enabledProviders && <SocialProviderSection provider="google" animationDelay={0.2} />}
+				{"google" in enabledProviders && <SocialProviderSection provider="google" animationDelay={0.4} />}
 
-				{"github" in enabledProviders && <SocialProviderSection provider="github" animationDelay={0.3} />}
+				{"github" in enabledProviders && <SocialProviderSection provider="github" animationDelay={0.5} />}
 
 				{"custom" in enabledProviders && (
-					<SocialProviderSection provider="custom" animationDelay={0.4} name={enabledProviders.custom} />
+					<SocialProviderSection provider="custom" animationDelay={0.6} name={enabledProviders.custom} />
 				)}
 			</div>
 		</div>

@@ -214,7 +214,7 @@ function RouteComponent() {
 						)}
 					/>
 
-					<AnimatePresence presenceAffectsLayout>
+					<AnimatePresence>
 						{form.formState.isDirty && (
 							<motion.div
 								initial={{ opacity: 0, x: -20 }}

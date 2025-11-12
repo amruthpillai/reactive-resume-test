@@ -1,16 +1,13 @@
 import { Trans } from "@lingui/react/macro";
 import {
-	CaretDownIcon,
 	CopySimpleIcon,
 	DotsThreeVerticalIcon,
 	EyeClosedIcon,
 	EyeIcon,
 	PencilSimpleLineIcon,
-	PlusIcon,
 	TrashSimpleIcon,
 } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
-import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -23,59 +20,28 @@ import { useDialogStore } from "@/dialogs/store";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useResumeData } from "@/routes/builder/$resumeId/-hooks/resume";
 import { useResumeStore } from "@/routes/builder/$resumeId/-store/resume";
-import { useSectionStore } from "@/routes/builder/$resumeId/-store/section";
 import type { CustomSection } from "@/schema/resume/data";
-import { getSectionIcon, getSectionTitle } from "@/utils/resume/section";
 import { cn } from "@/utils/style";
+import { SectionBase } from "../shared/section-base";
+import { SectionAddItemButton } from "../shared/section-item";
 
 export function CustomSectionBuilder() {
-	const { openDialog } = useDialogStore();
 	const customSections = useResumeData((state) => state.customSections);
 
-	const collapsed = useSectionStore((state) => state.sections.custom?.collapsed ?? false);
-	const toggleCollapsed = useSectionStore((state) => state.toggleCollapsed);
-
-	const handleAdd = () => {
-		openDialog("resume.sections.custom.create", undefined);
-	};
-
 	return (
-		<div id="sidebar-custom" className="space-y-4">
-			<div className="flex items-center">
-				<Button size="icon" variant="ghost" className="mr-1.5" onClick={() => toggleCollapsed("custom")}>
-					<CaretDownIcon className={cn("transition-transform", collapsed && "-rotate-90")} />
-				</Button>
+		<SectionBase type="custom">
+			<div className={cn("rounded-md border", customSections.length === 0 && "border-dashed")}>
+				<AnimatePresence>
+					{customSections.map((section) => (
+						<CustomSectionItem key={section.id} section={section} />
+					))}
+				</AnimatePresence>
 
-				<div className="flex flex-1 items-center gap-x-4">
-					{getSectionIcon("custom")}
-					<h2 className="line-clamp-1 font-bold text-2xl tracking-tight">{getSectionTitle("custom")}</h2>
-				</div>
+				<SectionAddItemButton type="custom">
+					<Trans>Add a new custom section</Trans>
+				</SectionAddItemButton>
 			</div>
-
-			<AnimatePresence>
-				{!collapsed && (
-					<motion.div
-						initial={{ opacity: 0, y: -10 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -10, transition: { duration: 0.15 } }}
-						className="rounded-md border"
-					>
-						{customSections.map((section) => (
-							<CustomSectionItem key={section.id} section={section} />
-						))}
-
-						<button
-							type="button"
-							onClick={handleAdd}
-							className="flex w-full items-center gap-x-2 px-3 py-4 font-medium hover:bg-secondary/20 focus:outline-none focus-visible:ring-1"
-						>
-							<PlusIcon />
-							<Trans>Add a new custom section</Trans>
-						</button>
-					</motion.div>
-				)}
-			</AnimatePresence>
-		</div>
+		</SectionBase>
 	);
 }
 

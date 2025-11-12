@@ -1,14 +1,12 @@
 import { useCallback, useRef } from "react";
-import { useResumeData } from "@/builder/-hooks/resume";
+import { useBuilderSidebar, useBuilderSidebarStore } from "@/builder/-store/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { UserDropdownMenu } from "@/components/user/dropdown-menu";
-import type { ExtendedSectionType, SectionType } from "@/schema/resume/data";
-import { getSectionIcon, getSectionTitle } from "@/utils/resume/section";
+import { getSectionIcon, getSectionTitle, type LeftSidebarSection, leftSidebarSections } from "@/utils/resume/section";
 import { getInitials } from "@/utils/string";
-import { useBuilderSidebar, useBuilderSidebarStore } from "../../../-store/sidebar";
 import { BuilderSidebarEdge } from "../edge";
 import { AwardsSectionBuilder } from "./sections/awards";
 import { BasicsSectionBuilder } from "./sections/basics";
@@ -30,91 +28,12 @@ import { VolunteerSectionBuilder } from "./sections/volunteer";
 export function BuilderSidebarLeft() {
 	const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
-	const sections = useResumeData((data) => data.sections);
-	const leftSidebar = useBuilderSidebarStore((state) => state.leftSidebar);
-	const toggleLeftSidebar = useBuilderSidebar((state) => state.toggleLeftSidebar);
-
-	const scrollToSection = useCallback(
-		(section: ExtendedSectionType) => {
-			if (!scrollAreaRef.current || !leftSidebar) return;
-
-			if (leftSidebar.isCollapsed()) toggleLeftSidebar();
-
-			const sectionElement = scrollAreaRef.current.querySelector(`#sidebar-${section}`);
-			sectionElement?.scrollIntoView({ behavior: "smooth" });
-		},
-		[leftSidebar, toggleLeftSidebar],
-	);
-
 	return (
 		<>
-			<BuilderSidebarEdge side="left">
-				<div />
-
-				<div className="flex flex-col justify-center gap-y-2">
-					<Button
-						size="icon"
-						variant="ghost"
-						title={getSectionTitle("picture")}
-						onClick={() => scrollToSection("picture")}
-					>
-						{getSectionIcon("picture")}
-					</Button>
-
-					<Button
-						size="icon"
-						variant="ghost"
-						title={getSectionTitle("basics")}
-						onClick={() => scrollToSection("basics")}
-					>
-						{getSectionIcon("basics")}
-					</Button>
-
-					<Button
-						size="icon"
-						variant="ghost"
-						title={getSectionTitle("summary")}
-						onClick={() => scrollToSection("summary")}
-					>
-						{getSectionIcon("summary")}
-					</Button>
-
-					{Object.entries(sections).map(([key, section]) => (
-						<Button
-							key={key}
-							size="icon"
-							variant="ghost"
-							title={section.title}
-							onClick={() => scrollToSection(key as SectionType)}
-						>
-							{getSectionIcon(key as SectionType)}
-						</Button>
-					))}
-
-					<Button
-						size="icon"
-						variant="ghost"
-						title={getSectionTitle("custom")}
-						onClick={() => scrollToSection("custom")}
-					>
-						{getSectionIcon("custom")}
-					</Button>
-				</div>
-
-				<UserDropdownMenu>
-					{({ session }) => (
-						<Button size="icon" variant="ghost">
-							<Avatar className="size-6">
-								<AvatarImage src={session.user.image ?? undefined} />
-								<AvatarFallback className="text-[0.5rem]">{getInitials(session.user.name)}</AvatarFallback>
-							</Avatar>
-						</Button>
-					)}
-				</UserDropdownMenu>
-			</BuilderSidebarEdge>
+			<SidebarEdge scrollAreaRef={scrollAreaRef} />
 
 			<ScrollArea ref={scrollAreaRef} className="@container h-full sm:ml-12">
-				<div className="flex flex-col space-y-4 p-4">
+				<div className="space-y-4 p-4">
 					<PictureSectionBuilder />
 					<Separator />
 					<BasicsSectionBuilder />
@@ -149,5 +68,57 @@ export function BuilderSidebarLeft() {
 				</div>
 			</ScrollArea>
 		</>
+	);
+}
+
+type SidebarEdgeProps = {
+	scrollAreaRef: React.RefObject<HTMLDivElement | null>;
+};
+
+function SidebarEdge({ scrollAreaRef }: SidebarEdgeProps) {
+	const sidebar = useBuilderSidebarStore((state) => state.leftSidebar);
+	const toggleSidebar = useBuilderSidebar((state) => state.toggleLeftSidebar);
+
+	const scrollToSection = useCallback(
+		(section: LeftSidebarSection) => {
+			if (!scrollAreaRef.current || !sidebar) return;
+
+			if (sidebar.isCollapsed()) toggleSidebar();
+
+			const sectionElement = scrollAreaRef.current.querySelector(`#sidebar-${section}`);
+			sectionElement?.scrollIntoView({ behavior: "smooth" });
+		},
+		[sidebar, toggleSidebar, scrollAreaRef],
+	);
+
+	return (
+		<BuilderSidebarEdge side="left">
+			<div />
+
+			<div className="flex flex-col justify-center gap-y-2">
+				{leftSidebarSections.map((section) => (
+					<Button
+						key={section}
+						size="icon"
+						variant="ghost"
+						title={getSectionTitle(section)}
+						onClick={() => scrollToSection(section)}
+					>
+						{getSectionIcon(section)}
+					</Button>
+				))}
+			</div>
+
+			<UserDropdownMenu>
+				{({ session }) => (
+					<Button size="icon" variant="ghost">
+						<Avatar className="size-6">
+							<AvatarImage src={session.user.image ?? undefined} />
+							<AvatarFallback className="text-[0.5rem]">{getInitials(session.user.name)}</AvatarFallback>
+						</Avatar>
+					</Button>
+				)}
+			</UserDropdownMenu>
+		</BuilderSidebarEdge>
 	);
 }

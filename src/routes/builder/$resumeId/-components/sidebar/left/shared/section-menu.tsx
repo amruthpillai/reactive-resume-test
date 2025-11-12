@@ -32,23 +32,29 @@ import type { SectionType } from "@/schema/resume/data";
 import { getSectionTitle } from "@/utils/resume/section";
 
 type Props = {
-	type: SectionType;
+	type: "summary" | SectionType;
 };
 
 export function SectionDropdownMenu({ type }: Props) {
 	const prompt = usePrompt();
 	const confirm = useConfirm();
 	const { openDialog } = useDialogStore();
-	const section = useResumeData((state) => state.sections[type]);
+
 	const updateResume = useResumeStore((state) => state.updateResume);
+	const section = useResumeData((state) => (type === "summary" ? state.summary : state.sections[type]));
 
 	const onAddItem = () => {
+		if (type === "summary") return;
 		openDialog(`resume.sections.${type}.create`, undefined);
 	};
 
 	const onToggleVisibility = () => {
 		updateResume((draft) => {
-			draft.sections[type].hidden = !draft.sections[type].hidden;
+			if (type === "summary") {
+				draft.summary.hidden = !draft.summary.hidden;
+			} else {
+				draft.sections[type].hidden = !draft.sections[type].hidden;
+			}
 		});
 	};
 
@@ -60,19 +66,31 @@ export function SectionDropdownMenu({ type }: Props) {
 
 		if (!newTitle) {
 			updateResume((draft) => {
-				draft.sections[type].title = getSectionTitle(type);
+				if (type === "summary") {
+					draft.summary.title = getSectionTitle("summary");
+				} else {
+					draft.sections[type].title = getSectionTitle(type);
+				}
 			});
 			return;
 		}
 
 		updateResume((draft) => {
-			draft.sections[type].title = newTitle;
+			if (type === "summary") {
+				draft.summary.title = newTitle;
+			} else {
+				draft.sections[type].title = newTitle;
+			}
 		});
 	};
 
 	const onSetColumns = (value: string) => {
 		updateResume((draft) => {
-			draft.sections[type].columns = parseInt(value, 10);
+			if (type === "summary") {
+				draft.summary.columns = parseInt(value, 10);
+			} else {
+				draft.sections[type].columns = parseInt(value, 10);
+			}
 		});
 	};
 
@@ -86,8 +104,11 @@ export function SectionDropdownMenu({ type }: Props) {
 		if (!confirmed) return;
 
 		updateResume((draft) => {
-			if (!("items" in draft.sections[type])) return;
-			draft.sections[type].items = [];
+			if (type === "summary") {
+				draft.summary.content = "";
+			} else {
+				draft.sections[type].items = [];
+			}
 		});
 	};
 
@@ -100,14 +121,18 @@ export function SectionDropdownMenu({ type }: Props) {
 			</DropdownMenuTrigger>
 
 			<DropdownMenuContent align="end">
-				<DropdownMenuGroup>
-					<DropdownMenuItem onSelect={onAddItem}>
-						<PlusIcon />
-						<Trans>Add a new item</Trans>
-					</DropdownMenuItem>
-				</DropdownMenuGroup>
+				{type !== "summary" && (
+					<>
+						<DropdownMenuGroup>
+							<DropdownMenuItem onSelect={onAddItem}>
+								<PlusIcon />
+								<Trans>Add a new item</Trans>
+							</DropdownMenuItem>
+						</DropdownMenuGroup>
 
-				<DropdownMenuSeparator />
+						<DropdownMenuSeparator />
+					</>
+				)}
 
 				<DropdownMenuGroup>
 					<DropdownMenuItem onSelect={onToggleVisibility}>

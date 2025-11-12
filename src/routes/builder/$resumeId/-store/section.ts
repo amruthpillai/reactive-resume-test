@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import type { ExtendedSectionType } from "@/schema/resume/data";
+import type { SidebarSection } from "@/utils/resume/section";
 
 type SectionCollapseState = {
-	[id in ExtendedSectionType]?: { collapsed: boolean };
+	[id in SidebarSection]?: { collapsed: boolean };
 };
 
 type SectionStoreState = {
@@ -12,8 +12,8 @@ type SectionStoreState = {
 };
 
 type SectionStoreActions = {
-	setCollapsed: (id: ExtendedSectionType, collapsed: boolean) => void;
-	toggleCollapsed: (id: ExtendedSectionType) => void;
+	setCollapsed: (id: SidebarSection, collapsed: boolean) => void;
+	toggleCollapsed: (id: SidebarSection) => void;
 };
 
 type SectionStore = SectionStoreState & SectionStoreActions;

@@ -1,54 +1,63 @@
-import { CaretDownIcon } from "@phosphor-icons/react";
-import { AnimatePresence, motion } from "motion/react";
+import { CaretRightIcon } from "@phosphor-icons/react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
 import { useResumeData } from "@/builder/-hooks/resume";
 import { Button } from "@/components/ui/button";
 import { useSectionStore } from "@/routes/builder/$resumeId/-store/section";
 import type { SectionType } from "@/schema/resume/data";
-import { getSectionIcon } from "@/utils/resume/section";
+import { getSectionIcon, getSectionTitle, type LeftSidebarSection } from "@/utils/resume/section";
 import { cn } from "@/utils/style";
-import { SectionMask } from "./section-mask";
 import { SectionDropdownMenu } from "./section-menu";
 
-type Props = React.ComponentProps<"div"> & {
-	type: SectionType;
-	children: React.ReactNode;
+type Props = React.PropsWithChildren & {
+	type: LeftSidebarSection;
 };
 
-export function SectionBase({ type, className, children, ...props }: Props) {
-	const section = useResumeData((state) => state.sections[type]);
+export function SectionBase({ type, children }: Props) {
+	const section = useResumeData((state) => {
+		if (type === "basics") return state.basics;
+		if (type === "summary") return state.summary;
+		if (type === "picture") return state.picture;
+		if (type === "custom") return state.customSections;
+		return state.sections[type];
+	});
 
+	const isHidden = "hidden" in section && section.hidden;
 	const collapsed = useSectionStore((state) => state.sections[type]?.collapsed ?? false);
 	const toggleCollapsed = useSectionStore((state) => state.toggleCollapsed);
 
 	return (
-		<div id={`sidebar-${type}`} className={cn("space-y-4", className)} {...props}>
-			<div className="flex items-center">
-				<Button size="icon" variant="ghost" className="mr-1.5" onClick={() => toggleCollapsed(type)}>
-					<CaretDownIcon className={cn("transition-transform", collapsed && "-rotate-90")} />
-				</Button>
+		<Accordion
+			collapsible
+			type="single"
+			id={`sidebar-${type}`}
+			value={collapsed ? "" : type}
+			onValueChange={() => toggleCollapsed(type)}
+			className={cn("space-y-4", isHidden && "opacity-50")}
+		>
+			<AccordionItem value={type} className="group/accordion space-y-4">
+				<div className="flex items-center">
+					<AccordionTrigger asChild>
+						<Button size="icon" variant="ghost" className="mr-1.5 [&>svg]:group-data-[state=open]/accordion:rotate-90">
+							<CaretRightIcon className="transition-transform" />
+						</Button>
+					</AccordionTrigger>
 
-				<div className="flex flex-1 items-center gap-x-4">
-					{getSectionIcon(type)}
-					<h2 className="line-clamp-1 font-bold text-2xl tracking-tight">{section.title}</h2>
+					<div className="flex flex-1 items-center gap-x-4">
+						{getSectionIcon(type)}
+						<h2 className="line-clamp-1 font-bold text-2xl tracking-tight">
+							{"title" in section ? section.title : getSectionTitle(type)}
+						</h2>
+					</div>
+
+					{!["picture", "basics", "custom"].includes(type) && (
+						<SectionDropdownMenu type={type as "summary" | SectionType} />
+					)}
 				</div>
 
-				<SectionDropdownMenu type={type} />
-			</div>
-
-			<AnimatePresence>
-				{!collapsed && (
-					<motion.div
-						initial={{ opacity: 0, y: -10 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -10, transition: { duration: 0.15 } }}
-						className="relative flex flex-col gap-4"
-					>
-						<SectionMask hidden={section.hidden} />
-
-						{children}
-					</motion.div>
-				)}
-			</AnimatePresence>
-		</div>
+				<AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+					{children}
+				</AccordionContent>
+			</AccordionItem>
+		</Accordion>
 	);
 }

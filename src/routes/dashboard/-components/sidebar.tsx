@@ -165,7 +165,7 @@ export function DashboardSidebar() {
 					</SidebarMenuItem>
 				</SidebarMenu>
 
-				<AnimatePresence presenceAffectsLayout>
+				<AnimatePresence>
 					{state === "expanded" && (
 						<motion.div
 							key="copyright"

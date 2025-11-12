@@ -2,9 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
-import { ApertureIcon, CaretDownIcon, TrashSimpleIcon, UploadSimpleIcon } from "@phosphor-icons/react";
+import { ApertureIcon, TrashSimpleIcon, UploadSimpleIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
-import { AnimatePresence, motion } from "motion/react";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -27,40 +26,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import { orpc } from "@/integrations/orpc/client";
-import { useSectionStore } from "@/routes/builder/$resumeId/-store/section";
 import { pictureSchema } from "@/schema/resume/data";
-import { getSectionIcon, getSectionTitle } from "@/utils/resume/section";
-import { cn } from "@/utils/style";
+import { SectionBase } from "../shared/section-base";
 
 export function PictureSectionBuilder() {
-	const collapsed = useSectionStore((state) => state.sections.picture?.collapsed ?? false);
-	const toggleCollapsed = useSectionStore((state) => state.toggleCollapsed);
-
 	return (
-		<div id="sidebar-picture" className="space-y-4">
-			<div className="flex items-center">
-				<Button size="icon" variant="ghost" className="mr-1.5" onClick={() => toggleCollapsed("picture")}>
-					<CaretDownIcon className={cn("transition-transform", collapsed && "-rotate-90")} />
-				</Button>
-
-				<div className="flex flex-1 items-center gap-x-4">
-					{getSectionIcon("picture")}
-					<h2 className="line-clamp-1 font-bold text-2xl tracking-tight">{getSectionTitle("picture")}</h2>
-				</div>
-			</div>
-
-			<AnimatePresence>
-				{!collapsed && (
-					<motion.div
-						initial={{ opacity: 0, y: -10 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -10, transition: { duration: 0.15 } }}
-					>
-						<PictureSectionForm />
-					</motion.div>
-				)}
-			</AnimatePresence>
-		</div>
+		<SectionBase type="picture">
+			<PictureSectionForm />
+		</SectionBase>
 	);
 }
 
@@ -144,13 +117,13 @@ function PictureSectionForm() {
 
 					<div
 						onClick={picture.url ? onDeletePicture : onSelectPicture}
-						className="group relative size-18 cursor-pointer overflow-hidden rounded-md bg-secondary transition-colors hover:bg-secondary/50"
+						className="group/picture relative size-18 cursor-pointer overflow-hidden rounded-md bg-secondary transition-colors hover:bg-secondary/50"
 					>
 						{picture.url && (
 							<img
 								alt=""
 								src={picture.url}
-								className="fade-in relative z-10 size-full animate-in rounded-md object-cover transition-opacity duration-300 group-hover:opacity-20"
+								className="fade-in relative z-10 size-full animate-in rounded-md object-cover transition-opacity duration-300 group-hover/picture:opacity-20"
 							/>
 						)}
 

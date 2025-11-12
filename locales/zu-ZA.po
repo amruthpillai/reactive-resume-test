@@ -28,8 +28,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/summary.tsx:145
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:133
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:158
 msgid "{column, plural, one {# Column} other {# Columns}}"
 msgstr ""
 
@@ -37,15 +36,15 @@ msgstr ""
 msgid "<0>Finally,</0><1>A free and open-source resume builder</1>"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:368
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:341
 msgid "0%"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:374
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:347
 msgid "100%"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:371
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:344
 msgid "20%"
 msgstr ""
 
@@ -65,59 +64,59 @@ msgstr ""
 msgid "Add a label to the URL"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/awards.tsx:45
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/awards.tsx:33
 msgid "Add a new award"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/certifications.tsx:51
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/certifications.tsx:39
 msgid "Add a new certification"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:73
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:41
 msgid "Add a new custom section"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/education.tsx:45
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/education.tsx:33
 msgid "Add a new education"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/experience.tsx:45
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/experience.tsx:33
 msgid "Add a new experience"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/interests.tsx:45
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/interests.tsx:33
 msgid "Add a new interest"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:106
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:129
 msgid "Add a new item"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/languages.tsx:45
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/languages.tsx:33
 msgid "Add a new language"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/profiles.tsx:51
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/profiles.tsx:39
 msgid "Add a new profile"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/projects.tsx:50
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/projects.tsx:38
 msgid "Add a new project"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/publications.tsx:56
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/publications.tsx:33
 msgid "Add a new publication"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/references.tsx:45
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/references.tsx:33
 msgid "Add a new reference"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/skills.tsx:45
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/skills.tsx:33
 msgid "Add a new skill"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/volunteer.tsx:56
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/volunteer.tsx:39
 msgid "Add a new volunteer experience"
 msgstr ""
 
@@ -165,12 +164,12 @@ msgstr ""
 msgid "Artificial Intelligence"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:307
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:280
 msgid "Aspect Ratio"
 msgstr ""
 
 #: src/routes/dashboard/-components/sidebar.tsx:63
-#: src/routes/dashboard/settings/authentication/index.tsx:36
+#: src/routes/dashboard/settings/authentication/index.tsx:23
 msgid "Authentication"
 msgstr ""
 
@@ -179,31 +178,31 @@ msgctxt "(noun) person, organization, or entity that gives an award"
 msgid "Awarder"
 msgstr ""
 
-#: src/utils/resume/section.tsx:37
+#: src/utils/resume/section.tsx:66
 msgid "Awards"
 msgstr ""
 
-#: src/routes/auth/verify-2fa.tsx:97
+#: src/routes/auth/verify-2fa.tsx:105
 msgid "Back to Login"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:133
+#: src/dialogs/auth/enable-two-factor.tsx:126
 msgid "Backup codes copied to clipboard."
 msgstr ""
 
-#: src/utils/resume/section.tsx:28
+#: src/utils/resume/section.tsx:57
 msgid "Basics"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:210
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:183
 msgid "Border"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:347
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:320
 msgid "Border Radius"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:269
+#: src/dialogs/auth/enable-two-factor.tsx:267
 #: src/dialogs/resume/sections/award.tsx:68
 #: src/dialogs/resume/sections/award.tsx:124
 #: src/dialogs/resume/sections/certification.tsx:72
@@ -236,7 +235,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/utils/resume/section.tsx:38
+#: src/utils/resume/section.tsx:67
 msgid "Certifications"
 msgstr ""
 
@@ -256,8 +255,7 @@ msgstr ""
 msgid "Clear selection"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/summary.tsx:138
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:126
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:151
 msgid "Columns"
 msgstr ""
 
@@ -270,7 +268,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: src/routes/dashboard/settings/authentication/-components/social-provider.tsx:65
+#: src/routes/dashboard/settings/authentication/-components/social-provider.tsx:60
 msgid "Connect"
 msgstr ""
 
@@ -278,22 +276,22 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:214
-#: src/dialogs/auth/enable-two-factor.tsx:272
-#: src/dialogs/auth/enable-two-factor.tsx:307
+#: src/dialogs/auth/enable-two-factor.tsx:207
+#: src/dialogs/auth/enable-two-factor.tsx:270
+#: src/dialogs/auth/enable-two-factor.tsx:305
 #: src/routes/auth/register.tsx:225
 msgid "Continue"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:299
+#: src/dialogs/auth/enable-two-factor.tsx:297
 msgid "Copy"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:175
+#: src/dialogs/auth/enable-two-factor.tsx:168
 msgid "Copy and store these backup codes in case you lose your device."
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:158
+#: src/dialogs/auth/enable-two-factor.tsx:151
 msgid "Copy Backup Codes"
 msgstr ""
 
@@ -387,7 +385,7 @@ msgstr ""
 msgid "Current Password"
 msgstr ""
 
-#: src/utils/resume/section.tsx:42
+#: src/utils/resume/section.tsx:71
 msgid "Custom Sections"
 msgstr ""
 
@@ -412,8 +410,8 @@ msgid "Degree"
 msgstr ""
 
 #: src/routes/builder/$resumeId/-components/header.tsx:165
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:172
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-item.tsx:112
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:138
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-item.tsx:113
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:144
 msgid "Delete"
 msgstr ""
@@ -422,7 +420,7 @@ msgstr ""
 msgid "Delete Account"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:97
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:70
 msgid "Deleting picture..."
 msgstr ""
 
@@ -451,7 +449,7 @@ msgid "Description"
 msgstr ""
 
 #: src/dialogs/auth/disable-two-factor.tsx:106
-#: src/routes/dashboard/settings/authentication/-components/two-factor.tsx:49
+#: src/routes/dashboard/settings/authentication/-components/two-factor.tsx:48
 msgid "Disable 2FA"
 msgstr ""
 
@@ -463,7 +461,7 @@ msgstr ""
 msgid "Disabling two-factor authentication..."
 msgstr ""
 
-#: src/routes/dashboard/settings/authentication/-components/social-provider.tsx:59
+#: src/routes/dashboard/settings/authentication/-components/social-provider.tsx:54
 msgid "Disconnect"
 msgstr ""
 
@@ -471,14 +469,14 @@ msgstr ""
 msgid "Don't have an account? <0><1>Create one now <2/></1></0>"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:295
+#: src/dialogs/auth/enable-two-factor.tsx:293
 msgid "Download"
 msgstr ""
 
 #: src/dialogs/resume/index.tsx:278
 #: src/routes/builder/$resumeId/-components/header.tsx:153
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:163
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-item.tsx:103
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:129
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-item.tsx:104
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:132
 msgid "Duplicate"
 msgstr ""
@@ -495,15 +493,15 @@ msgstr ""
 msgid "Duplicating your resume..."
 msgstr ""
 
-#: src/utils/resume/section.tsx:32
+#: src/utils/resume/section.tsx:61
 msgid "Education"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:200
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:173
 msgid "Effects"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:108
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:79
 msgid "Email"
 msgstr ""
 
@@ -514,15 +512,15 @@ msgstr ""
 msgid "Email Address"
 msgstr ""
 
-#: src/routes/dashboard/settings/authentication/-components/two-factor.tsx:55
+#: src/routes/dashboard/settings/authentication/-components/two-factor.tsx:54
 msgid "Enable 2FA"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:156
+#: src/dialogs/auth/enable-two-factor.tsx:149
 msgid "Enable Two-Factor Authentication"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:71
+#: src/dialogs/auth/enable-two-factor.tsx:64
 msgid "Enabling two-factor authentication..."
 msgstr ""
 
@@ -530,7 +528,11 @@ msgstr ""
 msgid "English"
 msgstr ""
 
-#: src/routes/auth/verify-2fa.tsx:62
+#: src/routes/auth/verify-2fa-backup.tsx:68
+msgid "Enter one of your saved backup codes to access your account"
+msgstr ""
+
+#: src/routes/auth/verify-2fa.tsx:63
 msgid "Enter the verification code from your authenticator app"
 msgstr ""
 
@@ -538,7 +540,7 @@ msgstr ""
 msgid "Enter your current password and a new password to update your account."
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:164
+#: src/dialogs/auth/enable-two-factor.tsx:157
 msgid "Enter your password to confirm setting up two-factor authentication. When enabled, you'll need to enter a code from your authenticator app every time you log in."
 msgstr ""
 
@@ -546,11 +548,11 @@ msgstr ""
 msgid "Enter your password to disable two-factor authentication. Your account will be less secure without 2FA enabled."
 msgstr ""
 
-#: src/utils/resume/section.tsx:31
+#: src/utils/resume/section.tsx:60
 msgid "Experience"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:89
+#: src/dialogs/auth/enable-two-factor.tsx:82
 msgid "Failed to setup two-factor authentication."
 msgstr ""
 
@@ -587,27 +589,26 @@ msgstr ""
 msgid "Grade"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:230
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:203
 msgid "Grayscale"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:92
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:63
 msgid "Headline"
 msgstr ""
 
 #: src/dialogs/resume/sections/language.tsx:189
 #: src/dialogs/resume/sections/skill.tsx:216
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:193
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:166
 msgid "Hidden"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:153
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/summary.tsx:127
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:115
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:119
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:140
 msgid "Hide"
 msgstr ""
 
-#: src/utils/resume/section.tsx:36
+#: src/utils/resume/section.tsx:65
 msgid "Interests"
 msgstr ""
 
@@ -624,7 +625,7 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:329
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:302
 msgid "Landscape"
 msgstr ""
 
@@ -634,7 +635,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: src/utils/resume/section.tsx:35
+#: src/utils/resume/section.tsx:64
 msgid "Languages"
 msgstr ""
 
@@ -646,8 +647,7 @@ msgstr ""
 msgid "Learn More"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/summary.tsx:93
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:57
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:63
 msgid "Leave empty to reset the title to the original."
 msgstr ""
 
@@ -661,7 +661,7 @@ msgstr ""
 msgid "Light"
 msgstr ""
 
-#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:70
+#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:72
 msgid "Linking your {providerName} account..."
 msgstr ""
 
@@ -672,7 +672,7 @@ msgstr ""
 #: src/dialogs/resume/sections/education.tsx:219
 #: src/dialogs/resume/sections/experience.tsx:183
 #: src/dialogs/resume/sections/volunteer.tsx:165
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:140
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:111
 msgid "Location"
 msgstr ""
 
@@ -685,13 +685,17 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
+#: src/routes/auth/verify-2fa.tsx:117
+msgid "Lost access to your authenticator?"
+msgstr ""
+
 #: src/dialogs/resume/index.tsx:308
 #: src/dialogs/resume/sections/interest.tsx:165
 #: src/dialogs/resume/sections/project.tsx:147
 #: src/dialogs/resume/sections/reference.tsx:142
 #: src/dialogs/resume/sections/skill.tsx:171
 #: src/routes/auth/register.tsx:108
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:76
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:47
 #: src/routes/dashboard/settings/profile.tsx:140
 msgid "Name"
 msgstr ""
@@ -717,7 +721,7 @@ msgstr ""
 msgid "Open Email Client"
 msgstr ""
 
-#: src/routes/auth/-components/social-auth.tsx:57
+#: src/routes/auth/-components/social-auth.tsx:72
 msgctxt "Choose to authenticate with a social provider (Google, GitHub, etc.) instead of email and password"
 msgid "or continue with"
 msgstr ""
@@ -731,7 +735,7 @@ msgid "Passkeys"
 msgstr ""
 
 #: src/dialogs/auth/disable-two-factor.tsx:82
-#: src/dialogs/auth/enable-two-factor.tsx:190
+#: src/dialogs/auth/enable-two-factor.tsx:183
 #: src/routes/auth/login.tsx:128
 #: src/routes/auth/register.tsx:169
 #: src/routes/auth/reset-password.tsx:84
@@ -746,11 +750,11 @@ msgstr ""
 msgid "Period"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:124
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:95
 msgid "Phone"
 msgstr ""
 
-#: src/utils/resume/section.tsx:27
+#: src/utils/resume/section.tsx:56
 msgid "Picture"
 msgstr ""
 
@@ -758,7 +762,7 @@ msgstr ""
 msgid "Please enter the URL you want to link to:"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:332
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:305
 msgid "Portrait"
 msgstr ""
 
@@ -780,15 +784,15 @@ msgstr ""
 msgid "Profile"
 msgstr ""
 
-#: src/utils/resume/section.tsx:30
+#: src/utils/resume/section.tsx:59
 msgid "Profiles"
 msgstr ""
 
-#: src/utils/resume/section.tsx:33
+#: src/utils/resume/section.tsx:62
 msgid "Projects"
 msgstr ""
 
-#: src/utils/resume/section.tsx:39
+#: src/utils/resume/section.tsx:68
 msgid "Publications"
 msgstr ""
 
@@ -800,7 +804,7 @@ msgstr ""
 msgid "Reactive Resume is a free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
 msgstr ""
 
-#: src/utils/resume/section.tsx:41
+#: src/utils/resume/section.tsx:70
 msgid "References"
 msgstr ""
 
@@ -812,8 +816,7 @@ msgstr ""
 msgid "Remember your password? <0><1>Sign in now <2/></1></0>"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/summary.tsx:132
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:120
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:145
 msgid "Rename"
 msgstr ""
 
@@ -825,7 +828,7 @@ msgstr ""
 msgid "Resending verification email..."
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:146
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:171
 msgid "Reset"
 msgstr ""
 
@@ -846,7 +849,7 @@ msgstr ""
 msgid "Resumes"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:276
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:249
 msgid "Rotation"
 msgstr ""
 
@@ -868,8 +871,8 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:170
-msgid "Scan the QR code below with your preferred authenticator app. Then, enter the 6 digit code that the app provides to continue. You can also copy the secret below and paste it into your app."
+#: src/dialogs/auth/enable-two-factor.tsx:163
+msgid "Scan the QR code below with your preferred authenticator app. You can also copy the secret below and paste it into your app."
 msgstr ""
 
 #: src/dialogs/resume/sections/education.tsx:155
@@ -886,7 +889,7 @@ msgstr ""
 msgid "Search..."
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:127
+#: src/dialogs/auth/enable-two-factor.tsx:120
 msgid "Secret copied to clipboard."
 msgstr ""
 
@@ -911,17 +914,16 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:157
+#: src/dialogs/auth/enable-two-factor.tsx:150
 msgid "Setup Authenticator App"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:220
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:193
 msgid "Shadow"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:153
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/summary.tsx:127
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:115
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:119
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:140
 msgid "Show"
 msgstr ""
 
@@ -937,8 +939,9 @@ msgstr ""
 msgid "Sign up"
 msgstr ""
 
-#: src/routes/auth/-components/social-auth.tsx:19
-#: src/routes/auth/-components/social-auth.tsx:35
+#: src/routes/auth/-components/social-auth.tsx:17
+#: src/routes/auth/-components/social-auth.tsx:33
+#: src/routes/auth/-components/social-auth.tsx:51
 #: src/routes/auth/login.tsx:46
 msgid "Signing in..."
 msgstr ""
@@ -951,11 +954,11 @@ msgstr ""
 msgid "Signing up..."
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:245
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:218
 msgid "Size"
 msgstr ""
 
-#: src/utils/resume/section.tsx:34
+#: src/utils/resume/section.tsx:63
 msgid "Skills"
 msgstr ""
 
@@ -967,7 +970,7 @@ msgstr ""
 msgid "Sort by"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:326
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:299
 msgid "Square"
 msgstr ""
 
@@ -979,7 +982,7 @@ msgstr ""
 msgid "Start building your resume from scratch"
 msgstr ""
 
-#: src/utils/resume/section.tsx:29
+#: src/utils/resume/section.tsx:58
 msgid "Summary"
 msgstr ""
 
@@ -991,6 +994,10 @@ msgstr ""
 msgid "Tags can be used to categorize your resume by keywords."
 msgstr ""
 
+#: src/utils/resume/section.tsx:74
+msgid "Template"
+msgstr ""
+
 #: src/components/input/rich-input.tsx:220
 msgid "The URL you entered is not valid."
 msgstr ""
@@ -998,6 +1005,10 @@ msgstr ""
 #: src/components/user/dropdown-menu.tsx:91
 #: src/routes/dashboard/settings/preferences.tsx:28
 msgid "Theme"
+msgstr ""
+
+#: src/dialogs/auth/enable-two-factor.tsx:231
+msgid "Then, enter the 6 digit code that the app provides to continue."
 msgstr ""
 
 #: src/routes/builder/$resumeId/-components/header.tsx:115
@@ -1011,10 +1022,6 @@ msgstr ""
 
 #: src/dialogs/resume/index.tsx:345
 msgid "This is a URL-friendly name for your resume."
-msgstr ""
-
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-mask.tsx:22
-msgid "This section is hidden from the resume."
 msgstr ""
 
 #: src/routes/auth/register.tsx:216
@@ -1036,8 +1043,8 @@ msgstr ""
 msgid "To delete your account, you need to enter the confirmation text and click the button below."
 msgstr ""
 
-#: src/routes/auth/verify-2fa.tsx:59
-#: src/routes/dashboard/settings/authentication/-components/two-factor.tsx:42
+#: src/routes/auth/verify-2fa.tsx:60
+#: src/routes/dashboard/settings/authentication/-components/two-factor.tsx:41
 msgid "Two-Factor Authentication"
 msgstr ""
 
@@ -1045,7 +1052,7 @@ msgstr ""
 msgid "Two-factor authentication has been disabled successfully."
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:108
+#: src/dialogs/auth/enable-two-factor.tsx:101
 msgid "Two-factor authentication has been setup successfully."
 msgstr ""
 
@@ -1053,7 +1060,7 @@ msgstr ""
 msgid "Type \"{CONFIRMATION_TEXT}\" to confirm"
 msgstr ""
 
-#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:93
+#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:95
 msgid "Unlinking your {providerName} account..."
 msgstr ""
 
@@ -1067,8 +1074,8 @@ msgid "Unverified"
 msgstr ""
 
 #: src/routes/builder/$resumeId/-components/header.tsx:148
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:158
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-item.tsx:98
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/custom.tsx:124
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-item.tsx:99
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:127
 msgid "Update"
 msgstr ""
@@ -1146,12 +1153,16 @@ msgstr ""
 msgid "Updating your resume..."
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:119
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:92
 msgid "Uploading picture..."
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:168
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/picture.tsx:141
 msgid "URL"
+msgstr ""
+
+#: src/routes/auth/verify-2fa-backup.tsx:114
+msgid "Use Authenticator App"
 msgstr ""
 
 #: src/dialogs/resume/sections/profile.tsx:185
@@ -1168,12 +1179,21 @@ msgstr ""
 msgid "Verified"
 msgstr ""
 
-#: src/routes/auth/verify-2fa.tsx:103
+#: src/routes/auth/verify-2fa-backup.tsx:119
+#: src/routes/auth/verify-2fa.tsx:111
 msgid "Verify"
 msgstr ""
 
-#: src/dialogs/auth/enable-two-factor.tsx:94
-#: src/routes/auth/verify-2fa.tsx:39
+#: src/routes/auth/verify-2fa-backup.tsx:65
+msgid "Verify with a Backup Code"
+msgstr ""
+
+#: src/routes/auth/verify-2fa-backup.tsx:41
+msgid "Verifying backup code..."
+msgstr ""
+
+#: src/dialogs/auth/enable-two-factor.tsx:87
+#: src/routes/auth/verify-2fa.tsx:40
 msgid "Verifying code..."
 msgstr ""
 
@@ -1181,7 +1201,7 @@ msgstr ""
 msgid "Verifying your email is required when resetting your password."
 msgstr ""
 
-#: src/utils/resume/section.tsx:40
+#: src/utils/resume/section.tsx:69
 msgid "Volunteer"
 msgstr ""
 
@@ -1193,7 +1213,7 @@ msgstr ""
 #: src/dialogs/resume/sections/project.tsx:179
 #: src/dialogs/resume/sections/publication.tsx:205
 #: src/dialogs/resume/sections/volunteer.tsx:197
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:156
+#: src/routes/builder/$resumeId/-components/sidebar/left/sections/basics.tsx:127
 msgid "Website"
 msgstr ""
 
@@ -1201,8 +1221,7 @@ msgstr ""
 msgid "What do you want to call this passkey?"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-components/sidebar/left/sections/summary.tsx:92
-#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:56
+#: src/routes/builder/$resumeId/-components/sidebar/left/shared/section-menu.tsx:62
 msgid "What do you want to rename this section to?"
 msgstr ""
 
@@ -1225,11 +1244,11 @@ msgstr ""
 msgid "You've got mail!"
 msgstr ""
 
-#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:78
+#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:80
 msgid "Your {providerName} account has been linked successfully."
 msgstr ""
 
-#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:101
+#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:103
 msgid "Your {providerName} account has been unlinked successfully."
 msgstr ""
 

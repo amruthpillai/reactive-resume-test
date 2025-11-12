@@ -113,7 +113,7 @@ function RouteComponent() {
 					<CreateResumeCard />
 				</motion.div>
 
-				<AnimatePresence presenceAffectsLayout>
+				<AnimatePresence>
 					{resumes?.map((resume, index) => (
 						<motion.div
 							layout

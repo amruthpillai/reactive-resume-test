@@ -5,7 +5,7 @@ import z from "zod";
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 
 export const getDashboardSidebarServerFn = createServerFn({ method: "GET" }).handler(async () => {
-	const sidebarState = getCookie(SIDEBAR_COOKIE_NAME) === "true";
+	const sidebarState = getCookie(SIDEBAR_COOKIE_NAME) !== "false";
 	return sidebarState;
 });
 

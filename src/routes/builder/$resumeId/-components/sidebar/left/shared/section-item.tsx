@@ -4,6 +4,7 @@ import {
 	DotsSixVerticalIcon,
 	DotsThreeVerticalIcon,
 	PencilSimpleLineIcon,
+	PlusIcon,
 	TrashSimpleIcon,
 } from "@phosphor-icons/react";
 import { Reorder, useDragControls } from "motion/react";
@@ -115,5 +116,29 @@ export function SectionItem<T extends SectionItemType>({ type, item, title, subt
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</Reorder.Item>
+	);
+}
+
+type AddButtonProps = {
+	type: SectionType | "custom";
+	children: React.ReactNode;
+};
+
+export function SectionAddItemButton({ type, children }: AddButtonProps) {
+	const { openDialog } = useDialogStore();
+
+	const handleAdd = () => {
+		openDialog(`resume.sections.${type}.create`, undefined);
+	};
+
+	return (
+		<button
+			type="button"
+			onClick={handleAdd}
+			className="flex w-full items-center gap-x-2 px-3 py-4 font-medium hover:bg-secondary/20 focus:outline-none focus-visible:ring-1"
+		>
+			<PlusIcon />
+			{children}
+		</button>
 	);
 }

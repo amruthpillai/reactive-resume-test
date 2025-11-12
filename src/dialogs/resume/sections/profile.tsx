@@ -36,7 +36,7 @@ export function CreateProfileDialog({ open, onOpenChange, data }: DialogProps<"r
 		defaultValues: {
 			id: generateId(),
 			hidden: data?.hidden ?? false,
-			icon: data?.icon ?? "",
+			icon: data?.icon ?? "acorn",
 			network: data?.network ?? "",
 			username: data?.username ?? "",
 			website: data?.website ?? { url: "", label: "" },

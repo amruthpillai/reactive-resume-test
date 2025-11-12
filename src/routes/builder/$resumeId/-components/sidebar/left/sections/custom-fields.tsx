@@ -114,6 +114,8 @@ function CustomFieldItem({ field, children }: CustomFieldItemProps) {
 			value={field}
 			dragListener={false}
 			dragControls={controls}
+			initial={{ opacity: 0, y: -10 }}
+			animate={{ opacity: 1, y: 0 }}
 			className="flex items-center"
 		>
 			<Button size="icon" variant="ghost" className="mr-2" onPointerDown={(e) => controls.start(e)}>

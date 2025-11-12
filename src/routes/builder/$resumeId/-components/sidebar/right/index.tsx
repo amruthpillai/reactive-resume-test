@@ -1,33 +1,71 @@
+import { useCallback, useRef } from "react";
+import { useBuilderSidebar, useBuilderSidebarStore } from "@/builder/-store/sidebar";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import {
+	getSectionIcon,
+	getSectionTitle,
+	type RightSidebarSection,
+	rightSidebarSections,
+} from "@/utils/resume/section";
 import { BuilderSidebarEdge } from "../edge";
+import { TemplateSectionBuilder } from "./sections/template";
 
 export function BuilderSidebarRight() {
+	const scrollAreaRef = useRef<HTMLDivElement | null>(null);
+
 	return (
 		<>
-			<BuilderSidebarEdge side="right">
-				<div />
+			<SidebarEdge scrollAreaRef={scrollAreaRef} />
 
-				<div />
-
-				<div />
-			</BuilderSidebarEdge>
-
-			<ScrollArea className="h-full sm:mr-12">
+			<ScrollArea ref={scrollAreaRef} className="@container h-full sm:mr-12">
 				<div className="flex flex-col space-y-4 p-4">
-					<p>Right Sidebar</p>
-
-					{Array.from({ length: 10 }).map((_, index) => (
-						<p key={index} className="text-justify">
-							Esse ea velit laboris amet duis ex aliqua aliquip pariatur est excepteur fugiat. Non ut velit proident
-							reprehenderit non ullamco. Officia ut est laboris eiusmod tempor non exercitation id cillum officia. Sit
-							cupidatat tempor tempor dolore ipsum sint consequat nostrud adipisicing velit ut pariatur elit quis. Nulla
-							non non fugiat ex dolore est esse. Dolore consequat sunt aute ea pariatur laboris deserunt ullamco
-							exercitation nisi amet. Ex commodo minim Lorem ipsum. Ullamco pariatur deserunt elit anim mollit culpa
-							occaecat proident commodo ut duis anim.
-						</p>
-					))}
+					<TemplateSectionBuilder />
+					<Separator />
 				</div>
 			</ScrollArea>
 		</>
+	);
+}
+
+type SidebarEdgeProps = {
+	scrollAreaRef: React.RefObject<HTMLDivElement | null>;
+};
+
+function SidebarEdge({ scrollAreaRef }: SidebarEdgeProps) {
+	const sidebar = useBuilderSidebarStore((state) => state.leftSidebar);
+	const toggleSidebar = useBuilderSidebar((state) => state.toggleLeftSidebar);
+
+	const scrollToSection = useCallback(
+		(section: RightSidebarSection) => {
+			if (!scrollAreaRef.current || !sidebar) return;
+
+			if (sidebar.isCollapsed()) toggleSidebar();
+
+			const sectionElement = scrollAreaRef.current.querySelector(`#sidebar-${section}`);
+			sectionElement?.scrollIntoView({ behavior: "smooth" });
+		},
+		[sidebar, toggleSidebar, scrollAreaRef],
+	);
+
+	return (
+		<BuilderSidebarEdge side="right">
+			<div />
+
+			{rightSidebarSections.map((section) => (
+				<Button
+					key={section}
+					size="icon"
+					variant="ghost"
+					title={getSectionTitle(section)}
+					onClick={() => scrollToSection(section)}
+				>
+					{getSectionIcon(section)}
+				</Button>
+			))}
+
+			<div />
+		</BuilderSidebarEdge>
 	);
 }
