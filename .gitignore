@@ -3,6 +3,7 @@
 .env*
 .nitro
 .output
+.vercel
 .tanstack
 /data
 dist
