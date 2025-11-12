@@ -1,4 +1,5 @@
-import { mkdir } from "node:fs/promises";
+import { constants as fsConstants } from "node:fs";
+import { access, mkdir } from "node:fs/promises";
 import { dirname, extname, join } from "node:path";
 import { env } from "@/utils/env";
 
@@ -20,6 +21,14 @@ export interface StorageService {
 	write(input: StorageWriteInput): Promise<void>;
 	read(key: string): Promise<StorageReadResult | null>;
 	delete(key: string): Promise<boolean>;
+	healthCheck(): Promise<StorageHealthResult>;
+}
+
+export interface StorageHealthResult {
+	status: "healthy" | "unhealthy";
+	type: "local" | "s3";
+	message: string;
+	details?: object;
 }
 
 const CONTENT_TYPE_MAP: Record<string, string> = {
@@ -80,6 +89,26 @@ class LocalStorageService implements StorageService {
 		return true;
 	}
 
+	async healthCheck(): Promise<StorageHealthResult> {
+		try {
+			await mkdir(this.rootDirectory, { recursive: true });
+			await access(this.rootDirectory, fsConstants.R_OK | fsConstants.W_OK);
+
+			return {
+				type: "local",
+				status: "healthy",
+				message: "Local filesystem storage is accessible and has read/write permission.",
+			};
+		} catch (error: unknown) {
+			return {
+				type: "local",
+				status: "unhealthy",
+				message: "Local filesystem storage is not accessible or lacks sufficient permissions.",
+				details: { error: error instanceof Error ? error.message : "Unknown error" },
+			};
+		}
+	}
+
 	private resolvePath(key: string): string {
 		const normalizedKey = key.replace(/^\/*/, "");
 		const segments = normalizedKey
@@ -127,6 +156,34 @@ class S3StorageService implements StorageService {
 		await this.client.delete(key);
 
 		return true;
+	}
+
+	async healthCheck(): Promise<StorageHealthResult> {
+		try {
+			const list = await this.client.list({ maxKeys: 1 });
+
+			if (Array.isArray(list)) {
+				return {
+					type: "s3",
+					status: "healthy",
+					message: "S3 storage is accessible and credentials are valid.",
+				};
+			}
+
+			return {
+				type: "s3",
+				status: "unhealthy",
+				message: "Unexpected S3 result while checking storage health.",
+				details: { result: list },
+			};
+		} catch (error: unknown) {
+			return {
+				type: "s3",
+				status: "unhealthy",
+				message: "Failed to connect to S3 storage or invalid credentials.",
+				details: { error: error instanceof Error ? error.message : "Unknown error" },
+			};
+		}
 	}
 }
 

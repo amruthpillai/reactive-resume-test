@@ -1,25 +1,62 @@
 {
-	"short_name": "Reactive Resume",
+	"$schema": "https://json.schemastore.org/web-manifest-combined.json",
 	"name": "Reactive Resume",
+	"short_name": "Reactive Resume",
+	"description": "A free and open-source resume builder.",
+	"id": "/?source=pwa",
+	"start_url": "/?source=pwa",
+	"display": "standalone",
+	"orientation": "portrait",
+	"theme_color": "#FAFAFA",
+	"background_color": "#09090B",
 	"icons": [
 		{
 			"src": "favicon.ico",
-			"sizes": "64x64 32x32 24x24 16x16",
+			"sizes": "48x48",
 			"type": "image/x-icon"
 		},
 		{
-			"src": "logo192.png",
-			"type": "image/png",
-			"sizes": "192x192"
+			"src": "pwa-64x64.png",
+			"sizes": "64x64",
+			"type": "image/png"
 		},
 		{
-			"src": "logo512.png",
+			"src": "pwa-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "pwa-512x512.png",
+			"sizes": "512x512",
 			"type": "image/png",
-			"sizes": "512x512"
+			"purpose": "any"
+		},
+		{
+			"src": "maskable-icon-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
 		}
 	],
-	"start_url": ".",
-	"display": "standalone",
-	"theme_color": "#000000",
-	"background_color": "#ffffff"
+	"screenshots": [],
+	"categories": [
+		"ai",
+		"builder",
+		"business",
+		"career",
+		"cv",
+		"editor",
+		"free",
+		"generator",
+		"job-search",
+		"multilingual",
+		"open-source",
+		"privacy",
+		"productivity",
+		"resume",
+		"self-hosted",
+		"templates",
+		"utilities",
+		"writing"
+	]
 }

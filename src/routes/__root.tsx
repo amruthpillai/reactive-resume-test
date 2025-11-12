@@ -23,14 +23,39 @@ type RouterContext = {
 	session: Session | null;
 };
 
+const appName = "Reactive Resume";
+const tagline = "A free and open-source resume builder";
+const title = `${appName} | ${tagline}`;
+const description =
+	"Reactive Resume is a free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume.";
+
 export const Route = createRootRouteWithContext<RouterContext>()({
 	shellComponent: RootDocument,
 	head: () => ({
-		links: [{ rel: "stylesheet", href: appCss }],
+		links: [
+			{ rel: "stylesheet", href: appCss },
+			{ rel: "manifest", href: "/manifest.json", type: "application/manifest+json" },
+			// Icons
+			{ rel: "icon", href: "/favicon.ico", type: "image/x-icon", sizes: "48x48" },
+			{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
+			{ rel: "apple-touch-icon", href: "/apple-touch-icon-180x180.png", type: "image/png", sizes: "180x180" },
+		],
 		meta: [
+			{ title },
 			{ charSet: "UTF-8" },
-			{ name: "viewport", content: "width=device-width, initial-scale=1" },
-			{ title: "Reactive Resume | A free and open-source resume builder" },
+			{ meta: "description", content: description },
+			{ name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" },
+			// Twitter Tags
+			{ property: "twitter:image", content: "/opengraph/banner.jpg" },
+			{ property: "twitter:card", content: "summary_large_image" },
+			{ property: "twitter:title", content: title },
+			{ property: "twitter:description", content: description },
+			// OpenGraph Tags
+			{ property: "og:image", content: "/opengraph/banner.jpg" },
+			{ property: "og:site_name", content: appName },
+			{ property: "og:title", content: title },
+			{ property: "og:description", content: description },
+			{ property: "og:url", content: "https://rxresu.me/" },
 		],
 	}),
 	beforeLoad: async () => {
