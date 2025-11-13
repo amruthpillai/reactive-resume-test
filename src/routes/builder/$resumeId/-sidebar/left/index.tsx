@@ -1,5 +1,6 @@
-import { useCallback, useRef } from "react";
-import { useBuilderSidebar, useBuilderSidebarStore } from "@/builder/-store/sidebar";
+import { Fragment, useCallback, useRef } from "react";
+import { match } from "ts-pattern";
+import { useBuilderSidebar } from "@/builder/-store/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -7,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { UserDropdownMenu } from "@/components/user/dropdown-menu";
 import { getSectionIcon, getSectionTitle, type LeftSidebarSection, leftSidebarSections } from "@/utils/resume/section";
 import { getInitials } from "@/utils/string";
-import { BuilderSidebarEdge } from "../edge";
+import { BuilderSidebarEdge } from "../../-components/edge";
 import { AwardsSectionBuilder } from "./sections/awards";
 import { BasicsSectionBuilder } from "./sections/basics";
 import { CertificationsSectionBuilder } from "./sections/certifications";
@@ -25,6 +26,27 @@ import { SkillsSectionBuilder } from "./sections/skills";
 import { SummarySectionBuilder } from "./sections/summary";
 import { VolunteerSectionBuilder } from "./sections/volunteer";
 
+function getSectionComponent(type: LeftSidebarSection) {
+	return match(type)
+		.with("picture", () => <PictureSectionBuilder />)
+		.with("basics", () => <BasicsSectionBuilder />)
+		.with("summary", () => <SummarySectionBuilder />)
+		.with("profiles", () => <ProfilesSectionBuilder />)
+		.with("experience", () => <ExperienceSectionBuilder />)
+		.with("education", () => <EducationSectionBuilder />)
+		.with("projects", () => <ProjectsSectionBuilder />)
+		.with("skills", () => <SkillsSectionBuilder />)
+		.with("languages", () => <LanguagesSectionBuilder />)
+		.with("interests", () => <InterestsSectionBuilder />)
+		.with("awards", () => <AwardsSectionBuilder />)
+		.with("certifications", () => <CertificationsSectionBuilder />)
+		.with("publications", () => <PublicationsSectionBuilder />)
+		.with("volunteer", () => <VolunteerSectionBuilder />)
+		.with("references", () => <ReferencesSectionBuilder />)
+		.with("custom", () => <CustomSectionBuilder />)
+		.exhaustive();
+}
+
 export function BuilderSidebarLeft() {
 	const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
@@ -34,37 +56,12 @@ export function BuilderSidebarLeft() {
 
 			<ScrollArea ref={scrollAreaRef} className="@container h-full sm:ml-12">
 				<div className="space-y-4 p-4">
-					<PictureSectionBuilder />
-					<Separator />
-					<BasicsSectionBuilder />
-					<Separator />
-					<SummarySectionBuilder />
-					<Separator />
-					<ProfilesSectionBuilder />
-					<Separator />
-					<ExperienceSectionBuilder />
-					<Separator />
-					<EducationSectionBuilder />
-					<Separator />
-					<ProjectsSectionBuilder />
-					<Separator />
-					<SkillsSectionBuilder />
-					<Separator />
-					<LanguagesSectionBuilder />
-					<Separator />
-					<InterestsSectionBuilder />
-					<Separator />
-					<AwardsSectionBuilder />
-					<Separator />
-					<CertificationsSectionBuilder />
-					<Separator />
-					<PublicationsSectionBuilder />
-					<Separator />
-					<VolunteerSectionBuilder />
-					<Separator />
-					<ReferencesSectionBuilder />
-					<Separator />
-					<CustomSectionBuilder />
+					{leftSidebarSections.map((section) => (
+						<Fragment key={section}>
+							{getSectionComponent(section)}
+							<Separator />
+						</Fragment>
+					))}
 				</div>
 			</ScrollArea>
 		</>
@@ -76,19 +73,17 @@ type SidebarEdgeProps = {
 };
 
 function SidebarEdge({ scrollAreaRef }: SidebarEdgeProps) {
-	const sidebar = useBuilderSidebarStore((state) => state.leftSidebar);
-	const toggleSidebar = useBuilderSidebar((state) => state.toggleLeftSidebar);
+	const toggleSidebar = useBuilderSidebar((state) => state.toggleSidebar);
 
 	const scrollToSection = useCallback(
 		(section: LeftSidebarSection) => {
-			if (!scrollAreaRef.current || !sidebar) return;
-
-			if (sidebar.isCollapsed()) toggleSidebar();
+			if (!scrollAreaRef.current) return;
+			toggleSidebar("left", true);
 
 			const sectionElement = scrollAreaRef.current.querySelector(`#sidebar-${section}`);
 			sectionElement?.scrollIntoView({ behavior: "smooth" });
 		},
-		[sidebar, toggleSidebar, scrollAreaRef],
+		[toggleSidebar, scrollAreaRef],
 	);
 
 	return (

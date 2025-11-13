@@ -32,14 +32,11 @@ export function BuilderHeader() {
 	const resumeName = useResumeStore((state) => state.resume?.name ?? "");
 	const isLocked = useResumeStore((state) => Boolean(state.resume?.isLocked));
 
-	const { toggleLeftSidebar, toggleRightSidebar } = useBuilderSidebar((state) => ({
-		toggleLeftSidebar: state.toggleLeftSidebar,
-		toggleRightSidebar: state.toggleRightSidebar,
-	}));
+	const toggleSidebar = useBuilderSidebar((state) => state.toggleSidebar);
 
 	return (
 		<div className="absolute inset-x-0 top-0 z-10 flex h-14 items-center justify-between bg-popover px-1.5 shadow">
-			<Button size="icon" variant="ghost" onClick={toggleLeftSidebar}>
+			<Button size="icon" variant="ghost" onClick={() => toggleSidebar("left")}>
 				<SidebarSimpleIcon />
 			</Button>
 
@@ -55,7 +52,7 @@ export function BuilderHeader() {
 				<BuilderHeaderDropdown resumeId={resumeId} isLocked={isLocked} />
 			</div>
 
-			<Button size="icon" variant="ghost" onClick={toggleRightSidebar}>
+			<Button size="icon" variant="ghost" onClick={() => toggleSidebar("right")}>
 				<SidebarSimpleIcon className="-scale-x-100" />
 			</Button>
 		</div>

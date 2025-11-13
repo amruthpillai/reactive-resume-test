@@ -31,33 +31,37 @@ const description =
 
 export const Route = createRootRouteWithContext<RouterContext>()({
 	shellComponent: RootDocument,
-	head: () => ({
-		links: [
-			{ rel: "stylesheet", href: appCss },
-			{ rel: "manifest", href: "/manifest.json", type: "application/manifest+json" },
-			// Icons
-			{ rel: "icon", href: "/favicon.ico", type: "image/x-icon", sizes: "48x48" },
-			{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
-			{ rel: "apple-touch-icon", href: "/apple-touch-icon-180x180.png", type: "image/png", sizes: "180x180" },
-		],
-		meta: [
-			{ title },
-			{ charSet: "UTF-8" },
-			{ meta: "description", content: description },
-			{ name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" },
-			// Twitter Tags
-			{ property: "twitter:image", content: "/opengraph/banner.jpg" },
-			{ property: "twitter:card", content: "summary_large_image" },
-			{ property: "twitter:title", content: title },
-			{ property: "twitter:description", content: description },
-			// OpenGraph Tags
-			{ property: "og:image", content: "/opengraph/banner.jpg" },
-			{ property: "og:site_name", content: appName },
-			{ property: "og:title", content: title },
-			{ property: "og:description", content: description },
-			{ property: "og:url", content: "https://rxresu.me/" },
-		],
-	}),
+	head: () => {
+		const appUrl = process.env.APP_URL ?? "https://rxresu.me/";
+
+		return {
+			links: [
+				{ rel: "stylesheet", href: appCss },
+				{ rel: "manifest", href: "/manifest.json", type: "application/manifest+json" },
+				// Icons
+				{ rel: "icon", href: "/favicon.ico", type: "image/x-icon", sizes: "48x48" },
+				{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
+				{ rel: "apple-touch-icon", href: "/apple-touch-icon-180x180.png", type: "image/png", sizes: "180x180" },
+			],
+			meta: [
+				{ title },
+				{ charSet: "UTF-8" },
+				{ meta: "description", content: description },
+				{ name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" },
+				// Twitter Tags
+				{ property: "twitter:image", content: `${appUrl}/opengraph/banner.jpg` },
+				{ property: "twitter:card", content: "summary_large_image" },
+				{ property: "twitter:title", content: title },
+				{ property: "twitter:description", content: description },
+				// OpenGraph Tags
+				{ property: "og:image", content: `${appUrl}/opengraph/banner.jpg` },
+				{ property: "og:site_name", content: appName },
+				{ property: "og:title", content: title },
+				{ property: "og:description", content: description },
+				{ property: "og:url", content: appUrl },
+			],
+		};
+	},
 	beforeLoad: async () => {
 		const session = await getSessionServerFn();
 

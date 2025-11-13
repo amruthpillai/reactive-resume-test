@@ -221,7 +221,8 @@ export const customSectionsSchema = z.array(customSectionSchema);
 
 export const typographySchema = z.object({
 	fontFamily: z.string(),
-	fontVariants: z.string(),
+	fontSubsets: z.array(z.string()),
+	fontVariants: z.array(z.string()),
 	fontSize: z.number(),
 	lineHeight: z.number(),
 });
@@ -375,14 +376,16 @@ export const defaultResumeData: ResumeData = {
 		typography: {
 			body: {
 				fontFamily: "IBM Plex Serif",
-				fontVariants: "regular",
+				fontSubsets: ["latin"],
+				fontVariants: ["regular"],
 				fontSize: 16,
 				lineHeight: 1.5,
 			},
 			heading: {
 				fontFamily: "IBM Plex Serif",
-				fontVariants: "regular",
-				fontSize: 16,
+				fontSubsets: ["latin"],
+				fontVariants: ["regular"],
+				fontSize: 20,
 				lineHeight: 1.5,
 			},
 		},
@@ -1003,13 +1006,15 @@ export const sampleResumeData: ResumeData = {
 		typography: {
 			body: {
 				fontFamily: "Inter",
-				fontVariants: "400",
+				fontSubsets: ["latin"],
+				fontVariants: ["regular"],
 				fontSize: 16,
 				lineHeight: 1.5,
 			},
 			heading: {
 				fontFamily: "Inter",
-				fontVariants: "600",
+				fontSubsets: ["latin"],
+				fontVariants: ["600"],
 				fontSize: 20,
 				lineHeight: 1.5,
 			},

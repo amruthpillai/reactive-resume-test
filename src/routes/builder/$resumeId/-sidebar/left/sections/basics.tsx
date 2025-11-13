@@ -19,17 +19,21 @@ export function BasicsSectionBuilder() {
 	);
 }
 
+const formSchema = basicsSchema;
+
+type FormValues = z.infer<typeof formSchema>;
+
 function BasicsSectionForm() {
 	const basics = useResumeData((state) => state.basics);
 	const updateResume = useResumeStore((state) => state.updateResume);
 
 	const form = useForm({
-		resolver: zodResolver(basicsSchema),
+		resolver: zodResolver(formSchema),
 		defaultValues: basics,
 		mode: "onChange",
 	});
 
-	const onSubmit = (data: z.infer<typeof basicsSchema>) => {
+	const onSubmit = (data: FormValues) => {
 		updateResume((draft) => {
 			draft.basics = data;
 		});

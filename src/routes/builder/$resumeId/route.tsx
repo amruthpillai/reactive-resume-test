@@ -8,9 +8,9 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/utils/style";
 import { BuilderHeader } from "./-components/header";
-import { BuilderSidebarLeft } from "./-components/sidebar/left";
-import { BuilderSidebarRight } from "./-components/sidebar/right";
 import { useResume } from "./-hooks/resume";
+import { BuilderSidebarLeft } from "./-sidebar/left";
+import { BuilderSidebarRight } from "./-sidebar/right";
 import { useResumeStore } from "./-store/resume";
 import { useBuilderSidebar, useBuilderSidebarStore } from "./-store/sidebar";
 

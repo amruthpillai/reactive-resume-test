@@ -27,8 +27,7 @@ export const useBuilderSidebarStore = create<BuilderSidebar>((set) => ({
 type UseBuilderSidebarReturn = {
 	maxSidebarSize: number;
 	collapsedSidebarSize: number;
-	toggleLeftSidebar: () => void;
-	toggleRightSidebar: () => void;
+	toggleSidebar: (side: "left" | "right", forceState?: boolean) => void;
 };
 
 export function useBuilderSidebar<T = UseBuilderSidebarReturn>(selector?: (builder: UseBuilderSidebarReturn) => T): T {
@@ -47,26 +46,29 @@ export function useBuilderSidebar<T = UseBuilderSidebarReturn>(selector?: (build
 
 	const expandSize = useMemo(() => (isMobile ? 95 : 30), [isMobile]);
 
-	const toggleLeftSidebar = useCallback(() => {
-		const sidebar = useBuilderSidebarStore.getState().leftSidebar;
-		if (!sidebar) return;
-		sidebar.isCollapsed() ? sidebar.expand(expandSize) : sidebar.collapse();
-	}, [expandSize]);
+	const toggleSidebar = useCallback(
+		(side: "left" | "right", forceState?: boolean) => {
+			const sidebar =
+				side === "left"
+					? useBuilderSidebarStore.getState().leftSidebar
+					: useBuilderSidebarStore.getState().rightSidebar;
 
-	const toggleRightSidebar = useCallback(() => {
-		const sidebar = useBuilderSidebarStore.getState().rightSidebar;
-		if (!sidebar) return;
-		sidebar.isCollapsed() ? sidebar.expand(expandSize) : sidebar.collapse();
-	}, [expandSize]);
+			if (!sidebar) return;
+
+			const shouldExpand = forceState === undefined ? sidebar.isCollapsed() : forceState;
+			if (shouldExpand) sidebar.expand(expandSize);
+			else sidebar.collapse();
+		},
+		[expandSize],
+	);
 
 	const state = useMemo(() => {
 		return {
 			maxSidebarSize,
 			collapsedSidebarSize,
-			toggleLeftSidebar,
-			toggleRightSidebar,
+			toggleSidebar,
 		};
-	}, [maxSidebarSize, collapsedSidebarSize, toggleLeftSidebar, toggleRightSidebar]);
+	}, [maxSidebarSize, collapsedSidebarSize, toggleSidebar]);
 
 	return selector ? selector(state) : (state as T);
 }

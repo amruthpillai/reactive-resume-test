@@ -10,7 +10,7 @@ export function ThemeCombobox(props: Props) {
 	const { i18n } = useLingui();
 	const { theme, setTheme } = useTheme();
 
-	const themeOptions = useMemo(() => {
+	const options = useMemo(() => {
 		return Object.entries(themeMap).map(([value, label]) => ({
 			value,
 			label: i18n._(label),
@@ -27,5 +27,5 @@ export function ThemeCombobox(props: Props) {
 		[setTheme],
 	);
 
-	return <Combobox options={themeOptions} defaultValue={theme} onValueChange={onThemeChange} {...props} />;
+	return <Combobox options={options} defaultValue={theme} onValueChange={onThemeChange} {...props} />;
 }

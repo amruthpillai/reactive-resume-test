@@ -8,7 +8,7 @@ type Props = Omit<ComboboxProps, "options" | "value" | "onValueChange">;
 export function LocaleCombobox(props: Props) {
 	const { i18n } = useLingui();
 
-	const localeOptions = useMemo(() => {
+	const options = useMemo(() => {
 		return Object.entries(localeMap).map(([value, label]) => ({
 			value,
 			label: i18n._(label),
@@ -23,5 +23,5 @@ export function LocaleCombobox(props: Props) {
 		window.location.reload();
 	}, []);
 
-	return <Combobox options={localeOptions} defaultValue={i18n.locale} onValueChange={onLocaleChange} {...props} />;
+	return <Combobox options={options} defaultValue={i18n.locale} onValueChange={onLocaleChange} {...props} />;
 }

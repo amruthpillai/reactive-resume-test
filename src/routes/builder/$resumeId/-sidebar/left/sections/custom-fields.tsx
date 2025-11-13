@@ -10,14 +10,15 @@ import { Input } from "@/components/ui/input";
 import type { basicsSchema } from "@/schema/resume/data";
 import { generateId } from "@/utils/string";
 
-type CustomField = z.infer<typeof basicsSchema>["customFields"][number];
+type FormValues = z.infer<typeof basicsSchema>;
+type CustomField = FormValues["customFields"][number];
 
 type Props = {
-	onSubmit: (data: z.infer<typeof basicsSchema>) => void;
+	onSubmit: (data: FormValues) => void;
 };
 
 export function CustomFieldsSection({ onSubmit }: Props) {
-	const form = useFormContext<z.infer<typeof basicsSchema>>();
+	const form = useFormContext<FormValues>();
 
 	const customFields = useWatch({ control: form.control, name: "customFields" });
 
