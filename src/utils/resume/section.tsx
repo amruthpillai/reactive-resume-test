@@ -7,6 +7,7 @@ import {
 	CodeSimpleIcon,
 	CompassToolIcon,
 	DiamondsFourIcon,
+	FileCssIcon,
 	FootballIcon,
 	GraduationCapIcon,
 	HandHeartIcon,
@@ -14,8 +15,11 @@ import {
 	ImageIcon,
 	LayoutIcon,
 	MessengerLogoIcon,
+	NotepadIcon,
 	PaletteIcon,
 	PhoneIcon,
+	ReadCvLogoIcon,
+	ShareFatIcon,
 	StarIcon,
 	TextTIcon,
 	TranslateIcon,
@@ -27,7 +31,9 @@ import type { SectionType } from "@/schema/resume/data";
 import { cn } from "../style";
 
 export type LeftSidebarSection = "picture" | "basics" | "summary" | SectionType | "custom";
-export type RightSidebarSection = "template" | "layout" | "typography" | "theme";
+
+// TODO: implement template, statistics, export, information sections
+export type RightSidebarSection = "template" | "layout" | "typography" | "theme" | "page" | "css" | "notes" | "sharing";
 
 export type SidebarSection = LeftSidebarSection | RightSidebarSection;
 
@@ -50,7 +56,16 @@ export const leftSidebarSections: LeftSidebarSection[] = [
 	"custom",
 ] as const;
 
-export const rightSidebarSections: RightSidebarSection[] = ["template", "layout", "typography", "theme"] as const;
+export const rightSidebarSections: RightSidebarSection[] = [
+	"template",
+	"layout",
+	"typography",
+	"theme",
+	"page",
+	"css",
+	"notes",
+	"sharing",
+] as const;
 
 export const getSectionTitle = (type: SidebarSection): string => {
 	return (
@@ -78,6 +93,10 @@ export const getSectionTitle = (type: SidebarSection): string => {
 			.with("layout", () => t`Layout`)
 			.with("typography", () => t`Typography`)
 			.with("theme", () => t`Theme`)
+			.with("page", () => t`Page`)
+			.with("css", () => t`Custom CSS`)
+			.with("notes", () => t`Notes`)
+			.with("sharing", () => t`Sharing`)
 
 			.exhaustive()
 	);
@@ -111,6 +130,10 @@ export const getSectionIcon = (type: SidebarSection, props?: IconProps): React.R
 			.with("layout", () => <LayoutIcon {...iconProps} />)
 			.with("typography", () => <TextTIcon {...iconProps} />)
 			.with("theme", () => <PaletteIcon {...iconProps} />)
+			.with("page", () => <ReadCvLogoIcon {...iconProps} />)
+			.with("css", () => <FileCssIcon {...iconProps} />)
+			.with("notes", () => <NotepadIcon {...iconProps} />)
+			.with("sharing", () => <ShareFatIcon {...iconProps} />)
 
 			.exhaustive()
 	);

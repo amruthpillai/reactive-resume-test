@@ -60,7 +60,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: DialogProps<"auth.c
 					closeDialog();
 					queryClient.invalidateQueries({ queryKey: ["auth", "accounts"] });
 				},
-				onError: ({ error }: { error: { message: string } }) => {
+				onError: ({ error }) => {
 					toast.error(error.message, { id: toastId });
 				},
 			},

@@ -32,7 +32,7 @@ msgstr "Name"
 msgid "{column, plural, one {# Column} other {# Columns}}"
 msgstr "{column, plural, one {# Column} other {# Columns}}"
 
-#: src/routes/_home/index.tsx:17
+#: src/routes/_home/index.tsx:20
 msgid "<0>Finally,</0><1>A free and open-source resume builder</1>"
 msgstr "<0>Finally,</0><1>A free and open-source resume builder</1>"
 
@@ -133,6 +133,18 @@ msgstr "Adding your passkey..."
 msgid "Already have an account? <0><1>Sign in now <2/></1></0>"
 msgstr "Already have an account? <0><1>Sign in now <2/></1></0>"
 
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:58
+msgid "Anyone visiting the resume's public URL must enter this password to access it."
+msgstr "Anyone visiting the resume's public URL must enter this password to access it."
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:86
+msgid "Anyone who has the resume's public URL will be able to view and download your resume without entering a password."
+msgstr "Anyone who has the resume's public URL will be able to view and download your resume without entering a password."
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:122
+msgid "Anyone with the link can view and download the resume."
+msgstr "Anyone with the link can view and download the resume."
+
 #: src/routes/dashboard/-components/sidebar.tsx:126
 msgid "App"
 msgstr "App"
@@ -154,6 +166,10 @@ msgstr "Are you sure you want to delete your account?"
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:55
 msgid "Are you sure you want to lock this resume?"
 msgstr "Are you sure you want to lock this resume?"
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:85
+msgid "Are you sure you want to remove password protection?"
+msgstr "Are you sure you want to remove password protection?"
 
 #: src/dialogs/resume/sections/education.tsx:187
 msgid "Area of Study"
@@ -178,7 +194,7 @@ msgctxt "(noun) person, organization, or entity that gives an award"
 msgid "Awarder"
 msgstr "Awarder"
 
-#: src/utils/resume/section.tsx:68
+#: src/utils/resume/section.tsx:82
 msgid "Awards"
 msgstr "Awards"
 
@@ -186,11 +202,15 @@ msgstr "Awards"
 msgid "Back to Login"
 msgstr "Back to Login"
 
+#: src/routes/builder/$resumeId/-sidebar/right/sections/theme.tsx:122
+msgid "Background Color"
+msgstr "Background Color"
+
 #: src/dialogs/auth/enable-two-factor.tsx:126
 msgid "Backup codes copied to clipboard."
 msgstr "Backup codes copied to clipboard."
 
-#: src/utils/resume/section.tsx:59
+#: src/utils/resume/section.tsx:73
 msgid "Basics"
 msgstr "Basics"
 
@@ -230,12 +250,13 @@ msgstr "Border Radius"
 #: src/dialogs/resume/sections/volunteer.tsx:68
 #: src/dialogs/resume/sections/volunteer.tsx:124
 #: src/hooks/use-prompt.tsx:121
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:88
 #: src/routes/dashboard/settings/danger-zone.tsx:34
 #: src/routes/dashboard/settings/profile.tsx:226
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/utils/resume/section.tsx:69
+#: src/utils/resume/section.tsx:83
 msgid "Certifications"
 msgstr "Certifications"
 
@@ -264,6 +285,7 @@ msgid "Company"
 msgstr "Company"
 
 #: src/hooks/use-prompt.tsx:122
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:87
 #: src/routes/dashboard/settings/danger-zone.tsx:33
 msgid "Confirm"
 msgstr "Confirm"
@@ -385,7 +407,11 @@ msgstr "Creating your resume..."
 msgid "Current Password"
 msgstr "Current Password"
 
-#: src/utils/resume/section.tsx:73
+#: src/utils/resume/section.tsx:95
+msgid "Custom CSS"
+msgstr "Custom CSS"
+
+#: src/utils/resume/section.tsx:87
 msgid "Custom Sections"
 msgstr "Custom Sections"
 
@@ -497,7 +523,7 @@ msgstr "Duplicate your resume to create a new one, just like the original."
 msgid "Duplicating your resume..."
 msgstr "Duplicating your resume..."
 
-#: src/utils/resume/section.tsx:63
+#: src/utils/resume/section.tsx:77
 msgid "Education"
 msgstr "Education"
 
@@ -516,6 +542,11 @@ msgstr "Email"
 msgid "Email Address"
 msgstr "Email Address"
 
+#: src/routes/builder/$resumeId/-sidebar/right/sections/css.tsx:61
+msgctxt "Turn On/Apply Custom CSS"
+msgid "Enable"
+msgstr "Enable"
+
 #: src/routes/dashboard/settings/authentication/-components/two-factor.tsx:54
 msgid "Enable 2FA"
 msgstr "Enable 2FA"
@@ -523,6 +554,10 @@ msgstr "Enable 2FA"
 #: src/dialogs/auth/enable-two-factor.tsx:149
 msgid "Enable Two-Factor Authentication"
 msgstr "Enable Two-Factor Authentication"
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:71
+msgid "Enabling password protection..."
+msgstr "Enabling password protection..."
 
 #: src/dialogs/auth/enable-two-factor.tsx:64
 msgid "Enabling two-factor authentication..."
@@ -552,7 +587,7 @@ msgstr "Enter your password to confirm setting up two-factor authentication. Whe
 msgid "Enter your password to disable two-factor authentication. Your account will be less secure without 2FA enabled."
 msgstr "Enter your password to disable two-factor authentication. Your account will be less secure without 2FA enabled."
 
-#: src/utils/resume/section.tsx:62
+#: src/utils/resume/section.tsx:76
 msgid "Experience"
 msgstr "Experience"
 
@@ -569,24 +604,28 @@ msgid "Fluency"
 msgstr "Fluency"
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:86
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:242
+#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:243
 msgid "Font Family"
 msgstr "Font Family"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:158
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:314
+#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:159
+#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:316
 msgid "Font Size"
 msgstr "Font Size"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:108
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:264
+#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:109
+#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:266
 msgid "Font Subsets"
 msgstr "Font Subsets"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:133
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:289
+#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:134
+#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:291
 msgid "Font Variants"
 msgstr "Font Variants"
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/notes.tsx:37
+msgid "For example, information regarding which companies you sent this resume to or the links to the job descriptions can be noted down here."
+msgstr "For example, information regarding which companies you sent this resume to or the links to the job descriptions can be noted down here."
 
 #: src/routes/auth/login.tsx:133
 msgid "Forgot Password?"
@@ -596,6 +635,11 @@ msgstr "Forgot Password?"
 msgid "Forgot your password?"
 msgstr "Forgot your password?"
 
+#: src/routes/builder/$resumeId/-sidebar/right/sections/page.tsx:50
+msgctxt "Page Format (A4 or Letter)"
+msgid "Format"
+msgstr "Format"
+
 #: src/dialogs/resume/index.tsx:315
 msgid "Generate a random name"
 msgstr "Generate a random name"
@@ -604,7 +648,7 @@ msgstr "Generate a random name"
 msgid "German"
 msgstr "German"
 
-#: src/routes/_home/index.tsx:33
+#: src/routes/_home/index.tsx:36
 #: src/routes/_home/route.tsx:36
 msgid "Get Started"
 msgstr "Get Started"
@@ -632,7 +676,7 @@ msgstr "Hidden"
 msgid "Hide"
 msgstr "Hide"
 
-#: src/utils/resume/section.tsx:67
+#: src/utils/resume/section.tsx:81
 msgid "Interests"
 msgstr "Interests"
 
@@ -659,7 +703,7 @@ msgstr "Landscape"
 msgid "Language"
 msgstr "Language"
 
-#: src/utils/resume/section.tsx:66
+#: src/utils/resume/section.tsx:80
 msgid "Languages"
 msgstr "Languages"
 
@@ -667,11 +711,11 @@ msgstr "Languages"
 msgid "Last updated on {updatedAt}"
 msgstr "Last updated on {updatedAt}"
 
-#: src/utils/resume/section.tsx:77
+#: src/utils/resume/section.tsx:91
 msgid "Layout"
 msgstr "Layout"
 
-#: src/routes/_home/index.tsx:40
+#: src/routes/_home/index.tsx:43
 msgid "Learn More"
 msgstr "Learn More"
 
@@ -689,8 +733,8 @@ msgstr "Level"
 msgid "Light"
 msgstr "Light"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:189
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:345
+#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:190
+#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:347
 msgid "Line Height"
 msgstr "Line Height"
 
@@ -726,6 +770,14 @@ msgstr "Lost access to your authenticator?"
 msgid "Main"
 msgstr "Main"
 
+#: src/routes/builder/$resumeId/-sidebar/right/sections/page.tsx:76
+msgid "Margin (Horizontal)"
+msgstr "Margin (Horizontal)"
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/page.tsx:108
+msgid "Margin (Vertical)"
+msgstr "Margin (Vertical)"
+
 #: src/dialogs/resume/index.tsx:308
 #: src/dialogs/resume/sections/interest.tsx:165
 #: src/dialogs/resume/sections/project.tsx:147
@@ -750,6 +802,10 @@ msgstr "New Password"
 msgid "No results found."
 msgstr "No results found."
 
+#: src/utils/resume/section.tsx:96
+msgid "Notes"
+msgstr "Notes"
+
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:119
 msgid "Open"
 msgstr "Open"
@@ -757,6 +813,10 @@ msgstr "Open"
 #: src/routes/auth/forgot-password.tsx:119
 msgid "Open Email Client"
 msgstr "Open Email Client"
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:160
+msgid "Optionally, set a password so that only people with the password can view your resume through the link."
+msgstr "Optionally, set a password so that only people with the password can view your resume through the link."
 
 #: src/routes/auth/-components/social-auth.tsx:72
 msgctxt "Choose to authenticate with a social provider (Google, GitHub, etc.) instead of email and password"
@@ -767,6 +827,10 @@ msgstr "or continue with"
 msgid "Organization"
 msgstr "Organization"
 
+#: src/utils/resume/section.tsx:94
+msgid "Page"
+msgstr "Page"
+
 #: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:48
 msgid "Passkeys"
 msgstr "Passkeys"
@@ -776,9 +840,22 @@ msgstr "Passkeys"
 #: src/routes/auth/login.tsx:128
 #: src/routes/auth/register.tsx:169
 #: src/routes/auth/reset-password.tsx:84
+#: src/routes/auth/resume-password.tsx:104
 #: src/routes/dashboard/settings/authentication/-components/password.tsx:35
 msgid "Password"
 msgstr "Password"
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:69
+msgid "Password cannot be empty."
+msgstr "Password cannot be empty."
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:97
+msgid "Password protection has been disabled."
+msgstr "Password protection has been disabled."
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:76
+msgid "Password protection has been enabled."
+msgstr "Password protection has been enabled."
 
 #: src/dialogs/resume/sections/education.tsx:235
 #: src/dialogs/resume/sections/experience.tsx:199
@@ -791,9 +868,13 @@ msgstr "Period"
 msgid "Phone"
 msgstr "Phone"
 
-#: src/utils/resume/section.tsx:58
+#: src/utils/resume/section.tsx:72
 msgid "Picture"
 msgstr "Picture"
+
+#: src/routes/auth/resume-password.tsx:92
+msgid "Please enter the password shared with you by the owner of the resume to continue."
+msgstr "Please enter the password shared with you by the owner of the resume to continue."
 
 #: src/components/input/rich-input.tsx:210
 msgid "Please enter the URL you want to link to:"
@@ -812,6 +893,10 @@ msgstr "Position"
 msgid "Preferences"
 msgstr "Preferences"
 
+#: src/routes/builder/$resumeId/-sidebar/right/sections/theme.tsx:72
+msgid "Primary Color"
+msgstr "Primary Color"
+
 #: src/dialogs/resume/sections/skill.tsx:188
 msgid "Proficiency"
 msgstr "Proficiency"
@@ -821,15 +906,24 @@ msgstr "Proficiency"
 msgid "Profile"
 msgstr "Profile"
 
-#: src/utils/resume/section.tsx:61
+#: src/utils/resume/section.tsx:75
 msgid "Profiles"
 msgstr "Profiles"
 
-#: src/utils/resume/section.tsx:64
+#: src/utils/resume/section.tsx:78
 msgid "Projects"
 msgstr "Projects"
 
-#: src/utils/resume/section.tsx:70
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:57
+msgid "Protect your resume from unauthorized access with a password"
+msgstr "Protect your resume from unauthorized access with a password"
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:118
+msgctxt "Visibility"
+msgid "Public"
+msgstr "Public"
+
+#: src/utils/resume/section.tsx:84
 msgid "Publications"
 msgstr "Publications"
 
@@ -837,11 +931,11 @@ msgstr "Publications"
 msgid "Publisher"
 msgstr "Publisher"
 
-#: src/routes/_home/index.tsx:24
+#: src/routes/_home/index.tsx:27
 msgid "Reactive Resume is a free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
 msgstr "Reactive Resume is a free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
 
-#: src/utils/resume/section.tsx:72
+#: src/utils/resume/section.tsx:86
 msgid "References"
 msgstr "References"
 
@@ -852,6 +946,14 @@ msgstr "Register New Device"
 #: src/routes/auth/forgot-password.tsx:67
 msgid "Remember your password? <0><1>Sign in now <2/></1></0>"
 msgstr "Remember your password? <0><1>Sign in now <2/></1></0>"
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:170
+msgid "Remove Password"
+msgstr "Remove Password"
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:92
+msgid "Removing password protection..."
+msgstr "Removing password protection..."
 
 #: src/routes/builder/$resumeId/-sidebar/left/shared/section-menu.tsx:145
 msgid "Rename"
@@ -943,6 +1045,8 @@ msgstr "Send Password Reset Email"
 msgid "Sending password reset email..."
 msgstr "Sending password reset email..."
 
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:59
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:174
 #: src/routes/dashboard/settings/authentication/-components/password.tsx:48
 msgid "Set Password"
 msgstr "Set Password"
@@ -959,6 +1063,10 @@ msgstr "Setup Authenticator App"
 msgid "Shadow"
 msgstr "Shadow"
 
+#: src/utils/resume/section.tsx:97
+msgid "Sharing"
+msgstr "Sharing"
+
 #: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:121
 #: src/routes/builder/$resumeId/-sidebar/left/shared/section-menu.tsx:140
 msgid "Show"
@@ -968,7 +1076,7 @@ msgstr "Show"
 msgid "Sidebar"
 msgstr "Sidebar"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/layout/index.tsx:52
+#: src/routes/builder/$resumeId/-sidebar/right/sections/layout/index.tsx:51
 msgid "Sidebar Width"
 msgstr "Sidebar Width"
 
@@ -1003,13 +1111,22 @@ msgstr "Signing up..."
 msgid "Size"
 msgstr "Size"
 
-#: src/utils/resume/section.tsx:65
+#: src/utils/resume/section.tsx:79
 msgid "Skills"
 msgstr "Skills"
 
 #: src/dialogs/resume/index.tsx:333
 msgid "Slug"
 msgstr "Slug"
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:78
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:99
+msgid "Something went wrong."
+msgstr "Something went wrong."
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:50
+msgid "Something went wrong. Please try again."
+msgstr "Something went wrong. Please try again."
 
 #: src/routes/dashboard/resumes/index.tsx:76
 msgid "Sort by"
@@ -1027,11 +1144,11 @@ msgstr "Start building your resume by giving it a name."
 msgid "Start building your resume from scratch"
 msgstr "Start building your resume from scratch"
 
-#: src/utils/resume/section.tsx:60
+#: src/utils/resume/section.tsx:74
 msgid "Summary"
 msgstr "Summary"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:228
+#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:229
 msgid "Synchronize heading styles with the settings configured above."
 msgstr "Synchronize heading styles with the settings configured above."
 
@@ -1043,9 +1160,21 @@ msgstr "Tags"
 msgid "Tags can be used to categorize your resume by keywords."
 msgstr "Tags can be used to categorize your resume by keywords."
 
-#: src/utils/resume/section.tsx:76
+#: src/utils/resume/section.tsx:90
 msgid "Template"
 msgstr "Template"
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/theme.tsx:97
+msgid "Text Color"
+msgstr "Text Color"
+
+#: src/routes/auth/resume-password.tsx:75
+msgid "The password you entered is incorrect"
+msgstr "The password you entered is incorrect"
+
+#: src/routes/auth/resume-password.tsx:88
+msgid "The resume you are trying to access is password protected"
+msgstr "The resume you are trying to access is password protected"
 
 #: src/components/input/rich-input.tsx:220
 msgid "The URL you entered is not valid."
@@ -1053,6 +1182,7 @@ msgstr "The URL you entered is not valid."
 
 #: src/components/user/dropdown-menu.tsx:91
 #: src/routes/dashboard/settings/preferences.tsx:28
+#: src/utils/resume/section.tsx:93
 msgid "Theme"
 msgstr "Theme"
 
@@ -1072,6 +1202,10 @@ msgstr "This action cannot be undone. All your data will be permanently deleted.
 #: src/dialogs/resume/index.tsx:345
 msgid "This is a URL-friendly name for your resume."
 msgstr "This is a URL-friendly name for your resume."
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/notes.tsx:28
+msgid "This section is reserved for your personal notes specific to this resume. The content here remains private and is not shared with anyone else."
+msgstr "This section is reserved for your personal notes specific to this resume. The content here remains private and is not shared with anyone else."
 
 #: src/routes/auth/register.tsx:216
 msgid "This step is optional, but recommended."
@@ -1109,7 +1243,7 @@ msgstr "Two-factor authentication has been setup successfully."
 msgid "Type \"{CONFIRMATION_TEXT}\" to confirm"
 msgstr "Type \"{CONFIRMATION_TEXT}\" to confirm"
 
-#: src/utils/resume/section.tsx:78
+#: src/utils/resume/section.tsx:92
 msgid "Typography"
 msgstr "Typography"
 
@@ -1117,6 +1251,7 @@ msgstr "Typography"
 msgid "Unlinking your {providerName} account..."
 msgstr "Unlinking your {providerName} account..."
 
+#: src/routes/auth/resume-password.tsx:128
 #: src/routes/builder/$resumeId/-components/header.tsx:155
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:137
 msgid "Unlock"
@@ -1218,7 +1353,7 @@ msgstr "URL"
 msgid "Use Authenticator App"
 msgstr "Use Authenticator App"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:226
+#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx:227
 msgid "Use the same style for headings"
 msgstr "Use the same style for headings"
 
@@ -1254,11 +1389,15 @@ msgstr "Verifying backup code..."
 msgid "Verifying code..."
 msgstr "Verifying code..."
 
+#: src/routes/auth/resume-password.tsx:63
+msgid "Verifying password..."
+msgstr "Verifying password..."
+
 #: src/routes/auth/register.tsx:219
 msgid "Verifying your email is required when resetting your password."
 msgstr "Verifying your email is required when resetting your password."
 
-#: src/utils/resume/section.tsx:71
+#: src/utils/resume/section.tsx:85
 msgid "Volunteer"
 msgstr "Volunteer"
 
@@ -1350,6 +1489,14 @@ msgstr "Your resume has been duplicated successfully."
 #: src/dialogs/resume/index.tsx:177
 msgid "Your resume has been updated successfully."
 msgstr "Your resume has been updated successfully."
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:155
+msgid "Your resume's public link is currently protected by a password. Share the password only with people you trust."
+msgstr "Your resume's public link is currently protected by a password. Share the password only with people you trust."
+
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:40
+msgid "Your resume's public URL has been copied to clipboard."
+msgstr "Your resume's public URL has been copied to clipboard."
 
 #: src/utils/locale.ts:17
 msgid "Zulu"

@@ -148,6 +148,7 @@ export const resume = pgTable(
 		tags: text("tags").array().notNull().default([]),
 		isPublic: boolean("is_public").notNull().default(false),
 		isLocked: boolean("is_locked").notNull().default(false),
+		password: text("password"),
 		data: jsonb("data")
 			.notNull()
 			.$type<ResumeData>()
@@ -161,7 +162,7 @@ export const resume = pgTable(
 			.defaultNow()
 			.$onUpdate(() => /* @__PURE__ */ new Date()),
 	},
-	(t) => [unique().on(t.slug, t.userId)],
+	(t) => [unique().on(t.slug, t.userId), index().on(t.isPublic, t.slug, t.userId)],
 );
 
 export const resumeSchema = z.object({

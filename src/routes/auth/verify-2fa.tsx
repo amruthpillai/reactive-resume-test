@@ -39,12 +39,12 @@ function RouteComponent() {
 	const onSubmit = async (data: FormValues) => {
 		const toastId = toast.loading(t`Verifying code...`);
 
-		const result = await authClient.twoFactor.verifyTotp({
+		const { error } = await authClient.twoFactor.verifyTotp({
 			code: data.code,
 		});
 
-		if (result.error) {
-			toast.error(result.error.message, { id: toastId });
+		if (error) {
+			toast.error(error.message, { id: toastId });
 			return;
 		}
 

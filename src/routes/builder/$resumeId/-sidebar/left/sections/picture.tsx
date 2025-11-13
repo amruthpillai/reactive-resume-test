@@ -1,14 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { ORPCError } from "@orpc/client";
 import { ApertureIcon, TrashSimpleIcon, UploadSimpleIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
-import { flattenError } from "zod";
 import { useResumeData } from "@/builder/-hooks/resume";
 import { useResumeStore } from "@/builder/-store/resume";
 import { Button } from "@/components/ui/button";
@@ -98,12 +96,6 @@ function PictureSectionForm() {
 				toast.dismiss(toastId);
 			},
 			onError: (error) => {
-				if (error instanceof ORPCError && "data" in error) {
-					const { formErrors: errors } = flattenError(error.data);
-					toast.error(errors[0], { id: toastId });
-					return;
-				}
-
 				toast.error(error.message, { id: toastId });
 			},
 		});

@@ -17,12 +17,14 @@ import { Route as AuthIndexRouteImport } from "./routes/auth/index";
 import { Route as HomeIndexRouteImport } from "./routes/_home/index";
 import { Route as AuthVerify2faBackupRouteImport } from "./routes/auth/verify-2fa-backup";
 import { Route as AuthVerify2faRouteImport } from "./routes/auth/verify-2fa";
+import { Route as AuthResumePasswordRouteImport } from "./routes/auth/resume-password";
 import { Route as AuthResetPasswordRouteImport } from "./routes/auth/reset-password";
 import { Route as AuthRegisterRouteImport } from "./routes/auth/register";
 import { Route as AuthLoginRouteImport } from "./routes/auth/login";
 import { Route as AuthForgotPasswordRouteImport } from "./routes/auth/forgot-password";
 import { Route as ApiHealthRouteImport } from "./routes/api/health";
 import { Route as ApiSplatRouteImport } from "./routes/api/$";
+import { Route as UsernameSlugRouteImport } from "./routes/$username.$slug";
 import { Route as BuilderResumeIdRouteRouteImport } from "./routes/builder/$resumeId/route";
 import { Route as DashboardResumesIndexRouteImport } from "./routes/dashboard/resumes/index";
 import { Route as BuilderResumeIdIndexRouteImport } from "./routes/builder/$resumeId/index";
@@ -74,6 +76,11 @@ const AuthVerify2faRoute = AuthVerify2faRouteImport.update({
   path: "/verify-2fa",
   getParentRoute: () => AuthRouteRoute,
 } as any);
+const AuthResumePasswordRoute = AuthResumePasswordRouteImport.update({
+  id: "/resume-password",
+  path: "/resume-password",
+  getParentRoute: () => AuthRouteRoute,
+} as any);
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: "/reset-password",
   path: "/reset-password",
@@ -102,6 +109,11 @@ const ApiHealthRoute = ApiHealthRouteImport.update({
 const ApiSplatRoute = ApiSplatRouteImport.update({
   id: "/api/$",
   path: "/api/$",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const UsernameSlugRoute = UsernameSlugRouteImport.update({
+  id: "/$username/$slug",
+  path: "/$username/$slug",
   getParentRoute: () => rootRouteImport,
 } as any);
 const BuilderResumeIdRouteRoute = BuilderResumeIdRouteRouteImport.update({
@@ -168,12 +180,14 @@ export interface FileRoutesByFullPath {
   "/auth": typeof AuthRouteRouteWithChildren;
   "/dashboard": typeof DashboardRouteRouteWithChildren;
   "/builder/$resumeId": typeof BuilderResumeIdRouteRouteWithChildren;
+  "/$username/$slug": typeof UsernameSlugRoute;
   "/api/$": typeof ApiSplatRoute;
   "/api/health": typeof ApiHealthRoute;
   "/auth/forgot-password": typeof AuthForgotPasswordRoute;
   "/auth/login": typeof AuthLoginRoute;
   "/auth/register": typeof AuthRegisterRoute;
   "/auth/reset-password": typeof AuthResetPasswordRoute;
+  "/auth/resume-password": typeof AuthResumePasswordRoute;
   "/auth/verify-2fa": typeof AuthVerify2faRoute;
   "/auth/verify-2fa-backup": typeof AuthVerify2faBackupRoute;
   "/": typeof HomeIndexRoute;
@@ -191,12 +205,14 @@ export interface FileRoutesByFullPath {
   "/dashboard/settings/authentication": typeof DashboardSettingsAuthenticationIndexRoute;
 }
 export interface FileRoutesByTo {
+  "/$username/$slug": typeof UsernameSlugRoute;
   "/api/$": typeof ApiSplatRoute;
   "/api/health": typeof ApiHealthRoute;
   "/auth/forgot-password": typeof AuthForgotPasswordRoute;
   "/auth/login": typeof AuthLoginRoute;
   "/auth/register": typeof AuthRegisterRoute;
   "/auth/reset-password": typeof AuthResetPasswordRoute;
+  "/auth/resume-password": typeof AuthResumePasswordRoute;
   "/auth/verify-2fa": typeof AuthVerify2faRoute;
   "/auth/verify-2fa-backup": typeof AuthVerify2faBackupRoute;
   "/": typeof HomeIndexRoute;
@@ -219,12 +235,14 @@ export interface FileRoutesById {
   "/auth": typeof AuthRouteRouteWithChildren;
   "/dashboard": typeof DashboardRouteRouteWithChildren;
   "/builder/$resumeId": typeof BuilderResumeIdRouteRouteWithChildren;
+  "/$username/$slug": typeof UsernameSlugRoute;
   "/api/$": typeof ApiSplatRoute;
   "/api/health": typeof ApiHealthRoute;
   "/auth/forgot-password": typeof AuthForgotPasswordRoute;
   "/auth/login": typeof AuthLoginRoute;
   "/auth/register": typeof AuthRegisterRoute;
   "/auth/reset-password": typeof AuthResetPasswordRoute;
+  "/auth/resume-password": typeof AuthResumePasswordRoute;
   "/auth/verify-2fa": typeof AuthVerify2faRoute;
   "/auth/verify-2fa-backup": typeof AuthVerify2faBackupRoute;
   "/_home/": typeof HomeIndexRoute;
@@ -247,12 +265,14 @@ export interface FileRouteTypes {
     | "/auth"
     | "/dashboard"
     | "/builder/$resumeId"
+    | "/$username/$slug"
     | "/api/$"
     | "/api/health"
     | "/auth/forgot-password"
     | "/auth/login"
     | "/auth/register"
     | "/auth/reset-password"
+    | "/auth/resume-password"
     | "/auth/verify-2fa"
     | "/auth/verify-2fa-backup"
     | "/"
@@ -270,12 +290,14 @@ export interface FileRouteTypes {
     | "/dashboard/settings/authentication";
   fileRoutesByTo: FileRoutesByTo;
   to:
+    | "/$username/$slug"
     | "/api/$"
     | "/api/health"
     | "/auth/forgot-password"
     | "/auth/login"
     | "/auth/register"
     | "/auth/reset-password"
+    | "/auth/resume-password"
     | "/auth/verify-2fa"
     | "/auth/verify-2fa-backup"
     | "/"
@@ -297,12 +319,14 @@ export interface FileRouteTypes {
     | "/auth"
     | "/dashboard"
     | "/builder/$resumeId"
+    | "/$username/$slug"
     | "/api/$"
     | "/api/health"
     | "/auth/forgot-password"
     | "/auth/login"
     | "/auth/register"
     | "/auth/reset-password"
+    | "/auth/resume-password"
     | "/auth/verify-2fa"
     | "/auth/verify-2fa-backup"
     | "/_home/"
@@ -325,6 +349,7 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren;
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
   BuilderResumeIdRouteRoute: typeof BuilderResumeIdRouteRouteWithChildren;
+  UsernameSlugRoute: typeof UsernameSlugRoute;
   ApiSplatRoute: typeof ApiSplatRoute;
   ApiHealthRoute: typeof ApiHealthRoute;
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute;
@@ -390,6 +415,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthVerify2faRouteImport;
       parentRoute: typeof AuthRouteRoute;
     };
+    "/auth/resume-password": {
+      id: "/auth/resume-password";
+      path: "/resume-password";
+      fullPath: "/auth/resume-password";
+      preLoaderRoute: typeof AuthResumePasswordRouteImport;
+      parentRoute: typeof AuthRouteRoute;
+    };
     "/auth/reset-password": {
       id: "/auth/reset-password";
       path: "/reset-password";
@@ -430,6 +462,13 @@ declare module "@tanstack/react-router" {
       path: "/api/$";
       fullPath: "/api/$";
       preLoaderRoute: typeof ApiSplatRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/$username/$slug": {
+      id: "/$username/$slug";
+      path: "/$username/$slug";
+      fullPath: "/$username/$slug";
+      preLoaderRoute: typeof UsernameSlugRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/builder/$resumeId": {
@@ -529,6 +568,7 @@ interface AuthRouteRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute;
   AuthRegisterRoute: typeof AuthRegisterRoute;
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute;
+  AuthResumePasswordRoute: typeof AuthResumePasswordRoute;
   AuthVerify2faRoute: typeof AuthVerify2faRoute;
   AuthVerify2faBackupRoute: typeof AuthVerify2faBackupRoute;
   AuthIndexRoute: typeof AuthIndexRoute;
@@ -539,6 +579,7 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
+  AuthResumePasswordRoute: AuthResumePasswordRoute,
   AuthVerify2faRoute: AuthVerify2faRoute,
   AuthVerify2faBackupRoute: AuthVerify2faBackupRoute,
   AuthIndexRoute: AuthIndexRoute,
@@ -589,6 +630,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   BuilderResumeIdRouteRoute: BuilderResumeIdRouteRouteWithChildren,
+  UsernameSlugRoute: UsernameSlugRoute,
   ApiSplatRoute: ApiSplatRoute,
   ApiHealthRoute: ApiHealthRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,

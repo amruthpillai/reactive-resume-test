@@ -42,10 +42,10 @@ export function DisableTwoFactorDialog({ open, onOpenChange }: DialogProps<"auth
 	const onSubmit = async (data: FormValues) => {
 		const toastId = toast.loading(t`Disabling two-factor authentication...`);
 
-		const result = await authClient.twoFactor.disable({ password: data.password });
+		const { error } = await authClient.twoFactor.disable({ password: data.password });
 
-		if (result.error) {
-			toast.error(result.error.message, { id: toastId });
+		if (error) {
+			toast.error(error.message, { id: toastId });
 			return;
 		}
 

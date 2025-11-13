@@ -119,7 +119,7 @@
 	--color-sidebar: var(--sidebar);
 }
 
-@theme {
+@theme inline {
 	--animate-accordion-up: accordion-up var(--tw-animation-duration, var(--tw-duration, 0.2s)) var(--tw-ease, ease-out)
 		var(--tw-animation-delay, 0s) var(--tw-animation-iteration-count, 1) var(--tw-animation-direction, normal)
 		var(--tw-animation-fill-mode, none);
@@ -132,18 +132,34 @@
 		0% {
 			height: 0;
 		}
-
 		to {
 			height: var(--radix-accordion-content-height, auto);
 		}
 	}
+
 	@keyframes accordion-up {
 		0% {
 			height: var(--radix-accordion-content-height, auto);
 		}
-
 		to {
 			height: 0;
+		}
+	}
+}
+
+@theme inline {
+	--animate-aurora: aurora 60s linear infinite;
+
+	@keyframes aurora {
+		from {
+			background-position:
+				50% 50%,
+				50% 50%;
+		}
+		to {
+			background-position:
+				350% 50%,
+				350% 50%;
 		}
 	}
 }

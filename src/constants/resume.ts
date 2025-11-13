@@ -1,0 +1,1 @@
+export const RESUME_PASSWORD_REQUIRED_ERROR = "NEED_PASSWORD" as const;

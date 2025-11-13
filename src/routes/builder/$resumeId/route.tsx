@@ -52,7 +52,7 @@ function BuilderLayout({ initialLayout }: { initialLayout: number[] }) {
 	}, []);
 
 	return (
-		<div className="flex h-dvh flex-col">
+		<div className="flex h-svh flex-col">
 			<BuilderHeader />
 
 			<div className="mt-14 flex-1">

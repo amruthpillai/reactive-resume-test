@@ -13,20 +13,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/utils/style";
 
-interface PromptOptions {
+type PromptOptions = {
 	description?: string;
 	defaultValue?: string;
-	placeholder?: string;
 	confirmText?: string;
 	cancelText?: string;
-}
+	inputProps?: Omit<React.ComponentProps<typeof Input>, "value" | "onChange" | "onKeyDown">;
+};
 
-interface PromptState extends PromptOptions {
+type PromptState = PromptOptions & {
 	open: boolean;
 	title: string;
 	value: string;
 	resolve: ((value: string | null) => void) | null;
-}
+};
 
 type PromptContextType = {
 	prompt: (title: string, options?: PromptOptions) => Promise<string | null>;
@@ -44,9 +44,9 @@ export function PromptDialogProvider({ children }: { children: React.ReactNode }
 		value: "",
 		description: undefined,
 		defaultValue: undefined,
-		placeholder: undefined,
 		confirmText: undefined,
 		cancelText: undefined,
+		inputProps: undefined,
 	});
 
 	React.useEffect(() => {
@@ -66,9 +66,9 @@ export function PromptDialogProvider({ children }: { children: React.ReactNode }
 				value: options?.defaultValue ?? "",
 				description: options?.description,
 				defaultValue: options?.defaultValue,
-				placeholder: options?.placeholder,
 				confirmText: options?.confirmText,
 				cancelText: options?.cancelText,
+				inputProps: options?.inputProps,
 			});
 		});
 	}, []);
@@ -114,7 +114,7 @@ export function PromptDialogProvider({ children }: { children: React.ReactNode }
 						value={state.value}
 						onKeyDown={handleKeyDown}
 						onChange={handleValueChange}
-						placeholder={state.placeholder}
+						{...state.inputProps}
 					/>
 
 					<AlertDialogFooter>

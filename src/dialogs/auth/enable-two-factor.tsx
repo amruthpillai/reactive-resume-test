@@ -60,22 +60,22 @@ export function EnableTwoFactorDialog({ open, onOpenChange }: DialogProps<"auth.
 		},
 	});
 
-	const onEnableSubmit = async (data: EnableFormValues) => {
+	const onEnableSubmit = async (values: EnableFormValues) => {
 		const toastId = toast.loading(t`Enabling two-factor authentication...`);
 
-		const result = await authClient.twoFactor.enable({
-			password: data.password,
+		const { data, error } = await authClient.twoFactor.enable({
+			password: values.password,
 			issuer: "Reactive Resume",
 		});
 
-		if (result.error) {
-			toast.error(result.error.message, { id: toastId });
+		if (error) {
+			toast.error(error.message, { id: toastId });
 			return;
 		}
 
-		if (result.data.totpURI && result.data.backupCodes) {
-			setTotpUri(result.data.totpURI);
-			setBackupCodes(result.data.backupCodes);
+		if (data.totpURI && data.backupCodes) {
+			setTotpUri(data.totpURI);
+			setBackupCodes(data.backupCodes);
 			setStep("verify");
 			toast.dismiss(toastId);
 		} else {
