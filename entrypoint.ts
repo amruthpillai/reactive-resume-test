@@ -72,8 +72,8 @@ import { migrate } from "drizzle-orm/bun-sql/migrator";
 
 // Configuration
 const SERVER_PORT = Number(process.env.PORT ?? 3000);
-const CLIENT_DIRECTORY = ".output/public";
-const SERVER_ENTRY_POINT = ".output/server/index.mjs";
+const CLIENT_DIRECTORY = "./dist/client";
+const SERVER_ENTRY_POINT = "./dist/server/server.js";
 
 // Logging utilities for professional output
 const log = {
