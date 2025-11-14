@@ -34,8 +34,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/server.ts ./server.ts
 COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/entrypoint.ts ./entrypoint.ts
 COPY --from=dependencies /tmp/prod/node_modules ./node_modules
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \

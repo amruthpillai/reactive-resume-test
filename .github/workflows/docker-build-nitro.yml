@@ -19,7 +19,7 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
@@ -41,7 +41,7 @@ jobs:
             type=raw,value=nitro-latest
             type=sha,prefix=nitro-,format=short
 
-      - name: Build and push Nitro Docker image
+      - name: Build and Push Nitro Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
