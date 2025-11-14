@@ -2,7 +2,7 @@
 # Note: database migrations need to be run manually
 
 # ---------- Dependencies Layer ----------
-FROM oven/bun:1 AS dependencies
+FROM oven/bun:1-slim AS dependencies
 
 RUN mkdir -p /tmp/dev
 
@@ -11,7 +11,7 @@ COPY package.json bun.lock bunfig.toml /tmp/dev
 RUN cd /tmp/dev && bun install --frozen-lockfile
 
 # ---------- Builder Layer ----------
-FROM oven/bun:1 AS builder
+FROM oven/bun:1-slim AS builder
 
 WORKDIR /app
 
@@ -22,7 +22,7 @@ COPY . .
 RUN bun run build
 
 # ---------- Runtime Layer ----------
-FROM oven/bun:1 AS runtime
+FROM oven/bun:1-slim AS runtime
 
 WORKDIR /app
 

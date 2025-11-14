@@ -3,7 +3,7 @@
 # final image size could be larger compared to .nitro builds due to the dependencies layer
 
 # ---------- Dependencies Layer ----------
-FROM oven/bun:1 AS dependencies
+FROM oven/bun:1-slim AS dependencies
 
 # Development Dependencies
 RUN mkdir -p /tmp/dev
@@ -16,7 +16,7 @@ COPY package.json bun.lock bunfig.toml /tmp/prod
 RUN cd /tmp/prod && bun install --production --frozen-lockfile
 
 # ---------- Builder Layer ----------
-FROM oven/bun:1 AS builder
+FROM oven/bun:1-slim AS builder
 
 WORKDIR /app
 
@@ -27,7 +27,7 @@ COPY . .
 RUN bun run build
 
 # ---------- Runtime Layer ----------
-FROM oven/bun:1 AS runtime
+FROM oven/bun:1-slim AS runtime
 
 WORKDIR /app
 
