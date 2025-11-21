@@ -10,9 +10,10 @@ export const env = createEnv({
 
 	server: {
 		// Basics
-		APP_URL: z.url({ protocol: /https?/ }).default("http://localhost:3000"),
+		APP_URL: z.url({ protocol: /https?/ }),
 
 		// Printer
+		PRINTER_ENDPOINT: z.url({ protocol: /https?/ }),
 		PRINTER_APP_URL: z.url({ protocol: /https?/ }).optional(),
 
 		// Authentication

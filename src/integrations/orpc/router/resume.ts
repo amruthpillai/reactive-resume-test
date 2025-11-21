@@ -1,9 +1,5 @@
-import { ORPCError } from "@orpc/server";
-import puppeteerCore from "puppeteer-core";
 import z from "zod";
 import { resumeDataSchema, sampleResumeData } from "@/schema/resume/data";
-import { env } from "@/utils/env";
-import { generatePrinterToken } from "@/utils/printer-token";
 import { protectedProcedure, publicProcedure, serverOnlyProcedure } from "../context";
 import { resumeService } from "../services/resume";
 
@@ -25,43 +21,7 @@ const statisticsRouter = {
 		}),
 };
 
-const printer = {
-	printAsPDF: publicProcedure.input(z.object({ id: z.string() })).handler(async ({ input }) => {
-		try {
-			// Generate a time-limited token for printer route access
-			const token = generatePrinterToken(input.id);
-
-			const browser = await puppeteerCore.connect({
-				browserURL: "http://localhost:9222",
-				defaultViewport: { width: 794, height: 1123 },
-			});
-
-			const page = await browser.newPage();
-
-			const baseUrl = env.PRINTER_APP_URL ?? env.APP_URL;
-
-			await page.goto(`${baseUrl}/printer/${input.id}?token=${token}`, { waitUntil: "networkidle0", timeout: 25000 });
-
-			const pdfBuffer = await page.pdf({
-				format: "A4",
-				waitForFonts: true,
-				printBackground: true,
-				displayHeaderFooter: false,
-				margin: { top: 0, right: 0, bottom: 0, left: 0 },
-			});
-
-			await page.close();
-
-			return new File([new Uint8Array(pdfBuffer)], `resume-${input.id}.pdf`, { type: "application/pdf" });
-		} catch (error) {
-			console.error(error);
-			throw new ORPCError("INTERNAL_SERVER_ERROR");
-		}
-	}),
-};
-
 export const resumeRouter = {
-	printer: printer,
 	tags: tagsRouter,
 	statistics: statisticsRouter,
 

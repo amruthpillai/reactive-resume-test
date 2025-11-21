@@ -37,8 +37,8 @@ export function ExportSectionBuilder() {
 	const resume = useResumeData();
 	const { resumeId } = useParams({ from: "/builder/$resumeId" });
 
-	const { mutateAsync: printAsPDF, isPending: isPrinting } = useMutation(
-		orpc.resume.printer.printAsPDF.mutationOptions(),
+	const { mutateAsync: printResumeAsPDF, isPending: isPrinting } = useMutation(
+		orpc.printer.printResumeAsPDF.mutationOptions(),
 	);
 
 	const generateFilename = useCallback(
@@ -61,9 +61,9 @@ export function ExportSectionBuilder() {
 
 	const onDownloadPdf = useCallback(async () => {
 		const filename = generateFilename("pdf");
-		const file = await printAsPDF({ id: resumeId });
+		const file = await printResumeAsPDF({ id: resumeId });
 		downloadWithAnchor(file, filename);
-	}, [resumeId, generateFilename, printAsPDF]);
+	}, [resumeId, generateFilename, printResumeAsPDF]);
 
 	return (
 		<SectionBase type="export" className="space-y-4">

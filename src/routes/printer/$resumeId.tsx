@@ -35,7 +35,7 @@ export const Route = createFileRoute("/printer/$resumeId")({
 function RouteComponent() {
 	const { resume } = Route.useLoaderData();
 
-	const { mutateAsync: printAsPDF, isPending } = useMutation(orpc.resume.printer.printAsPDF.mutationOptions());
+	const { mutateAsync: printResumeAsPDF, isPending } = useMutation(orpc.printer.printResumeAsPDF.mutationOptions());
 
 	useLayoutEffect(() => {
 		document.documentElement.classList.replace("dark", "light");
@@ -43,7 +43,7 @@ function RouteComponent() {
 	}, []);
 
 	const onPrint = useCallback(async () => {
-		const file = await printAsPDF({ id: resume.id });
+		const file = await printResumeAsPDF({ id: resume.id });
 
 		const url = URL.createObjectURL(file);
 		const link = document.createElement("a");
@@ -51,7 +51,7 @@ function RouteComponent() {
 		link.download = file.name;
 		link.click();
 		URL.revokeObjectURL(url);
-	}, [resume.id, printAsPDF]);
+	}, [resume.id, printResumeAsPDF]);
 
 	return (
 		<div className="size-full">
