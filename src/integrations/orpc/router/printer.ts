@@ -11,7 +11,7 @@ export const printerRouter = {
 			const token = generatePrinterToken(input.id);
 
 			const browser = await puppeteer.connect({
-				browserURL: env.PRINTER_ENDPOINT,
+				browserWSEndpoint: env.PRINTER_ENDPOINT,
 				defaultViewport: { width: 794, height: 1123 },
 			});
 
