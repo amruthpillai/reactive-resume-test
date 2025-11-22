@@ -31,29 +31,31 @@ function getSectionComponent(section: "summary" | SectionType | (string & {})) {
 }
 
 /**
- * Template: Onyx
+ * Template: Ditto
  */
-export function OnyxTemplate({ pageIndex, pageLayout }: TemplateProps) {
+export function DittoTemplate({ pageIndex, pageLayout }: TemplateProps) {
 	const isFirstPage = pageIndex === 0;
 	const { main, sidebar } = pageLayout;
 
 	return (
-		<div className="template-onyx page-content px-(--page-margin-x) py-(--page-margin-y)">
+		<div className="template-ditto page-content space-y-4">
 			{isFirstPage && <Header />}
 
-			<main className="page-main space-y-4">
-				{main.map((section) => {
-					const Component = getSectionComponent(section);
-					return <Component key={section} id={section} />;
-				})}
-			</main>
+			<div className="flex">
+				<aside className="page-sidebar w-(--page-sidebar-width) shrink-0 space-y-4 pl-(--page-margin-x)">
+					{sidebar.map((section) => {
+						const Component = getSectionComponent(section);
+						return <Component key={section} id={section} />;
+					})}
+				</aside>
 
-			<aside className="page-sidebar space-y-4">
-				{sidebar.map((section) => {
-					const Component = getSectionComponent(section);
-					return <Component key={section} id={section} />;
-				})}
-			</aside>
+				<main className="page-main grow space-y-4 px-(--page-margin-x)">
+					{main.map((section) => {
+						const Component = getSectionComponent(section);
+						return <Component key={section} id={section} />;
+					})}
+				</main>
+			</div>
 		</div>
 	);
 }
@@ -62,17 +64,24 @@ function Header() {
 	const basics = useResumePreview((data) => data.basics);
 
 	return (
-		<div className="page-header mb-2 flex items-center gap-x-4 border-(--page-primary-color) border-b pb-(--page-margin-y)">
-			<PagePicture />
+		<div className="page-header relative">
+			<div className="bg-(--page-primary-color) text-(--page-background-color)">
+				<div className="flex items-center px-(--page-margin-x)">
+					<div className="flex w-(--page-sidebar-width) shrink-0 justify-center">
+						<PagePicture className="absolute top-8" />
+					</div>
 
-			{/* Basics */}
-			<div className="page-basics flex flex-col gap-y-1.5">
-				<div>
-					<h2 className="page-name font-bold leading-snug!">{basics.name}</h2>
-					<p className="page-headline leading-snug!">{basics.headline}</p>
+					<div className="grow py-(--page-margin-y)">
+						<h2 className="page-name">{basics.name}</h2>
+						<p className="page-headline">{basics.headline}</p>
+					</div>
 				</div>
+			</div>
 
-				<div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
+			<div className="flex items-center px-(--page-margin-x)">
+				<div className="w-(--page-sidebar-width) shrink-0" />
+
+				<div className="flex grow flex-wrap items-center gap-x-3 gap-y-1 pt-3">
 					{basics.email && (
 						<div className="flex items-center gap-x-1.5">
 							<EnvelopeIcon />

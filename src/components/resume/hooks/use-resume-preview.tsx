@@ -21,17 +21,24 @@ export const ResumePreviewProvider = ({ data, children }: ProviderProps) => {
 	}, [style]);
 
 	useLayoutEffect(() => {
-		async function loadFont(family: string, weight: string) {
+		async function loadFont(family: string, weights: string[]) {
 			const font = webfontlist.find((font) => font.family === family);
 			if (!font) return;
 
 			type FontUrl = { url: string; weight: string; style: "italic" | "normal" };
 
-			const fontUrls = Object.entries(font.files).reduce((acc, [fileWeight, url]) => {
-				if (weight === fileWeight) acc.push({ url, weight, style: "normal" });
-				if (fileWeight === `${weight}italic`) acc.push({ url, weight, style: "italic" });
-				return acc;
-			}, [] as FontUrl[]);
+			const fontUrls: FontUrl[] = [];
+
+			for (const weight of weights) {
+				for (const [fileWeight, url] of Object.entries(font.files)) {
+					if (weight === fileWeight) {
+						fontUrls.push({ url, weight, style: "normal" });
+					}
+					if (fileWeight === `${weight}italic`) {
+						fontUrls.push({ url, weight, style: "italic" });
+					}
+				}
+			}
 
 			for (const { url, weight, style } of fontUrls) {
 				const fontFace = new FontFace(family, `url("${url}")`, { style, weight, display: "swap" });
@@ -43,8 +50,8 @@ export const ResumePreviewProvider = ({ data, children }: ProviderProps) => {
 		const headingTypography = data.metadata.typography.heading;
 
 		Promise.all([
-			loadFont(bodyTypography.fontFamily, bodyTypography.fontWeight),
-			loadFont(headingTypography.fontFamily, headingTypography.fontWeight),
+			loadFont(bodyTypography.fontFamily, bodyTypography.fontWeights),
+			loadFont(headingTypography.fontFamily, headingTypography.fontWeights),
 		]).then(() => {
 			setFontsReady(true);
 		});

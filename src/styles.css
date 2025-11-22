@@ -172,8 +172,15 @@
 }
 
 @utility prose-dynamic {
+	font-family: var(--page-body-font-family);
 	font-size: calc(var(--page-body-font-size) * 1pt);
+	font-weight: var(--page-body-font-weight);
 	line-height: var(--page-body-line-height);
+	color: var(--page-text-color);
+
+	:where(*) {
+		color: var(--page-text-color);
+	}
 
 	:where(p) {
 		margin-top: 1em;
@@ -440,6 +447,6 @@
 }
 
 .tiptap-content {
-	@apply prose prose-dynamic prose-zinc max-w-none;
+	@apply prose prose-dynamic max-w-none;
 	@apply prose-ul:my-0.5 prose-li:my-0.5 [&_li_p]:my-0.5;
 }

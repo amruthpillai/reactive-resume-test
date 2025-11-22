@@ -77,7 +77,7 @@ const extensions = [
 	}),
 	Highlight.configure({
 		HTMLAttributes: {
-			class: "bg-yellow-200 group-data-editor:text-zinc-950! rounded-md px-0.5 py-px",
+			class: "bg-(--page-primary-color) text-(--page-background-color) rounded-md px-0.5 py-px",
 		},
 	}),
 	TextAlign.configure({ types: ["heading", "paragraph"] }),

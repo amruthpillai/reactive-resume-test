@@ -230,9 +230,11 @@ export type CustomSection = z.infer<typeof customSectionSchema>;
 
 export const customSectionsSchema = z.array(customSectionSchema);
 
+export const fontWeightSchema = z.enum(["100", "200", "300", "400", "500", "600", "700", "800", "900"]);
+
 export const typographyItemSchema = z.object({
 	fontFamily: z.string(),
-	fontWeight: z.string(),
+	fontWeights: z.array(fontWeightSchema).catch(["400"]),
 	fontSize: z.number().min(6).max(24).catch(11),
 	lineHeight: z.number().min(0.5).max(4).catch(1.5),
 });
@@ -244,7 +246,7 @@ export const pageLayoutSchema = z.object({
 });
 
 export const layoutSchema = z.object({
-	sidebarWidth: z.number().min(10).max(50).catch(20),
+	sidebarWidth: z.number().min(10).max(50).catch(30),
 	pages: z.array(pageLayoutSchema),
 });
 
@@ -280,9 +282,11 @@ export const typographySchema = z.object({
 	heading: typographyItemSchema,
 });
 
+export const templateSchema = z.enum(["onyx", "ditto"]);
+
 export const metadataSchema = z.object({
 	locale: localeSchema.catch("en-US"),
-	template: z.string(),
+	template: templateSchema.catch("onyx"),
 	layout: layoutSchema,
 	css: cssSchema,
 	page: pageSchema,
@@ -409,7 +413,7 @@ export const defaultResumeData: ResumeData = {
 		locale: "en-US",
 		template: "onyx",
 		layout: {
-			sidebarWidth: 20,
+			sidebarWidth: 30,
 			pages: [
 				{
 					fullWidth: false,
@@ -434,13 +438,13 @@ export const defaultResumeData: ResumeData = {
 		typography: {
 			body: {
 				fontFamily: "IBM Plex Serif",
-				fontWeight: "400",
+				fontWeights: ["400", "500"],
 				fontSize: 10,
 				lineHeight: 1.5,
 			},
 			heading: {
 				fontFamily: "IBM Plex Serif",
-				fontWeight: "600",
+				fontWeights: ["600"],
 				fontSize: 14,
 				lineHeight: 1.5,
 			},
@@ -1035,7 +1039,7 @@ export const sampleResumeData: ResumeData = {
 		locale: "en-US",
 		template: "onyx",
 		layout: {
-			sidebarWidth: 20,
+			sidebarWidth: 30,
 			pages: [
 				{
 					fullWidth: false,
@@ -1077,13 +1081,13 @@ export const sampleResumeData: ResumeData = {
 		typography: {
 			body: {
 				fontFamily: "IBM Plex Serif",
-				fontWeight: "400",
+				fontWeights: ["400", "500"],
 				fontSize: 10,
 				lineHeight: 1.5,
 			},
 			heading: {
 				fontFamily: "Oswald",
-				fontWeight: "400",
+				fontWeights: ["400"],
 				fontSize: 16,
 				lineHeight: 1.5,
 			},

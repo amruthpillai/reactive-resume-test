@@ -25,14 +25,14 @@ export function TypographySectionBuilder() {
 const formSchema = typographySchema;
 
 type FormValues = z.infer<typeof formSchema>;
-type TypographyValues = FormValues["body"];
+type TypographyValues = FormValues[keyof FormValues];
 
 function areTypographyValuesEqual(first: TypographyValues, second: TypographyValues) {
 	return (
 		first.fontSize === second.fontSize &&
 		first.lineHeight === second.lineHeight &&
 		first.fontFamily === second.fontFamily &&
-		first.fontWeight === second.fontWeight
+		first.fontWeights.every((weight) => second.fontWeights.includes(weight))
 	);
 }
 
@@ -98,11 +98,11 @@ function TypographySectionForm() {
 
 				<FormField
 					control={form.control}
-					name="body.fontWeight"
+					name="body.fontWeights"
 					render={({ field }) => (
 						<FormItem className="col-span-full">
 							<FormLabel>
-								<Trans>Font Weight</Trans>
+								<Trans>Font Weights</Trans>
 							</FormLabel>
 							<FormControl>
 								<FontWeightCombobox
@@ -228,7 +228,7 @@ function TypographySectionForm() {
 
 							<FormField
 								control={form.control}
-								name="heading.fontWeight"
+								name="heading.fontWeights"
 								render={({ field }) => (
 									<FormItem className="col-span-full">
 										<FormLabel>

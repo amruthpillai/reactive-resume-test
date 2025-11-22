@@ -5,6 +5,7 @@ import type z from "zod";
 import { useResumeData, useResumeStore } from "@/builder/-store/resume";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
+import { Slider } from "@/components/ui/slider";
 import { metadataSchema } from "@/schema/resume/data";
 import { SectionBase } from "../../shared/section-base";
 import { LayoutPages } from "./pages";
@@ -49,25 +50,37 @@ function LayoutSectionForm() {
 							<FormLabel>
 								<Trans>Sidebar Width</Trans>
 							</FormLabel>
-							<InputGroup>
+							<div className="flex items-center gap-4">
 								<FormControl>
-									<InputGroupInput
-										{...field}
-										type="number"
+									<Slider
 										min={10}
 										max={50}
-										step={1}
-										onChange={(e) => {
-											const value = e.target.value;
-											if (value === "") field.onChange("");
-											else field.onChange(Number(value));
-										}}
+										step={0.01}
+										value={[field.value]}
+										onValueChange={(value) => field.onChange(value[0])}
 									/>
 								</FormControl>
-								<InputGroupAddon align="inline-end">
-									<InputGroupText>%</InputGroupText>
-								</InputGroupAddon>
-							</InputGroup>
+
+								<FormControl>
+									<InputGroup className="w-auto shrink-0">
+										<InputGroupInput
+											{...field}
+											type="number"
+											min={10}
+											max={50}
+											step={0.1}
+											onChange={(e) => {
+												const value = e.target.value;
+												if (value === "") field.onChange("");
+												else field.onChange(Number(value));
+											}}
+										/>
+										<InputGroupAddon align="inline-end">
+											<InputGroupText>%</InputGroupText>
+										</InputGroupAddon>
+									</InputGroup>
+								</FormControl>
+							</div>
 							<FormMessage />
 						</FormItem>
 					)}

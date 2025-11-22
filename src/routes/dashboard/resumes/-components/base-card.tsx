@@ -1,4 +1,4 @@
-import Tilt from "react-parallax-tilt";
+import { CometCard } from "@/components/animation/comet-card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/utils/style";
 
@@ -12,7 +12,7 @@ type BaseCardProps = React.ComponentProps<"div"> & {
 
 export function BaseCard({ title, description, tags, className, children, ...props }: BaseCardProps) {
 	return (
-		<Tilt>
+		<CometCard>
 			<div
 				{...props}
 				className={cn("relative flex aspect-page size-full overflow-hidden rounded-md bg-popover shadow", className)}
@@ -32,6 +32,6 @@ export function BaseCard({ title, description, tags, className, children, ...pro
 					</div>
 				</div>
 			</div>
-		</Tilt>
+		</CometCard>
 	);
 }

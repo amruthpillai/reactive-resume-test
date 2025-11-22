@@ -1,9 +1,12 @@
 import { IconContext, type IconProps } from "@phosphor-icons/react";
 import { useMemo } from "react";
-import type { ResumeData } from "@/schema/resume/data";
+import { match } from "ts-pattern";
+import type z from "zod";
+import type { ResumeData, templateSchema } from "@/schema/resume/data";
 import { cn } from "@/utils/style";
 import { ResumePreviewProvider } from "./hooks/use-resume-preview";
 import styles from "./preview.module.css";
+import { DittoTemplate } from "./templates/ditto";
 import { OnyxTemplate } from "./templates/onyx";
 
 type Props = {
@@ -11,6 +14,13 @@ type Props = {
 	className?: string;
 	pageClassName?: string;
 };
+
+function getTemplateComponent(template: z.infer<typeof templateSchema>) {
+	return match(template)
+		.with("onyx", () => OnyxTemplate)
+		.with("ditto", () => DittoTemplate)
+		.exhaustive();
+}
 
 export const ResumePreview = ({ data, className, pageClassName }: Props) => {
 	const iconProps = useMemo<IconProps>(() => {
@@ -25,11 +35,15 @@ export const ResumePreview = ({ data, className, pageClassName }: Props) => {
 		<IconContext.Provider value={iconProps}>
 			<ResumePreviewProvider data={data}>
 				<div className={cn("flex flex-col gap-8", className)}>
-					{data.metadata.layout.pages.map((pageLayout, pageIndex) => (
-						<div key={pageIndex} className={cn("page", `page-${pageIndex}`, styles.page_preview, pageClassName)}>
-							<OnyxTemplate pageIndex={pageIndex} pageLayout={pageLayout} />
-						</div>
-					))}
+					{data.metadata.layout.pages.map((pageLayout, pageIndex) => {
+						const TemplateComponent = getTemplateComponent(data.metadata.template);
+
+						return (
+							<div key={pageIndex} className={cn("page", `page-${pageIndex}`, styles.page_preview, pageClassName)}>
+								<TemplateComponent pageIndex={pageIndex} pageLayout={pageLayout} />
+							</div>
+						);
+					})}
 				</div>
 			</ResumePreviewProvider>
 		</IconContext.Provider>

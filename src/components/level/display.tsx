@@ -32,7 +32,7 @@ export function LevelDisplay({ icon, type, level, className }: Props) {
 						<div
 							key={index}
 							className={cn(
-								"h-2.5 flex-1 shrink-0 border border-(--page-primary-color) border-x-0 first:border-l last:border-r",
+								"h-2.5 flex-1 border border-(--page-primary-color) border-x-0 first:border-l last:border-r",
 								isActive && "bg-(--page-primary-color)",
 							)}
 						/>

@@ -1,7 +1,9 @@
 import { BarricadeIcon } from "@phosphor-icons/react";
+import type z from "zod";
 import { useResumeData, useResumeStore } from "@/builder/-store/resume";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { templateSchema } from "@/schema/resume/data";
 import { SectionBase } from "../shared/section-base";
 
 export function TemplateSectionBuilder() {
@@ -22,7 +24,7 @@ function TemplateSectionForm() {
 	const template = useResumeData((state) => state.metadata.template);
 	const updateResume = useResumeStore((state) => state.updateResume);
 
-	const onSelectTemplate = (template: string) => {
+	const onSelectTemplate = (template: z.infer<typeof templateSchema>) => {
 		updateResume((draft) => {
 			draft.metadata.template = template;
 		});
@@ -32,16 +34,12 @@ function TemplateSectionForm() {
 		<div className="mt-4 space-y-4">
 			<p>Selected Template: {template}</p>
 
-			<div className="grid grid-cols-3 gap-2">
-				<Button variant="outline" onClick={() => onSelectTemplate("template-1")}>
-					Select Template 1
-				</Button>
-				<Button variant="outline" onClick={() => onSelectTemplate("template-2")}>
-					Select Template 2
-				</Button>
-				<Button variant="outline" onClick={() => onSelectTemplate("template-3")}>
-					Select Template 3
-				</Button>
+			<div className="flex flex-wrap gap-4">
+				{templateSchema.options.map((template) => (
+					<Button key={template} variant="secondary" onClick={() => onSelectTemplate(template)}>
+						{template}
+					</Button>
+				))}
 			</div>
 		</div>
 	);

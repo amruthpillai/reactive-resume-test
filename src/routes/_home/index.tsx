@@ -1,7 +1,6 @@
 import { Trans } from "@lingui/react/macro";
 import { BookIcon } from "@phosphor-icons/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AuroraBackground } from "@/components/layout/aurora-background";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_home/")({
@@ -13,17 +12,15 @@ function RouteComponent() {
 		<div>
 			{/* Hero */}
 			<div id="hero" className="relative flex h-svh flex-col items-center justify-center">
-				<AuroraBackground className="-z-10 pointer-events-none absolute inset-0" />
-
-				<div className="relative z-10 flex max-w-xl flex-col items-center gap-y-8 px-4 xs:px-0 text-center">
-					<div>
+				<div className="relative z-10 flex max-w-2xl flex-col items-center gap-y-8 px-4 xs:px-0 text-center">
+					<div className="space-y-2">
 						<Trans>
-							<p className="font-semibold text-base tracking-tight">Finally,</p>
-							<h1 className="font-bold text-5xl tracking-tight">A free and open-source resume builder</h1>
+							<p className="font-semibold text-lg tracking-tight">Finally,</p>
+							<h1 className="font-bold text-6xl tracking-tight">A free and open-source resume builder</h1>
 						</Trans>
 					</div>
 
-					<p className="text-base text-muted-foreground">
+					<p className="text-base text-muted-foreground leading-relaxed">
 						<Trans>
 							Reactive Resume is a free and open-source resume builder that simplifies the process of creating,
 							updating, and sharing your resume.
