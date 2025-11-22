@@ -1,6 +1,4 @@
-.page_preview {
-	width: var(--page-width);
-	min-height: var(--page-height);
+.editor_content {
 	font-family: var(--page-body-font-family);
 	font-size: calc(var(--page-body-font-size) * 1pt);
 	font-weight: var(--page-body-font-weight);
@@ -46,20 +44,5 @@
 	a {
 		text-decoration: underline;
 		text-underline-offset: 0.15rem;
-	}
-
-	@media print {
-		a {
-			text-decoration: none;
-		}
-	}
-
-	small {
-		font-size: calc(var(--page-body-font-size) * 0.9pt);
-	}
-
-	section,
-	section * {
-		break-inside: avoid;
 	}
 }

@@ -1,9 +1,13 @@
-import { createFileRoute, Outlet, redirect, useLayoutEffect } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie, setCookie } from "@tanstack/react-start/server";
-import { useCallback, useState } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { useDebounceCallback } from "usehooks-ts";
 import z from "zod";
 import { LoadingScreen } from "@/components/layout/loading-screen";
+import { useCSSVariables } from "@/components/resume/hooks/use-css-variables";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { orpc } from "@/integrations/orpc/client";
@@ -11,7 +15,6 @@ import { cn } from "@/utils/style";
 import { BuilderHeader } from "./-components/header";
 import { BuilderSidebarLeft } from "./-sidebar/left";
 import { BuilderSidebarRight } from "./-sidebar/right";
-import { useResumeStore } from "./-store/resume";
 import { useBuilderSidebar, useBuilderSidebarStore } from "./-store/sidebar";
 
 export const Route = createFileRoute("/builder/$resumeId")({
@@ -31,23 +34,25 @@ export const Route = createFileRoute("/builder/$resumeId")({
 function RouteComponent() {
 	const { layout: initialLayout, resume } = Route.useLoaderData();
 
-	const setResume = useResumeStore((state) => state.setResume);
-	const isResumeReady = useResumeStore((state) => state.isReady);
+	const style = useCSSVariables(resume.data);
+	const isReady = useResumeStore((state) => state.isReady);
+	const initialize = useResumeStore((state) => state.initialize);
 
-	useLayoutEffect(() => {
-		setResume(resume);
+	useEffect(() => {
+		initialize(resume);
+		return () => initialize(null);
+	}, [resume, initialize]);
 
-		return () => {
-			setResume(null);
-		};
-	}, [resume, setResume]);
+	if (!isReady) return <LoadingScreen />;
 
-	if (!resume || !isResumeReady) return <LoadingScreen />;
-
-	return <BuilderLayout initialLayout={initialLayout} />;
+	return <BuilderLayout style={style} initialLayout={initialLayout} />;
 }
 
-function BuilderLayout({ initialLayout }: { initialLayout: number[] }) {
+type BuilderLayoutProps = React.ComponentProps<"div"> & {
+	initialLayout: number[];
+};
+
+function BuilderLayout({ initialLayout, ...props }: BuilderLayoutProps) {
 	const isMobile = useIsMobile();
 	const [isDragging, setDragging] = useState(false);
 
@@ -58,12 +63,12 @@ function BuilderLayout({ initialLayout }: { initialLayout: number[] }) {
 		collapsedSidebarSize: state.collapsedSidebarSize,
 	}));
 
-	const onLayout = useCallback((layout: number[]) => {
+	const onLayout = useDebounceCallback((layout: number[]) => {
 		setBuilderLayoutServerFn({ data: layout });
-	}, []);
+	}, 1000);
 
 	return (
-		<div className="flex h-svh flex-col">
+		<div className="flex h-svh flex-col" {...props}>
 			<BuilderHeader />
 
 			<div className="mt-14 flex-1">

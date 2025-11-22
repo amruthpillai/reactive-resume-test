@@ -5,9 +5,9 @@ import { PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
 import { useMemo } from "react";
 import { useForm, useFormContext, useFormState } from "react-hook-form";
 import type z from "zod";
-import { useResumeStore } from "@/builder/-store/resume";
 import { ChipInput } from "@/components/input/chip-input";
 import { IconPicker } from "@/components/input/icon-picker";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -30,7 +30,7 @@ const formSchema = skillItemSchema;
 type FormValues = z.infer<typeof formSchema>;
 
 export function CreateSkillDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.skills.create">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -46,7 +46,7 @@ export function CreateSkillDialog({ open, onOpenChange, data }: DialogProps<"res
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.sections.skills.items.push(data);
 		});
 		onOpenChange(false);
@@ -84,7 +84,7 @@ export function CreateSkillDialog({ open, onOpenChange, data }: DialogProps<"res
 }
 
 export function UpdateSkillDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.skills.update">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -100,7 +100,7 @@ export function UpdateSkillDialog({ open, onOpenChange, data }: DialogProps<"res
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			const index = draft.sections.skills.items.findIndex((item) => item.id === data.id);
 			if (index === -1) return;
 			draft.sections.skills.items[index] = data;

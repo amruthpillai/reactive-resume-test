@@ -1,6 +1,6 @@
 import { BarricadeIcon } from "@phosphor-icons/react";
 import type z from "zod";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { templateSchema } from "@/schema/resume/data";
@@ -21,11 +21,11 @@ export function TemplateSectionBuilder() {
 }
 
 function TemplateSectionForm() {
-	const template = useResumeData((state) => state.metadata.template);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const template = useResumeStore((state) => state.resume.data.metadata.template);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const onSelectTemplate = (template: z.infer<typeof templateSchema>) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.metadata.template = template;
 		});
 	};

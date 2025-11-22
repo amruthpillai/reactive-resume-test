@@ -52,7 +52,7 @@ export const serverOnlyProcedure = publicProcedure.use(async ({ context, next })
 
 	// Check for the custom header that indicates this is a server-side call
 	// Server-side calls using createRouterClient have this header set
-	const isServerSideCall = headers.get("x-server-side-call") === "true";
+	const isServerSideCall = process.env.FLAG_DEBUG_PRINTER === "true" || headers.get("x-server-side-call") === "true";
 
 	// If the header is not present, this is a client-side HTTP request - reject it
 	if (!isServerSideCall) {

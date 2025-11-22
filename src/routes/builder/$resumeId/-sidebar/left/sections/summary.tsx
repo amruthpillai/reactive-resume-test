@@ -1,13 +1,13 @@
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
 import { RichInput } from "@/components/input/rich-input";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { SectionBase } from "../shared/section-base";
 
 export function SummarySectionBuilder() {
-	const section = useResumeData((state) => state.summary);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const section = useResumeStore((state) => state.resume.data.summary);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const onChange = (value: string) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.summary.content = value;
 		});
 	};

@@ -9,7 +9,7 @@ import {
 	PencilSimpleLineIcon,
 	PlusIcon,
 } from "@phosphor-icons/react";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -38,8 +38,10 @@ export function SectionDropdownMenu({ type }: Props) {
 	const confirm = useConfirm();
 	const { openDialog } = useDialogStore();
 
-	const updateResume = useResumeStore((state) => state.updateResume);
-	const section = useResumeData((state) => (type === "summary" ? state.summary : state.sections[type]));
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
+	const section = useResumeStore((state) =>
+		type === "summary" ? state.resume.data.summary : state.resume.data.sections[type],
+	);
 
 	const onAddItem = () => {
 		if (type === "summary") return;
@@ -47,7 +49,7 @@ export function SectionDropdownMenu({ type }: Props) {
 	};
 
 	const onToggleVisibility = () => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			if (type === "summary") {
 				draft.summary.hidden = !draft.summary.hidden;
 			} else {
@@ -64,7 +66,7 @@ export function SectionDropdownMenu({ type }: Props) {
 
 		if (newTitle === null || newTitle === section.title) return;
 
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			if (type === "summary") {
 				draft.summary.title = newTitle ?? "";
 			} else {
@@ -74,7 +76,7 @@ export function SectionDropdownMenu({ type }: Props) {
 	};
 
 	const onSetColumns = (value: string) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			if (type === "summary") {
 				draft.summary.columns = parseInt(value, 10);
 			} else {
@@ -92,7 +94,7 @@ export function SectionDropdownMenu({ type }: Props) {
 
 		if (!confirmed) return;
 
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			if (type === "summary") {
 				draft.summary.content = "";
 			} else {

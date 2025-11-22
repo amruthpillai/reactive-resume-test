@@ -4,9 +4,9 @@ import { PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
 import { useMemo } from "react";
 import { useForm, useFormContext, useFormState } from "react-hook-form";
 import type z from "zod";
-import { useResumeStore } from "@/builder/-store/resume";
 import { ChipInput } from "@/components/input/chip-input";
 import { IconPicker } from "@/components/input/icon-picker";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -28,7 +28,7 @@ const formSchema = interestItemSchema;
 type FormValues = z.infer<typeof formSchema>;
 
 export function CreateInterestDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.interests.create">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -42,7 +42,7 @@ export function CreateInterestDialog({ open, onOpenChange, data }: DialogProps<"
 	});
 
 	const onSubmit = (values: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.sections.interests.items.push(values);
 		});
 		onOpenChange(false);
@@ -80,7 +80,7 @@ export function CreateInterestDialog({ open, onOpenChange, data }: DialogProps<"
 }
 
 export function UpdateInterestDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.interests.update">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -94,7 +94,7 @@ export function UpdateInterestDialog({ open, onOpenChange, data }: DialogProps<"
 	});
 
 	const onSubmit = (values: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			const index = draft.sections.interests.items.findIndex((item) => item.id === values.id);
 			if (index === -1) return;
 			draft.sections.interests.items[index] = values;

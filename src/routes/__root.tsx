@@ -63,14 +63,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 		};
 	},
 	beforeLoad: async () => {
-		const theme = await getTheme();
-		const locale = await getLocale();
-		const session = await getSession();
+		const [theme, locale, session] = await Promise.all([getTheme(), getLocale(), getSession()]);
 
 		return { theme, locale, session };
-	},
-	loader: async ({ context }) => {
-		return { theme: context.theme, locale: context.locale };
 	},
 });
 
@@ -79,7 +74,7 @@ type Props = {
 };
 
 function RootDocument({ children }: Props) {
-	const { theme, locale } = Route.useLoaderData();
+	const { theme, locale } = Route.useRouteContext();
 
 	return (
 		<html suppressHydrationWarning lang={locale} className={theme}>

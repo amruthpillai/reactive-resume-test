@@ -56,6 +56,7 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Toggle } from "../ui/toggle";
+import styles from "./rich-input.module.css";
 
 const extensions = [
 	StarterKit.configure({
@@ -87,12 +88,16 @@ const extensions = [
 type Props = UseEditorOptions & {
 	value: string;
 	onChange: (value: string) => void;
+	style?: React.CSSProperties;
+	className?: string;
+	editorClassName?: string;
 };
 
-export function RichInput({ value, onChange, ...options }: Props) {
+export function RichInput({ value, onChange, style, className, editorClassName, ...options }: Props) {
 	const editor = useEditor({
-		content: value,
+		...options,
 		extensions,
+		content: value,
 		immediatelyRender: false,
 		shouldRerenderOnTransaction: false,
 		editorProps: {
@@ -100,16 +105,17 @@ export function RichInput({ value, onChange, ...options }: Props) {
 				spellcheck: "false",
 				"data-editor": "true",
 				class: cn(
-					"group tiptap-content dark:prose-invert!",
+					"group/editor",
 					"max-h-[400px] min-h-[100px] overflow-y-auto p-3 pb-0 focus:outline-none",
 					"rounded-md rounded-t-none border focus-visible:border-ring",
+					styles.editor_content,
+					editorClassName,
 				),
 			},
 		},
 		onUpdate: ({ editor }) => {
 			onChange(editor.getHTML());
 		},
-		...options,
 	});
 
 	const providerValue = useMemo(() => ({ editor }), [editor]);
@@ -118,7 +124,7 @@ export function RichInput({ value, onChange, ...options }: Props) {
 
 	return (
 		<EditorContext value={providerValue}>
-			<div className="rounded-md">
+			<div className={cn("rounded-md", className)} style={style}>
 				<EditorToolbar editor={editor} />
 				<EditorContent editor={editor} />
 			</div>
@@ -638,11 +644,12 @@ type TiptapContentProps = React.ComponentProps<"div"> & {
 	content: string;
 };
 
-export function TiptapContent({ content, className, ...props }: TiptapContentProps) {
+export function TiptapContent({ content, ...props }: TiptapContentProps) {
 	return (
-		<div>
-			{/* biome-ignore lint/security/noDangerouslySetInnerHtml: Safe to render HTML content */}
-			<div className={cn("tiptap-content", className)} dangerouslySetInnerHTML={{ __html: content }} {...props} />
-		</div>
+		<div
+			// biome-ignore lint/security/noDangerouslySetInnerHtml: Safe to render HTML content
+			dangerouslySetInnerHTML={{ __html: content }}
+			{...props}
+		/>
 	);
 }

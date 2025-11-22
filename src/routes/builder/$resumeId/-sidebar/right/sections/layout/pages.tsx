@@ -16,7 +16,7 @@ import { Trans } from "@lingui/react/macro";
 import { DotsSixVerticalIcon, PlusIcon, TrashIcon } from "@phosphor-icons/react";
 import { type CSSProperties, forwardRef, type HTMLAttributes, useCallback, useState } from "react";
 import { match } from "ts-pattern";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import type { SectionType } from "@/schema/resume/data";
@@ -63,8 +63,8 @@ const createDroppableId = (pageIndex: number, columnId: ColumnId): string => {
 export function LayoutPages() {
 	const [activeId, setActiveId] = useState<string | null>(null);
 
-	const layout = useResumeData((state) => state.metadata.layout);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const layout = useResumeStore((state) => state.resume.data.metadata.layout);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
 
@@ -115,7 +115,7 @@ export function LayoutPages() {
 				if (oldIdx === -1 || oldIdx === newIdx) return;
 				if (newIdx === -1) newIdx = items.length - 1;
 
-				updateResume((draft) => {
+				updateResumeData((draft) => {
 					const colOrder = draft.metadata.layout.pages[activeLocation.pageIndex][activeLocation.columnId];
 					draft.metadata.layout.pages[activeLocation.pageIndex][activeLocation.columnId] = arrayMove(
 						colOrder,
@@ -137,7 +137,7 @@ export function LayoutPages() {
 			let toIdx = toItems.indexOf(overIdStr);
 			if (toIdx === -1) toIdx = toItems.length;
 
-			updateResume((draft) => {
+			updateResumeData((draft) => {
 				const fromPageDraft = draft.metadata.layout.pages[activeLocation.pageIndex];
 				const toPageDraft = draft.metadata.layout.pages[overLocation.pageIndex];
 				const from = fromPageDraft[activeLocation.columnId];
@@ -147,24 +147,24 @@ export function LayoutPages() {
 				to.splice(Math.min(toIdx, to.length), 0, activeIdStr);
 			});
 		},
-		[findContainer, layout.pages, updateResume],
+		[findContainer, layout.pages, updateResumeData],
 	);
 
 	const handleAddPage = useCallback(() => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.metadata.layout.pages.push({
 				fullWidth: false,
 				main: [],
 				sidebar: [],
 			});
 		});
-	}, [updateResume]);
+	}, [updateResumeData]);
 
 	const handleDeletePage = useCallback(
 		(pageIndex: number) => {
 			if (layout.pages.length <= 1) return; // Don't allow deleting the last page
 
-			updateResume((draft) => {
+			updateResumeData((draft) => {
 				const pageToDelete = draft.metadata.layout.pages[pageIndex];
 				// Move all sections from deleted page to first page
 				const firstPage = draft.metadata.layout.pages[0];
@@ -174,12 +174,12 @@ export function LayoutPages() {
 				draft.metadata.layout.pages.splice(pageIndex, 1);
 			});
 		},
-		[layout.pages.length, updateResume],
+		[layout.pages.length, updateResumeData],
 	);
 
 	const handleToggleFullWidth = useCallback(
 		(pageIndex: number, fullWidth: boolean) => {
-			updateResume((draft) => {
+			updateResumeData((draft) => {
 				const page = draft.metadata.layout.pages[pageIndex];
 				page.fullWidth = fullWidth;
 
@@ -190,7 +190,7 @@ export function LayoutPages() {
 				}
 			});
 		},
-		[updateResume],
+		[updateResumeData],
 	);
 
 	// Don't render until pages are initialized
@@ -342,10 +342,11 @@ type LayoutItemContentProps = HTMLAttributes<HTMLDivElement> & {
 
 const LayoutItemContent = forwardRef<HTMLDivElement, LayoutItemContentProps>(
 	({ id, isDragging, isOverlay, className, style, ...rest }, ref) => {
-		const title = useResumeData((state) => {
-			if (id === "summary") return state.summary.title || getSectionTitle("summary");
-			if (id in state.sections) return state.sections[id as SectionType].title || getSectionTitle(id as SectionType);
-			const customSection = state.customSections.find((section) => section.id === id);
+		const title = useResumeStore((state) => {
+			if (id === "summary") return state.resume.data.summary.title || getSectionTitle("summary");
+			if (id in state.resume.data.sections)
+				return state.resume.data.sections[id as SectionType].title || getSectionTitle(id as SectionType);
+			const customSection = state.resume.data.customSections.find((section) => section.id === id);
 			if (customSection) return customSection.title;
 			return id;
 		});

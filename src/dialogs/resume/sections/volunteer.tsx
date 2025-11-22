@@ -3,9 +3,9 @@ import { Trans } from "@lingui/react/macro";
 import { PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
 import { useForm, useFormContext } from "react-hook-form";
 import type z from "zod";
-import { useResumeStore } from "@/builder/-store/resume";
 import { RichInput } from "@/components/input/rich-input";
 import { URLInput } from "@/components/input/url-input";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -26,7 +26,7 @@ const formSchema = volunteerItemSchema;
 type FormValues = z.infer<typeof formSchema>;
 
 export function CreateVolunteerDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.volunteer.create">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -42,7 +42,7 @@ export function CreateVolunteerDialog({ open, onOpenChange, data }: DialogProps<
 	});
 
 	const onSubmit = (values: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.sections.volunteer.items.push(values);
 		});
 		onOpenChange(false);
@@ -80,7 +80,7 @@ export function CreateVolunteerDialog({ open, onOpenChange, data }: DialogProps<
 }
 
 export function UpdateVolunteerDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.volunteer.update">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -96,7 +96,7 @@ export function UpdateVolunteerDialog({ open, onOpenChange, data }: DialogProps<
 	});
 
 	const onSubmit = (values: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			const index = draft.sections.volunteer.items.findIndex((item) => item.id === values.id);
 			if (index === -1) return;
 			draft.sections.volunteer.items[index] = values;

@@ -3,9 +3,9 @@ import { Trans } from "@lingui/react/macro";
 import { PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
 import { useForm, useFormContext } from "react-hook-form";
 import type z from "zod";
-import { useResumeStore } from "@/builder/-store/resume";
 import { RichInput } from "@/components/input/rich-input";
 import { URLInput } from "@/components/input/url-input";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -30,7 +30,7 @@ export function CreateCertificationDialog({
 	onOpenChange,
 	data,
 }: DialogProps<"resume.sections.certifications.create">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -46,7 +46,7 @@ export function CreateCertificationDialog({
 	});
 
 	const onSubmit = (values: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.sections.certifications.items.push(values);
 		});
 		onOpenChange(false);
@@ -88,7 +88,7 @@ export function UpdateCertificationDialog({
 	onOpenChange,
 	data,
 }: DialogProps<"resume.sections.certifications.update">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -104,7 +104,7 @@ export function UpdateCertificationDialog({
 	});
 
 	const onSubmit = (values: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			const index = draft.sections.certifications.items.findIndex((item) => item.id === values.id);
 			if (index === -1) return;
 			draft.sections.certifications.items[index] = values;

@@ -4,7 +4,7 @@ import { Accordion, AccordionContent, AccordionItem } from "@radix-ui/react-acco
 import { useId, useState } from "react";
 import { useForm } from "react-hook-form";
 import type z from "zod";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { FontFamilyCombobox, FontWeightCombobox } from "@/components/typography/combobox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
@@ -37,8 +37,8 @@ function areTypographyValuesEqual(first: TypographyValues, second: TypographyVal
 }
 
 function TypographySectionForm() {
-	const typography = useResumeData((state) => state.metadata.typography);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const typography = useResumeStore((state) => state.resume.data.metadata.typography);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const [syncOptions, setSyncOptions] = useState(() => areTypographyValuesEqual(typography.body, typography.heading));
 
@@ -53,7 +53,7 @@ function TypographySectionForm() {
 	const headingFontFamily = form.watch("heading.fontFamily");
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.metadata.typography.body = data.body;
 			draft.metadata.typography.heading = syncOptions ? data.body : data.heading;
 		});

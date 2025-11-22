@@ -2,8 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Trans } from "@lingui/react/macro";
 import { useForm } from "react-hook-form";
 import type z from "zod";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
 import { URLInput } from "@/components/input/url-input";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { basicsSchema } from "@/schema/resume/data";
@@ -23,8 +23,8 @@ const formSchema = basicsSchema;
 type FormValues = z.infer<typeof formSchema>;
 
 function BasicsSectionForm() {
-	const basics = useResumeData((state) => state.basics);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const basics = useResumeStore((state) => state.resume.data.basics);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm({
 		resolver: zodResolver(formSchema),
@@ -33,7 +33,7 @@ function BasicsSectionForm() {
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.basics = data;
 		});
 	};

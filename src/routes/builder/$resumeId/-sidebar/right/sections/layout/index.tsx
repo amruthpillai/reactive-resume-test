@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Trans } from "@lingui/react/macro";
 import { useForm } from "react-hook-form";
 import type z from "zod";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import { Slider } from "@/components/ui/slider";
@@ -24,8 +24,8 @@ const formSchema = metadataSchema.shape.layout.omit({ pages: true });
 type FormValues = z.infer<typeof formSchema>;
 
 function LayoutSectionForm() {
-	const sidebarWidth = useResumeData((state) => state.metadata.layout.sidebarWidth);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const sidebarWidth = useResumeStore((state) => state.resume.data.metadata.layout.sidebarWidth);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		mode: "onChange",
@@ -34,7 +34,7 @@ function LayoutSectionForm() {
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.metadata.layout.sidebarWidth = data.sidebarWidth;
 		});
 	};

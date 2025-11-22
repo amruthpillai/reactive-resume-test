@@ -1,7 +1,7 @@
 import type { SectionItem, SectionType } from "@/schema/resume/data";
 import { getSectionTitle } from "@/utils/resume/section";
 import { cn } from "@/utils/style";
-import { useResumePreview } from "../hooks/use-resume-preview";
+import { useResumeStore } from "../store/resume";
 
 type PageSectionProps<T extends SectionType> = {
 	type: T;
@@ -10,7 +10,7 @@ type PageSectionProps<T extends SectionType> = {
 };
 
 export function PageSection<T extends SectionType>({ type, className, children }: PageSectionProps<T>) {
-	const section = useResumePreview((data) => data.sections[type]);
+	const section = useResumeStore((state) => state.resume.data.sections[type]);
 
 	return (
 		<section

@@ -3,9 +3,9 @@ import { Trans } from "@lingui/react/macro";
 import { PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
 import { useForm, useFormContext } from "react-hook-form";
 import type z from "zod";
-import { useResumeStore } from "@/builder/-store/resume";
 import { RichInput } from "@/components/input/rich-input";
 import { URLInput } from "@/components/input/url-input";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -26,7 +26,7 @@ const formSchema = awardItemSchema;
 type FormValues = z.infer<typeof formSchema>;
 
 export function CreateAwardDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.awards.create">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -42,7 +42,7 @@ export function CreateAwardDialog({ open, onOpenChange, data }: DialogProps<"res
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.sections.awards.items.push(data);
 		});
 		onOpenChange(false);
@@ -80,7 +80,7 @@ export function CreateAwardDialog({ open, onOpenChange, data }: DialogProps<"res
 }
 
 export function UpdateAwardDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.awards.update">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -96,7 +96,7 @@ export function UpdateAwardDialog({ open, onOpenChange, data }: DialogProps<"res
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			const index = draft.sections.awards.items.findIndex((item) => item.id === data.id);
 			if (index === -1) return;
 			draft.sections.awards.items[index] = data;

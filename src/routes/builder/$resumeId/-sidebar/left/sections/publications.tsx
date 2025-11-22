@@ -1,18 +1,18 @@
 import { Trans } from "@lingui/react/macro";
 import { AnimatePresence, Reorder } from "motion/react";
 import type z from "zod";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
+import { useResumeStore } from "@/components/resume/store/resume";
 import type { publicationItemSchema } from "@/schema/resume/data";
 import { cn } from "@/utils/style";
 import { SectionBase } from "../shared/section-base";
 import { SectionAddItemButton, SectionItem } from "../shared/section-item";
 
 export function PublicationsSectionBuilder() {
-	const section = useResumeData((state) => state.sections.publications);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const section = useResumeStore((state) => state.resume.data.sections.publications);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const handleReorder = (items: z.infer<typeof publicationItemSchema>[]) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.sections.publications.items = items;
 		});
 	};

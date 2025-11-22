@@ -1,6 +1,6 @@
 import { Trans } from "@lingui/react/macro";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
 import { RichInput } from "@/components/input/rich-input";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { SectionBase } from "../shared/section-base";
 
 export function NotesSectionBuilder() {
@@ -12,11 +12,11 @@ export function NotesSectionBuilder() {
 }
 
 function NotesSectionForm() {
-	const notes = useResumeData((state) => state.metadata.notes);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const notes = useResumeStore((state) => state.resume.data.metadata.notes);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const onChange = (value: string) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.metadata.notes = value;
 		});
 	};

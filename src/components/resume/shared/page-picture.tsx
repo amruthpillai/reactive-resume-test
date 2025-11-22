@@ -1,9 +1,9 @@
 import { cn } from "@/utils/style";
-import { useResumePreview } from "../hooks/use-resume-preview";
+import { useResumeStore } from "../store/resume";
 
 export function PagePicture({ className, style }: { className?: string; style?: React.CSSProperties }) {
-	const name = useResumePreview((data) => data.basics.name);
-	const picture = useResumePreview((data) => data.picture);
+	const name = useResumeStore((state) => state.resume.data.basics.name);
+	const picture = useResumeStore((state) => state.resume.data.picture);
 
 	if (picture.url === "") return null;
 

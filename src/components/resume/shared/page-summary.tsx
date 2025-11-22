@@ -1,14 +1,14 @@
 import { TiptapContent } from "@/components/input/rich-input";
 import { getSectionTitle } from "@/utils/resume/section";
 import { cn } from "@/utils/style";
-import { useResumePreview } from "../hooks/use-resume-preview";
+import { useResumeStore } from "../store/resume";
 
 type PageSummaryProps = {
 	className?: string;
 };
 
 export function PageSummary({ className }: PageSummaryProps) {
-	const section = useResumePreview((data) => data.summary);
+	const section = useResumeStore((state) => state.resume.data.summary);
 
 	return (
 		<section

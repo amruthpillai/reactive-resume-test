@@ -1,26 +1,9 @@
-import { createContext, use, useLayoutEffect, useState } from "react";
+import { useEffect } from "react";
 import webfontlist from "@/components/typography/webfontlist.json";
 import type { ResumeData } from "@/schema/resume/data";
-import { useCSSVariables } from "./use-css-variables";
 
-export const ResumePreviewContext = createContext<ResumeData>({} as ResumeData);
-
-type ProviderProps = {
-	data: ResumeData;
-	children: React.ReactNode;
-};
-
-export const ResumePreviewProvider = ({ data, children }: ProviderProps) => {
-	const style = useCSSVariables(data);
-	const [fontsReady, setFontsReady] = useState(false);
-
-	useLayoutEffect(() => {
-		document.documentElement.style.cssText = Object.entries(style)
-			.map(([key, value]) => `${key}: ${value};`)
-			.join("");
-	}, [style]);
-
-	useLayoutEffect(() => {
+export function useWebfontLoader(data: ResumeData) {
+	useEffect(() => {
 		async function loadFont(family: string, weights: string[]) {
 			const font = webfontlist.find((font) => font.family === family);
 			if (!font) return;
@@ -52,22 +35,6 @@ export const ResumePreviewProvider = ({ data, children }: ProviderProps) => {
 		Promise.all([
 			loadFont(bodyTypography.fontFamily, bodyTypography.fontWeights),
 			loadFont(headingTypography.fontFamily, headingTypography.fontWeights),
-		]).then(() => {
-			setFontsReady(true);
-		});
+		]);
 	}, [data.metadata.typography]);
-
-	if (!data || !fontsReady) return null;
-
-	return (
-		<ResumePreviewContext.Provider value={data}>
-			<div style={{ all: "initial" }}>{children}</div>
-		</ResumePreviewContext.Provider>
-	);
-};
-
-export function useResumePreview<T = ResumeData>(selector?: (data: ResumeData) => T): T {
-	const context = use(ResumePreviewContext);
-
-	return selector ? selector(context) : (context as T);
 }

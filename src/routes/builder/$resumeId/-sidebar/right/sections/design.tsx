@@ -3,11 +3,11 @@ import { Trans } from "@lingui/react/macro";
 import { AnimatePresence, motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import type z from "zod";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
 import { ColorPicker } from "@/components/input/color-picker";
 import { IconPicker } from "@/components/input/icon-picker";
 import { LevelTypeCombobox } from "@/components/level/combobox";
 import { LevelDisplay } from "@/components/level/display";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -26,8 +26,8 @@ export function DesignSectionBuilder() {
 }
 
 function ColorSectionForm() {
-	const colors = useResumeData((state) => state.metadata.design.colors);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const colors = useResumeStore((state) => state.resume.data.metadata.design.colors);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<z.infer<typeof colorDesignSchema>>({
 		mode: "onChange",
@@ -36,7 +36,7 @@ function ColorSectionForm() {
 	});
 
 	const onSubmit = (data: z.infer<typeof colorDesignSchema>) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.metadata.design.colors = data;
 		});
 	};
@@ -205,9 +205,9 @@ function QuickColorCircle({ color, active, onSelect, className, ...props }: Quic
 }
 
 function LevelSectionForm() {
-	const colors = useResumeData((state) => state.metadata.design.colors);
-	const levelDesign = useResumeData((state) => state.metadata.design.level);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const colors = useResumeStore((state) => state.resume.data.metadata.design.colors);
+	const levelDesign = useResumeStore((state) => state.resume.data.metadata.design.level);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<z.infer<typeof levelDesignSchema>>({
 		mode: "onChange",
@@ -216,7 +216,7 @@ function LevelSectionForm() {
 	});
 
 	const onSubmit = (data: z.infer<typeof levelDesignSchema>) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.metadata.design.level = data;
 		});
 	};

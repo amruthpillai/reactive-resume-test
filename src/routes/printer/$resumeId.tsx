@@ -1,22 +1,23 @@
-import { CircleNotchIcon, PrinterIcon } from "@phosphor-icons/react";
-import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
-import { useCallback, useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { z } from "zod";
+import { LoadingScreen } from "@/components/layout/loading-screen";
 import { ResumePreview } from "@/components/resume/preview";
-import { Button } from "@/components/ui/button";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { orpc } from "@/integrations/orpc/client";
 import { verifyPrinterToken } from "@/utils/printer-token";
 
 const searchSchema = z.object({
-	token: z.string().min(1),
+	token: z.string().catch(""),
 });
 
 export const Route = createFileRoute("/printer/$resumeId")({
 	component: RouteComponent,
 	validateSearch: zodValidator(searchSchema),
 	beforeLoad: async ({ params, search }) => {
+		if (process.env.FLAG_DEBUG_PRINTER === "true") return;
+
 		try {
 			// Verify the token and ensure it matches the resume ID
 			const tokenResumeId = verifyPrinterToken(search.token);
@@ -35,31 +36,15 @@ export const Route = createFileRoute("/printer/$resumeId")({
 function RouteComponent() {
 	const { resume } = Route.useLoaderData();
 
-	const { mutateAsync: printResumeAsPDF, isPending } = useMutation(orpc.printer.printResumeAsPDF.mutationOptions());
+	const isReady = useResumeStore((state) => state.isReady);
+	const initialize = useResumeStore((state) => state.initialize);
 
-	useLayoutEffect(() => {
-		document.documentElement.classList.replace("dark", "light");
-		document.body.style.backgroundColor = "white";
-	}, []);
+	useEffect(() => {
+		initialize(resume);
+		return () => initialize(null);
+	}, [resume, initialize]);
 
-	const onPrint = useCallback(async () => {
-		const file = await printResumeAsPDF({ id: resume.id });
+	if (!isReady) return <LoadingScreen />;
 
-		const url = URL.createObjectURL(file);
-		const link = document.createElement("a");
-		link.href = url;
-		link.download = file.name;
-		link.click();
-		URL.revokeObjectURL(url);
-	}, [resume.id, printResumeAsPDF]);
-
-	return (
-		<div className="size-full">
-			<Button size="icon" disabled={isPending} className="fixed right-4 bottom-4 print:hidden" onClick={onPrint}>
-				{isPending ? <CircleNotchIcon className="animate-spin" /> : <PrinterIcon />}
-			</Button>
-
-			<ResumePreview data={resume.data} />
-		</div>
-	);
+	return <ResumePreview />;
 }

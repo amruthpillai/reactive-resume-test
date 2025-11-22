@@ -4,9 +4,9 @@ import { AtIcon, PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
 import { useMemo } from "react";
 import { useForm, useFormContext, useFormState } from "react-hook-form";
 import type z from "zod";
-import { useResumeStore } from "@/builder/-store/resume";
 import { IconPicker } from "@/components/input/icon-picker";
 import { URLInput } from "@/components/input/url-input";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -29,7 +29,7 @@ const formSchema = profileItemSchema;
 type FormValues = z.infer<typeof formSchema>;
 
 export function CreateProfileDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.profiles.create">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -44,7 +44,7 @@ export function CreateProfileDialog({ open, onOpenChange, data }: DialogProps<"r
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.sections.profiles.items.push(data);
 		});
 		onOpenChange(false);
@@ -82,7 +82,7 @@ export function CreateProfileDialog({ open, onOpenChange, data }: DialogProps<"r
 }
 
 export function UpdateProfileDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.profiles.update">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -97,7 +97,7 @@ export function UpdateProfileDialog({ open, onOpenChange, data }: DialogProps<"r
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			const index = draft.sections.profiles.items.findIndex((item) => item.id === data.id);
 			if (index === -1) return;
 			draft.sections.profiles.items[index] = data;

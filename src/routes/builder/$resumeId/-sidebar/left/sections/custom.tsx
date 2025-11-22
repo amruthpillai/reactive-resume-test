@@ -8,7 +8,7 @@ import {
 	TrashSimpleIcon,
 } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
+import { useResumeStore } from "@/components/resume/store/resume";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -25,7 +25,7 @@ import { SectionBase } from "../shared/section-base";
 import { SectionAddItemButton } from "../shared/section-item";
 
 export function CustomSectionBuilder() {
-	const customSections = useResumeData((state) => state.customSections);
+	const customSections = useResumeStore((state) => state.resume.data.customSections);
 
 	return (
 		<SectionBase type="custom" className={cn("rounded-md border", customSections.length === 0 && "border-dashed")}>
@@ -45,7 +45,7 @@ export function CustomSectionBuilder() {
 function CustomSectionItem({ section }: { section: CustomSection }) {
 	const confirm = useConfirm();
 	const { openDialog } = useDialogStore();
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const onUpdate = () => {
 		openDialog("resume.sections.custom.update", section);
@@ -56,7 +56,7 @@ function CustomSectionItem({ section }: { section: CustomSection }) {
 	};
 
 	const onToggleVisibility = () => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			const customSection = draft.customSections.find((_section) => _section.id === section.id);
 			if (!customSection) return;
 			customSection.hidden = !customSection.hidden;
@@ -71,7 +71,7 @@ function CustomSectionItem({ section }: { section: CustomSection }) {
 
 		if (!confirmed) return;
 
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.customSections = draft.customSections.filter((_section) => _section.id !== section.id);
 			// remove from layout
 			draft.metadata.layout.pages = draft.metadata.layout.pages.filter((page) => page.main.includes(section.id));

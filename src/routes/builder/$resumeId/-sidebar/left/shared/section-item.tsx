@@ -8,7 +8,7 @@ import {
 	TrashSimpleIcon,
 } from "@phosphor-icons/react";
 import { Reorder, useDragControls } from "motion/react";
-import { useResumeStore } from "@/builder/-store/resume";
+import { useResumeStore } from "@/components/resume/store/resume";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -32,7 +32,7 @@ export function SectionItem<T extends SectionItemType>({ type, item, title, subt
 	const confirm = useConfirm();
 	const controls = useDragControls();
 	const { openDialog } = useDialogStore();
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const onUpdate = () => {
 		openDialog(`resume.sections.${type}.update`, item);
@@ -50,7 +50,7 @@ export function SectionItem<T extends SectionItemType>({ type, item, title, subt
 
 		if (!confirmed) return;
 
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			const section = draft.sections[type];
 			if (!("items" in section)) return;
 			const index = section.items.findIndex((_item) => _item.id === item.id);

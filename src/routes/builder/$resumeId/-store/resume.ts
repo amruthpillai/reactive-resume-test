@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import type { RouterOutput } from "@/integrations/orpc/client";
 import { orpc } from "@/integrations/orpc/client";
-import type { ResumeData } from "@/schema/resume/data";
+import { defaultResumeData, type ResumeData } from "@/schema/resume/data";
 
 export type Resume = RouterOutput["resume"]["getById"];
 
@@ -53,12 +53,9 @@ export const useResumeStore = create<ResumeStore>()(
 );
 
 export function useResumeData<T = ResumeData>(selector?: (data: ResumeData) => T): T {
-	const selected = useResumeStore((state) => {
-		if (!state.resume) return null;
-		return selector ? selector(state.resume.data) : (state.resume.data as T);
+	const selected = useResumeStore(() => {
+		return selector ? selector(defaultResumeData) : (defaultResumeData as T);
 	});
-
-	if (selected === null) throw new Error("Resume not loaded.");
 
 	return selected;
 }

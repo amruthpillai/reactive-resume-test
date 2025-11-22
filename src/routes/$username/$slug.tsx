@@ -1,6 +1,9 @@
 import { ORPCError } from "@orpc/client";
-import { createFileRoute, notFound, redirect, useLayoutEffect } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { LoadingScreen } from "@/components/layout/loading-screen";
 import { ResumePreview } from "@/components/resume/preview";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { orpc } from "@/integrations/orpc/client";
 import { cn } from "@/utils/style";
 
@@ -34,15 +37,19 @@ export const Route = createFileRoute("/$username/$slug")({
 function RouteComponent() {
 	const { resume } = Route.useLoaderData();
 
-	useLayoutEffect(() => {
-		document.documentElement.classList.replace("dark", "light");
-		document.body.style.backgroundColor = "white";
-	}, []);
+	const isReady = useResumeStore((state) => state.isReady);
+	const initialize = useResumeStore((state) => state.initialize);
+
+	useEffect(() => {
+		initialize(resume);
+		return () => initialize(null);
+	}, [resume, initialize]);
+
+	if (!isReady) return <LoadingScreen />;
 
 	return (
 		<div className={cn("my-8 flex items-center justify-center", "print:my-0 print:block")}>
 			<ResumePreview
-				data={resume.data}
 				pageClassName={cn("rounded-sm border shadow-lg", "print:rounded-none print:border-none print:shadow-none")}
 			/>
 		</div>

@@ -3,7 +3,7 @@ import { Trans } from "@lingui/react/macro";
 import { Accordion, AccordionItem } from "@radix-ui/react-accordion";
 import { useForm } from "react-hook-form";
 import type z from "zod";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { AccordionContent } from "@/components/ui/accordion";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
@@ -24,8 +24,8 @@ const formSchema = metadataSchema.shape.css;
 type FormValues = z.infer<typeof formSchema>;
 
 function CSSSectionForm() {
-	const css = useResumeData((state) => state.metadata.css);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const css = useResumeStore((state) => state.resume.data.metadata.css);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		mode: "onChange",
@@ -34,7 +34,7 @@ function CSSSectionForm() {
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.metadata.css = data;
 		});
 	};

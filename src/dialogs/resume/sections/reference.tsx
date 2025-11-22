@@ -3,8 +3,8 @@ import { Trans } from "@lingui/react/macro";
 import { PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
 import { useForm, useFormContext } from "react-hook-form";
 import type z from "zod";
-import { useResumeStore } from "@/builder/-store/resume";
 import { RichInput } from "@/components/input/rich-input";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -25,7 +25,7 @@ const formSchema = referenceItemSchema;
 type FormValues = z.infer<typeof formSchema>;
 
 export function CreateReferenceDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.references.create">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -38,7 +38,7 @@ export function CreateReferenceDialog({ open, onOpenChange, data }: DialogProps<
 	});
 
 	const onSubmit = (values: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.sections.references.items.push(values);
 		});
 		onOpenChange(false);
@@ -76,7 +76,7 @@ export function CreateReferenceDialog({ open, onOpenChange, data }: DialogProps<
 }
 
 export function UpdateReferenceDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.references.update">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -89,7 +89,7 @@ export function UpdateReferenceDialog({ open, onOpenChange, data }: DialogProps<
 	});
 
 	const onSubmit = (values: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			const index = draft.sections.references.items.findIndex((item) => item.id === values.id);
 			if (index === -1) return;
 			draft.sections.references.items[index] = values;

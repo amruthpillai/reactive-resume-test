@@ -3,8 +3,8 @@ import { Trans } from "@lingui/react/macro";
 import { PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
 import { useForm, useFormContext } from "react-hook-form";
 import type z from "zod";
-import { useResumeStore } from "@/builder/-store/resume";
 import { RichInput } from "@/components/input/rich-input";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -25,7 +25,7 @@ const formSchema = customSectionSchema;
 type FormValues = z.infer<typeof formSchema>;
 
 export function CreateCustomSectionDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.custom.create">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -39,7 +39,7 @@ export function CreateCustomSectionDialog({ open, onOpenChange, data }: DialogPr
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.customSections.push(data);
 
 			const lastPageIndex = draft.metadata.layout.pages.length - 1;
@@ -81,7 +81,7 @@ export function CreateCustomSectionDialog({ open, onOpenChange, data }: DialogPr
 }
 
 export function UpdateCustomSectionDialog({ open, onOpenChange, data }: DialogProps<"resume.sections.custom.update">) {
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -95,7 +95,7 @@ export function UpdateCustomSectionDialog({ open, onOpenChange, data }: DialogPr
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			const index = draft.customSections.findIndex((item) => item.id === data.id);
 			if (index === -1) return;
 			draft.customSections[index] = data;

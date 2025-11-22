@@ -3,13 +3,13 @@ import { match } from "ts-pattern";
 import { TiptapContent } from "@/components/input/rich-input";
 import type { SectionType } from "@/schema/resume/data";
 import { cn } from "@/utils/style";
-import { useResumePreview } from "../hooks/use-resume-preview";
 import { PageIcon } from "../shared/page-icon";
 import { PageLevel } from "../shared/page-level";
 import { PageLink } from "../shared/page-link";
 import { PagePicture } from "../shared/page-picture";
 import { PageSection } from "../shared/page-section";
 import { PageSummary } from "../shared/page-summary";
+import { useResumeStore } from "../store/resume";
 import type { TemplateProps } from "./types";
 
 function getSectionComponent(section: "summary" | SectionType | (string & {})) {
@@ -61,7 +61,7 @@ export function DittoTemplate({ pageIndex, pageLayout }: TemplateProps) {
 }
 
 function Header() {
-	const basics = useResumePreview((data) => data.basics);
+	const basics = useResumeStore((state) => state.resume.data.basics);
 
 	return (
 		<div className="page-header relative">
@@ -379,7 +379,7 @@ export function ReferencesSection() {
 }
 
 export function CustomSection({ id }: { id: string }) {
-	const section = useResumePreview((data) => data.customSections.find((section) => section.id === id));
+	const section = useResumeStore((state) => state.resume.data.customSections.find((section) => section.id === id));
 
 	// biome-ignore lint/complexity/noUselessFragments: render empty fragment, instead of null
 	if (!section) return <></>;

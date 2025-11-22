@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Trans } from "@lingui/react/macro";
 import { useForm } from "react-hook-form";
 import type z from "zod";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Combobox } from "@/components/ui/combobox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
@@ -22,8 +22,8 @@ const formSchema = pageSchema;
 type FormValues = z.infer<typeof formSchema>;
 
 function PageSectionForm() {
-	const page = useResumeData((state) => state.metadata.page);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const page = useResumeStore((state) => state.resume.data.metadata.page);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const form = useForm<FormValues>({
 		mode: "onChange",
@@ -32,7 +32,7 @@ function PageSectionForm() {
 	});
 
 	const onSubmit = (data: FormValues) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.metadata.page = data;
 		});
 	};

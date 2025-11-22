@@ -42,7 +42,7 @@ export function UserDropdownMenu({ children }: Props) {
 		if (!isLocale(value)) return;
 		await loadLocale(value);
 		await setLocaleServerFn({ data: value });
-		window.location.reload();
+		router.invalidate();
 	}
 
 	function handleLogout() {

@@ -7,8 +7,8 @@ import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
-import { useResumeData, useResumeStore } from "@/builder/-store/resume";
 import { ColorPicker } from "@/components/input/color-picker";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -29,8 +29,8 @@ export function PictureSectionBuilder() {
 function PictureSectionForm() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	const picture = useResumeData((state) => state.picture);
-	const updateResume = useResumeStore((state) => state.updateResume);
+	const picture = useResumeStore((state) => state.resume.data.picture);
+	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const { mutate: uploadFile } = useMutation(orpc.storage.uploadFile.mutationOptions());
 	const { mutate: deleteFile } = useMutation(orpc.storage.deleteFile.mutationOptions());
@@ -42,7 +42,7 @@ function PictureSectionForm() {
 	});
 
 	const onSubmit = (data: z.infer<typeof pictureSchema>) => {
-		updateResume((draft) => {
+		updateResumeData((draft) => {
 			draft.picture = data;
 		});
 	};

@@ -36,10 +36,7 @@ const getQueryClient = () => {
 export const getRouter = async () => {
 	const queryClient = getQueryClient();
 
-	const theme = await getTheme();
-	const locale = await getLocale();
-	const session = await getSession();
-
+	const [theme, locale, session] = await Promise.all([getTheme(), getLocale(), getSession()]);
 	await loadLocale(locale);
 
 	const router = createRouter({
@@ -52,13 +49,7 @@ export const getRouter = async () => {
 		defaultErrorComponent: ErrorScreen,
 		defaultPendingComponent: LoadingScreen,
 		defaultNotFoundComponent: NotFoundScreen,
-		context: {
-			orpc,
-			theme,
-			locale,
-			session,
-			queryClient,
-		},
+		context: { orpc, queryClient, theme, locale, session },
 	});
 
 	setupRouterSsrQueryIntegration({

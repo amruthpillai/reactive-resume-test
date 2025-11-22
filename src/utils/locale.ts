@@ -43,6 +43,5 @@ export const setLocaleServerFn = createServerFn({ method: "POST" })
 export const loadLocale = async (locale: string) => {
 	if (!isLocale(locale)) locale = defaultLocale;
 	const { messages } = await (import(`../../locales/${locale}.po`) as Promise<{ messages: Messages }>);
-	i18n.load(locale, messages);
-	i18n.activate(locale);
+	i18n.loadAndActivate({ locale, messages });
 };
