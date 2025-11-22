@@ -2,11 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Trans } from "@lingui/react/macro";
 import { Accordion, AccordionContent, AccordionItem } from "@radix-ui/react-accordion";
 import { useId, useState } from "react";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import type z from "zod";
 import { useResumeData, useResumeStore } from "@/builder/-store/resume";
 import { FontFamilyCombobox, FontWeightCombobox } from "@/components/typography/combobox";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -71,113 +71,113 @@ function TypographySectionForm() {
 	};
 
 	return (
-		<FormProvider {...form}>
+		<Form {...form}>
 			<form onChange={form.handleSubmit(onSubmit)} className="grid @md:grid-cols-2 grid-cols-1 gap-4">
-				<Controller
+				<FormField
 					control={form.control}
 					name="body.fontFamily"
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid} className="col-span-full">
-							<FieldLabel htmlFor={field.name}>
+					render={({ field }) => (
+						<FormItem className="col-span-full">
+							<FormLabel>
 								<Trans>Font Family</Trans>
-							</FieldLabel>
-							<FontFamilyCombobox
-								value={field.value}
-								buttonProps={{ className: "h-auto text-base" }}
-								aria-invalid={fieldState.invalid}
-								onValueChange={(value) => {
-									field.onChange(value);
-									form.handleSubmit(onSubmit)();
-								}}
-							/>
-							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-						</Field>
-					)}
-				/>
-
-				<Controller
-					control={form.control}
-					name="body.fontWeights"
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid} className="col-span-full">
-							<FieldLabel htmlFor={field.name}>
-								<Trans>Font Weights</Trans>
-							</FieldLabel>
-							<FontWeightCombobox
-								value={field.value}
-								fontFamily={bodyFontFamily}
-								aria-invalid={fieldState.invalid}
-								onValueChange={(value) => {
-									field.onChange(value);
-									form.handleSubmit(onSubmit)();
-								}}
-							/>
-							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-						</Field>
-					)}
-				/>
-
-				<Controller
-					control={form.control}
-					name="body.fontSize"
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid}>
-							<FieldLabel htmlFor={field.name}>
-								<Trans>Font Size</Trans>
-							</FieldLabel>
-							<InputGroup>
-								<InputGroupInput
-									{...field}
-									id={field.name}
-									min={6}
-									max={24}
-									step={0.1}
-									type="number"
-									aria-invalid={fieldState.invalid}
-									onChange={(e) => {
-										const value = e.target.value;
-										if (value === "") field.onChange("");
-										else field.onChange(Number(value));
+							</FormLabel>
+							<FormControl>
+								<FontFamilyCombobox
+									value={field.value}
+									buttonProps={{ className: "h-auto text-base" }}
+									onValueChange={(value) => {
+										field.onChange(value);
+										form.handleSubmit(onSubmit)();
 									}}
 								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="body.fontWeights"
+					render={({ field }) => (
+						<FormItem className="col-span-full">
+							<FormLabel>
+								<Trans>Font Weights</Trans>
+							</FormLabel>
+							<FormControl>
+								<FontWeightCombobox
+									value={field.value}
+									fontFamily={bodyFontFamily}
+									onValueChange={(value) => {
+										field.onChange(value);
+										form.handleSubmit(onSubmit)();
+									}}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="body.fontSize"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
+								<Trans>Font Size</Trans>
+							</FormLabel>
+							<InputGroup>
+								<FormControl>
+									<InputGroupInput
+										{...field}
+										min={6}
+										max={24}
+										step={0.1}
+										type="number"
+										onChange={(e) => {
+											const value = e.target.value;
+											if (value === "") field.onChange("");
+											else field.onChange(Number(value));
+										}}
+									/>
+								</FormControl>
 								<InputGroupAddon align="inline-end">
 									<InputGroupText>pt</InputGroupText>
 								</InputGroupAddon>
 							</InputGroup>
-							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-						</Field>
+						</FormItem>
 					)}
 				/>
 
-				<Controller
+				<FormField
 					control={form.control}
 					name="body.lineHeight"
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid}>
-							<FieldLabel htmlFor={field.name}>
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
 								<Trans>Line Height</Trans>
-							</FieldLabel>
+							</FormLabel>
 							<InputGroup>
-								<InputGroupInput
-									{...field}
-									id={field.name}
-									min={0.5}
-									max={4}
-									step={0.05}
-									type="number"
-									aria-invalid={fieldState.invalid}
-									onChange={(e) => {
-										const value = e.target.value;
-										if (value === "") field.onChange("");
-										else field.onChange(Number(value));
-									}}
-								/>
+								<FormControl>
+									<InputGroupInput
+										{...field}
+										min={0.5}
+										max={4}
+										step={0.05}
+										type="number"
+										onChange={(e) => {
+											const value = e.target.value;
+											if (value === "") field.onChange("");
+											else field.onChange(Number(value));
+										}}
+									/>
+								</FormControl>
 								<InputGroupAddon align="inline-end">
 									<InputGroupText>x</InputGroupText>
 								</InputGroupAddon>
 							</InputGroup>
-							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-						</Field>
+						</FormItem>
 					)}
 				/>
 
@@ -203,117 +203,117 @@ function TypographySectionForm() {
 				<Accordion collapsible type="single" className="col-span-full" value={syncOptions ? "" : "heading"}>
 					<AccordionItem value="heading">
 						<AccordionContent className="grid @md:grid-cols-2 grid-cols-1 gap-4 overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-							<Controller
+							<FormField
 								control={form.control}
 								name="heading.fontFamily"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid} className="col-span-full">
-										<FieldLabel htmlFor={field.name}>
+								render={({ field }) => (
+									<FormItem className="col-span-full">
+										<FormLabel>
 											<Trans>Font Family</Trans>
-										</FieldLabel>
-										<FontFamilyCombobox
-											value={field.value}
-											buttonProps={{ className: "h-auto text-base" }}
-											aria-invalid={fieldState.invalid}
-											onValueChange={(value) => {
-												field.onChange(value);
-												form.handleSubmit(onSubmit)();
-											}}
-										/>
-										{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-									</Field>
-								)}
-							/>
-
-							<Controller
-								control={form.control}
-								name="heading.fontWeights"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid} className="col-span-full">
-										<FieldLabel htmlFor={field.name}>
-											<Trans>Font Weight</Trans>
-										</FieldLabel>
-										<FontWeightCombobox
-											value={field.value}
-											fontFamily={headingFontFamily}
-											aria-invalid={fieldState.invalid}
-											onValueChange={(value) => {
-												field.onChange(value);
-												form.handleSubmit(onSubmit)();
-											}}
-										/>
-										{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-									</Field>
-								)}
-							/>
-
-							<Controller
-								control={form.control}
-								name="heading.fontSize"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor={field.name}>
-											<Trans>Font Size</Trans>
-										</FieldLabel>
-										<InputGroup>
-											<InputGroupInput
-												{...field}
-												id={field.name}
-												min={6}
-												max={24}
-												step={0.1}
-												type="number"
-												aria-invalid={fieldState.invalid}
-												onChange={(e) => {
-													const value = e.target.value;
-													if (value === "") field.onChange("");
-													else field.onChange(Number(value));
+										</FormLabel>
+										<FormControl>
+											<FontFamilyCombobox
+												value={field.value}
+												buttonProps={{ className: "h-auto text-base" }}
+												onValueChange={(value) => {
+													field.onChange(value);
+													form.handleSubmit(onSubmit)();
 												}}
 											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							<FormField
+								control={form.control}
+								name="heading.fontWeights"
+								render={({ field }) => (
+									<FormItem className="col-span-full">
+										<FormLabel>
+											<Trans>Font Weight</Trans>
+										</FormLabel>
+										<FormControl>
+											<FontWeightCombobox
+												value={field.value}
+												fontFamily={headingFontFamily}
+												onValueChange={(value) => {
+													field.onChange(value);
+													form.handleSubmit(onSubmit)();
+												}}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							<FormField
+								control={form.control}
+								name="heading.fontSize"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>
+											<Trans>Font Size</Trans>
+										</FormLabel>
+										<InputGroup>
+											<FormControl>
+												<InputGroupInput
+													{...field}
+													min={6}
+													max={24}
+													step={0.1}
+													type="number"
+													onChange={(e) => {
+														const value = e.target.value;
+														if (value === "") field.onChange("");
+														else field.onChange(Number(value));
+													}}
+												/>
+											</FormControl>
 											<InputGroupAddon align="inline-end">
 												<InputGroupText>pt</InputGroupText>
 											</InputGroupAddon>
 										</InputGroup>
-										{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-									</Field>
+									</FormItem>
 								)}
 							/>
 
-							<Controller
+							<FormField
 								control={form.control}
 								name="heading.lineHeight"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor={field.name}>
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>
 											<Trans>Line Height</Trans>
-										</FieldLabel>
+										</FormLabel>
 										<InputGroup>
-											<InputGroupInput
-												{...field}
-												id={field.name}
-												min={0.5}
-												max={4}
-												step={0.05}
-												type="number"
-												aria-invalid={fieldState.invalid}
-												onChange={(e) => {
-													const value = e.target.value;
-													if (value === "") field.onChange("");
-													else field.onChange(Number(value));
-												}}
-											/>
+											<FormControl>
+												<InputGroupInput
+													{...field}
+													min={0.5}
+													max={4}
+													step={0.05}
+													type="number"
+													onChange={(e) => {
+														const value = e.target.value;
+														if (value === "") field.onChange("");
+														else field.onChange(Number(value));
+													}}
+												/>
+											</FormControl>
 											<InputGroupAddon align="inline-end">
 												<InputGroupText>x</InputGroupText>
 											</InputGroupAddon>
 										</InputGroup>
-										{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-									</Field>
+									</FormItem>
 								)}
 							/>
 						</AccordionContent>
 					</AccordionItem>
 				</Accordion>
 			</form>
-		</FormProvider>
+		</Form>
 	);
 }

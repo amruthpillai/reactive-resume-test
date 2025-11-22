@@ -4,12 +4,12 @@ import { Trans } from "@lingui/react/macro";
 import { ArrowRightIcon, EyeIcon, EyeSlashIcon } from "@phosphor-icons/react";
 import { createFileRoute, Link, redirect, useNavigate, useRouter } from "@tanstack/react-router";
 import type { BetterFetchOption } from "better-auth/client";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useToggle } from "usehooks-ts";
 import z from "zod";
 import { Button } from "@/components/ui/button";
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/integrations/auth/client";
 import { SocialAuth } from "./-components/social-auth";
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/auth/login")({
 });
 
 const formSchema = z.object({
-	identifier: z.string().trim().min(3).max(64).toLowerCase(),
+	identifier: z.string().trim().toLowerCase(),
 	password: z.string().trim().min(6).max(64),
 });
 
@@ -97,78 +97,68 @@ function RouteComponent() {
 				</div>
 			</div>
 
-			<form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-				<FieldSet>
-					<FieldGroup>
-						<Controller
-							control={form.control}
-							name="identifier"
-							render={({ field, fieldState }) => (
-								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor={field.name}>
-										<Trans>Email Address</Trans>
-									</FieldLabel>
-									<Input
-										{...field}
-										id={field.name}
-										autoComplete="email"
-										className="lowercase"
-										placeholder="john.doe@example.com"
-										aria-invalid={fieldState.invalid}
-									/>
-									{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-									<FieldDescription>
-										<Trans>You can also use your username to login.</Trans>
-									</FieldDescription>
-								</Field>
-							)}
-						/>
+			<Form {...form}>
+				<form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+					<FormField
+						control={form.control}
+						name="identifier"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>
+									<Trans>Email Address</Trans>
+								</FormLabel>
+								<FormControl>
+									<Input autoComplete="email" placeholder="john.doe@example.com" className="lowercase" {...field} />
+								</FormControl>
+								<FormMessage />
+								<FormDescription>
+									<Trans>You can also use your username to login.</Trans>
+								</FormDescription>
+							</FormItem>
+						)}
+					/>
 
-						<Controller
-							control={form.control}
-							name="password"
-							render={({ field, fieldState }) => (
-								<Field data-invalid={fieldState.invalid}>
-									<div className="flex items-center justify-between">
-										<FieldLabel htmlFor={field.name}>
-											<Trans>Password</Trans>
-										</FieldLabel>
+					<FormField
+						control={form.control}
+						name="password"
+						render={({ field }) => (
+							<FormItem>
+								<div className="flex items-center justify-between">
+									<FormLabel>
+										<Trans>Password</Trans>
+									</FormLabel>
 
-										<Button asChild tabIndex={-1} variant="link" className="h-auto p-0 text-xs leading-none">
-											<Link to="/auth/forgot-password">
-												<Trans>Forgot Password?</Trans>
-											</Link>
-										</Button>
-									</div>
-
-									<div className="flex items-center gap-x-1.5">
+									<Button asChild tabIndex={-1} variant="link" className="h-auto p-0 text-xs leading-none">
+										<Link to="/auth/forgot-password">
+											<Trans>Forgot Password?</Trans>
+										</Link>
+									</Button>
+								</div>
+								<div className="flex items-center gap-x-1.5">
+									<FormControl>
 										<Input
-											{...field}
 											min={6}
 											max={64}
-											id={field.name}
-											autoComplete="current-password"
-											aria-invalid={fieldState.invalid}
 											type={showPassword ? "text" : "password"}
+											autoComplete="current-password"
+											{...field}
 										/>
+									</FormControl>
 
-										<Button size="icon" variant="ghost" onClick={toggleShowPassword}>
-											{showPassword ? <EyeIcon /> : <EyeSlashIcon />}
-										</Button>
-									</div>
-									{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-								</Field>
-							)}
-						/>
+									<Button size="icon" variant="ghost" onClick={toggleShowPassword}>
+										{showPassword ? <EyeIcon /> : <EyeSlashIcon />}
+									</Button>
+								</div>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-						<Field orientation="horizontal">
-							<Button type="submit" className="flex-1">
-								<Trans>Sign in</Trans>
-							</Button>
-						</Field>
-					</FieldGroup>
-				</FieldSet>
-			</form>
+					<Button type="submit" className="w-full">
+						<Trans>Sign in</Trans>
+					</Button>
+				</form>
+			</Form>
 
 			<SocialAuth />
 		</>

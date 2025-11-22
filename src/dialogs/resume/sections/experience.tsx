@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trans } from "@lingui/react/macro";
 import { PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
-import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import type z from "zod";
 import { useResumeStore } from "@/builder/-store/resume";
 import { RichInput } from "@/components/input/rich-input";
@@ -15,7 +15,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { DialogProps } from "@/dialogs/store";
 import { experienceItemSchema } from "@/schema/resume/data";
@@ -60,7 +60,7 @@ export function CreateExperienceDialog({ open, onOpenChange, data }: DialogProps
 					<DialogDescription />
 				</DialogHeader>
 
-				<FormProvider {...form}>
+				<Form {...form}>
 					<form className="grid gap-4 sm:grid-cols-2" onSubmit={form.handleSubmit(onSubmit)}>
 						<ExperienceForm />
 
@@ -74,7 +74,7 @@ export function CreateExperienceDialog({ open, onOpenChange, data }: DialogProps
 							</Button>
 						</DialogFooter>
 					</form>
-				</FormProvider>
+				</Form>
 			</DialogContent>
 		</Dialog>
 	);
@@ -117,7 +117,7 @@ export function UpdateExperienceDialog({ open, onOpenChange, data }: DialogProps
 					<DialogDescription />
 				</DialogHeader>
 
-				<FormProvider {...form}>
+				<Form {...form}>
 					<form className="grid gap-4 sm:grid-cols-2" onSubmit={form.handleSubmit(onSubmit)}>
 						<ExperienceForm />
 
@@ -131,7 +131,7 @@ export function UpdateExperienceDialog({ open, onOpenChange, data }: DialogProps
 							</Button>
 						</DialogFooter>
 					</form>
-				</FormProvider>
+				</Form>
 			</DialogContent>
 		</Dialog>
 	);
@@ -142,87 +142,99 @@ export function ExperienceForm() {
 
 	return (
 		<>
-			<Controller
+			<FormField
 				control={form.control}
 				name="company"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid} className="sm:col-span-full">
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
 							<Trans>Company</Trans>
-						</FieldLabel>
-						<Input {...field} id={field.name} aria-invalid={fieldState.invalid} />
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-					</Field>
+						</FormLabel>
+						<FormControl>
+							<Input {...field} />
+						</FormControl>
+						<FormMessage />
+					</FormItem>
 				)}
 			/>
 
-			<Controller
+			<FormField
 				control={form.control}
 				name="position"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid} className="sm:col-span-full">
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
 							<Trans>Position</Trans>
-						</FieldLabel>
-						<Input {...field} id={field.name} aria-invalid={fieldState.invalid} />
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-					</Field>
+						</FormLabel>
+						<FormControl>
+							<Input {...field} />
+						</FormControl>
+						<FormMessage />
+					</FormItem>
 				)}
 			/>
 
-			<Controller
+			<FormField
 				control={form.control}
 				name="location"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid} className="sm:col-span-full">
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
 							<Trans>Location</Trans>
-						</FieldLabel>
-						<Input {...field} id={field.name} aria-invalid={fieldState.invalid} />
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-					</Field>
+						</FormLabel>
+						<FormControl>
+							<Input {...field} />
+						</FormControl>
+						<FormMessage />
+					</FormItem>
 				)}
 			/>
 
-			<Controller
+			<FormField
 				control={form.control}
 				name="period"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid} className="sm:col-span-full">
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
 							<Trans>Period</Trans>
-						</FieldLabel>
-						<Input {...field} id={field.name} aria-invalid={fieldState.invalid} />
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-					</Field>
+						</FormLabel>
+						<FormControl>
+							<Input {...field} />
+						</FormControl>
+						<FormMessage />
+					</FormItem>
 				)}
 			/>
 
-			<Controller
+			<FormField
 				control={form.control}
 				name="website"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid} className="sm:col-span-full">
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem className="sm:col-span-full">
+						<FormLabel>
 							<Trans>Website</Trans>
-						</FieldLabel>
-						<URLInput {...field} value={field.value} onChange={field.onChange} aria-invalid={fieldState.invalid} />
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-					</Field>
+						</FormLabel>
+						<FormControl>
+							<URLInput {...field} value={field.value} onChange={field.onChange} />
+						</FormControl>
+						<FormMessage />
+					</FormItem>
 				)}
 			/>
 
-			<Controller
+			<FormField
 				control={form.control}
 				name="description"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid} className="sm:col-span-full">
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem className="sm:col-span-full">
+						<FormLabel>
 							<Trans>Description</Trans>
-						</FieldLabel>
-						<RichInput {...field} value={field.value} onChange={field.onChange} aria-invalid={fieldState.invalid} />
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-					</Field>
+						</FormLabel>
+						<FormControl>
+							<RichInput {...field} value={field.value} onChange={field.onChange} />
+						</FormControl>
+						<FormMessage />
+					</FormItem>
 				)}
 			/>
 		</>

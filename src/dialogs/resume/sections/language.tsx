@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
-import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import type z from "zod";
 import { useResumeStore } from "@/builder/-store/resume";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import type { DialogProps } from "@/dialogs/store";
@@ -57,7 +57,7 @@ export function CreateLanguageDialog({ open, onOpenChange, data }: DialogProps<"
 					<DialogDescription />
 				</DialogHeader>
 
-				<FormProvider {...form}>
+				<Form {...form}>
 					<form className="grid gap-4 sm:grid-cols-2" onSubmit={form.handleSubmit(onSubmit)}>
 						<LanguageForm />
 
@@ -71,7 +71,7 @@ export function CreateLanguageDialog({ open, onOpenChange, data }: DialogProps<"
 							</Button>
 						</DialogFooter>
 					</form>
-				</FormProvider>
+				</Form>
 			</DialogContent>
 		</Dialog>
 	);
@@ -111,7 +111,7 @@ export function UpdateLanguageDialog({ open, onOpenChange, data }: DialogProps<"
 					<DialogDescription />
 				</DialogHeader>
 
-				<FormProvider {...form}>
+				<Form {...form}>
 					<form className="grid gap-4 sm:grid-cols-2" onSubmit={form.handleSubmit(onSubmit)}>
 						<LanguageForm />
 
@@ -125,7 +125,7 @@ export function UpdateLanguageDialog({ open, onOpenChange, data }: DialogProps<"
 							</Button>
 						</DialogFooter>
 					</form>
-				</FormProvider>
+				</Form>
 			</DialogContent>
 		</Dialog>
 	);
@@ -136,52 +136,58 @@ export function LanguageForm() {
 
 	return (
 		<>
-			<Controller
+			<FormField
 				control={form.control}
 				name="language"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid} className="sm:col-span-full">
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
 							<Trans>Language</Trans>
-						</FieldLabel>
-						<Input {...field} id={field.name} aria-invalid={fieldState.invalid} />
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-					</Field>
+						</FormLabel>
+						<FormControl>
+							<Input {...field} />
+						</FormControl>
+						<FormMessage />
+					</FormItem>
 				)}
 			/>
 
-			<Controller
+			<FormField
 				control={form.control}
 				name="fluency"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid} className="sm:col-span-full">
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
 							<Trans>Fluency</Trans>
-						</FieldLabel>
-						<Input {...field} id={field.name} aria-invalid={fieldState.invalid} />
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-					</Field>
+						</FormLabel>
+						<FormControl>
+							<Input {...field} />
+						</FormControl>
+						<FormMessage />
+					</FormItem>
 				)}
 			/>
 
-			<Controller
+			<FormField
 				control={form.control}
 				name="level"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid} className="gap-4 sm:col-span-full">
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem className="gap-4 sm:col-span-full">
+						<FormLabel>
 							<Trans>Level</Trans>
-						</FieldLabel>
-						<Slider
-							min={0}
-							max={5}
-							step={1}
-							value={[field.value]}
-							onValueChange={(value) => field.onChange(value[0])}
-						/>
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-						<FieldDescription>{Number(field.value) === 0 ? t`Hidden` : `${field.value} / 5`}</FieldDescription>
-					</Field>
+						</FormLabel>
+						<FormControl>
+							<Slider
+								min={0}
+								max={5}
+								step={1}
+								value={[field.value]}
+								onValueChange={(value) => field.onChange(value[0])}
+							/>
+						</FormControl>
+						<FormMessage />
+						<FormDescription>{Number(field.value) === 0 ? t`Hidden` : `${field.value} / 5`}</FormDescription>
+					</FormItem>
 				)}
 			/>
 		</>

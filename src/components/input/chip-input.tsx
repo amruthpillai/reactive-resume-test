@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { useControllableState } from "@/hooks/use-controllable-state";
 import { cn } from "@/utils/style";
 
-type Props = Omit<React.ComponentProps<"input">, "value" | "onChange"> & {
+type Props = Omit<React.ComponentProps<"div">, "value" | "onChange"> & {
 	value?: string[];
 	defaultValue?: string[];
 	onChange?: (value: string[]) => void;
@@ -74,7 +74,11 @@ export function ChipInput({ value, defaultValue = [], onChange, className, ...pr
 		<div
 			tabIndex={-1}
 			onClick={handleWrapperClick}
-			className="flex min-h-9 flex-wrap items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 focus-within:border-ring"
+			className={cn(
+				"flex min-h-9 flex-wrap items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 focus-within:border-ring",
+				className,
+			)}
+			{...props}
 		>
 			<div className="flex flex-wrap items-center gap-1.5">
 				{chips.map((chip, idx) => (
@@ -106,11 +110,7 @@ export function ChipInput({ value, defaultValue = [], onChange, className, ...pr
 				aria-label="Add chip"
 				onKeyDown={handleKeyDown}
 				onChange={handleInputChange}
-				className={cn(
-					"min-w-0 grow border-none bg-transparent outline-none focus:outline-none focus:ring-0",
-					className,
-				)}
-				{...props}
+				className="min-w-0 grow border-none bg-transparent outline-none focus:outline-none focus:ring-0"
 			/>
 		</div>
 	);

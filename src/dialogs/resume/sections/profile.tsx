@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Trans } from "@lingui/react/macro";
 import { AtIcon, PencilSimpleLineIcon, PlusIcon } from "@phosphor-icons/react";
 import { useMemo } from "react";
-import { Controller, FormProvider, useForm, useFormContext, useFormState } from "react-hook-form";
+import { useForm, useFormContext, useFormState } from "react-hook-form";
 import type z from "zod";
 import { useResumeStore } from "@/builder/-store/resume";
 import { IconPicker } from "@/components/input/icon-picker";
@@ -16,7 +16,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import type { DialogProps } from "@/dialogs/store";
@@ -61,7 +61,7 @@ export function CreateProfileDialog({ open, onOpenChange, data }: DialogProps<"r
 					<DialogDescription />
 				</DialogHeader>
 
-				<FormProvider {...form}>
+				<Form {...form}>
 					<form className="grid gap-4 sm:grid-cols-2" onSubmit={form.handleSubmit(onSubmit)}>
 						<ProfileForm />
 
@@ -75,7 +75,7 @@ export function CreateProfileDialog({ open, onOpenChange, data }: DialogProps<"r
 							</Button>
 						</DialogFooter>
 					</form>
-				</FormProvider>
+				</Form>
 			</DialogContent>
 		</Dialog>
 	);
@@ -116,7 +116,7 @@ export function UpdateProfileDialog({ open, onOpenChange, data }: DialogProps<"r
 					<DialogDescription />
 				</DialogHeader>
 
-				<FormProvider {...form}>
+				<Form {...form}>
 					<form className="grid gap-4 sm:grid-cols-2" onSubmit={form.handleSubmit(onSubmit)}>
 						<ProfileForm />
 
@@ -130,7 +130,7 @@ export function UpdateProfileDialog({ open, onOpenChange, data }: DialogProps<"r
 							</Button>
 						</DialogFooter>
 					</form>
-				</FormProvider>
+				</Form>
 			</DialogContent>
 		</Dialog>
 	);
@@ -147,39 +147,43 @@ export function ProfileForm() {
 	return (
 		<>
 			<div className={cn("flex items-end", isNetworkInvalid && "items-center")}>
-				<Controller
+				<FormField
 					control={form.control}
 					name={"icon"}
 					render={({ field }) => (
-						<Field className="shrink-0">
-							<IconPicker {...field} popoverProps={{ modal: true }} className="rounded-r-none! border-r-0!" />
-						</Field>
+						<FormItem className="shrink-0">
+							<FormControl>
+								<IconPicker {...field} popoverProps={{ modal: true }} className="rounded-r-none! border-r-0!" />
+							</FormControl>
+						</FormItem>
 					)}
 				/>
 
-				<Controller
+				<FormField
 					control={form.control}
 					name="network"
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid} className="flex-1">
-							<FieldLabel htmlFor={field.name}>
+					render={({ field }) => (
+						<FormItem className="flex-1">
+							<FormLabel>
 								<Trans>Network</Trans>
-							</FieldLabel>
-							<Input className="rounded-l-none!" {...field} id={field.name} aria-invalid={fieldState.invalid} />
-							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-						</Field>
+							</FormLabel>
+							<FormControl>
+								<Input className="rounded-l-none!" {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
 					)}
 				/>
 			</div>
 
-			<Controller
+			<FormField
 				control={form.control}
 				name="username"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid} className="sm:col-span-full">
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
 							<Trans>Username</Trans>
-						</FieldLabel>
+						</FormLabel>
 						<InputGroup>
 							<InputGroupAddon align="inline-start">
 								<InputGroupText>
@@ -187,24 +191,28 @@ export function ProfileForm() {
 								</InputGroupText>
 							</InputGroupAddon>
 
-							<InputGroupInput {...field} id={field.name} aria-invalid={fieldState.invalid} />
+							<FormControl>
+								<InputGroupInput {...field} />
+							</FormControl>
 						</InputGroup>
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-					</Field>
+						<FormMessage />
+					</FormItem>
 				)}
 			/>
 
-			<Controller
+			<FormField
 				control={form.control}
 				name="website"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid} className="sm:col-span-full">
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem className="sm:col-span-full">
+						<FormLabel>
 							<Trans>Website</Trans>
-						</FieldLabel>
-						<URLInput {...field} value={field.value} onChange={field.onChange} aria-invalid={fieldState.invalid} />
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-					</Field>
+						</FormLabel>
+						<FormControl>
+							<URLInput {...field} value={field.value} onChange={field.onChange} />
+						</FormControl>
+						<FormMessage />
+					</FormItem>
 				)}
 			/>
 		</>

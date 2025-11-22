@@ -5,7 +5,7 @@ import { CaretDownIcon, MagicWandIcon, PencilSimpleLineIcon, PlusIcon, TestTubeI
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo } from "react";
-import { Controller, FormProvider, useForm, useFormContext, useWatch } from "react-hook-form";
+import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import { ChipInput } from "@/components/input/chip-input";
@@ -25,7 +25,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import { authClient } from "@/integrations/auth/client";
@@ -115,7 +115,7 @@ export function CreateResumeDialog({ open, onOpenChange }: DialogProps<"resume.c
 					</DialogDescription>
 				</DialogHeader>
 
-				<FormProvider {...form}>
+				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-2">
 						<ResumeForm />
 
@@ -142,7 +142,7 @@ export function CreateResumeDialog({ open, onOpenChange }: DialogProps<"resume.c
 							</ButtonGroup>
 						</DialogFooter>
 					</form>
-				</FormProvider>
+				</Form>
 			</DialogContent>
 		</Dialog>
 	);
@@ -197,7 +197,7 @@ export function UpdateResumeDialog({ open, onOpenChange, data }: DialogProps<"re
 					</DialogDescription>
 				</DialogHeader>
 
-				<FormProvider {...form}>
+				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-2">
 						<ResumeForm />
 
@@ -207,7 +207,7 @@ export function UpdateResumeDialog({ open, onOpenChange, data }: DialogProps<"re
 							</Button>
 						</DialogFooter>
 					</form>
-				</FormProvider>
+				</Form>
 			</DialogContent>
 		</Dialog>
 	);
@@ -267,7 +267,7 @@ export function DuplicateResumeDialog({ open, onOpenChange, data }: DialogProps<
 					</DialogDescription>
 				</DialogHeader>
 
-				<FormProvider {...form}>
+				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-2">
 						<ResumeForm />
 
@@ -277,7 +277,7 @@ export function DuplicateResumeDialog({ open, onOpenChange, data }: DialogProps<
 							</Button>
 						</DialogFooter>
 					</form>
-				</FormProvider>
+				</Form>
 			</DialogContent>
 		</Dialog>
 	);
@@ -297,71 +297,71 @@ export function ResumeForm() {
 
 	return (
 		<>
-			<Controller
+			<FormField
 				control={form.control}
 				name="name"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid}>
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
 							<Trans>Name</Trans>
-						</FieldLabel>
+						</FormLabel>
 						<div className="flex items-center gap-x-2">
-							<Input {...field} id={field.name} min={1} max={64} aria-invalid={fieldState.invalid} />
+							<FormControl>
+								<Input min={1} max={64} {...field} />
+							</FormControl>
+
 							<Button size="icon" variant="outline" title={t`Generate a random name`} onClick={onGenerateName}>
 								<MagicWandIcon />
 							</Button>
 						</div>
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-						<FieldDescription>
+						<FormMessage />
+						<FormDescription>
 							<Trans>Tip: You can name the resume referring to the position you are applying for.</Trans>
-						</FieldDescription>
-					</Field>
+						</FormDescription>
+					</FormItem>
 				)}
 			/>
 
-			<Controller
+			<FormField
 				control={form.control}
 				name="slug"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid}>
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
 							<Trans>Slug</Trans>
-						</FieldLabel>
-						<InputGroup>
-							<InputGroupInput
-								{...field}
-								id={field.name}
-								min={1}
-								max={64}
-								className="pl-0!"
-								aria-invalid={fieldState.invalid}
-							/>
-							<InputGroupAddon align="inline-start">
-								<InputGroupText>{slugPrefix}</InputGroupText>
-							</InputGroupAddon>
-						</InputGroup>
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-						<FieldDescription>
+						</FormLabel>
+						<FormControl>
+							<InputGroup>
+								<InputGroupInput min={1} max={64} className="pl-0!" {...field} />
+								<InputGroupAddon align="inline-start">
+									<InputGroupText>{slugPrefix}</InputGroupText>
+								</InputGroupAddon>
+							</InputGroup>
+						</FormControl>
+						<FormMessage />
+						<FormDescription>
 							<Trans>This is a URL-friendly name for your resume.</Trans>
-						</FieldDescription>
-					</Field>
+						</FormDescription>
+					</FormItem>
 				)}
 			/>
 
-			<Controller
+			<FormField
 				control={form.control}
 				name="tags"
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid}>
-						<FieldLabel htmlFor={field.name}>
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
 							<Trans>Tags</Trans>
-						</FieldLabel>
-						<ChipInput {...field} id={field.name} aria-invalid={fieldState.invalid} />
-						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-						<FieldDescription>
+						</FormLabel>
+						<FormControl>
+							<ChipInput {...field} />
+						</FormControl>
+						<FormMessage />
+						<FormDescription>
 							<Trans>Tags can be used to categorize your resume by keywords.</Trans>
-						</FieldDescription>
-					</Field>
+						</FormDescription>
+					</FormItem>
 				)}
 			/>
 		</>
