@@ -11,7 +11,7 @@ function RouteComponent() {
 		<div className="absolute inset-0 h-svh w-svw">
 			<TransformWrapper limitToBounds={false} minScale={0.5} maxScale={6}>
 				<TransformComponent wrapperClass="h-svh! w-svw!" contentClass="h-svh! w-svw!">
-					<ResumePreview />
+					<ResumePreview className="pointer-events-none" />
 				</TransformComponent>
 			</TransformWrapper>
 		</div>

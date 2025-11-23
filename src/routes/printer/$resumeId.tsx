@@ -6,6 +6,7 @@ import { LoadingScreen } from "@/components/layout/loading-screen";
 import { ResumePreview } from "@/components/resume/preview";
 import { useResumeStore } from "@/components/resume/store/resume";
 import { orpc } from "@/integrations/orpc/client";
+import { env } from "@/utils/env";
 import { verifyPrinterToken } from "@/utils/printer-token";
 
 const searchSchema = z.object({
@@ -16,7 +17,7 @@ export const Route = createFileRoute("/printer/$resumeId")({
 	component: RouteComponent,
 	validateSearch: zodValidator(searchSchema),
 	beforeLoad: async ({ params, search }) => {
-		if (process.env.FLAG_DEBUG_PRINTER === "true") return;
+		if (env.FLAG_DEBUG_PRINTER) return;
 
 		try {
 			// Verify the token and ensure it matches the resume ID

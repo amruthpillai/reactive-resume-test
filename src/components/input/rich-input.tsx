@@ -1,4 +1,5 @@
 import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import {
 	CodeBlockIcon,
@@ -46,6 +47,7 @@ import { useMemo } from "react";
 import { toast } from "sonner";
 import z from "zod";
 import { usePrompt } from "@/hooks/use-prompt";
+import { isRTL } from "@/utils/locale";
 import { cn } from "@/utils/style";
 import { Button } from "../ui/button";
 import {
@@ -63,22 +65,19 @@ const extensions = [
 		heading: {
 			levels: [1, 2, 3, 4, 5, 6],
 		},
+		codeBlock: {
+			enableTabIndentation: true,
+		},
 		link: {
 			openOnClick: false,
 			enableClickSelection: true,
 			defaultProtocol: "https",
 			protocols: ["http", "https"],
 		},
-		codeBlock: {
-			enableTabIndentation: true,
-			HTMLAttributes: {
-				class: "bg-zinc-950! text-zinc-50! text-xs! leading-relaxed",
-			},
-		},
 	}),
 	Highlight.configure({
 		HTMLAttributes: {
-			class: "bg-(--page-primary-color) text-(--page-background-color) rounded-md px-0.5 py-px",
+			class: "rounded-md px-0.5 py-px",
 		},
 	}),
 	TextAlign.configure({ types: ["heading", "paragraph"] }),
@@ -94,9 +93,13 @@ type Props = UseEditorOptions & {
 };
 
 export function RichInput({ value, onChange, style, className, editorClassName, ...options }: Props) {
+	const { i18n } = useLingui();
+	const textDirection = isRTL(i18n.locale) ? "rtl" : undefined;
+
 	const editor = useEditor({
 		...options,
 		extensions,
+		textDirection,
 		content: value,
 		immediatelyRender: false,
 		shouldRerenderOnTransaction: false,
@@ -106,9 +109,10 @@ export function RichInput({ value, onChange, style, className, editorClassName, 
 				"data-editor": "true",
 				class: cn(
 					"group/editor",
-					"max-h-[400px] min-h-[100px] overflow-y-auto p-3 pb-0 focus:outline-none",
-					"rounded-md rounded-t-none border focus-visible:border-ring",
+					"max-h-[400px] min-h-[100px] overflow-y-auto p-3 pb-0",
+					"rounded-md rounded-t-none border focus:outline-none focus-visible:border-ring",
 					styles.editor_content,
+					styles.tiptap_content,
 					editorClassName,
 				),
 			},
@@ -644,11 +648,12 @@ type TiptapContentProps = React.ComponentProps<"div"> & {
 	content: string;
 };
 
-export function TiptapContent({ content, ...props }: TiptapContentProps) {
+export function TiptapContent({ content, className, ...props }: TiptapContentProps) {
 	return (
 		<div
 			// biome-ignore lint/security/noDangerouslySetInnerHtml: Safe to render HTML content
 			dangerouslySetInnerHTML={{ __html: content }}
+			className={cn(styles.tiptap_content, className)}
 			{...props}
 		/>
 	);

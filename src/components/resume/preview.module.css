@@ -44,14 +44,20 @@
 	}
 
 	a {
+		font-weight: var(--page-body-font-weight-bold);
 		text-decoration: underline;
 		text-underline-offset: 0.15rem;
 	}
 
 	@media print {
 		a {
+			font-weight: var(--page-body-font-weight);
 			text-decoration: none;
 		}
+	}
+
+	strong {
+		font-weight: var(--page-body-font-weight-bold);
 	}
 
 	small {

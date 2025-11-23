@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+import type z from "zod";
 import webfontlist from "@/components/typography/webfontlist.json";
-import type { ResumeData } from "@/schema/resume/data";
+import type { typographySchema } from "@/schema/resume/data";
 
-export function useWebfontLoader(data: ResumeData) {
+export function useWebfontLoader(typography: z.infer<typeof typographySchema>) {
 	useEffect(() => {
 		async function loadFont(family: string, weights: string[]) {
 			const font = webfontlist.find((font) => font.family === family);
@@ -29,12 +30,12 @@ export function useWebfontLoader(data: ResumeData) {
 			}
 		}
 
-		const bodyTypography = data.metadata.typography.body;
-		const headingTypography = data.metadata.typography.heading;
+		const bodyTypography = typography.body;
+		const headingTypography = typography.heading;
 
 		Promise.all([
 			loadFont(bodyTypography.fontFamily, bodyTypography.fontWeights),
 			loadFont(headingTypography.fontFamily, headingTypography.fontWeights),
 		]);
-	}, [data.metadata.typography]);
+	}, [typography]);
 }

@@ -24,31 +24,35 @@ function getTemplateComponent(template: z.infer<typeof templateSchema>) {
 }
 
 export const ResumePreview = ({ className, pageClassName }: Props) => {
-	const data = useResumeStore((state) => state.resume.data);
-
-	useWebfontLoader(data);
-	const style = useCSSVariables(data);
+	const metadata = useResumeStore((state) => state.resume.data.metadata);
+	const style = useCSSVariables(metadata);
+	useWebfontLoader(metadata.typography);
 
 	const iconProps = useMemo<IconProps>(() => {
 		return {
 			weight: "regular",
 			color: "var(--page-primary-color)",
-			size: data.metadata.typography.body.fontSize * 1.5,
+			size: metadata.typography.body.fontSize * 1.5,
 		};
-	}, [data.metadata.typography.body.fontSize]);
+	}, [metadata.typography.body.fontSize]);
 
 	return (
 		<IconContext.Provider value={iconProps}>
-			<div style={{ all: "initial", ...style }} className={cn("flex flex-col gap-8", className)}>
-				{data.metadata.layout.pages.map((pageLayout, pageIndex) => {
-					const TemplateComponent = getTemplateComponent(data.metadata.template);
+			<div className={cn("relative", className)}>
+				<div style={{ all: "initial", ...style }}>
+					{metadata.layout.pages.map((pageLayout, pageIndex) => {
+						const TemplateComponent = getTemplateComponent(metadata.template);
 
-					return (
-						<div key={pageIndex} className={cn("page", `page-${pageIndex}`, styles.page_preview, pageClassName)}>
-							<TemplateComponent pageIndex={pageIndex} pageLayout={pageLayout} />
-						</div>
-					);
-				})}
+						return (
+							<div
+								key={pageIndex}
+								className={cn(`page page-${pageIndex}`, "print:break-before-page", styles.page_preview, pageClassName)}
+							>
+								<TemplateComponent pageIndex={pageIndex} pageLayout={pageLayout} />
+							</div>
+						);
+					})}
+				</div>
 			</div>
 		</IconContext.Provider>
 	);

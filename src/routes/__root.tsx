@@ -11,7 +11,7 @@ import { PromptDialogProvider } from "@/hooks/use-prompt";
 import { getSession } from "@/integrations/auth/functions";
 import type { AuthSession } from "@/integrations/auth/types";
 import type { orpc } from "@/integrations/orpc/client";
-import { getLocale, type Locale } from "@/utils/locale";
+import { getLocale, isRTL, type Locale } from "@/utils/locale";
 import { getTheme, type Theme } from "@/utils/theme";
 import appCss from "../styles.css?url";
 
@@ -75,9 +75,10 @@ type Props = {
 
 function RootDocument({ children }: Props) {
 	const { theme, locale } = Route.useRouteContext();
+	const dir = isRTL(locale) ? "rtl" : "ltr";
 
 	return (
-		<html suppressHydrationWarning lang={locale} className={theme}>
+		<html suppressHydrationWarning dir={dir} lang={locale} className={theme}>
 			<head>
 				<HeadContent />
 			</head>

@@ -22,6 +22,24 @@ export function isLocale(locale: string): locale is Locale {
 	return localeSchema.safeParse(locale).success;
 }
 
+const RTL_LANGUAGES = new Set([
+	"ar", // Arabic
+	"ckb", // Kurdish (Sorani)
+	"dv", // Dhivehi
+	"fa", // Persian
+	"he", // Hebrew
+	"ps", // Pashto
+	"sd", // Sindhi
+	"ug", // Uyghur
+	"ur", // Urdu
+	"yi", // Yiddish
+]);
+
+export function isRTL(locale: string): boolean {
+	const language = locale.split("-")[0].toLowerCase();
+	return RTL_LANGUAGES.has(language);
+}
+
 export const getLocale = createIsomorphicFn()
 	.client(() => {
 		const locale = Cookies.get(storageKey);

@@ -1,5 +1,6 @@
 import { ORPCError, os } from "@orpc/server";
 import type { RequestHeadersPluginContext } from "@orpc/server/plugins";
+import { env } from "@/utils/env";
 import type { Locale } from "@/utils/locale";
 import { auth } from "../auth/config";
 import type { AuthSession } from "../auth/types";
@@ -52,7 +53,7 @@ export const serverOnlyProcedure = publicProcedure.use(async ({ context, next })
 
 	// Check for the custom header that indicates this is a server-side call
 	// Server-side calls using createRouterClient have this header set
-	const isServerSideCall = process.env.FLAG_DEBUG_PRINTER === "true" || headers.get("x-server-side-call") === "true";
+	const isServerSideCall = env.FLAG_DEBUG_PRINTER || headers.get("x-server-side-call") === "true";
 
 	// If the header is not present, this is a client-side HTTP request - reject it
 	if (!isServerSideCall) {

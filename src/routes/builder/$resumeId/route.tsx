@@ -34,7 +34,7 @@ export const Route = createFileRoute("/builder/$resumeId")({
 function RouteComponent() {
 	const { layout: initialLayout, resume } = Route.useLoaderData();
 
-	const style = useCSSVariables(resume.data);
+	const style = useCSSVariables(resume.data.metadata);
 	const isReady = useResumeStore((state) => state.isReady);
 	const initialize = useResumeStore((state) => state.initialize);
 

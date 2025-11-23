@@ -46,6 +46,7 @@ export const env = createEnv({
 		OAUTH_REDIRECT_URI: z.url({ protocol: /https?/, pattern: /\/api\/auth\/oauth2\/callback\/custom/ }).optional(),
 
 		// Feature Flags
+		FLAG_DEBUG_PRINTER: z.stringbool().default(false),
 		FLAG_DISABLE_SIGNUP: z.stringbool().default(false),
 	},
 });
