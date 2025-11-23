@@ -1,3 +1,4 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie, setCookie } from "@tanstack/react-start/server";
@@ -23,16 +24,24 @@ export const Route = createFileRoute("/builder/$resumeId")({
 		if (!context.session) throw redirect({ to: "/auth/login", replace: true });
 		return { session: context.session };
 	},
-	loader: async ({ params }) => {
-		const layout = await getBuilderLayoutServerFn();
-		const resume = await orpc.resume.getById.call({ id: params.resumeId });
+	loader: async ({ params, context }) => {
+		const [layout, resume] = await Promise.all([
+			getBuilderLayoutServerFn(),
+			context.queryClient.ensureQueryData(orpc.resume.getById.queryOptions({ input: { id: params.resumeId } })),
+		]);
 
-		return { layout, resume };
+		return { layout, name: resume.name };
 	},
+	head: ({ loaderData }) => ({
+		meta: loaderData ? [{ title: `${loaderData.name} - Reactive Resume` }] : undefined,
+	}),
 });
 
 function RouteComponent() {
-	const { layout: initialLayout, resume } = Route.useLoaderData();
+	const { layout: initialLayout } = Route.useLoaderData();
+
+	const { resumeId } = Route.useParams();
+	const { data: resume } = useSuspenseQuery(orpc.resume.getById.queryOptions({ input: { id: resumeId } }));
 
 	const style = useCSSVariables(resume.data.metadata);
 	const isReady = useResumeStore((state) => state.isReady);

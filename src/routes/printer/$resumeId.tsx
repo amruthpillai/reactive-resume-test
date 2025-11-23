@@ -1,3 +1,4 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { useEffect } from "react";
@@ -28,17 +29,21 @@ export const Route = createFileRoute("/printer/$resumeId")({
 			throw redirect({ to: "/", search: {}, throw: true });
 		}
 	},
-	loader: async ({ params }) => {
-		const resume = await orpc.resume.getByIdForPrinter.call({ id: params.resumeId });
+	loader: async ({ context, params }) => {
+		const resume = await context.queryClient.ensureQueryData(
+			orpc.resume.getByIdForPrinter.queryOptions({ input: { id: params.resumeId } }),
+		);
+
 		return { resume };
 	},
 });
 
 function RouteComponent() {
-	const { resume } = Route.useLoaderData();
-
 	const isReady = useResumeStore((state) => state.isReady);
 	const initialize = useResumeStore((state) => state.initialize);
+
+	const { resumeId } = Route.useParams();
+	const { data: resume } = useSuspenseQuery(orpc.resume.getByIdForPrinter.queryOptions({ input: { id: resumeId } }));
 
 	useEffect(() => {
 		initialize(resume);

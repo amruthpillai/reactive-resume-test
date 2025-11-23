@@ -1,69 +1,35 @@
 import { Trans } from "@lingui/react/macro";
 import { CircleNotchIcon, FileJsIcon, FilePdfIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
-import { useParams } from "@tanstack/react-router";
 import { useCallback } from "react";
-import { useResumeData } from "@/builder/-store/resume";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import { orpc } from "@/integrations/orpc/client";
-import { slugify } from "@/utils/string";
+import { downloadWithAnchor, generateFilename } from "@/utils/file";
 import { SectionBase } from "../shared/section-base";
 
-function getReadableTimestamp(now: Date) {
-	const y = now.getFullYear();
-	const m = String(now.getMonth() + 1).padStart(2, "0");
-	const d = String(now.getDate()).padStart(2, "0");
-	const h = String(now.getHours()).padStart(2, "0");
-	const min = String(now.getMinutes()).padStart(2, "0");
-	return `${y}${m}${d}_${h}${min}`;
-}
-
-function downloadWithAnchor(blob: Blob, filename: string) {
-	const a = document.createElement("a");
-	const url = URL.createObjectURL(blob);
-
-	a.href = url;
-	a.rel = "noopener";
-	a.download = filename;
-
-	document.body.appendChild(a);
-	a.click();
-	document.body.removeChild(a);
-
-	setTimeout(() => URL.revokeObjectURL(url), 500);
-}
-
 export function ExportSectionBuilder() {
-	const resume = useResumeData();
-	const { resumeId } = useParams({ from: "/builder/$resumeId" });
+	const resume = useResumeStore((state) => state.resume);
 
 	const { mutateAsync: printResumeAsPDF, isPending: isPrinting } = useMutation(
 		orpc.printer.printResumeAsPDF.mutationOptions(),
 	);
 
-	const generateFilename = useCallback(
-		(extension: "json" | "pdf") => {
-			const now = new Date();
-			const name = slugify(resume.basics.name);
-			const timestamp = getReadableTimestamp(now);
-			return `${name}_${timestamp}.${extension}`;
-		},
-		[resume.basics.name],
-	);
-
 	const onDownloadJson = useCallback(() => {
-		const filename = generateFilename("json");
+		const filename = generateFilename(resume.data.basics.name, "json");
 		const jsonString = JSON.stringify(resume, null, 2);
 		const blob = new Blob([jsonString], { type: "application/json" });
 
 		downloadWithAnchor(blob, filename);
-	}, [resume, generateFilename]);
+	}, [resume]);
 
 	const onDownloadPdf = useCallback(async () => {
-		const filename = generateFilename("pdf");
-		const file = await printResumeAsPDF({ id: resumeId });
-		downloadWithAnchor(file, filename);
-	}, [resumeId, generateFilename, printResumeAsPDF]);
+		const filename = generateFilename(resume.data.basics.name, "pdf");
+		const file = await printResumeAsPDF({ id: resume.id });
+		const blob = new Blob([file], { type: "application/pdf" });
+
+		downloadWithAnchor(blob, filename);
+	}, [resume, printResumeAsPDF]);
 
 	return (
 		<SectionBase type="export" className="space-y-4">

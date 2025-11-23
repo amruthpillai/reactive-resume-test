@@ -1,4 +1,5 @@
 import { ORPCError } from "@orpc/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { LoadingScreen } from "@/components/layout/loading-screen";
@@ -9,8 +10,11 @@ import { cn } from "@/utils/style";
 
 export const Route = createFileRoute("/$username/$slug")({
 	component: RouteComponent,
-	loader: async ({ params: { username, slug } }) => {
-		const resume = await orpc.resume.getBySlug.call({ username, slug });
+	loader: async ({ context, params: { username, slug } }) => {
+		const resume = await context.queryClient.ensureQueryData(
+			orpc.resume.getBySlug.queryOptions({ input: { username, slug } }),
+		);
+
 		return { resume };
 	},
 	head: ({ loaderData }) => ({
@@ -35,10 +39,11 @@ export const Route = createFileRoute("/$username/$slug")({
 });
 
 function RouteComponent() {
-	const { resume } = Route.useLoaderData();
-
 	const isReady = useResumeStore((state) => state.isReady);
 	const initialize = useResumeStore((state) => state.initialize);
+
+	const { username, slug } = Route.useParams();
+	const { data: resume } = useSuspenseQuery(orpc.resume.getBySlug.queryOptions({ input: { username, slug } }));
 
 	useEffect(() => {
 		initialize(resume);
@@ -48,10 +53,13 @@ function RouteComponent() {
 	if (!isReady) return <LoadingScreen />;
 
 	return (
-		<div className={cn("my-8 flex items-center justify-center", "print:my-0 print:block")}>
-			<ResumePreview
-				pageClassName={cn("rounded-sm border shadow-lg", "print:rounded-none print:border-none print:shadow-none")}
-			/>
+		<div
+			className={cn(
+				"mx-auto my-8 flex max-w-[210mm] items-center justify-center",
+				"print:m-0 print:block print:max-w-full",
+			)}
+		>
+			<ResumePreview />
 		</div>
 	);
 }

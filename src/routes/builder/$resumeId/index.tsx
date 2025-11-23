@@ -8,10 +8,14 @@ export const Route = createFileRoute("/builder/$resumeId/")({
 
 function RouteComponent() {
 	return (
-		<div className="absolute inset-0 h-svh w-svw">
+		<div className="absolute inset-0">
 			<TransformWrapper limitToBounds={false} minScale={0.5} maxScale={6}>
-				<TransformComponent wrapperClass="h-svh! w-svw!" contentClass="h-svh! w-svw!">
-					<ResumePreview className="pointer-events-none" />
+				<TransformComponent wrapperClass="h-full! w-full!">
+					<ResumePreview
+						showPageNumbers
+						className="flex items-start space-x-10 space-y-10"
+						pageClassName="shadow-xl rounded-md overflow-hidden"
+					/>
 				</TransformComponent>
 			</TransformWrapper>
 		</div>

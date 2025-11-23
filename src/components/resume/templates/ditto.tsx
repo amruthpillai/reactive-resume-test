@@ -35,19 +35,21 @@ function getSectionComponent(section: "summary" | SectionType | (string & {})) {
  */
 export function DittoTemplate({ pageIndex, pageLayout }: TemplateProps) {
 	const isFirstPage = pageIndex === 0;
-	const { main, sidebar } = pageLayout;
+	const { main, sidebar, fullWidth } = pageLayout;
 
 	return (
-		<div className="template-ditto page-content space-y-4">
+		<div className="template-ditto page-content">
 			{isFirstPage && <Header />}
 
-			<div className="flex">
-				<aside className="page-sidebar w-(--page-sidebar-width) shrink-0 space-y-4 pl-(--page-margin-x)">
-					{sidebar.map((section) => {
-						const Component = getSectionComponent(section);
-						return <Component key={section} id={section} />;
-					})}
-				</aside>
+			<div className="flex py-(--page-margin-y)">
+				{!fullWidth && (
+					<aside className="page-sidebar w-(--page-sidebar-width) shrink-0 space-y-4 overflow-x-hidden pl-(--page-margin-x)">
+						{sidebar.map((section) => {
+							const Component = getSectionComponent(section);
+							return <Component key={section} id={section} />;
+						})}
+					</aside>
+				)}
 
 				<main className="page-main grow space-y-4 px-(--page-margin-x)">
 					{main.map((section) => {
@@ -66,22 +68,22 @@ function Header() {
 	return (
 		<div className="page-header relative">
 			<div className="bg-(--page-primary-color) text-(--page-background-color)">
-				<div className="flex items-center px-(--page-margin-x)">
-					<div className="flex w-(--page-sidebar-width) shrink-0 justify-center">
+				<div className="flex items-center">
+					<div className="flex w-(--page-sidebar-width) shrink-0 justify-center pl-(--page-margin-x)">
 						<PagePicture className="absolute top-8" />
 					</div>
 
-					<div className="grow py-(--page-margin-y)">
+					<div className="grow px-(--page-margin-x) py-(--page-margin-y)">
 						<h2 className="page-name">{basics.name}</h2>
 						<p className="page-headline">{basics.headline}</p>
 					</div>
 				</div>
 			</div>
 
-			<div className="flex items-center px-(--page-margin-x)">
+			<div className="flex items-center">
 				<div className="w-(--page-sidebar-width) shrink-0" />
 
-				<div className="flex grow flex-wrap items-center gap-x-3 gap-y-1 pt-3">
+				<div className="flex grow flex-wrap items-center gap-x-3 gap-y-1 px-(--page-margin-x) pt-3">
 					{basics.email && (
 						<div className="flex items-center gap-x-1.5">
 							<EnvelopeIcon />

@@ -180,13 +180,13 @@ function QuickColorCircle({ color, active, onSelect, className, ...props }: Quic
 			type="button"
 			onClick={() => onSelect(color)}
 			className={cn(
-				"relative flex size-8 items-center justify-center rounded-sm bg-transparent",
+				"relative flex size-8 items-center justify-center rounded-md bg-transparent",
 				"scale-100 transition-transform hover:scale-120 hover:bg-secondary/80 active:scale-95",
 				className,
 			)}
 			{...props}
 		>
-			<div style={{ backgroundColor: color }} className="size-6 shrink-0 rounded-sm" />
+			<div style={{ backgroundColor: color }} className="size-6 shrink-0 rounded-md" />
 
 			<AnimatePresence>
 				{active && (
@@ -196,7 +196,7 @@ function QuickColorCircle({ color, active, onSelect, className, ...props }: Quic
 						exit={{ scale: 0 }}
 						className="absolute inset-0 flex size-8 items-center justify-center"
 					>
-						<div className="size-4 rounded-sm bg-foreground" />
+						<div className="size-4 rounded-md bg-foreground" />
 					</motion.div>
 				)}
 			</AnimatePresence>
@@ -230,7 +230,7 @@ function LevelSectionForm() {
 
 				<div
 					style={{ "--page-primary-color": colors.primary, backgroundColor: colors.background } as React.CSSProperties}
-					className="flex items-center justify-center rounded-sm p-6"
+					className="flex items-center justify-center rounded-md p-6"
 				>
 					<LevelDisplay
 						level={3}

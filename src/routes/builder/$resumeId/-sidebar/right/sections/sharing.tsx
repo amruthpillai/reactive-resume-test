@@ -36,7 +36,7 @@ export function SharingSectionBuilder() {
 
 	const onCopyUrl = useCallback(async () => {
 		await copyToClipboard(publicUrl);
-		toast.success(t`Your resume's public URL has been copied to clipboard.`);
+		toast.success(t`A link to your resume has been copied to clipboard.`);
 	}, [publicUrl, copyToClipboard]);
 
 	const onTogglePublic = useCallback(

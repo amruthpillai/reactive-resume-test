@@ -20,8 +20,8 @@ import { ResumeCard } from "./-components/resume-card";
 type SortOption = "lastUpdatedAt" | "createdAt" | "name";
 
 const searchSchema = z.object({
-	tags: z.array(z.string()).catch([]),
-	sort: z.enum(["lastUpdatedAt", "createdAt", "name"]).catch("lastUpdatedAt"),
+	tags: z.array(z.string()).default([]),
+	sort: z.enum(["lastUpdatedAt", "createdAt", "name"]).default("lastUpdatedAt"),
 });
 
 export const Route = createFileRoute("/dashboard/resumes/")({

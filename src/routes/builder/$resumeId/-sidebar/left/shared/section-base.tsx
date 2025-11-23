@@ -1,7 +1,8 @@
 import { CaretRightIcon } from "@phosphor-icons/react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
-import { useResumeData } from "@/builder/-store/resume";
+
 import { useSectionStore } from "@/builder/-store/section";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import type { SectionType } from "@/schema/resume/data";
 import { getSectionIcon, getSectionTitle, type LeftSidebarSection } from "@/utils/resume/section";
@@ -13,12 +14,12 @@ type Props = React.ComponentProps<typeof AccordionContent> & {
 };
 
 export function SectionBase({ type, className, ...props }: Props) {
-	const section = useResumeData((state) => {
-		if (type === "basics") return state.basics;
-		if (type === "summary") return state.summary;
-		if (type === "picture") return state.picture;
-		if (type === "custom") return state.customSections;
-		return state.sections[type];
+	const section = useResumeStore((state) => {
+		if (type === "basics") return state.resume.data.basics;
+		if (type === "summary") return state.resume.data.summary;
+		if (type === "picture") return state.resume.data.picture;
+		if (type === "custom") return state.resume.data.customSections;
+		return state.resume.data.sections[type];
 	});
 
 	const isHidden = "hidden" in section && section.hidden;

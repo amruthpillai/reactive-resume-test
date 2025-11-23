@@ -4,6 +4,8 @@ import { Trans } from "@lingui/react/macro";
 import {
 	CodeBlockIcon,
 	CodeSimpleIcon,
+	ColumnsPlusLeftIcon,
+	ColumnsPlusRightIcon,
 	HighlighterCircleIcon,
 	KeyReturnIcon,
 	LinkBreakIcon,
@@ -13,6 +15,8 @@ import {
 	MinusIcon,
 	ParagraphIcon,
 	PlusIcon,
+	RowsPlusBottomIcon,
+	RowsPlusTopIcon,
 	TableIcon,
 	TextAlignCenterIcon,
 	TextAlignJustifyIcon,
@@ -30,6 +34,7 @@ import {
 	TextOutdentIcon,
 	TextStrikethroughIcon,
 	TextUnderlineIcon,
+	TrashSimpleIcon,
 } from "@phosphor-icons/react";
 import Highlight from "@tiptap/extension-highlight";
 import { TableKit } from "@tiptap/extension-table";
@@ -45,6 +50,7 @@ import {
 import StarterKit from "@tiptap/starter-kit";
 import { useMemo } from "react";
 import { toast } from "sonner";
+import { match } from "ts-pattern";
 import z from "zod";
 import { usePrompt } from "@/hooks/use-prompt";
 import { isRTL } from "@/utils/locale";
@@ -52,6 +58,7 @@ import { cn } from "@/utils/style";
 import { Button } from "../ui/button";
 import {
 	DropdownMenu,
+	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
@@ -111,8 +118,9 @@ export function RichInput({ value, onChange, style, className, editorClassName, 
 					"group/editor",
 					"max-h-[400px] min-h-[100px] overflow-y-auto p-3 pb-0",
 					"rounded-md rounded-t-none border focus:outline-none focus-visible:border-ring",
-					styles.editor_content,
+					"[td:has(.selectedCell)]:bg-primary",
 					styles.tiptap_content,
+					styles.editor_content,
 					editorClassName,
 				),
 			},
@@ -280,13 +288,21 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 
 				// Table
 				insertTable: () => ctx.editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
+				canInsertTable: ctx.editor.can().chain().insertTable().run() ?? false,
 				addColumnBefore: () => ctx.editor.chain().focus().addColumnBefore().run(),
+				canAddColumnBefore: ctx.editor.can().chain().addColumnBefore().run() ?? false,
 				addColumnAfter: () => ctx.editor.chain().focus().addColumnAfter().run(),
+				canAddColumnAfter: ctx.editor.can().chain().addColumnAfter().run() ?? false,
 				addRowBefore: () => ctx.editor.chain().focus().addRowBefore().run(),
+				canAddRowBefore: ctx.editor.can().chain().addRowBefore().run() ?? false,
 				addRowAfter: () => ctx.editor.chain().focus().addRowAfter().run(),
+				canAddRowAfter: ctx.editor.can().chain().addRowAfter().run() ?? false,
 				deleteColumn: () => ctx.editor.chain().focus().deleteColumn().run(),
+				canDeleteColumn: ctx.editor.can().chain().deleteColumn().run() ?? false,
 				deleteRow: () => ctx.editor.chain().focus().deleteRow().run(),
+				canDeleteRow: ctx.editor.can().chain().deleteRow().run() ?? false,
 				deleteTable: () => ctx.editor.chain().focus().deleteTable().run(),
+				canDeleteTable: ctx.editor.can().chain().deleteTable().run() ?? false,
 
 				// Hard Break
 				setHardBreak: () => ctx.editor.chain().focus().setHardBreak().run(),
@@ -361,139 +377,120 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 
 			<div className="mx-1 h-5 w-px bg-border" />
 
-			<Toggle
-				size="sm"
-				tabIndex={-1}
-				className="rounded-none"
-				title={t`Heading 1`}
-				pressed={state.isHeading1}
-				disabled={!state.canHeading1}
-				onPressedChange={state.toggleHeading1}
-			>
-				<TextHOneIcon className="size-3.5" />
-			</Toggle>
+			<DropdownMenu>
+				<DropdownMenuTrigger asChild>
+					<Button size="sm" tabIndex={-1} variant="ghost" className="rounded-none">
+						{match(state)
+							.with({ isParagraph: true }, () => <ParagraphIcon className="size-3.5" />)
+							.with({ isHeading1: true }, () => <TextHOneIcon className="size-3.5" />)
+							.with({ isHeading2: true }, () => <TextHTwoIcon className="size-3.5" />)
+							.with({ isHeading3: true }, () => <TextHThreeIcon className="size-3.5" />)
+							.with({ isHeading4: true }, () => <TextHFourIcon className="size-3.5" />)
+							.with({ isHeading5: true }, () => <TextHFiveIcon className="size-3.5" />)
+							.with({ isHeading6: true }, () => <TextHSixIcon className="size-3.5" />)
+							.otherwise(() => (
+								<ParagraphIcon className="size-3.5" />
+							))}
+					</Button>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuCheckboxItem
+						disabled={!state.canParagraph}
+						checked={state.isParagraph}
+						onCheckedChange={state.setParagraph}
+					>
+						<Trans>Paragraph</Trans>
+					</DropdownMenuCheckboxItem>
+					<DropdownMenuSeparator />
+					<DropdownMenuCheckboxItem
+						disabled={!state.canHeading1}
+						checked={state.isHeading1}
+						onCheckedChange={state.toggleHeading1}
+					>
+						<Trans>Heading 1</Trans>
+					</DropdownMenuCheckboxItem>
+					<DropdownMenuCheckboxItem
+						disabled={!state.canHeading2}
+						checked={state.isHeading2}
+						onCheckedChange={state.toggleHeading2}
+					>
+						<Trans>Heading 2</Trans>
+					</DropdownMenuCheckboxItem>
+					<DropdownMenuCheckboxItem
+						disabled={!state.canHeading3}
+						checked={state.isHeading3}
+						onCheckedChange={state.toggleHeading3}
+					>
+						<Trans>Heading 3</Trans>
+					</DropdownMenuCheckboxItem>
+					<DropdownMenuCheckboxItem
+						disabled={!state.canHeading4}
+						checked={state.isHeading4}
+						onCheckedChange={state.toggleHeading4}
+					>
+						<Trans>Heading 4</Trans>
+					</DropdownMenuCheckboxItem>
+					<DropdownMenuCheckboxItem
+						disabled={!state.canHeading5}
+						checked={state.isHeading5}
+						onCheckedChange={state.toggleHeading5}
+					>
+						<Trans>Heading 5</Trans>
+					</DropdownMenuCheckboxItem>
+					<DropdownMenuCheckboxItem
+						disabled={!state.canHeading6}
+						checked={state.isHeading6}
+						onCheckedChange={state.toggleHeading6}
+					>
+						<Trans>Heading 6</Trans>
+					</DropdownMenuCheckboxItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
 
-			<Toggle
-				size="sm"
-				tabIndex={-1}
-				className="rounded-none"
-				title={t`Heading 2`}
-				pressed={state.isHeading2}
-				disabled={!state.canHeading2}
-				onPressedChange={state.toggleHeading2}
-			>
-				<TextHTwoIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle
-				size="sm"
-				tabIndex={-1}
-				className="rounded-none"
-				title={t`Heading 3`}
-				pressed={state.isHeading3}
-				disabled={!state.canHeading3}
-				onPressedChange={state.toggleHeading3}
-			>
-				<TextHThreeIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle
-				size="sm"
-				tabIndex={-1}
-				className="rounded-none"
-				title={t`Heading 4`}
-				pressed={state.isHeading4}
-				disabled={!state.canHeading4}
-				onPressedChange={state.toggleHeading4}
-			>
-				<TextHFourIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle
-				size="sm"
-				tabIndex={-1}
-				className="rounded-none"
-				title={t`Heading 5`}
-				pressed={state.isHeading5}
-				disabled={!state.canHeading5}
-				onPressedChange={state.toggleHeading5}
-			>
-				<TextHFiveIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle
-				size="sm"
-				tabIndex={-1}
-				className="rounded-none"
-				title={t`Heading 6`}
-				pressed={state.isHeading6}
-				disabled={!state.canHeading6}
-				onPressedChange={state.toggleHeading6}
-			>
-				<TextHSixIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle
-				size="sm"
-				tabIndex={-1}
-				className="rounded-none"
-				title={t`Paragraph`}
-				pressed={state.isParagraph}
-				disabled={!state.canParagraph}
-				onPressedChange={state.setParagraph}
-			>
-				<ParagraphIcon className="size-3.5" />
-			</Toggle>
-
-			<div className="mx-1 h-5 w-px bg-border" />
-
-			<Toggle
-				size="sm"
-				tabIndex={-1}
-				className="rounded-none"
-				title={t`Left Align`}
-				pressed={state.isLeftAlign}
-				disabled={!state.canLeftAlign}
-				onPressedChange={state.toggleLeftAlign}
-			>
-				<TextAlignLeftIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle
-				size="sm"
-				tabIndex={-1}
-				className="rounded-none"
-				title={t`Center Align`}
-				pressed={state.isCenterAlign}
-				disabled={!state.canCenterAlign}
-				onPressedChange={state.toggleCenterAlign}
-			>
-				<TextAlignCenterIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle
-				size="sm"
-				tabIndex={-1}
-				className="rounded-none"
-				title={t`Right Align`}
-				pressed={state.isRightAlign}
-				disabled={!state.canRightAlign}
-				onPressedChange={state.toggleRightAlign}
-			>
-				<TextAlignRightIcon className="size-3.5" />
-			</Toggle>
-
-			<Toggle
-				size="sm"
-				tabIndex={-1}
-				className="rounded-none"
-				title={t`Justify Align`}
-				pressed={state.isJustifyAlign}
-				disabled={!state.canJustifyAlign}
-				onPressedChange={state.toggleJustifyAlign}
-			>
-				<TextAlignJustifyIcon className="size-3.5" />
-			</Toggle>
+			<DropdownMenu>
+				<DropdownMenuTrigger asChild>
+					<Button size="sm" tabIndex={-1} variant="ghost" className="rounded-none">
+						{match(state)
+							.with({ isLeftAlign: true }, () => <TextAlignLeftIcon className="size-3.5" />)
+							.with({ isCenterAlign: true }, () => <TextAlignCenterIcon className="size-3.5" />)
+							.with({ isRightAlign: true }, () => <TextAlignRightIcon className="size-3.5" />)
+							.with({ isJustifyAlign: true }, () => <TextAlignJustifyIcon className="size-3.5" />)
+							.otherwise(() => (
+								<TextAlignLeftIcon className="size-3.5" />
+							))}
+					</Button>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuCheckboxItem
+						disabled={!state.canLeftAlign}
+						checked={state.isLeftAlign}
+						onCheckedChange={state.toggleLeftAlign}
+					>
+						<Trans>Left Align</Trans>
+					</DropdownMenuCheckboxItem>
+					<DropdownMenuCheckboxItem
+						disabled={!state.canCenterAlign}
+						checked={state.isCenterAlign}
+						onCheckedChange={state.toggleCenterAlign}
+					>
+						<Trans>Center Align</Trans>
+					</DropdownMenuCheckboxItem>
+					<DropdownMenuCheckboxItem
+						disabled={!state.canRightAlign}
+						checked={state.isRightAlign}
+						onCheckedChange={state.toggleRightAlign}
+					>
+						<Trans>Right Align</Trans>
+					</DropdownMenuCheckboxItem>
+					<DropdownMenuCheckboxItem
+						disabled={!state.canJustifyAlign}
+						checked={state.isJustifyAlign}
+						onCheckedChange={state.toggleJustifyAlign}
+					>
+						<Trans>Justify Align</Trans>
+					</DropdownMenuCheckboxItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
 
 			<div className="mx-1 h-5 w-px bg-border" />
 
@@ -587,33 +584,40 @@ function EditorToolbar({ editor }: { editor: Editor }) {
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent>
-					<DropdownMenuItem onSelect={state.insertTable}>
+					<DropdownMenuItem disabled={!state.canInsertTable} onSelect={state.insertTable}>
 						<PlusIcon />
 						<Trans>Insert Table</Trans>
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem onSelect={state.addColumnBefore}>
+					<DropdownMenuItem disabled={!state.canAddColumnBefore} onSelect={state.addColumnBefore}>
+						<ColumnsPlusLeftIcon />
 						<Trans>Add Column Before</Trans>
 					</DropdownMenuItem>
-					<DropdownMenuItem onSelect={state.addColumnAfter}>
+					<DropdownMenuItem disabled={!state.canAddColumnAfter} onSelect={state.addColumnAfter}>
+						<ColumnsPlusRightIcon />
 						<Trans>Add Column After</Trans>
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem onSelect={state.addRowBefore}>
+					<DropdownMenuItem disabled={!state.canAddRowBefore} onSelect={state.addRowBefore}>
+						<RowsPlusTopIcon />
 						<Trans>Add Row Before</Trans>
 					</DropdownMenuItem>
-					<DropdownMenuItem onSelect={state.addRowAfter}>
+					<DropdownMenuItem disabled={!state.canAddRowAfter} onSelect={state.addRowAfter}>
+						<RowsPlusBottomIcon />
 						<Trans>Add Row After</Trans>
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem onSelect={state.deleteColumn}>
+					<DropdownMenuItem disabled={!state.canDeleteColumn} onSelect={state.deleteColumn}>
+						<TrashSimpleIcon />
 						<Trans>Delete Column</Trans>
 					</DropdownMenuItem>
-					<DropdownMenuItem onSelect={state.deleteRow}>
+					<DropdownMenuItem disabled={!state.canDeleteRow} onSelect={state.deleteRow}>
+						<TrashSimpleIcon />
 						<Trans>Delete Row</Trans>
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem variant="destructive" onSelect={state.deleteTable}>
+					<DropdownMenuItem variant="destructive" disabled={!state.canDeleteTable} onSelect={state.deleteTable}>
+						<TrashSimpleIcon />
 						<Trans>Delete Table</Trans>
 					</DropdownMenuItem>
 				</DropdownMenuContent>

@@ -16,11 +16,9 @@ const getQueryClient = () => {
 			mutations: { retry: false },
 			queries: {
 				retry: false,
-				staleTime: 1000,
 				gcTime: 60 * 1000,
-				refetchOnMount: "always",
+				staleTime: 60 * 1000,
 				refetchOnWindowFocus: false,
-				refetchOnReconnect: "always",
 			},
 		},
 		mutationCache: new MutationCache({
@@ -43,7 +41,6 @@ export const getRouter = async () => {
 		routeTree,
 		scrollRestoration: true,
 		defaultPreload: "intent",
-		defaultPreloadStaleTime: 0,
 		defaultViewTransition: true,
 		defaultStructuralSharing: true,
 		defaultErrorComponent: ErrorScreen,

@@ -6,7 +6,7 @@ import { SectionBase } from "../shared/section-base";
 export function InformationSectionBuilder() {
 	return (
 		<SectionBase type="information" className="space-y-4">
-			<div className="space-y-2 rounded-md border bg-sky-700 p-5 text-white">
+			<div className="space-y-2 rounded-md border bg-sky-600 p-5 text-white dark:bg-sky-700">
 				<h4 className="font-medium tracking-tight">
 					<Trans>Support the app by doing what you can!</Trans>
 				</h4>
@@ -19,7 +19,7 @@ export function InformationSectionBuilder() {
 						</p>
 						<p>
 							If Reactive Resume has been helpful to you, and you'd like to help keep it free and open for everyone,
-							please consider making a donation—every little bit is appreciated!
+							please consider making a donation. Every little bit is appreciated!
 						</p>
 					</Trans>
 				</div>

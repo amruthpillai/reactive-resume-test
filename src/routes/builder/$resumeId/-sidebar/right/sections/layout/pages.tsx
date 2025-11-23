@@ -308,7 +308,7 @@ function LayoutColumn({ pageIndex, columnId, items, disabled = false }: LayoutCo
 					))}
 
 					{items.length === 0 && (
-						<div className="rounded-sm border border-dashed p-4 font-medium text-muted-foreground text-xs">
+						<div className="rounded-md border border-dashed p-4 font-medium text-muted-foreground text-xs">
 							<Trans>Drag and drop sections here to move them between columns</Trans>
 						</div>
 					)}
@@ -358,7 +358,7 @@ const LayoutItemContent = forwardRef<HTMLDivElement, LayoutItemContentProps>(
 				data-overlay={isOverlay ? "true" : undefined}
 				data-dragging={isDragging ? "true" : undefined}
 				className={cn(
-					"group/item flex cursor-grab touch-none select-none items-center gap-x-2 rounded-sm border border-border bg-background px-2 py-1.5 font-medium text-sm transition-all duration-200 ease-out",
+					"group/item flex cursor-grab touch-none select-none items-center gap-x-2 rounded-md border border-border bg-background px-2 py-1.5 font-medium text-sm transition-all duration-200 ease-out",
 					"hover:bg-secondary/20 active:cursor-grabbing active:border-primary/60 active:bg-secondary/20",
 					"data-[overlay=true]:cursor-grabbing data-[overlay=true]:border-primary/60 data-[overlay=true]:bg-background",
 					"data-[dragging=true]:cursor-grabbing data-[dragging=true]:border-primary/60 data-[dragging=true]:bg-background",

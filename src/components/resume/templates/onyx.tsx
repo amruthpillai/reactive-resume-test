@@ -35,25 +35,29 @@ function getSectionComponent(section: "summary" | SectionType | (string & {})) {
  */
 export function OnyxTemplate({ pageIndex, pageLayout }: TemplateProps) {
 	const isFirstPage = pageIndex === 0;
-	const { main, sidebar } = pageLayout;
+	const { main, sidebar, fullWidth } = pageLayout;
 
 	return (
 		<div className="template-onyx page-content px-(--page-margin-x) py-(--page-margin-y)">
 			{isFirstPage && <Header />}
 
-			<main className="page-main space-y-4">
-				{main.map((section) => {
-					const Component = getSectionComponent(section);
-					return <Component key={section} id={section} />;
-				})}
-			</main>
+			<div className="space-y-4">
+				<main className="page-main space-y-4">
+					{main.map((section) => {
+						const Component = getSectionComponent(section);
+						return <Component key={section} id={section} />;
+					})}
+				</main>
 
-			<aside className="page-sidebar space-y-4">
-				{sidebar.map((section) => {
-					const Component = getSectionComponent(section);
-					return <Component key={section} id={section} />;
-				})}
-			</aside>
+				{!fullWidth && (
+					<aside className="page-sidebar space-y-4">
+						{sidebar.map((section) => {
+							const Component = getSectionComponent(section);
+							return <Component key={section} id={section} />;
+						})}
+					</aside>
+				)}
+			</div>
 		</div>
 	);
 }

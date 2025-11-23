@@ -3,6 +3,7 @@ import { I18nProvider } from "@lingui/react";
 import { IconContext } from "@phosphor-icons/react";
 import type { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, HeadContent, Scripts } from "@tanstack/react-router";
+import { CommandPalette } from "@/components/command-palette";
 import { ThemeProvider } from "@/components/theme/provider";
 import { Toaster } from "@/components/ui/sonner";
 import { DialogManager } from "@/dialogs/manager";
@@ -91,8 +92,9 @@ function RootDocument({ children }: Props) {
 								<PromptDialogProvider>
 									{children}
 
-									<Toaster />
+									<Toaster richColors position="bottom-center" />
 									<DialogManager />
+									<CommandPalette />
 								</PromptDialogProvider>
 							</ConfirmDialogProvider>
 						</ThemeProvider>

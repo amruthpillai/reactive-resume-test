@@ -27,10 +27,13 @@ export const resumeRouter = {
 
 	list: protectedProcedure
 		.input(
-			z.object({
-				tags: z.array(z.string()).catch([]),
-				sort: z.enum(["lastUpdatedAt", "createdAt", "name"]).catch("lastUpdatedAt"),
-			}),
+			z
+				.object({
+					tags: z.array(z.string()).optional().default([]),
+					sort: z.enum(["lastUpdatedAt", "createdAt", "name"]).optional().default("lastUpdatedAt"),
+				})
+				.optional()
+				.default({ tags: [], sort: "lastUpdatedAt" }),
 		)
 		.handler(async ({ input, context }) => {
 			return resumeService.list({

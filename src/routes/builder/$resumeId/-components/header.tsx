@@ -11,8 +11,9 @@ import {
 	TrashSimpleIcon,
 } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
-import { Link, useLoaderData, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -27,8 +28,8 @@ import { orpc } from "@/integrations/orpc/client";
 import { useBuilderSidebar } from "../-store/sidebar";
 
 export function BuilderHeader() {
-	const { resume } = useLoaderData({ from: "/builder/$resumeId" });
-
+	const name = useResumeStore((state) => state.resume.name);
+	const isLocked = useResumeStore((state) => state.resume.isLocked);
 	const toggleSidebar = useBuilderSidebar((state) => state.toggleSidebar);
 
 	return (
@@ -44,9 +45,9 @@ export function BuilderHeader() {
 					</Link>
 				</Button>
 				<span className="mr-2.5 text-muted-foreground">/</span>
-				<h2 className="flex-1 truncate font-medium">{resume.name}</h2>
-				{resume.isLocked && <LockSimpleIcon className="ml-2 text-muted-foreground" />}
-				<BuilderHeaderDropdown resumeId={resume.id} isLocked={resume.isLocked} />
+				<h2 className="flex-1 truncate font-medium">{name}</h2>
+				{isLocked && <LockSimpleIcon className="ml-2 text-muted-foreground" />}
+				<BuilderHeaderDropdown />
 			</div>
 
 			<Button size="icon" variant="ghost" onClick={() => toggleSidebar("right")}>
@@ -56,39 +57,26 @@ export function BuilderHeader() {
 	);
 }
 
-interface BuilderHeaderDropdownProps {
-	resumeId?: string;
-	isLocked: boolean;
-}
-
-function BuilderHeaderDropdown({ resumeId, isLocked }: BuilderHeaderDropdownProps) {
+function BuilderHeaderDropdown() {
 	const confirm = useConfirm();
 	const navigate = useNavigate();
 	const { openDialog } = useDialogStore();
-	const { resume } = useLoaderData({ from: "/builder/$resumeId" });
+
+	const id = useResumeStore((state) => state.resume.id);
+	const name = useResumeStore((state) => state.resume.name);
+	const slug = useResumeStore((state) => state.resume.slug);
+	const tags = useResumeStore((state) => state.resume.tags);
+	const isLocked = useResumeStore((state) => state.resume.isLocked);
 
 	const { mutate: deleteResume } = useMutation(orpc.resume.delete.mutationOptions());
 	const { mutate: setLockedResume } = useMutation(orpc.resume.setLocked.mutationOptions());
 
-	if (!resumeId) return null;
-
 	const handleUpdate = () => {
-		openDialog("resume.update", {
-			id: resumeId,
-			name: resume.name,
-			slug: resume.slug,
-			tags: resume.tags,
-		});
+		openDialog("resume.update", { id, name, slug, tags });
 	};
 
 	const handleDuplicate = () => {
-		openDialog("resume.duplicate", {
-			id: resumeId,
-			name: resume.name,
-			slug: resume.slug,
-			tags: resume.tags,
-			shouldRedirect: true,
-		});
+		openDialog("resume.duplicate", { id, name, slug, tags, shouldRedirect: true });
 	};
 
 	const handleToggleLock = async () => {
@@ -101,7 +89,7 @@ function BuilderHeaderDropdown({ resumeId, isLocked }: BuilderHeaderDropdownProp
 		}
 
 		setLockedResume(
-			{ id: resumeId, isLocked: !isLocked },
+			{ id, isLocked: !isLocked },
 			{
 				onError: (error) => {
 					toast.error(error.message);
@@ -120,7 +108,7 @@ function BuilderHeaderDropdown({ resumeId, isLocked }: BuilderHeaderDropdownProp
 		const toastId = toast.loading(t`Deleting your resume...`);
 
 		deleteResume(
-			{ id: resumeId },
+			{ id },
 			{
 				onSuccess: () => {
 					toast.success(t`Your resume has been deleted successfully.`, { id: toastId });

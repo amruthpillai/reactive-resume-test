@@ -1,7 +1,6 @@
 import { Trans } from "@lingui/react/macro";
 import { AnimatePresence, Reorder } from "motion/react";
 import type z from "zod";
-import { useResumeData } from "@/builder/-store/resume";
 import { useResumeStore } from "@/components/resume/store/resume";
 import type { projectItemSchema } from "@/schema/resume/data";
 import { cn } from "@/utils/style";
@@ -9,7 +8,7 @@ import { SectionBase } from "../shared/section-base";
 import { SectionAddItemButton, SectionItem } from "../shared/section-item";
 
 export function ProjectsSectionBuilder() {
-	const section = useResumeData((state) => state.sections.projects);
+	const section = useResumeStore((state) => state.resume.data.sections.projects);
 	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	const handleReorder = (items: z.infer<typeof projectItemSchema>[]) => {

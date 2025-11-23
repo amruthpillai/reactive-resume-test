@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/react/macro";
 import { IconContext, type IconProps } from "@phosphor-icons/react";
 import { useMemo } from "react";
 import { match } from "ts-pattern";
@@ -11,9 +12,9 @@ import { useResumeStore } from "./store/resume";
 import { DittoTemplate } from "./templates/ditto";
 import { OnyxTemplate } from "./templates/onyx";
 
-type Props = {
-	className?: string;
+type Props = React.ComponentProps<"div"> & {
 	pageClassName?: string;
+	showPageNumbers?: boolean;
 };
 
 function getTemplateComponent(template: z.infer<typeof templateSchema>) {
@@ -23,9 +24,12 @@ function getTemplateComponent(template: z.infer<typeof templateSchema>) {
 		.exhaustive();
 }
 
-export const ResumePreview = ({ className, pageClassName }: Props) => {
+export const ResumePreview = ({ showPageNumbers, pageClassName, ...props }: Props) => {
 	const metadata = useResumeStore((state) => state.resume.data.metadata);
 	const style = useCSSVariables(metadata);
+
+	const totalNumberOfPages = metadata.layout.pages.length;
+
 	useWebfontLoader(metadata.typography);
 
 	const iconProps = useMemo<IconProps>(() => {
@@ -38,21 +42,36 @@ export const ResumePreview = ({ className, pageClassName }: Props) => {
 
 	return (
 		<IconContext.Provider value={iconProps}>
-			<div className={cn("relative", className)}>
-				<div style={{ all: "initial", ...style }}>
-					{metadata.layout.pages.map((pageLayout, pageIndex) => {
-						const TemplateComponent = getTemplateComponent(metadata.template);
+			<div style={style} {...props}>
+				{metadata.layout.pages.map((pageLayout, pageIndex) => {
+					const pageNumber = pageIndex + 1;
+					const TemplateComponent = getTemplateComponent(metadata.template);
 
-						return (
+					return (
+						<div key={pageIndex} className="relative">
+							{showPageNumbers && totalNumberOfPages > 1 && (
+								<div className="-top-6 absolute left-0">
+									<span className="font-medium text-foreground text-xs">
+										<Trans>
+											Page {pageNumber} of {totalNumberOfPages}
+										</Trans>
+									</span>
+								</div>
+							)}
+
 							<div
-								key={pageIndex}
-								className={cn(`page page-${pageIndex}`, "print:break-before-page", styles.page_preview, pageClassName)}
+								className={cn(
+									`page page-${pageIndex}`,
+									pageIndex > 0 && "print:break-before-page",
+									styles.page_preview,
+									pageClassName,
+								)}
 							>
 								<TemplateComponent pageIndex={pageIndex} pageLayout={pageLayout} />
 							</div>
-						);
-					})}
-				</div>
+						</div>
+					);
+				})}
 			</div>
 		</IconContext.Provider>
 	);

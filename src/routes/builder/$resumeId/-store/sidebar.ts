@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import type { ImperativePanelHandle } from "react-resizable-panels";
 import { useWindowSize } from "usehooks-ts";
-import { create } from "zustand";
+import { create } from "zustand/react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface BuilderSidebarState {
@@ -27,6 +27,7 @@ export const useBuilderSidebarStore = create<BuilderSidebar>((set) => ({
 type UseBuilderSidebarReturn = {
 	maxSidebarSize: number;
 	collapsedSidebarSize: number;
+	isCollapsed: (side: "left" | "right") => boolean;
 	toggleSidebar: (side: "left" | "right", forceState?: boolean) => void;
 };
 
@@ -45,6 +46,13 @@ export function useBuilderSidebar<T = UseBuilderSidebarReturn>(selector?: (build
 	}, [width, isMobile]);
 
 	const expandSize = useMemo(() => (isMobile ? 95 : 30), [isMobile]);
+
+	const isCollapsed = useCallback((side: "left" | "right") => {
+		const sidebar =
+			side === "left" ? useBuilderSidebarStore.getState().leftSidebar : useBuilderSidebarStore.getState().rightSidebar;
+		if (!sidebar) return false;
+		return sidebar.isCollapsed();
+	}, []);
 
 	const toggleSidebar = useCallback(
 		(side: "left" | "right", forceState?: boolean) => {
@@ -66,9 +74,10 @@ export function useBuilderSidebar<T = UseBuilderSidebarReturn>(selector?: (build
 		return {
 			maxSidebarSize,
 			collapsedSidebarSize,
+			isCollapsed,
 			toggleSidebar,
 		};
-	}, [maxSidebarSize, collapsedSidebarSize, toggleSidebar]);
+	}, [maxSidebarSize, collapsedSidebarSize, isCollapsed, toggleSidebar]);
 
 	return selector ? selector(state) : (state as T);
 }

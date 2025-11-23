@@ -423,7 +423,7 @@ export const defaultResumeData: ResumeData = {
 			],
 		},
 		css: { enabled: false, value: "" },
-		page: { marginX: 18, marginY: 18, format: "a4" },
+		page: { marginX: 14, marginY: 16, format: "a4" },
 		design: {
 			colors: {
 				primary: "#dc2626",
@@ -1064,8 +1064,8 @@ export const sampleResumeData: ResumeData = {
 		},
 		page: {
 			marginX: 14,
-			marginY: 18,
-			format: "letter",
+			marginY: 16,
+			format: "a4",
 		},
 		design: {
 			level: {

@@ -12,15 +12,19 @@
   - Pikachu
   - Rhyhorn
 
-- Implement Command + K
-  - Navigate to various pages
+- Implement Command Palette
+  - Copy link to resume
+  - Adding a new section item, while a resume is open
   - Search for a Resume
   - Change Language
   - Toggle Theme
+  - Basic Navigation
 
 - Build Landing Page
   - Inspiration
     - https://www.shadcnblocks.com/blocks/hero
     - https://plasma-nextjs-template.vercel.app/
 
+- Implement PWA
+- Make the app responsive
 - Look into TanStack Start Prerendering

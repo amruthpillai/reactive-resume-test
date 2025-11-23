@@ -131,7 +131,12 @@ export const resumeService = {
 		const [resume] = await db
 			.select({
 				id: schema.resume.id,
+				name: schema.resume.name,
+				slug: schema.resume.slug,
+				tags: schema.resume.tags,
 				data: schema.resume.data,
+				isPublic: schema.resume.isPublic,
+				isLocked: schema.resume.isLocked,
 			})
 			.from(schema.resume)
 			.where(eq(schema.resume.id, input.id));
@@ -146,7 +151,11 @@ export const resumeService = {
 			.select({
 				id: schema.resume.id,
 				name: schema.resume.name,
+				slug: schema.resume.slug,
+				tags: schema.resume.tags,
 				data: schema.resume.data,
+				isPublic: schema.resume.isPublic,
+				isLocked: schema.resume.isLocked,
 				passwordHash: schema.resume.password,
 				hasPassword: sql<boolean>`${schema.resume.password} IS NOT NULL`,
 			})
@@ -168,7 +177,11 @@ export const resumeService = {
 			return {
 				id: resume.id,
 				name: resume.name,
+				slug: resume.slug,
+				tags: resume.tags,
 				data: resume.data,
+				isPublic: resume.isPublic,
+				isLocked: resume.isLocked,
 				hasPassword: false as const,
 			};
 		}
@@ -179,7 +192,11 @@ export const resumeService = {
 			return {
 				id: resume.id,
 				name: resume.name,
+				slug: resume.slug,
+				tags: resume.tags,
 				data: resume.data,
+				isPublic: resume.isPublic,
+				isLocked: resume.isLocked,
 				hasPassword: true as const,
 			};
 		}

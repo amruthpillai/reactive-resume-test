@@ -1,5 +1,5 @@
 import z from "zod";
-import { create } from "zustand";
+import { create } from "zustand/react";
 import { resumeSchema } from "@/integrations/drizzle/schema";
 import {
 	awardItemSchema,
@@ -60,26 +60,27 @@ const dialogTypeSchema = z.discriminatedUnion("type", [
 	z.object({ type: z.literal("resume.sections.custom.update"), data: customSectionSchema }),
 ]);
 
-type DialogType = z.infer<typeof dialogTypeSchema>;
+type DialogSchema = z.infer<typeof dialogTypeSchema>;
+export type DialogType = DialogSchema["type"];
 
-type DialogData<T extends DialogType["type"]> = Extract<DialogType, { type: T }>["data"];
+type DialogData<T extends DialogType> = Extract<DialogSchema, { type: T }>["data"];
 
 // biome-ignore lint/complexity/noBannedTypes: {} is the appropriate type for this case
-type DialogPropsData<T extends DialogType["type"]> = DialogData<T> extends undefined ? {} : { data: DialogData<T> };
+type DialogPropsData<T extends DialogType> = DialogData<T> extends undefined ? {} : { data: DialogData<T> };
 
-export type DialogProps<T extends DialogType["type"]> = DialogPropsData<T> & {
+export type DialogProps<T extends DialogType> = DialogPropsData<T> & {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 };
 
 interface DialogStoreState {
 	open: boolean;
-	activeDialog: DialogType | null;
+	activeDialog: DialogSchema | null;
 }
 
 interface DialogStoreActions {
 	onOpenChange: (open: boolean) => void;
-	openDialog: <T extends DialogType["type"]>(type: T, data: DialogData<T>) => void;
+	openDialog: <T extends DialogType>(type: T, data: DialogData<T>) => void;
 	closeDialog: () => void;
 }
 
@@ -107,7 +108,7 @@ export const useDialogStore = create<DialogStore>((set) => {
 		openDialog: (type, data) =>
 			set({
 				open: true,
-				activeDialog: { type, data } as DialogType,
+				activeDialog: { type, data } as DialogSchema,
 			}),
 		closeDialog: () => {
 			set({ open: false });

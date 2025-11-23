@@ -332,10 +332,10 @@ export function ResumeForm() {
 						</FormLabel>
 						<FormControl>
 							<InputGroup>
-								<InputGroupInput min={1} max={64} className="pl-0!" {...field} />
-								<InputGroupAddon align="inline-start">
+								<InputGroupAddon align="inline-start" className="hidden sm:flex">
 									<InputGroupText>{slugPrefix}</InputGroupText>
 								</InputGroupAddon>
+								<InputGroupInput min={1} max={64} className="pl-0!" {...field} />
 							</InputGroup>
 						</FormControl>
 						<FormMessage />
