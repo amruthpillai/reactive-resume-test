@@ -7,8 +7,8 @@ invariant(process.env.DATABASE_URL, "DATABASE_URL is not set");
 
 export default defineConfig({
 	out: "./migrations",
-	schema: "./src/integrations/drizzle/schema.ts",
 	dialect: "postgresql",
+	schema: "./src/integrations/drizzle/schema.ts",
 	dbCredentials: {
 		url: process.env.DATABASE_URL,
 	},

@@ -29,6 +29,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY --from=builder /app/.output ./.output
+COPY --from=builder /app/migrations ./migrations
 
 EXPOSE 3000
 
