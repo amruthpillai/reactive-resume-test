@@ -52,5 +52,5 @@ function RouteComponent() {
 
 	if (!isReady) return <LoadingScreen />;
 
-	return <ResumePreview />;
+	return <ResumePreview pageClassName="print:w-full!" />;
 }

@@ -59,7 +59,7 @@ function RouteComponent() {
 				"print:m-0 print:block print:max-w-full",
 			)}
 		>
-			<ResumePreview />
+			<ResumePreview pageClassName="print:w-full!" />
 		</div>
 	);
 }

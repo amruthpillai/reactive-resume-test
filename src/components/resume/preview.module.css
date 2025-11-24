@@ -1,5 +1,5 @@
-.page_preview {
-	min-width: var(--page-width);
+.page {
+	width: var(--page-width);
 	min-height: var(--page-height);
 	font-family: var(--page-body-font-family);
 	font-size: calc(var(--page-body-font-size) * 1pt);

@@ -63,7 +63,7 @@ export const ResumePreview = ({ showPageNumbers, pageClassName, ...props }: Prop
 								className={cn(
 									`page page-${pageIndex}`,
 									pageIndex > 0 && "print:break-before-page",
-									styles.page_preview,
+									styles.page,
 									pageClassName,
 								)}
 							>

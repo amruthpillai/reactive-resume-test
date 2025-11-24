@@ -40,18 +40,6 @@ msgstr "<0>Finally,</0><1>A free and open-source resume builder</1>"
 msgid "<0>Thank you for using Reactive Resume! This app is a labor of love, created mostly in my spare time, with wonderful support from open-source contributors around the world.</0><1>If Reactive Resume has been helpful to you, and you'd like to help keep it free and open for everyone, please consider making a donation. Every little bit is appreciated!</1>"
 msgstr "<0>Thank you for using Reactive Resume! This app is a labor of love, created mostly in my spare time, with wonderful support from open-source contributors around the world.</0><1>If Reactive Resume has been helpful to you, and you'd like to help keep it free and open for everyone, please consider making a donation. Every little bit is appreciated!</1>"
 
-#: src/routes/builder/$resumeId/-sidebar/left/sections/picture.tsx:305
-msgid "0%"
-msgstr "0%"
-
-#: src/routes/builder/$resumeId/-sidebar/left/sections/picture.tsx:316
-msgid "10%"
-msgstr "10%"
-
-#: src/routes/builder/$resumeId/-sidebar/left/sections/picture.tsx:327
-msgid "50%"
-msgstr "50%"
-
 #: src/dialogs/resume/template/gallery.tsx:36
 msgid "A bold two-column layout with accent colors, featuring a sidebar for short sections and main content area for professional experience."
 msgstr "A bold two-column layout with accent colors, featuring a sidebar for short sections and main content area for professional experience."

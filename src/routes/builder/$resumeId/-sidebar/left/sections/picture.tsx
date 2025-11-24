@@ -302,7 +302,7 @@ function PictureSectionForm() {
 										<Button
 											size="icon"
 											variant="outline"
-											title={t`0%`}
+											title="0%"
 											onClick={() => {
 												field.onChange(0);
 												form.handleSubmit(onSubmit)();
@@ -313,7 +313,7 @@ function PictureSectionForm() {
 										<Button
 											size="icon"
 											variant="outline"
-											title={t`10%`}
+											title="10%"
 											onClick={() => {
 												field.onChange(10);
 												form.handleSubmit(onSubmit)();
@@ -324,7 +324,7 @@ function PictureSectionForm() {
 										<Button
 											size="icon"
 											variant="outline"
-											title={t`50%`}
+											title="50%"
 											onClick={() => {
 												field.onChange(50);
 												form.handleSubmit(onSubmit)();
