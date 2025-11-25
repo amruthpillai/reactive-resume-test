@@ -1,20 +1,15 @@
 import z from "zod";
 import type { IconName } from "@/components/input/icon-picker";
-import { localeSchema } from "@/utils/locale";
+import type { Locale } from "@/utils/locale";
 
 export const iconSchema = z.custom<IconName>();
+
+export const localeSchema = z.custom<Locale>();
 
 export const urlSchema = z.object({
 	url: z.url().or(z.literal("")),
 	label: z.string(),
 });
-
-export const hexColorSchema = z
-	.string()
-	.regex(
-		/^#([0-9a-fA-F]{6})([0-9a-fA-F]{2})?$/i,
-		"Should be a valid hex color code, with an optional opacity (e.g. #000000FF).",
-	);
 
 export const pictureSchema = z.object({
 	hidden: z.boolean(),
@@ -23,9 +18,9 @@ export const pictureSchema = z.object({
 	rotation: z.number().min(0).max(360),
 	aspectRatio: z.number().min(0.5).max(2.5),
 	borderRadius: z.number().min(0).max(50),
-	borderColor: hexColorSchema,
+	borderColor: z.string(),
 	borderWidth: z.number().min(0),
-	shadowColor: hexColorSchema,
+	shadowColor: z.string(),
 	shadowWidth: z.number().min(0),
 });
 
@@ -267,9 +262,9 @@ export const levelDesignSchema = z.object({
 });
 
 export const colorDesignSchema = z.object({
-	primary: hexColorSchema,
-	text: hexColorSchema,
-	background: hexColorSchema,
+	primary: z.string(),
+	text: z.string(),
+	background: z.string(),
 });
 
 export const designSchema = z.object({
@@ -456,7 +451,7 @@ export const defaultResumeData: ResumeData = {
 export const sampleResumeData: ResumeData = {
 	picture: {
 		hidden: false,
-		url: "http://localhost:3200/photos/andrew-power.jpg",
+		url: "https://picsum.photos/800",
 		size: 80,
 		rotation: 0,
 		aspectRatio: 1,

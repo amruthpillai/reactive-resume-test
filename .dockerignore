@@ -12,7 +12,6 @@
 .vercel
 .vscode
 *.md
-/data
 biome.json
 components.json
 compose.yml

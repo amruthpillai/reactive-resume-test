@@ -11,10 +11,12 @@ export const env = createEnv({
 	server: {
 		// Basics
 		APP_URL: z.url({ protocol: /https?/ }),
+		PRINTER_APP_URL: z.url({ protocol: /https?/ }).optional(),
 
 		// Printer
-		PRINTER_ENDPOINT: z.url({ protocol: /wss?/ }),
-		PRINTER_APP_URL: z.url({ protocol: /https?/ }).optional(),
+		GOTENBERG_ENDPOINT: z.url({ protocol: /https?/ }),
+		GOTENBERG_USERNAME: z.string().min(1).optional(),
+		GOTENBERG_PASSWORD: z.string().min(1).optional(),
 
 		// Authentication
 		AUTH_SECRET: z.string().min(1),
@@ -30,7 +32,7 @@ export const env = createEnv({
 		GITHUB_CLIENT_ID: z.string().min(1).optional(),
 		GITHUB_CLIENT_SECRET: z.string().min(1).optional(),
 
-		// S3 (Optional)
+		// Storage (Optional)
 		S3_ACCESS_KEY_ID: z.string().min(1).optional(),
 		S3_SECRET_ACCESS_KEY: z.string().min(1).optional(),
 		S3_REGION: z.string().default("us-east-1"),

@@ -1,6 +1,6 @@
 import { CaretRightIcon, CheckIcon, CircleIcon } from "@phosphor-icons/react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import type * as React from "react";
+
 import { cn } from "@/utils/style";
 
 function DropdownMenu({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {

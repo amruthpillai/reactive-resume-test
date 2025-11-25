@@ -92,7 +92,7 @@ function RootDocument({ children }: Props) {
 								<PromptDialogProvider>
 									{children}
 
-									<Toaster richColors position="bottom-center" />
+									<Toaster richColors position="bottom-right" />
 									<DialogManager />
 									<CommandPalette />
 								</PromptDialogProvider>

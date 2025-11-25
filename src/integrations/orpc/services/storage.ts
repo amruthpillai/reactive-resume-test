@@ -161,20 +161,12 @@ class S3StorageService implements StorageService {
 
 	async healthCheck(): Promise<StorageHealthResult> {
 		try {
-			const list = await this.client.list({ maxKeys: 1 });
-
-			if (Array.isArray(list.contents)) {
-				return {
-					type: "s3",
-					status: "healthy",
-					message: "S3 storage is accessible and credentials are valid.",
-				};
-			}
+			await this.client.list({ maxKeys: 1 });
 
 			return {
 				type: "s3",
-				status: "unhealthy",
-				message: "Unexpected S3 result while checking storage health.",
+				status: "healthy",
+				message: "S3 storage is accessible and credentials are valid.",
 			};
 		} catch (error: unknown) {
 			return {

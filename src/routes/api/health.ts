@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { json } from "@tanstack/react-start";
 import { sql } from "drizzle-orm";
 import { db } from "@/integrations/drizzle/client";
 import { getStorageService } from "@/integrations/orpc/services/storage";
@@ -14,31 +13,40 @@ function isUnhealthy(check: unknown): boolean {
 	);
 }
 
-async function handler(_: { request: Request }) {
+async function handler() {
 	const checks = {
 		version: process.env.npm_package_version,
 		status: "healthy",
 		timestamp: new Date().toISOString(),
-		uptime: process.uptime(),
-		memory: process.memoryUsage(),
+		uptime: `${process.uptime().toFixed(2)}s`,
 		database: await checkDatabase(),
 		storage: await checkStorage(),
 	};
 
 	if (checks.status === "unhealthy" || Object.values(checks).some(isUnhealthy)) {
-		return json(checks, { status: 500 });
+		checks.status = "unhealthy";
 	}
 
-	return json(checks, { status: 200 });
+	const headers = new Headers();
+	const body = JSON.stringify(checks);
+	headers.set("Content-Type", "application/json; charset=UTF-8");
+	headers.set("Content-Length", Buffer.byteLength(body, "utf-8").toString());
+
+	return new Response(body, {
+		headers,
+		status: checks.status === "unhealthy" ? 500 : 200,
+	});
 }
 
 async function checkDatabase() {
 	try {
 		await db.execute(sql`SELECT 1`);
-
 		return { status: "healthy" };
 	} catch (error) {
-		return { status: "unhealthy", error: error instanceof Error ? error.message : "Unknown error" };
+		return {
+			status: "unhealthy",
+			error: error instanceof Error ? error.message : "Unknown error",
+		};
 	}
 }
 
@@ -46,7 +54,6 @@ async function checkStorage() {
 	try {
 		const storageService = getStorageService();
 		const result = await storageService.healthCheck();
-
 		return result;
 	} catch (error) {
 		return {

@@ -347,7 +347,7 @@ function PictureSectionForm() {
 									<FormControl>
 										<ColorPicker
 											defaultValue={field.value}
-											onChange={(color) => {
+											onValueChange={(color) => {
 												field.onChange(color);
 												form.handleSubmit(onSubmit)();
 											}}
@@ -397,7 +397,7 @@ function PictureSectionForm() {
 									<FormControl>
 										<ColorPicker
 											defaultValue={field.value}
-											onChange={(color) => {
+											onValueChange={(color) => {
 												field.onChange(color);
 												form.handleSubmit(onSubmit)();
 											}}

@@ -6,7 +6,7 @@ import type z from "zod";
 import type { templateSchema } from "@/schema/resume/data";
 import { cn } from "@/utils/style";
 import { useCSSVariables } from "./hooks/use-css-variables";
-import { useWebfontLoader } from "./hooks/use-webfont";
+import { useWebfonts } from "./hooks/use-webfonts";
 import styles from "./preview.module.css";
 import { useResumeStore } from "./store/resume";
 import { DittoTemplate } from "./templates/ditto";
@@ -30,7 +30,7 @@ export const ResumePreview = ({ showPageNumbers, pageClassName, ...props }: Prop
 
 	const totalNumberOfPages = metadata.layout.pages.length;
 
-	useWebfontLoader(metadata.typography);
+	useWebfonts(metadata.typography);
 
 	const iconProps = useMemo<IconProps>(() => {
 		return {

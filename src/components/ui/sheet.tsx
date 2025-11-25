@@ -1,6 +1,6 @@
 import { XIcon } from "@phosphor-icons/react";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
-import type * as React from "react";
+
 import { cn } from "@/utils/style";
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {

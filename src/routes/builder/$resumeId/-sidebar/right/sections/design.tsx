@@ -75,7 +75,7 @@ function ColorSectionForm() {
 							<div className="flex items-center gap-2">
 								<ColorPicker
 									value={field.value}
-									onChange={(color) => {
+									onValueChange={(color) => {
 										field.onChange(color);
 										form.handleSubmit(onSubmit)();
 									}}
@@ -99,8 +99,8 @@ function ColorSectionForm() {
 							</FormLabel>
 							<div className="flex items-center gap-2">
 								<ColorPicker
-									value={field.value}
-									onChange={(color) => {
+									defaultValue={field.value}
+									onValueChange={(color) => {
 										field.onChange(color);
 										form.handleSubmit(onSubmit)();
 									}}
@@ -124,8 +124,8 @@ function ColorSectionForm() {
 							</FormLabel>
 							<div className="flex items-center gap-2">
 								<ColorPicker
-									value={field.value}
-									onChange={(color) => {
+									defaultValue={field.value}
+									onValueChange={(color) => {
 										field.onChange(color);
 										form.handleSubmit(onSubmit)();
 									}}
@@ -144,28 +144,28 @@ function ColorSectionForm() {
 }
 
 const quickColorOptions = [
-	"#E7000B", // red-600
-	"#F54900", // orange-600
-	"#E17100", // amber-600
-	"#D08700", // yellow-600
-	"#5EA500", // lime-600
-	"#00A63E", // green-600
-	"#009966", // emerald-600
-	"#009689", // teal-600
-	"#0092B8", // cyan-600
-	"#0084D1", // sky-600
-	"#155DFC", // blue-600
-	"#4F39F6", // indigo-600
-	"#7F22FE", // violet-600
-	"#9810FA", // purple-600
-	"#C800DE", // fuchsia-600
-	"#E60076", // pink-600
-	"#EC003F", // rose-600
-	"#45556C", // slate-600
-	"#4A5565", // gray-600
-	"#52525C", // zinc-600
-	"#525252", // neutral-600
-	"#57534D", // stone-600
+	"rgba(231, 0, 11, 1)", // red-600
+	"rgba(245, 73, 0, 1)", // orange-600
+	"rgba(225, 113, 0, 1)", // amber-600
+	"rgba(208, 135, 0, 1)", // yellow-600
+	"rgba(94, 165, 0, 1)", // lime-600
+	"rgba(0, 166, 62, 1)", // green-600
+	"rgba(0, 153, 102, 1)", // emerald-600
+	"rgba(0, 150, 137, 1)", // teal-600
+	"rgba(0, 146, 184, 1)", // cyan-600
+	"rgba(0, 132, 209, 1)", // sky-600
+	"rgba(21, 93, 252, 1)", // blue-600
+	"rgba(79, 57, 246, 1)", // indigo-600
+	"rgba(127, 34, 254, 1)", // violet-600
+	"rgba(152, 16, 250, 1)", // purple-600
+	"rgba(200, 0, 222, 1)", // fuchsia-600
+	"rgba(230, 0, 118, 1)", // pink-600
+	"rgba(236, 0, 63, 1)", // rose-600
+	"rgba(69, 85, 108, 1)", // slate-600
+	"rgba(74, 85, 101, 1)", // gray-600
+	"rgba(82, 82, 92, 1)", // zinc-600
+	"rgba(82, 82, 82, 1)", // neutral-600
+	"rgba(87, 83, 77, 1)", // stone-600
 ];
 
 type QuickColorCircleProps = React.ComponentProps<"button"> & {

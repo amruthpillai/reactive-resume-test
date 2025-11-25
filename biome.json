@@ -32,6 +32,7 @@
 				"noArrayIndexKey": "off"
 			},
 			"correctness": {
+				"noUnknownTypeSelector": "off",
 				"noUnusedImports": {
 					"fix": "safe",
 					"level": "error",

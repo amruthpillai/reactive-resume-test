@@ -12,7 +12,7 @@
   - Pikachu
   - Rhyhorn
 
-- Implement Command Palette
+- Implement Command Palette (done)
   - Copy link to resume
   - Adding a new section item, while a resume is open
   - Search for a Resume

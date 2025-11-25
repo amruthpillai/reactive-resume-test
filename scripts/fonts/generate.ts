@@ -5,56 +5,7 @@
  * Information about the Google Fonts Developer API can be found here: https://developers.google.com/fonts/docs/developer_api
  */
 
-type Category = "display" | "handwriting" | "monospace" | "serif" | "sans-serif";
-
-type Variant =
-	| "100"
-	| "100italic"
-	| "200"
-	| "200italic"
-	| "300"
-	| "300italic"
-	| "regular"
-	| "italic"
-	| "500"
-	| "500italic"
-	| "600"
-	| "600italic"
-	| "700"
-	| "700italic"
-	| "800"
-	| "800italic"
-	| "900"
-	| "900italic";
-
-type Item = {
-	kind: "webfonts#webfont";
-	menu: string;
-	family: string;
-	version: string;
-	category: Category;
-	lastModified: string;
-	subsets: string[];
-	variants: Variant[];
-	colorCapabilities?: string[];
-	files: Record<Variant, string>;
-};
-
-type APIResponse = {
-	kind: "webfonts#webfontList";
-	items: Item[];
-};
-
-type Weight = "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900";
-type FileWeight = Weight | `${Weight}italic`;
-
-type WebFont = {
-	category: Category;
-	family: string;
-	weights: Weight[];
-	preview: string;
-	files: Record<FileWeight, string>;
-};
+import type { APIResponse, Variant, WebFont, Weight } from "./types";
 
 const args = Bun.argv.slice(2);
 const argForce = args.includes("--force");

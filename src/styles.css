@@ -6,8 +6,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-:root,
-.light {
+:root {
 	--accent-foreground: var(--color-zinc-800);
 	--accent: var(--color-zinc-100);
 	--background: var(--color-zinc-50);
@@ -176,7 +175,7 @@
 	}
 
 	body {
-		@apply bg-background text-foreground text-sm font-sans proportional-nums antialiased print:bg-white;
+		@apply bg-background text-foreground text-sm font-sans proportional-nums antialiased print:bg-white selection:bg-primary selection:text-primary-foreground;
 	}
 
 	input[type="number"] {

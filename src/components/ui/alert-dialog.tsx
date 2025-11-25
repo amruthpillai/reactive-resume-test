@@ -1,5 +1,4 @@
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
-import type * as React from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/utils/style";
 

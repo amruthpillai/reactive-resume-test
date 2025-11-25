@@ -16,8 +16,17 @@ export function ThemeProvider({ children, theme }: Props) {
 	const router = useRouter();
 
 	async function setTheme(value: Theme) {
+		document.documentElement.classList.toggle("dark", value === "dark");
 		await setThemeServerFn({ data: value });
 		router.invalidate();
+
+		try {
+			const soundClip = value === "dark" ? "/sounds/switch-off.mp3" : "/sounds/switch-on.mp3";
+			const audio = new Audio(soundClip);
+			await audio.play();
+		} catch {
+			// ignore errors
+		}
 	}
 
 	function toggleTheme() {

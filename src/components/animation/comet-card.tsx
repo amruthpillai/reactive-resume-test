@@ -63,7 +63,7 @@ export const CometCard = ({
 	};
 
 	return (
-		<div className={cn("perspective-distant transform-3d hover:z-50", className)}>
+		<div className={cn("perspective-distant transform-3d", className)}>
 			<motion.div
 				ref={ref}
 				initial={{ scale: 1, z: 0 }}
