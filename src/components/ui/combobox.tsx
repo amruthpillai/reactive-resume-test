@@ -4,7 +4,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useControllableState } from "@/hooks/use-controllable-state";
+import { useControlledState } from "@/hooks/use-controlled-state";
 import { cn } from "@/utils/style";
 
 type ComboboxOption<TValue extends string | number = string> = {
@@ -44,7 +44,7 @@ function Combobox<TValue extends string | number = string>({
 }: ComboboxProps<TValue>) {
 	const [open, setOpen] = React.useState(false);
 
-	const [selectedValue, setSelectedValue] = useControllableState<TValue | null>({
+	const [selectedValue, setSelectedValue] = useControlledState<TValue | null>({
 		value,
 		defaultValue,
 		onChange: (next) => onValueChange?.(next, options.find((o) => o.value === next) ?? null),

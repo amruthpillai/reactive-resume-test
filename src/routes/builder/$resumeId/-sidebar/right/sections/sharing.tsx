@@ -2,17 +2,15 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { ClipboardIcon, LockSimpleIcon, LockSimpleOpenIcon } from "@phosphor-icons/react";
-import { Accordion } from "@radix-ui/react-accordion";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { useCopyToClipboard } from "usehooks-ts";
-import { AccordionContent, AccordionItem } from "@/components/ui/accordion";
+import { Switch } from "@/components/animate-ui/switch";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { useConfirm } from "@/hooks/use-confirm";
 import { usePrompt } from "@/hooks/use-prompt";
 import { authClient } from "@/integrations/auth/client";
@@ -104,7 +102,6 @@ export function SharingSectionBuilder() {
 		<SectionBase type="sharing" className="space-y-4">
 			<div className="flex items-center gap-x-4">
 				<Switch
-					size="md"
 					id="sharing-switch"
 					checked={resume.isPublic}
 					onCheckedChange={(checked) => void onTogglePublic(checked)}
@@ -121,49 +118,46 @@ export function SharingSectionBuilder() {
 				</Label>
 			</div>
 
-			<Accordion collapsible type="single" value={resume.isPublic ? "isPublic" : ""}>
-				<AccordionItem value="isPublic">
-					<AccordionContent className="space-y-4 rounded-md border p-4">
-						<div className="grid gap-2">
-							<Label htmlFor="sharing-url">URL</Label>
+			{resume.isPublic && (
+				<div className="space-y-4 rounded-md border p-4">
+					<div className="grid gap-2">
+						<Label htmlFor="sharing-url">URL</Label>
 
-							<div className="flex items-center gap-x-2">
-								<Input readOnly id="sharing-url" value={publicUrl} />
+						<div className="flex items-center gap-x-2">
+							<Input readOnly id="sharing-url" value={publicUrl} />
 
-								<Button size="icon" variant="ghost" onClick={onCopyUrl}>
-									<ClipboardIcon />
-								</Button>
-							</div>
+							<Button size="icon" variant="ghost" onClick={onCopyUrl}>
+								<ClipboardIcon />
+							</Button>
 						</div>
+					</div>
 
-						<p className="text-muted-foreground">
-							{isPasswordProtected ? (
-								<Trans>
-									Your resume's public link is currently protected by a password. Share the password only with people
-									you trust.
-								</Trans>
-							) : (
-								<Trans>
-									Optionally, set a password so that only people with the password can view your resume through the
-									link.
-								</Trans>
-							)}
-						</p>
-
+					<p className="text-muted-foreground">
 						{isPasswordProtected ? (
-							<Button variant="outline" onClick={onRemovePassword}>
-								<LockSimpleOpenIcon />
-								<Trans>Remove Password</Trans>
-							</Button>
+							<Trans>
+								Your resume's public link is currently protected by a password. Share the password only with people you
+								trust.
+							</Trans>
 						) : (
-							<Button variant="outline" onClick={onSetPassword}>
-								<LockSimpleIcon />
-								<Trans>Set Password</Trans>
-							</Button>
+							<Trans>
+								Optionally, set a password so that only people with the password can view your resume through the link.
+							</Trans>
 						)}
-					</AccordionContent>
-				</AccordionItem>
-			</Accordion>
+					</p>
+
+					{isPasswordProtected ? (
+						<Button variant="outline" onClick={onRemovePassword}>
+							<LockSimpleOpenIcon />
+							<Trans>Remove Password</Trans>
+						</Button>
+					) : (
+						<Button variant="outline" onClick={onSetPassword}>
+							<LockSimpleIcon />
+							<Trans>Set Password</Trans>
+						</Button>
+					)}
+				</div>
+			)}
 		</SectionBase>
 	);
 }

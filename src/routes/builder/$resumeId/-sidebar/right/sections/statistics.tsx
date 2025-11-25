@@ -1,10 +1,9 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { InfoIcon } from "@phosphor-icons/react";
-import { Accordion, AccordionItem } from "@radix-ui/react-accordion";
+import { Accordion, AccordionContent, AccordionItem } from "@radix-ui/react-accordion";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
-import { AccordionContent } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { orpc } from "@/integrations/orpc/client";
 import { SectionBase } from "../shared/section-base";

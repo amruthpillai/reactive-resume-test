@@ -6,6 +6,8 @@ import { FontDisplay } from "./font-display";
 import type { WebFont } from "./types";
 import webFontListJSON from "./webfontlist.json";
 
+type Weight = "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900";
+
 const webFontList = webFontListJSON as WebFont[];
 
 function buildWebFontMap() {
@@ -19,6 +21,13 @@ function buildWebFontMap() {
 }
 
 const webFontMap: Map<string, WebFont> = buildWebFontMap();
+
+export function getNextWeight(fontFamily: string): Weight | null {
+	const fontData = webFontMap.get(fontFamily);
+	if (!fontData || !Array.isArray(fontData.weights) || fontData.weights.length === 0) return null;
+	if (fontData.weights.includes("400")) return "400";
+	return fontData.weights[0] as Weight;
+}
 
 type FontFamilyComboboxProps = Omit<ComboboxProps, "options">;
 

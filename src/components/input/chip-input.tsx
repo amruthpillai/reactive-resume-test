@@ -1,7 +1,7 @@
 import { XIcon } from "@phosphor-icons/react";
 import * as React from "react";
 import { Badge } from "@/components/ui/badge";
-import { useControllableState } from "@/hooks/use-controllable-state";
+import { useControlledState } from "@/hooks/use-controlled-state";
 import { cn } from "@/utils/style";
 
 type Props = Omit<React.ComponentProps<"div">, "value" | "onChange"> & {
@@ -11,7 +11,7 @@ type Props = Omit<React.ComponentProps<"div">, "value" | "onChange"> & {
 };
 
 export function ChipInput({ value, defaultValue = [], onChange, className, ...props }: Props) {
-	const [chips, setChips] = useControllableState<string[]>({
+	const [chips, setChips] = useControlledState<string[]>({
 		value,
 		defaultValue,
 		onChange,

@@ -12,7 +12,7 @@ import {
 	CommandSeparator,
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useControllableState } from "@/hooks/use-controllable-state";
+import { useControlledState } from "@/hooks/use-controlled-state";
 import { cn } from "@/utils/style";
 
 type MultipleComboboxOption<TValue extends string | number = string> = {
@@ -67,7 +67,7 @@ function MultipleCombobox<TValue extends string | number = string>({
 		return new Map(options.map((option) => [String(option.value), option]));
 	}, [options]);
 
-	const [selectedValues, setSelectedValues] = useControllableState<TValue[]>({
+	const [selectedValues, setSelectedValues] = useControlledState<TValue[]>({
 		value,
 		defaultValue: resolvedDefaultValue,
 		onChange: (next) =>

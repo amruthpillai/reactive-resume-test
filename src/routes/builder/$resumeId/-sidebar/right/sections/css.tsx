@@ -1,12 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trans } from "@lingui/react/macro";
-import { Accordion, AccordionItem } from "@radix-ui/react-accordion";
 import { useForm } from "react-hook-form";
 import type z from "zod";
+import { Switch } from "@/components/animate-ui/switch";
 import { useResumeStore } from "@/components/resume/store/resume";
-import { AccordionContent } from "@/components/ui/accordion";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { metadataSchema } from "@/schema/resume/data";
 import { SectionBase } from "../shared/section-base";
@@ -50,7 +48,6 @@ function CSSSectionForm() {
 							<FormLabel className="flex items-center gap-4">
 								<FormControl>
 									<Switch
-										size="md"
 										checked={field.value}
 										onCheckedChange={(checked) => {
 											field.onChange(checked);
@@ -65,24 +62,20 @@ function CSSSectionForm() {
 					)}
 				/>
 
-				<Accordion collapsible type="single" value={form.watch("enabled") ? "css" : ""}>
-					<AccordionItem value="css">
-						<AccordionContent>
-							<FormField
-								control={form.control}
-								name="value"
-								render={({ field }) => (
-									<FormItem>
-										<FormControl>
-											<Textarea rows={6} className="font-mono" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</AccordionContent>
-					</AccordionItem>
-				</Accordion>
+				{form.watch("enabled") && (
+					<FormField
+						control={form.control}
+						name="value"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<Textarea rows={6} className="font-mono" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				)}
 			</form>
 		</Form>
 	);

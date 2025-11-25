@@ -4,12 +4,12 @@ import { Accordion, AccordionContent, AccordionItem } from "@radix-ui/react-acco
 import { useId, useState } from "react";
 import { useForm } from "react-hook-form";
 import type z from "zod";
+import { Switch } from "@/components/animate-ui/switch";
 import { useResumeStore } from "@/components/resume/store/resume";
-import { FontFamilyCombobox, FontWeightCombobox } from "@/components/typography/combobox";
+import { FontFamilyCombobox, FontWeightCombobox, getNextWeight } from "@/components/typography/combobox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { typographySchema } from "@/schema/resume/data";
 import { cn } from "@/utils/style";
 import { SectionBase } from "../shared/section-base";
@@ -86,7 +86,12 @@ function TypographySectionForm() {
 									value={field.value}
 									buttonProps={{ className: "h-auto text-base" }}
 									onValueChange={(value) => {
+										if (value === null) return;
 										field.onChange(value);
+										const nextWeight = getNextWeight(value);
+										if (nextWeight !== null) {
+											form.setValue("body.fontWeights", [nextWeight], { shouldDirty: true });
+										}
 										form.handleSubmit(onSubmit)();
 									}}
 								/>
@@ -216,7 +221,12 @@ function TypographySectionForm() {
 												value={field.value}
 												buttonProps={{ className: "h-auto text-base" }}
 												onValueChange={(value) => {
+													if (value === null) return;
 													field.onChange(value);
+													const nextWeight = getNextWeight(value);
+													if (nextWeight !== null) {
+														form.setValue("heading.fontWeights", [nextWeight], { shouldDirty: true });
+													}
 													form.handleSubmit(onSubmit)();
 												}}
 											/>

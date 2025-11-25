@@ -1,5 +1,4 @@
-import { constants as fsConstants } from "node:fs";
-import { access, mkdir } from "node:fs/promises";
+import { access, constants as fsConstants, mkdir, readdir } from "node:fs/promises";
 import { dirname, extname, join } from "node:path";
 import { env } from "@/utils/env";
 
@@ -18,6 +17,7 @@ export interface StorageReadResult {
 }
 
 export interface StorageService {
+	list(prefix: string): Promise<string[]>;
 	write(input: StorageWriteInput): Promise<void>;
 	read(key: string): Promise<StorageReadResult | null>;
 	delete(key: string): Promise<boolean>;
@@ -54,6 +54,12 @@ export function inferContentType(filename: string): string {
 
 class LocalStorageService implements StorageService {
 	constructor(private readonly rootDirectory: string) {}
+
+	async list(prefix: string): Promise<string[]> {
+		const fullPath = this.resolvePath(prefix);
+		const files = await readdir(fullPath);
+		return files;
+	}
 
 	async write({ key, data }: StorageWriteInput): Promise<void> {
 		const fullPath = this.resolvePath(key);
@@ -129,8 +135,14 @@ class S3StorageService implements StorageService {
 		this.client = new Bun.S3Client(configuration);
 	}
 
+	async list(prefix: string): Promise<string[]> {
+		const objects = await this.client.list({ prefix });
+		if (!objects.contents) return [];
+		return objects.contents.map((object) => object.key);
+	}
+
 	async write({ key, data, contentType }: StorageWriteInput): Promise<void> {
-		await this.client.write(key, data, { type: contentType });
+		await this.client.write(key, data, { type: contentType, acl: "public-read" });
 	}
 
 	async read(key: string): Promise<StorageReadResult | null> {

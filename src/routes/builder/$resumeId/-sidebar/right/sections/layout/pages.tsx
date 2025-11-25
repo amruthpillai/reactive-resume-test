@@ -16,9 +16,9 @@ import { Trans } from "@lingui/react/macro";
 import { DotsSixVerticalIcon, PlusIcon, TrashIcon } from "@phosphor-icons/react";
 import { type CSSProperties, forwardRef, type HTMLAttributes, useCallback, useState } from "react";
 import { match } from "ts-pattern";
+import { Switch } from "@/components/animate-ui/switch";
 import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import type { SectionType } from "@/schema/resume/data";
 import { getSectionTitle } from "@/utils/resume/section";
 import { cn } from "@/utils/style";
@@ -247,11 +247,7 @@ function PageContainer({ pageIndex, page, canDelete, onDelete, onToggleFullWidth
 					</span>
 
 					<label className="flex cursor-pointer items-center gap-2">
-						<Switch
-							size="sm"
-							checked={page.fullWidth}
-							onCheckedChange={(checked) => onToggleFullWidth(pageIndex, checked)}
-						/>
+						<Switch checked={page.fullWidth} onCheckedChange={(checked) => onToggleFullWidth(pageIndex, checked)} />
 
 						<span className="font-medium text-muted-foreground text-xs">
 							<Trans>Full Width</Trans>

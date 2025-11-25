@@ -49,8 +49,12 @@ export function PromptDialogProvider({ children }: { children: React.ReactNode }
 		inputProps: undefined,
 	});
 
+	const cancelText = state.cancelText ?? t`Cancel`;
+	const confirmText = state.confirmText ?? t`Confirm`;
+
 	React.useEffect(() => {
 		if (!state.open) return;
+
 		setTimeout(() => {
 			if (!inputRef.current) return;
 			inputRef.current.focus();
@@ -118,8 +122,8 @@ export function PromptDialogProvider({ children }: { children: React.ReactNode }
 					/>
 
 					<AlertDialogFooter>
-						<AlertDialogCancel onClick={handleCancel}>{state.cancelText ?? t`Cancel`}</AlertDialogCancel>
-						<AlertDialogAction onClick={handleConfirm}>{state.confirmText ?? t`Confirm`}</AlertDialogAction>
+						<AlertDialogCancel onClick={handleCancel}>{cancelText}</AlertDialogCancel>
+						<AlertDialogAction onClick={handleConfirm}>{confirmText}</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>

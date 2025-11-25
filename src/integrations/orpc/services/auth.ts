@@ -5,6 +5,7 @@ import { schema } from "@/integrations/drizzle";
 import { db } from "@/integrations/drizzle/client";
 import { env } from "@/utils/env";
 import { grantResumeAccess } from "../helpers/resume-access";
+import { getStorageService } from "./storage";
 
 export type ProviderList = { [key in AuthProvider]?: string };
 
@@ -49,6 +50,25 @@ export const authService = {
 	},
 
 	deleteAccount: async (input: { userId: string }): Promise<void> => {
-		await db.delete(schema.account).where(eq(schema.account.userId, input.userId));
+		if (!input.userId || input.userId.length === 0) return;
+
+		const storageService = getStorageService();
+		let files: string[] = [];
+
+		try {
+			files = await storageService.list(`uploads/${input.userId}`);
+		} catch {
+			// ignore error, and proceed with deleting user
+		}
+
+		await Promise.allSettled(files.map((file) => storageService.delete(file)));
+
+		try {
+			await db.delete(schema.user).where(eq(schema.user.id, input.userId));
+		} catch (err) {
+			console.error(`Failed to delete user record for userId=${input.userId}:`, err);
+
+			throw new ORPCError("INTERNAL_SERVER_ERROR");
+		}
 	},
 };

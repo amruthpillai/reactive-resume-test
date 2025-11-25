@@ -4,6 +4,7 @@ import { IconContext } from "@phosphor-icons/react";
 import type { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, HeadContent, Scripts } from "@tanstack/react-router";
 import { CommandPalette } from "@/components/command-palette";
+import { BreakpointIndicator } from "@/components/layout/breakpoint-indicator";
 import { ThemeProvider } from "@/components/theme/provider";
 import { Toaster } from "@/components/ui/sonner";
 import { DialogManager } from "@/dialogs/manager";
@@ -92,9 +93,10 @@ function RootDocument({ children }: Props) {
 								<PromptDialogProvider>
 									{children}
 
-									<Toaster richColors position="bottom-right" />
 									<DialogManager />
 									<CommandPalette />
+									<BreakpointIndicator />
+									<Toaster richColors position="bottom-right" />
 								</PromptDialogProvider>
 							</ConfirmDialogProvider>
 						</ThemeProvider>

@@ -1,50 +1,140 @@
-import { CaretDownIcon } from "@phosphor-icons/react";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import { AnimatePresence, type HTMLMotionProps, motion } from "motion/react";
+import { Accordion as AccordionPrimitive } from "radix-ui";
+import * as React from "react";
+import { useControlledState } from "@/hooks/use-controlled-state";
+import { getStrictContext } from "@/hooks/use-safe-context";
 
-import { cn } from "@/utils/style";
+type AccordionContextType = {
+	value: string | string[] | undefined;
+	setValue: (value: string | string[] | undefined) => void;
+};
 
-function Accordion({ ...props }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
-	return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
-}
+type AccordionItemContextType = {
+	value: string;
+	isOpen: boolean;
+	setIsOpen: (open: boolean) => void;
+};
 
-function AccordionItem({ className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Item>) {
+const [AccordionProvider, useAccordion] = getStrictContext<AccordionContextType>("AccordionContext");
+
+const [AccordionItemProvider, useAccordionItem] = getStrictContext<AccordionItemContextType>("AccordionItemContext");
+
+type AccordionProps = React.ComponentProps<typeof AccordionPrimitive.Root>;
+
+function Accordion(props: AccordionProps) {
+	const [value, setValue] = useControlledState<string | string[] | undefined>({
+		value: props?.value,
+		defaultValue: props?.defaultValue,
+		onChange: props?.onValueChange as (value: string | string[] | undefined) => void,
+	});
+
 	return (
-		<AccordionPrimitive.Item
-			data-slot="accordion-item"
-			className={cn("border-b last:border-b-0", className)}
-			{...props}
-		/>
+		<AccordionProvider value={{ value, setValue }}>
+			<AccordionPrimitive.Root data-slot="accordion" {...props} onValueChange={setValue} />
+		</AccordionProvider>
 	);
 }
 
-function AccordionTrigger({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
+type AccordionItemProps = React.ComponentProps<typeof AccordionPrimitive.Item>;
+
+function AccordionItem(props: AccordionItemProps) {
+	const { value } = useAccordion();
+	const [isOpen, setIsOpen] = React.useState(value?.includes(props?.value) ?? false);
+
+	React.useEffect(() => {
+		setIsOpen(value?.includes(props?.value) ?? false);
+	}, [value, props?.value]);
+
 	return (
-		<AccordionPrimitive.Header className="flex">
-			<AccordionPrimitive.Trigger
-				data-slot="accordion-trigger"
-				className={cn(
-					"flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left font-medium text-sm outline-none transition-all hover:underline focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
-					className,
-				)}
-				{...props}
-			>
-				{children}
-				<CaretDownIcon className="pointer-events-none size-4 shrink-0 translate-y-0.5 text-muted-foreground transition-transform duration-200" />
-			</AccordionPrimitive.Trigger>
-		</AccordionPrimitive.Header>
+		<AccordionItemProvider value={{ isOpen, setIsOpen, value: props.value }}>
+			<AccordionPrimitive.Item data-slot="accordion-item" {...props} />
+		</AccordionItemProvider>
 	);
 }
 
-function AccordionContent({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
+type AccordionHeaderProps = React.ComponentProps<typeof AccordionPrimitive.Header>;
+
+function AccordionHeader(props: AccordionHeaderProps) {
+	return <AccordionPrimitive.Header data-slot="accordion-header" {...props} />;
+}
+
+type AccordionTriggerProps = React.ComponentProps<typeof AccordionPrimitive.Trigger>;
+
+function AccordionTrigger(props: AccordionTriggerProps) {
+	return <AccordionPrimitive.Trigger data-slot="accordion-trigger" {...props} />;
+}
+
+type AccordionContentProps = Omit<React.ComponentProps<typeof AccordionPrimitive.Content>, "asChild" | "forceMount"> &
+	HTMLMotionProps<"div"> & {
+		keepRendered?: boolean;
+	};
+
+function AccordionContent({
+	keepRendered = false,
+	transition = { duration: 0.35, ease: "easeInOut" },
+	...props
+}: AccordionContentProps) {
+	const { isOpen } = useAccordionItem();
+
 	return (
-		<AccordionPrimitive.Content
-			data-slot="accordion-content"
-			className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-			{...props}
-		>
-			<div className={cn("pt-0 pb-4", className)}>{children}</div>
-		</AccordionPrimitive.Content>
+		<AnimatePresence>
+			{keepRendered ? (
+				<AccordionPrimitive.Content asChild forceMount>
+					<motion.div
+						key="accordion-content"
+						data-slot="accordion-content"
+						initial={{ height: 0, opacity: 0, "--mask-stop": "0%", y: 20 }}
+						animate={
+							isOpen
+								? { height: "auto", opacity: 1, "--mask-stop": "100%", y: 0 }
+								: { height: 0, opacity: 0, "--mask-stop": "0%", y: 20 }
+						}
+						transition={transition}
+						style={{
+							maskImage: "linear-gradient(black var(--mask-stop), transparent var(--mask-stop))",
+							WebkitMaskImage: "linear-gradient(black var(--mask-stop), transparent var(--mask-stop))",
+							overflow: "hidden",
+						}}
+						{...props}
+					/>
+				</AccordionPrimitive.Content>
+			) : (
+				isOpen && (
+					<AccordionPrimitive.Content asChild forceMount>
+						<motion.div
+							key="accordion-content"
+							data-slot="accordion-content"
+							initial={{ height: 0, opacity: 0, "--mask-stop": "0%", y: 20 }}
+							animate={{ height: "auto", opacity: 1, "--mask-stop": "100%", y: 0 }}
+							exit={{ height: 0, opacity: 0, "--mask-stop": "0%", y: 20 }}
+							transition={transition}
+							style={{
+								maskImage: "linear-gradient(black var(--mask-stop), transparent var(--mask-stop))",
+								WebkitMaskImage: "linear-gradient(black var(--mask-stop), transparent var(--mask-stop))",
+								overflow: "hidden",
+							}}
+							{...props}
+						/>
+					</AccordionPrimitive.Content>
+				)
+			)}
+		</AnimatePresence>
 	);
 }
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+export {
+	Accordion,
+	AccordionItem,
+	AccordionHeader,
+	AccordionTrigger,
+	AccordionContent,
+	useAccordion,
+	useAccordionItem,
+	type AccordionProps,
+	type AccordionItemProps,
+	type AccordionHeaderProps,
+	type AccordionTriggerProps,
+	type AccordionContentProps,
+	type AccordionContextType,
+	type AccordionItemContextType,
+};

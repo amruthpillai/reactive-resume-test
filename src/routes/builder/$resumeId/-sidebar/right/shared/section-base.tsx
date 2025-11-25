@@ -1,6 +1,6 @@
 import { CaretRightIcon } from "@phosphor-icons/react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
 import { useSectionStore } from "@/builder/-store/section";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/animate-ui/accordion";
 import { Button } from "@/components/ui/button";
 import { getSectionIcon, getSectionTitle, type RightSidebarSection } from "@/utils/resume/section";
 import { cn } from "@/utils/style";
@@ -24,9 +24,9 @@ export function SectionBase({ type, className, ...props }: Props) {
 		>
 			<AccordionItem value={type} className="group/accordion space-y-4">
 				<div className="flex items-center">
-					<AccordionTrigger asChild>
-						<Button size="icon" variant="ghost" className="mr-1.5 [&>svg]:group-data-[state=open]/accordion:rotate-90">
-							<CaretRightIcon className="transition-transform" />
+					<AccordionTrigger asChild className="mr-2 items-center justify-center">
+						<Button size="icon" variant="ghost">
+							<CaretRightIcon />
 						</Button>
 					</AccordionTrigger>
 

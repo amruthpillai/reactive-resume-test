@@ -35,7 +35,7 @@ services:
       retries: 3
 
   rustfs:
-    image: rustfs/rustfs:latest
+    image: rustfs/rustfs:1.0.0-alpha.68
     restart: unless-stopped
     security_opt:
       - "no-new-privileges:true"

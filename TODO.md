@@ -28,3 +28,4 @@
 - Implement PWA
 - Make the app responsive
 - Look into TanStack Start Prerendering
+- Remove fake data in Testimonials and @faker-js dependency
