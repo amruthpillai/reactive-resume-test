@@ -23,11 +23,13 @@ export function PageSection<T extends SectionType>({ type, className, children }
 		>
 			<h6>{section.title || getSectionTitle(type)}</h6>
 
-			<ul className="grid gap-x-4 gap-y-2" style={{ gridTemplateColumns: `repeat(${section.columns}, 1fr)` }}>
-				{section.items.map((item) => (
-					<li key={item.id}>{children(item)}</li>
-				))}
-			</ul>
+			<div className="section-content">
+				<ul className="grid gap-x-4 gap-y-2" style={{ gridTemplateColumns: `repeat(${section.columns}, 1fr)` }}>
+					{section.items.map((item) => (
+						<li key={item.id}>{children(item)}</li>
+					))}
+				</ul>
+			</div>
 		</section>
 	);
 }

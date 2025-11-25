@@ -13,7 +13,9 @@ import { PageSummary } from "../shared/page-summary";
 import { useResumeStore } from "../store/resume";
 import type { TemplateProps } from "./types";
 
-const sectionClassName = cn("space-y-1 [&>.section-content>ul]:space-y-1 [&>h6]:text-(--page-primary-color)");
+const sectionClassName = cn(
+	"grid grid-cols-5 border-(--page-primary-color) border-t pt-2 [&>.section-content>ul]:space-y-1 [&>.section-content]:col-span-4 [&>h6]:text-(--page-primary-color)",
+);
 
 function getSectionComponent(section: "summary" | SectionType | (string & {})) {
 	return match(section)
@@ -34,32 +36,32 @@ function getSectionComponent(section: "summary" | SectionType | (string & {})) {
 }
 
 /**
- * Template: Ditto
+ * Template: Bronzor
  */
-export function DittoTemplate({ pageIndex, pageLayout }: TemplateProps) {
+export function BronzorTemplate({ pageIndex, pageLayout }: TemplateProps) {
 	const isFirstPage = pageIndex === 0;
 	const { main, sidebar, fullWidth } = pageLayout;
 
 	return (
-		<div className="template-ditto page-content">
+		<div className="template-bronzor page-content px-(--page-margin-x) py-(--page-margin-y)">
 			{isFirstPage && <Header />}
 
-			<div className="flex py-(--page-margin-y)">
+			<div className="space-y-4">
+				<main className="page-main space-y-4">
+					{main.map((section) => {
+						const Component = getSectionComponent(section);
+						return <Component key={section} id={section} />;
+					})}
+				</main>
+
 				{!fullWidth && (
-					<aside className="page-sidebar w-(--page-sidebar-width) shrink-0 space-y-4 overflow-x-hidden pl-(--page-margin-x)">
+					<aside className="page-sidebar space-y-4">
 						{sidebar.map((section) => {
 							const Component = getSectionComponent(section);
 							return <Component key={section} id={section} />;
 						})}
 					</aside>
 				)}
-
-				<main className="page-main grow space-y-4 px-(--page-margin-x)">
-					{main.map((section) => {
-						const Component = getSectionComponent(section);
-						return <Component key={section} id={section} />;
-					})}
-				</main>
 			</div>
 		</div>
 	);
@@ -69,24 +71,17 @@ function Header() {
 	const basics = useResumeStore((state) => state.resume.data.basics);
 
 	return (
-		<div className="page-header relative">
-			<div className="bg-(--page-primary-color) text-(--page-background-color)">
-				<div className="flex items-center">
-					<div className="flex w-(--page-sidebar-width) shrink-0 justify-center pl-(--page-margin-x)">
-						<PagePicture className="absolute top-8" />
-					</div>
+		<div className="page-header mb-2 flex flex-col items-center gap-y-2 border-(--page-primary-color)">
+			<PagePicture />
 
-					<div className="grow px-(--page-margin-x) py-(--page-margin-y)">
-						<h2 className="page-name">{basics.name}</h2>
-						<p className="page-headline">{basics.headline}</p>
-					</div>
+			{/* Basics */}
+			<div className="page-basics flex flex-col gap-y-2 text-center">
+				<div>
+					<h2 className="page-name font-bold leading-snug!">{basics.name}</h2>
+					<p className="page-headline leading-snug!">{basics.headline}</p>
 				</div>
-			</div>
 
-			<div className="flex items-center">
-				<div className="w-(--page-sidebar-width) shrink-0" />
-
-				<div className="flex grow flex-wrap items-center gap-x-3 gap-y-1 px-(--page-margin-x) pt-3">
+				<div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-0.5">
 					{basics.email && (
 						<div className="flex items-center gap-x-1.5">
 							<EnvelopeIcon />
@@ -133,7 +128,7 @@ function SummarySection() {
 
 function ProfilesSection() {
 	return (
-		<PageSection type="profiles" className={cn("space-y-1", "[&>h6]:text-(--page-primary-color)")}>
+		<PageSection type="profiles" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="flex gap-1.5">
 					<PageIcon icon={item.icon} className="mt-0.5 shrink-0" />
@@ -151,7 +146,7 @@ function ProfilesSection() {
 
 function ExperienceSection() {
 	return (
-		<PageSection type="experience" className={sectionClassName}>
+		<PageSection type="experience" className={cn(sectionClassName)}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div>
@@ -176,7 +171,7 @@ function ExperienceSection() {
 
 function EducationSection() {
 	return (
-		<PageSection type="education" className={sectionClassName}>
+		<PageSection type="education" className={cn(sectionClassName)}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div className="mb-2">
@@ -201,7 +196,7 @@ function EducationSection() {
 
 function ProjectsSection() {
 	return (
-		<PageSection type="projects" className={sectionClassName}>
+		<PageSection type="projects" className={cn(sectionClassName)}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div className="flex items-center justify-between">
@@ -220,7 +215,7 @@ function ProjectsSection() {
 
 function SkillsSection() {
 	return (
-		<PageSection type="skills" className={sectionClassName}>
+		<PageSection type="skills" className={cn(sectionClassName)}>
 			{(item) => (
 				<div key={item.id} className="flex gap-1.5">
 					<PageIcon icon={item.icon} className="mt-0.5 shrink-0" />
@@ -240,7 +235,7 @@ function SkillsSection() {
 
 function LanguagesSection() {
 	return (
-		<PageSection type="languages" className={sectionClassName}>
+		<PageSection type="languages" className={cn(sectionClassName)}>
 			{(item) => (
 				<div key={item.id} className="w-full">
 					<p>
@@ -256,7 +251,7 @@ function LanguagesSection() {
 
 function InterestsSection() {
 	return (
-		<PageSection type="interests" className={sectionClassName}>
+		<PageSection type="interests" className={cn(sectionClassName)}>
 			{(item) => (
 				<div key={item.id} className="flex w-full gap-1.5">
 					<PageIcon icon={item.icon} className="mt-0.5 shrink-0" />
@@ -274,7 +269,7 @@ function InterestsSection() {
 
 function AwardsSection() {
 	return (
-		<PageSection type="awards" className={sectionClassName}>
+		<PageSection type="awards" className={cn(sectionClassName)}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div>
@@ -298,7 +293,7 @@ function AwardsSection() {
 
 function CertificationsSection() {
 	return (
-		<PageSection type="certifications" className={sectionClassName}>
+		<PageSection type="certifications" className={cn(sectionClassName)}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div>
@@ -322,7 +317,7 @@ function CertificationsSection() {
 
 function PublicationsSection() {
 	return (
-		<PageSection type="publications" className={sectionClassName}>
+		<PageSection type="publications" className={cn(sectionClassName)}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div>
@@ -346,7 +341,7 @@ function PublicationsSection() {
 
 function VolunteerSection() {
 	return (
-		<PageSection type="volunteer" className={sectionClassName}>
+		<PageSection type="volunteer" className={cn(sectionClassName)}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div>
@@ -370,7 +365,7 @@ function VolunteerSection() {
 
 function ReferencesSection() {
 	return (
-		<PageSection type="references" className={sectionClassName}>
+		<PageSection type="references" className={cn(sectionClassName)}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<p>

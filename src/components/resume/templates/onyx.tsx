@@ -3,6 +3,7 @@ import { match } from "ts-pattern";
 import { TiptapContent } from "@/components/input/rich-input";
 import type { SectionType } from "@/schema/resume/data";
 import { cn } from "@/utils/style";
+import { PageCustomSection } from "../shared/page-custom";
 import { PageIcon } from "../shared/page-icon";
 import { PageLevel } from "../shared/page-level";
 import { PageLink } from "../shared/page-link";
@@ -11,6 +12,8 @@ import { PageSection } from "../shared/page-section";
 import { PageSummary } from "../shared/page-summary";
 import { useResumeStore } from "../store/resume";
 import type { TemplateProps } from "./types";
+
+const sectionClassName = cn("space-y-1 [&>.section-content>ul]:space-y-1 [&>h6]:text-(--page-primary-color)");
 
 function getSectionComponent(section: "summary" | SectionType | (string & {})) {
 	return match(section)
@@ -117,13 +120,13 @@ function Header() {
 	);
 }
 
-export function SummarySection() {
-	return <PageSummary className="space-y-1 [&>h6]:text-(--page-primary-color)" />;
+function SummarySection() {
+	return <PageSummary className={cn("space-y-1", "[&>h6]:text-(--page-primary-color)")} />;
 }
 
-export function ProfilesSection() {
+function ProfilesSection() {
 	return (
-		<PageSection type="profiles" className="space-y-1 [&>h6]:text-(--page-primary-color)">
+		<PageSection type="profiles" className={cn("space-y-1", "[&>h6]:text-(--page-primary-color)")}>
 			{(item) => (
 				<div key={item.id} className="flex gap-1.5">
 					<PageIcon icon={item.icon} className="mt-0.5 shrink-0" />
@@ -139,9 +142,9 @@ export function ProfilesSection() {
 	);
 }
 
-export function ExperienceSection() {
+function ExperienceSection() {
 	return (
-		<PageSection type="experience" className="space-y-1 [&>h6]:text-(--page-primary-color) [&>ul]:space-y-1">
+		<PageSection type="experience" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div>
@@ -164,9 +167,9 @@ export function ExperienceSection() {
 	);
 }
 
-export function EducationSection() {
+function EducationSection() {
 	return (
-		<PageSection type="education" className="space-y-1 [&>h6]:text-(--page-primary-color) [&>ul]:space-y-1">
+		<PageSection type="education" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div className="mb-2">
@@ -189,9 +192,9 @@ export function EducationSection() {
 	);
 }
 
-export function ProjectsSection() {
+function ProjectsSection() {
 	return (
-		<PageSection type="projects" className="space-y-1 [&>h6]:text-(--page-primary-color) [&>ul]:space-y-1">
+		<PageSection type="projects" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div className="flex items-center justify-between">
@@ -208,9 +211,9 @@ export function ProjectsSection() {
 	);
 }
 
-export function SkillsSection() {
+function SkillsSection() {
 	return (
-		<PageSection type="skills" className="space-y-1 [&>h6]:text-(--page-primary-color) [&>ul]:space-y-1">
+		<PageSection type="skills" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="flex gap-1.5">
 					<PageIcon icon={item.icon} className="mt-0.5 shrink-0" />
@@ -228,9 +231,9 @@ export function SkillsSection() {
 	);
 }
 
-export function LanguagesSection() {
+function LanguagesSection() {
 	return (
-		<PageSection type="languages" className="space-y-1 [&>h6]:text-(--page-primary-color) [&>ul]:space-y-1">
+		<PageSection type="languages" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="w-full">
 					<p>
@@ -244,9 +247,9 @@ export function LanguagesSection() {
 	);
 }
 
-export function InterestsSection() {
+function InterestsSection() {
 	return (
-		<PageSection type="interests" className="space-y-1 [&>h6]:text-(--page-primary-color) [&>ul]:space-y-1">
+		<PageSection type="interests" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="flex w-full gap-1.5">
 					<PageIcon icon={item.icon} className="mt-0.5 shrink-0" />
@@ -262,9 +265,9 @@ export function InterestsSection() {
 	);
 }
 
-export function AwardsSection() {
+function AwardsSection() {
 	return (
-		<PageSection type="awards" className="space-y-1 [&>h6]:text-(--page-primary-color) [&>ul]:space-y-1">
+		<PageSection type="awards" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div>
@@ -286,9 +289,9 @@ export function AwardsSection() {
 	);
 }
 
-export function CertificationsSection() {
+function CertificationsSection() {
 	return (
-		<PageSection type="certifications" className="space-y-1 [&>h6]:text-(--page-primary-color) [&>ul]:space-y-1">
+		<PageSection type="certifications" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div>
@@ -310,9 +313,9 @@ export function CertificationsSection() {
 	);
 }
 
-export function PublicationsSection() {
+function PublicationsSection() {
 	return (
-		<PageSection type="publications" className="space-y-1 [&>h6]:text-(--page-primary-color) [&>ul]:space-y-1">
+		<PageSection type="publications" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div>
@@ -334,9 +337,9 @@ export function PublicationsSection() {
 	);
 }
 
-export function VolunteerSection() {
+function VolunteerSection() {
 	return (
-		<PageSection type="volunteer" className="space-y-1 [&>h6]:text-(--page-primary-color) [&>ul]:space-y-1">
+		<PageSection type="volunteer" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<div>
@@ -358,9 +361,9 @@ export function VolunteerSection() {
 	);
 }
 
-export function ReferencesSection() {
+function ReferencesSection() {
 	return (
-		<PageSection type="references" className="space-y-1 [&>h6]:text-(--page-primary-color) [&>ul]:space-y-1">
+		<PageSection type="references" className={sectionClassName}>
 			{(item) => (
 				<div key={item.id} className="space-y-1">
 					<p>
@@ -373,23 +376,6 @@ export function ReferencesSection() {
 	);
 }
 
-export function CustomSection({ id }: { id: string }) {
-	const section = useResumeStore((state) => state.resume.data.customSections.find((section) => section.id === id));
-
-	// biome-ignore lint/complexity/noUselessFragments: render empty fragment, instead of null
-	if (!section) return <></>;
-
-	return (
-		<section
-			className={cn(
-				`page-section page-custom-section page-section-${id}`,
-				section.hidden && "hidden",
-				section.content === "" && "hidden",
-				"space-y-1 [&>h6]:text-(--page-primary-color)",
-			)}
-		>
-			<h6>{section.title}</h6>
-			<TiptapContent content={section.content} />
-		</section>
-	);
+function CustomSection({ id }: { id: string }) {
+	return <PageCustomSection sectionId={id} className={sectionClassName} />;
 }

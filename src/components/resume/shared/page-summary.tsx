@@ -21,7 +21,9 @@ export function PageSummary({ className }: PageSummaryProps) {
 		>
 			<h6>{section.title || getSectionTitle("summary")}</h6>
 
-			<TiptapContent style={{ columnCount: section.columns }} content={section.content} />
+			<div className="section-content">
+				<TiptapContent style={{ columnCount: section.columns }} content={section.content} />
+			</div>
 		</section>
 	);
 }

@@ -37,6 +37,13 @@ const templates: Template[] = [
 		imageUrl: "https://picsum.photos/800/1202",
 		tags: ["Two Column", "Bold", "Modern", "Vibrant", "Left Aligned"],
 	},
+	{
+		id: "bronzor",
+		name: "Bronzor",
+		description: msg`A clean and minimal single-column layout with a hint of color, suited for beginners with minimal experience.`,
+		imageUrl: "https://picsum.photos/800/1203",
+		tags: ["Single Column", "Minimalist", "Monochrome", "Professional", "ATS Friendly"],
+	},
 ];
 
 export function TemplateGalleryDialog({ open, onOpenChange }: DialogProps<"resume.template.gallery">) {

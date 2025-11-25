@@ -9,6 +9,7 @@ import { useCSSVariables } from "./hooks/use-css-variables";
 import { useWebfonts } from "./hooks/use-webfonts";
 import styles from "./preview.module.css";
 import { useResumeStore } from "./store/resume";
+import { BronzorTemplate } from "./templates/bronzor";
 import { DittoTemplate } from "./templates/ditto";
 import { OnyxTemplate } from "./templates/onyx";
 
@@ -21,6 +22,7 @@ function getTemplateComponent(template: z.infer<typeof templateSchema>) {
 	return match(template)
 		.with("onyx", () => OnyxTemplate)
 		.with("ditto", () => DittoTemplate)
+		.with("bronzor", () => BronzorTemplate)
 		.exhaustive();
 }
 

@@ -1,5 +1,6 @@
-import { Trans } from "@lingui/react/macro";
+import { Plural, Trans } from "@lingui/react/macro";
 import {
+	ColumnsIcon,
 	CopySimpleIcon,
 	DotsThreeVerticalIcon,
 	EyeClosedIcon,
@@ -14,7 +15,12 @@ import {
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuItem,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
 	DropdownMenuSeparator,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useDialogStore } from "@/dialogs/store";
@@ -57,9 +63,17 @@ function CustomSectionItem({ section }: { section: CustomSection }) {
 
 	const onToggleVisibility = () => {
 		updateResumeData((draft) => {
-			const customSection = draft.customSections.find((_section) => _section.id === section.id);
-			if (!customSection) return;
-			customSection.hidden = !customSection.hidden;
+			const sectionIndex = draft.customSections.findIndex((_section) => _section.id === section.id);
+			if (sectionIndex === -1) return;
+			draft.customSections[sectionIndex].hidden = !draft.customSections[sectionIndex].hidden;
+		});
+	};
+
+	const onSetColumns = (value: string) => {
+		updateResumeData((draft) => {
+			const sectionIndex = draft.customSections.findIndex((_section) => _section.id === section.id);
+			if (sectionIndex === -1) return;
+			draft.customSections[sectionIndex].columns = parseInt(value, 10);
 		});
 	};
 
@@ -129,6 +143,23 @@ function CustomSectionItem({ section }: { section: CustomSection }) {
 							<CopySimpleIcon />
 							<Trans>Duplicate</Trans>
 						</DropdownMenuItem>
+
+						<DropdownMenuSub>
+							<DropdownMenuSubTrigger>
+								<ColumnsIcon />
+								<Trans>Columns</Trans>
+							</DropdownMenuSubTrigger>
+
+							<DropdownMenuSubContent>
+								<DropdownMenuRadioGroup value={section.columns.toString()} onValueChange={onSetColumns}>
+									{[1, 2, 3, 4, 5, 6].map((column) => (
+										<DropdownMenuRadioItem key={column} value={column.toString()}>
+											<Plural value={column} one="# Column" other="# Columns" />
+										</DropdownMenuRadioItem>
+									))}
+								</DropdownMenuRadioGroup>
+							</DropdownMenuSubContent>
+						</DropdownMenuSub>
 					</DropdownMenuGroup>
 
 					<DropdownMenuSeparator />
