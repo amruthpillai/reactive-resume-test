@@ -24,7 +24,7 @@ function TemplateSectionForm() {
 	};
 
 	return (
-		<div className="flex @md:flex-row flex-col items-stretch gap-x-4 gap-y-2 p-4 pr-0">
+		<div className="flex @md:flex-row flex-col items-stretch gap-x-4 gap-y-2">
 			<Button
 				variant="ghost"
 				className="group/preview relative h-auto w-40 shrink-0 cursor-pointer p-0"

@@ -1,3 +1,5 @@
+import "@phosphor-icons/web/regular/style.css";
+
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { IconContext } from "@phosphor-icons/react";
@@ -95,8 +97,9 @@ function RootDocument({ children }: Props) {
 
 									<DialogManager />
 									<CommandPalette />
-									<BreakpointIndicator />
 									<Toaster richColors position="bottom-right" />
+
+									{import.meta.env.DEV && <BreakpointIndicator />}
 								</PromptDialogProvider>
 							</ConfirmDialogProvider>
 						</ThemeProvider>

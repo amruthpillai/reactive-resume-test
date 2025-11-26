@@ -1,6 +1,3 @@
-# Optimized for Nitro Builds (Netlify, Vercel, etc.)
-# Note: database migrations need to be run manually
-
 # ---------- Dependencies Layer ----------
 FROM oven/bun:1-slim AS dependencies
 

@@ -20,12 +20,12 @@
   - Toggle Theme
   - Basic Navigation
 
-- Build Landing Page
+- Build Landing Page (in progress)
   - Inspiration
     - https://www.shadcnblocks.com/blocks/hero
     - https://plasma-nextjs-template.vercel.app/
 
 - Implement PWA
-- Make the app responsive
+- Make the app responsive (in progress)
 - Look into TanStack Start Prerendering
 - Remove fake data in Testimonials and @faker-js dependency

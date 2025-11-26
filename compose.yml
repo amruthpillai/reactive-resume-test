@@ -19,8 +19,6 @@ services:
   pgbouncer:
     image: edoburu/pgbouncer:latest
     restart: unless-stopped
-    ports:
-      - "65432:5432"
     environment:
       POOL_MODE: transaction
       AUTH_TYPE: scram-sha-256
@@ -63,16 +61,11 @@ services:
   gotenberg:
     image: gotenberg/gotenberg:edge
     restart: unless-stopped
-    ports:
-      - "4000:3000"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
       - CHROMIUM_AUTO_START=true
       - LIBREOFFICE_DISABLE_ROUTES=true
-      - API_ENABLE_BASIC_AUTH=true
-      - GOTENBERG_API_BASIC_AUTH_USERNAME=2a59fb171f3244d44395dbd07069ba2e
-      - GOTENBERG_API_BASIC_AUTH_PASSWORD=604d1b310d5a22329305fc89633e5dc9
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 30s
@@ -85,10 +78,23 @@ services:
   #     dockerfile: Dockerfile
   #   ports:
   #     - "3000:3000"
-  #   env_file: .env
   #   environment:
-  #     NODE_ENV: production
-  #     DATABASE_URL: postgresql://postgres:postgres@pgbouncer:5432/postgres
+  #     - TZ=UTC
+  #     - NODE_ENV=production
+  #     # App
+  #     - APP_URL=http://localhost:3000
+  #     - PRINTER_APP_URL=http://app:3000
+  #     # Printer
+  #     - GOTENBERG_ENDPOINT=http://gotenberg:3000
+  #     # Database
+  #     - DATABASE_URL=postgresql://postgres:postgres@pgbouncer:5432/postgres
+  #     # Auth
+  #     - AUTH_SECRET=this-is-a-super-secret-key
+  #     # Storage
+  #     - S3_ACCESS_KEY_ID=rustfs
+  #     - S3_SECRET_ACCESS_KEY=rustfs
+  #     - S3_ENDPOINT=http://localhost:9100
+  #     - S3_BUCKET=reactive-resume-start
   #   volumes:
   #     - ./data:/app/data
   #   depends_on:
