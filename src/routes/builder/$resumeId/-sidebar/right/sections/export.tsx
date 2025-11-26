@@ -15,7 +15,7 @@ export function ExportSectionBuilder() {
 		orpc.printer.printResumeAsPDF.mutationOptions(),
 	);
 
-	const onDownloadJson = useCallback(() => {
+	const onDownloadJSON = useCallback(() => {
 		const filename = generateFilename(resume.data.basics.name, "json");
 		const jsonString = JSON.stringify(resume, null, 2);
 		const blob = new Blob([jsonString], { type: "application/json" });
@@ -23,7 +23,7 @@ export function ExportSectionBuilder() {
 		downloadWithAnchor(blob, filename);
 	}, [resume]);
 
-	const onDownloadPdf = useCallback(async () => {
+	const onDownloadPDF = useCallback(async () => {
 		const time = performance.now();
 
 		const filename = generateFilename(resume.data.basics.name, "pdf");
@@ -40,7 +40,7 @@ export function ExportSectionBuilder() {
 		<SectionBase type="export" className="space-y-4">
 			<Button
 				variant="outline"
-				onClick={onDownloadJson}
+				onClick={onDownloadJSON}
 				className="h-auto gap-x-4 whitespace-normal p-4! text-left font-normal active:scale-98"
 			>
 				<FileJsIcon className="size-6 shrink-0" />
@@ -58,7 +58,7 @@ export function ExportSectionBuilder() {
 			<Button
 				variant="outline"
 				disabled={isPrinting}
-				onClick={onDownloadPdf}
+				onClick={onDownloadPDF}
 				className="h-auto gap-x-4 whitespace-normal p-4! text-left font-normal active:scale-98"
 			>
 				{isPrinting ? (
