@@ -1,7 +1,7 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand/react";
-import type { SidebarSection } from "@/utils/resume/section";
+import { leftSidebarSections, rightSidebarSections, type SidebarSection } from "@/utils/resume/section";
 
 type SectionCollapseState = {
 	[id in SidebarSection]?: { collapsed: boolean };
@@ -36,9 +36,9 @@ export const useSectionStore = create<SectionStore>()(
 			},
 			toggleAll: () => {
 				set((state) => {
-					Object.keys(state.sections).forEach((id) => {
-						const current = state.sections[id as SidebarSection]?.collapsed ?? false;
-						state.sections[id as SidebarSection] = { collapsed: !current };
+					[...leftSidebarSections, ...rightSidebarSections].forEach((id) => {
+						const current = state.sections[id]?.collapsed ?? false;
+						state.sections[id] = { collapsed: !current };
 					});
 				});
 			},

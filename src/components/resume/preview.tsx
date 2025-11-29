@@ -26,7 +26,7 @@ function getTemplateComponent(template: z.infer<typeof templateSchema>) {
 		.exhaustive();
 }
 
-export const ResumePreview = ({ showPageNumbers, pageClassName, ...props }: Props) => {
+export const ResumePreview = ({ showPageNumbers, pageClassName, className, ...props }: Props) => {
 	const metadata = useResumeStore((state) => state.resume.data.metadata);
 	const style = useCSSVariables(metadata);
 
@@ -42,9 +42,41 @@ export const ResumePreview = ({ showPageNumbers, pageClassName, ...props }: Prop
 		};
 	}, [metadata.typography.body.fontSize]);
 
+	const scopedCSS = useMemo(() => {
+		if (!metadata.css.enabled || !metadata.css.value.trim()) return null;
+
+		const css = metadata.css.value;
+		// Simple approach: prefix each top-level selector with .resume-preview-container
+		// This handles most common cases like .class-name, #id, element, etc.
+		const scoped = css
+			.split(/\n(?=\s*[.#a-zA-Z])/) // Split on newlines that start a new rule
+			.map((rule) => {
+				const trimmed = rule.trim();
+				if (!trimmed || trimmed.startsWith("@")) return trimmed; // Keep @rules as-is
+
+				// For each selector in the rule, prefix with .resume-preview-container
+				return trimmed.replace(/^([^{]+)(\{)/, (_match, selectors, brace) => {
+					// Split selectors by comma and prefix each
+					const prefixed = selectors
+						.split(",")
+						.map((selector: string) => `.resume-preview-container ${selector.trim()} `)
+						.join(", ");
+					return `${prefixed}${brace}`;
+				});
+			})
+			.join("\n");
+
+		return scoped;
+	}, [metadata.css.enabled, metadata.css.value]);
+
+	console.log(scopedCSS);
+
 	return (
 		<IconContext.Provider value={iconProps}>
-			<div style={style} {...props}>
+			{/** biome-ignore lint/security/noDangerouslySetInnerHtml: it's okay */}
+			{scopedCSS && <style dangerouslySetInnerHTML={{ __html: scopedCSS }} />}
+
+			<div style={style} className={cn("resume-preview-container", className)} {...props}>
 				{metadata.layout.pages.map((pageLayout, pageIndex) => {
 					const pageNumber = pageIndex + 1;
 					const TemplateComponent = getTemplateComponent(metadata.template);

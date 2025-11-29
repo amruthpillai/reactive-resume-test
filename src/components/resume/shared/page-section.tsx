@@ -12,15 +12,11 @@ type PageSectionProps<T extends SectionType> = {
 export function PageSection<T extends SectionType>({ type, className, children }: PageSectionProps<T>) {
 	const section = useResumeStore((state) => state.resume.data.sections[type]);
 
+	if (section.hidden) return null;
+	if (section.items.length === 0) return null;
+
 	return (
-		<section
-			className={cn(
-				`page-section page-section-${type}`,
-				section.hidden && "hidden",
-				section.items.length === 0 && "hidden",
-				className,
-			)}
-		>
+		<section className={cn(`page-section page-section-${type}`, className)}>
 			<h6>{section.title || getSectionTitle(type)}</h6>
 
 			<div className="section-content">

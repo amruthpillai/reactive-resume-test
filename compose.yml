@@ -34,39 +34,12 @@ services:
       timeout: 10s
       retries: 3
 
-  rustfs:
-    image: rustfs/rustfs:latest
-    restart: unless-stopped
-    security_opt:
-      - "no-new-privileges:true"
-    ports:
-      - "9100:9000" # S3 API
-      - "9101:9001" # Admin UI
-    environment:
-      - RUSTFS_CONSOLE_ENABLE=true
-      - RUSTFS_ACCESS_KEY=rustfs
-      - RUSTFS_SECRET_KEY=rustfs
-    volumes:
-      - rustfs_data:/data
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "sh",
-          "-c",
-          "curl -f http://localhost:9000/health && curl -f http://localhost:9001/health",
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
   seaweedfs:
     image: chrislusf/seaweedfs:latest
     restart: unless-stopped
     command: server -s3 -filer -dir=/data -ip=0.0.0.0
     ports:
       - "8333:8333" # S3 API
-      - "8888:8888" # Filer API
     environment:
       - AWS_ACCESS_KEY_ID=seaweedfs
       - AWS_SECRET_ACCESS_KEY=seaweedfs
@@ -149,6 +122,6 @@ services:
   #     retries: 3
 
 volumes:
-  rustfs_data:
+  # rustfs_data:
   postgres_data:
   seaweedfs_data:
