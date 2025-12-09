@@ -1,6 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import {
+	CircleNotchIcon,
 	CopySimpleIcon,
 	FolderOpenIcon,
 	LockSimpleIcon,
@@ -8,10 +9,10 @@ import {
 	PencilSimpleLineIcon,
 	TrashSimpleIcon,
 } from "@phosphor-icons/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
 	ContextMenu,
@@ -33,9 +34,27 @@ type ResumeCardProps = React.ComponentProps<"div"> & {
 export function ResumeCard({ resume, ...props }: ResumeCardProps) {
 	const confirm = useConfirm();
 	const { openDialog } = useDialogStore();
+	const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
+
+	const { data: screenshotData, isLoading } = useQuery(
+		orpc.printer.getResumeScreenshot.queryOptions({ input: { id: resume.id } }),
+	);
 
 	const { mutate: deleteResume } = useMutation(orpc.resume.delete.mutationOptions());
 	const { mutate: setLockedResume } = useMutation(orpc.resume.setLocked.mutationOptions());
+
+	useEffect(() => {
+		let objectUrl: string | null = null;
+
+		if (screenshotData) {
+			objectUrl = URL.createObjectURL(screenshotData);
+			setImageSrc(objectUrl);
+		}
+
+		return () => {
+			if (objectUrl) URL.revokeObjectURL(objectUrl);
+		};
+	}, [screenshotData]);
 
 	const updatedAt = useMemo(() => {
 		return new Date(resume.updatedAt).toLocaleDateString();
@@ -96,11 +115,17 @@ export function ResumeCard({ resume, ...props }: ResumeCardProps) {
 				<ContextMenuTrigger asChild>
 					<Link to="/builder/$resumeId" params={{ resumeId: resume.id }} className="cursor-default">
 						<BaseCard title={resume.name} description={t`Last updated on ${updatedAt}`} tags={resume.tags}>
-							<img
-								alt={resume.name}
-								src="https://picsum.photos/849/1200"
-								className={cn("size-full object-cover transition-all", resume.isLocked && "blur-xs")}
-							/>
+							{isLoading || !imageSrc ? (
+								<div className="flex size-full items-center justify-center">
+									<CircleNotchIcon weight="thin" className="size-12 animate-spin" />
+								</div>
+							) : (
+								<img
+									src={imageSrc}
+									alt={resume.name}
+									className={cn("size-full object-cover transition-all", resume.isLocked && "blur-xs")}
+								/>
+							)}
 
 							<ResumeLockOverlay isLocked={resume.isLocked} />
 						</BaseCard>

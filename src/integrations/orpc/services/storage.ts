@@ -57,8 +57,19 @@ class LocalStorageService implements StorageService {
 
 	async list(prefix: string): Promise<string[]> {
 		const fullPath = this.resolvePath(prefix);
-		const files = await readdir(fullPath);
-		return files;
+
+		try {
+			const files = await readdir(fullPath);
+
+			return files;
+		} catch (error: unknown) {
+			// If directory doesn't exist, return empty array
+			if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
+				return [];
+			}
+
+			throw error;
+		}
 	}
 
 	async write({ key, data }: StorageWriteInput): Promise<void> {
