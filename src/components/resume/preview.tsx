@@ -2,13 +2,13 @@ import { Trans } from "@lingui/react/macro";
 import { IconContext, type IconProps } from "@phosphor-icons/react";
 import { useMemo } from "react";
 import { match } from "ts-pattern";
-import type z from "zod";
-import type { templateSchema } from "@/schema/resume/data";
+import type { Template } from "@/schema/resume/templates";
 import { cn } from "@/utils/style";
 import { useCSSVariables } from "./hooks/use-css-variables";
 import { useWebfonts } from "./hooks/use-webfonts";
 import styles from "./preview.module.css";
 import { useResumeStore } from "./store/resume";
+import { AzurillTemplate } from "./templates/azurill";
 import { BronzorTemplate } from "./templates/bronzor";
 import { ChikoritaTemplate } from "./templates/chikorita";
 import { DittoTemplate } from "./templates/ditto";
@@ -20,13 +20,14 @@ type Props = React.ComponentProps<"div"> & {
 	showPageNumbers?: boolean;
 };
 
-function getTemplateComponent(template: z.infer<typeof templateSchema>) {
+function getTemplateComponent(template: Template) {
 	return match(template)
 		.with("onyx", () => OnyxTemplate)
 		.with("ditto", () => DittoTemplate)
 		.with("bronzor", () => BronzorTemplate)
 		.with("chikorita", () => ChikoritaTemplate)
 		.with("gengar", () => GengarTemplate)
+		.with("azurill", () => AzurillTemplate)
 		.exhaustive();
 }
 

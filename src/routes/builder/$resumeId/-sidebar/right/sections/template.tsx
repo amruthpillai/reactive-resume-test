@@ -1,8 +1,10 @@
+import { useLingui } from "@lingui/react";
 import { SwapIcon } from "@phosphor-icons/react";
 import { useResumeStore } from "@/components/resume/store/resume";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useDialogStore } from "@/dialogs/store";
+import { templates } from "@/schema/resume/templates";
 import { SectionBase } from "../shared/section-base";
 
 export function TemplateSectionBuilder() {
@@ -13,11 +15,12 @@ export function TemplateSectionBuilder() {
 	);
 }
 
-const sampleTags = ["Two Column", "ATS Friendly", "Modern", "Minimalist", "Clean", "Professional"];
-
 function TemplateSectionForm() {
+	const { i18n } = useLingui();
 	const openDialog = useDialogStore((state) => state.openDialog);
 	const template = useResumeStore((state) => state.resume.data.metadata.template);
+
+	const metadata = templates[template];
 
 	const onOpenTemplateGallery = () => {
 		openDialog("resume.template.gallery", undefined);
@@ -31,7 +34,7 @@ function TemplateSectionForm() {
 				onClick={onOpenTemplateGallery}
 			>
 				<div className="relative z-10 aspect-page size-full overflow-hidden rounded-md opacity-100 transition-opacity group-hover/preview:opacity-50">
-					<img src="https://picsum.photos/800/1200" alt={template} className="size-full object-cover" />
+					<img src={metadata.imageUrl} alt={metadata.name} className="size-full object-cover" />
 				</div>
 
 				<div className="absolute inset-0 flex items-center justify-center">
@@ -41,14 +44,12 @@ function TemplateSectionForm() {
 
 			<div className="flex flex-1 flex-col space-y-4 @md:pt-1 @md:pb-3">
 				<div className="space-y-1">
-					<h3 className="font-semibold text-2xl capitalize tracking-tight">{template}</h3>
-					<p className="text-muted-foreground text-sm">
-						Esse dolor culpa et esse. Officia deserunt et elit non non laborum commodo amet.
-					</p>
+					<h3 className="font-semibold text-2xl capitalize tracking-tight">{metadata.name}</h3>
+					<p className="text-muted-foreground text-sm">{i18n.t(metadata.description)}</p>
 				</div>
 
 				<div className="flex flex-wrap gap-1.5">
-					{sampleTags.map((tag) => (
+					{metadata.tags.map((tag) => (
 						<Badge key={tag} variant="outline">
 							{tag}
 						</Badge>

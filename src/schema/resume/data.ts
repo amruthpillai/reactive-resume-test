@@ -1,6 +1,7 @@
 import z from "zod";
 import type { IconName } from "@/components/input/icon-picker";
 import type { Locale } from "@/utils/locale";
+import { templateSchema } from "./templates";
 
 export const iconSchema = z.custom<IconName>();
 
@@ -276,8 +277,6 @@ export const typographySchema = z.object({
 	body: typographyItemSchema,
 	heading: typographyItemSchema,
 });
-
-export const templateSchema = z.enum(["onyx", "ditto", "bronzor", "chikorita", "gengar"]);
 
 export const metadataSchema = z.object({
 	locale: localeSchema.catch("en-US"),

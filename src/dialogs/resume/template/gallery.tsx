@@ -1,10 +1,7 @@
-import type { MessageDescriptor } from "@lingui/core";
-import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { SlideshowIcon } from "@phosphor-icons/react";
 import { type RefObject, useRef } from "react";
-import type z from "zod";
 import { CometCard } from "@/components/animation/comet-card";
 import { useResumeStore } from "@/components/resume/store/resume";
 import { Badge } from "@/components/ui/badge";
@@ -12,59 +9,13 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { DialogProps } from "@/dialogs/store";
-import type { templateSchema } from "@/schema/resume/data";
-
-type Template = {
-	id: z.infer<typeof templateSchema>;
-	name: string;
-	description: MessageDescriptor;
-	imageUrl: string;
-	tags: string[];
-};
-
-const templates: Template[] = [
-	{
-		id: "onyx",
-		name: "Onyx",
-		description: msg`Non reprehenderit elit commodo occaecat laborum Lorem minim eu cupidatat tempor officia anim deserunt.`,
-		imageUrl: "https://picsum.photos/800/1201",
-		tags: ["Tag 1", "Tag 2", "Tag 3", "Tag 4"],
-	},
-	{
-		id: "ditto",
-		name: "Ditto",
-		description: msg`Non reprehenderit elit commodo occaecat laborum Lorem minim eu cupidatat tempor officia anim deserunt.`,
-		imageUrl: "https://picsum.photos/800/1202",
-		tags: ["Tag 1", "Tag 2", "Tag 3", "Tag 4"],
-	},
-	{
-		id: "bronzor",
-		name: "Bronzor",
-		description: msg`Non reprehenderit elit commodo occaecat laborum Lorem minim eu cupidatat tempor officia anim deserunt.`,
-		imageUrl: "https://picsum.photos/800/1203",
-		tags: ["Tag 1", "Tag 2", "Tag 3", "Tag 4"],
-	},
-	{
-		id: "chikorita",
-		name: "Chikorita",
-		description: msg`Non reprehenderit elit commodo occaecat laborum Lorem minim eu cupidatat tempor officia anim deserunt.`,
-		imageUrl: "https://picsum.photos/800/1204",
-		tags: ["Tag 1", "Tag 2", "Tag 3", "Tag 4"],
-	},
-	{
-		id: "gengar",
-		name: "Gengar",
-		description: msg`Non reprehenderit elit commodo occaecat laborum Lorem minim eu cupidatat tempor officia anim deserunt.`,
-		imageUrl: "https://picsum.photos/800/1205",
-		tags: ["Tag 1", "Tag 2", "Tag 3", "Tag 4"],
-	},
-];
+import { type Template, type TemplateMetadata, templates } from "@/schema/resume/templates";
 
 export function TemplateGalleryDialog({ open, onOpenChange }: DialogProps<"resume.template.gallery">) {
 	const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
-	function onSelectTemplate(template: z.infer<typeof templateSchema>) {
+	function onSelectTemplate(template: Template) {
 		updateResumeData((draft) => {
 			draft.metadata.template = template;
 		});
@@ -90,10 +41,11 @@ export function TemplateGalleryDialog({ open, onOpenChange }: DialogProps<"resum
 
 				<ScrollArea ref={scrollAreaRef} className="max-h-[80svh]">
 					<div className="grid grid-cols-2 gap-6 p-4 md:grid-cols-3 lg:grid-cols-4">
-						{templates.map((template) => (
+						{Object.entries(templates).map(([template, metadata]) => (
 							<TemplateCard
-								key={template.id}
-								template={template}
+								key={template}
+								id={template as Template}
+								metadata={metadata}
 								collisionBoundary={scrollAreaRef}
 								onSelect={onSelectTemplate}
 							/>
@@ -106,12 +58,13 @@ export function TemplateGalleryDialog({ open, onOpenChange }: DialogProps<"resum
 }
 
 type TemplateCardProps = {
-	template: Template;
+	id: Template;
+	metadata: TemplateMetadata;
 	collisionBoundary: RefObject<HTMLDivElement | null>;
-	onSelect: (template: z.infer<typeof templateSchema>) => void;
+	onSelect: (template: Template) => void;
 };
 
-function TemplateCard({ template, collisionBoundary, onSelect }: TemplateCardProps) {
+function TemplateCard({ id, metadata, collisionBoundary, onSelect }: TemplateCardProps) {
 	const { i18n } = useLingui();
 
 	return (
@@ -120,10 +73,10 @@ function TemplateCard({ template, collisionBoundary, onSelect }: TemplateCardPro
 				<HoverCardTrigger>
 					<button
 						tabIndex={-1}
-						onClick={() => onSelect(template.id)}
+						onClick={() => onSelect(id)}
 						className="block aspect-page size-full cursor-pointer overflow-hidden rounded-md bg-popover outline-none focus:ring-2 focus:ring-ring"
 					>
-						<img src={template.imageUrl} alt={template.name} className="size-full object-cover" />
+						<img src={metadata.imageUrl} alt={metadata.name} className="size-full object-cover" />
 					</button>
 				</HoverCardTrigger>
 
@@ -136,12 +89,12 @@ function TemplateCard({ template, collisionBoundary, onSelect }: TemplateCardPro
 					className="pointer-events-none! flex w-80 flex-col justify-between space-y-8 rounded-md bg-background/80 p-4 pb-6"
 				>
 					<div className="space-y-1">
-						<h3 className="font-semibold text-lg">{template.name}</h3>
-						<p className="text-muted-foreground">{i18n.t(template.description)}</p>
+						<h3 className="font-semibold text-lg">{metadata.name}</h3>
+						<p className="text-muted-foreground">{i18n.t(metadata.description)}</p>
 					</div>
 
 					<div className="flex flex-wrap gap-2">
-						{template.tags
+						{metadata.tags
 							.sort((a, b) => a.localeCompare(b))
 							.map((tag) => (
 								<Badge key={tag} variant="default">
