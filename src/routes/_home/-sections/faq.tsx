@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/react/macro";
 import { CaretRightIcon } from "@phosphor-icons/react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/animate-ui/accordion";
 import { cn } from "@/utils/style";
@@ -45,13 +46,15 @@ export function FAQ() {
 		<section id="frequently-asked-questions" className="flex flex-col gap-x-32 gap-y-4 p-4 md:flex-row md:p-8">
 			<h2
 				className={cn(
-					"font-bold text-2xl tracking-tight md:text-4xl xl:text-5xl",
+					"font-semibold text-2xl tracking-tight md:text-4xl xl:text-5xl",
 					"flex flex-wrap items-center gap-x-1.5 md:flex-col md:items-start",
 				)}
 			>
-				<span>Frequently</span>
-				<span>Asked</span>
-				<span>Questions</span>
+				<Trans context="Every word needs to be wrapped in a tag">
+					<span>Frequently</span>
+					<span>Asked</span>
+					<span>Questions</span>
+				</Trans>
 			</h2>
 
 			<div className="max-w-2xl flex-1 md:ml-auto 2xl:max-w-4xl">

@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { EmptyIcon, KeyIcon, PlusIcon, TrashSimpleIcon } from "@phosphor-icons/react";
+import { ArrowRightIcon, BookOpenIcon, KeyIcon, PlusIcon, TrashSimpleIcon } from "@phosphor-icons/react";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
@@ -10,7 +10,6 @@ import { Separator } from "@/components/ui/separator";
 import { useDialogStore } from "@/dialogs/store";
 import { useConfirm } from "@/hooks/use-confirm";
 import { authClient } from "@/integrations/auth/client";
-import { cn } from "@/utils/style";
 import { DashboardHeader } from "../-components/header";
 
 export const Route = createFileRoute("/dashboard/settings/api-keys")({
@@ -61,34 +60,46 @@ function RouteComponent() {
 			<Separator />
 
 			<div className="max-w-xl space-y-4">
-				<Button
-					variant="outline"
-					className="h-auto w-full py-3"
-					onClick={() => openDialog("api-key.create", undefined)}
-				>
-					<PlusIcon />
-					<Trans>Create a new API key</Trans>
-				</Button>
-
-				{apiKeys.length === 0 && (
-					<div className="flex flex-col items-center justify-center gap-y-4 rounded-sm border border-dashed p-8 text-center">
-						<EmptyIcon size={32} />
-
-						<div className="space-y-2">
-							<h5 className="font-medium">
-								<Trans>You don't have any API keys yet.</Trans>
-							</h5>
-							<p className="text-muted-foreground leading-relaxed">
+				<div className="flex flex-col gap-4 rounded-lg border bg-muted/30 p-6">
+					<div className="flex items-start gap-4">
+						<div className="rounded-md bg-primary/10 p-2.5">
+							<BookOpenIcon className="text-primary" size={24} />
+						</div>
+						<div className="flex-1 space-y-2">
+							<h3 className="font-semibold">
+								<Trans>API Documentation</Trans>
+							</h3>
+							<p className="text-muted-foreground text-sm leading-relaxed">
 								<Trans>
-									You can use API keys to authenticate external applications to access your data stored on Reactive
-									Resume. Please keep your API keys secure and do not share them with anyone.
+									Explore the API reference documentation to learn how to integrate Reactive Resume with your
+									applications. Find detailed endpoints, request examples, and authentication methods.
 								</Trans>
 							</p>
+							<a
+								href="/api/oas"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="inline-flex items-center gap-2 font-medium text-primary text-sm transition-colors hover:underline"
+							>
+								<Trans>View API Documentation</Trans>
+								<ArrowRightIcon size={16} />
+							</a>
 						</div>
 					</div>
-				)}
+				</div>
 
-				<div className={cn(apiKeys.length === 0 && "hidden")}>
+				<Separator />
+
+				<div>
+					<Button
+						variant="outline"
+						className="h-auto w-full py-3"
+						onClick={() => openDialog("api-key.create", undefined)}
+					>
+						<PlusIcon />
+						<Trans>Create a new API key</Trans>
+					</Button>
+
 					<AnimatePresence>
 						{apiKeys.map((key, index) => (
 							<motion.div

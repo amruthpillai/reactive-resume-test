@@ -1,15 +1,17 @@
 import { experimental_SmartCoercionPlugin as SmartCoercionPlugin } from "@orpc/json-schema";
+import { OpenAPIGenerator } from "@orpc/openapi";
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
 import { RequestHeadersPlugin } from "@orpc/server/plugins";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { createFileRoute } from "@tanstack/react-router";
+import { json } from "@tanstack/react-start";
 import router from "@/integrations/orpc/router";
 import { env } from "@/utils/env";
 import { getLocale } from "@/utils/locale";
 
-const openapiHandler = new OpenAPIHandler(router, {
+const openAPIHandler = new OpenAPIHandler(router, {
 	interceptors: [
 		onError((error) => {
 			console.error(error);
@@ -24,10 +26,19 @@ const openapiHandler = new OpenAPIHandler(router, {
 			docsTitle: "API Reference | Reactive Resume",
 			schemaConverters: [new ZodToJsonSchemaConverter()],
 			specGenerateOptions: {
-				filter: ({ contract }) => !contract["~orpc"].route.tags?.includes("Internal"),
-				info: { title: "Reactive Resume", version: "5.0.0" },
 				servers: [{ url: `${env.APP_URL}/api/oas` }],
-				security: [{ "api-key": [] }],
+				info: { title: "Reactive Resume", version: "5.0.0" },
+				filter: ({ contract }) => !contract["~orpc"].route.tags?.includes("Internal"),
+				security: [{ apiKey: [] }],
+				components: {
+					securitySchemes: {
+						apiKey: {
+							in: "header",
+							type: "apiKey",
+							name: "x-api-key",
+						},
+					},
+				},
 			},
 			docsConfig: {
 				telemetry: false,
@@ -37,17 +48,29 @@ const openapiHandler = new OpenAPIHandler(router, {
 				expandAllResponses: true,
 				hideTestRequestButton: true,
 				expandAllModelSections: true,
-				showToolbar: "localhost",
-				showDeveloperTools: "localhost",
 			},
 		}),
 	],
 });
 
+const openAPIGenerator = new OpenAPIGenerator({
+	schemaConverters: [new ZodToJsonSchemaConverter()],
+});
+
 async function handler({ request }: { request: Request }) {
 	const locale = await getLocale();
 
-	const { response } = await openapiHandler.handle(request, {
+	if (request.method === "GET" && request.url.endsWith("/spec.json")) {
+		const spec = await openAPIGenerator.generate(router, {
+			servers: [{ url: `${env.APP_URL}/api/oas` }],
+			info: { title: "Reactive Resume", version: "5.0.0" },
+			filter: ({ contract }) => !contract["~orpc"].route.tags?.includes("Internal"),
+		});
+
+		return json(spec);
+	}
+
+	const { response } = await openAPIHandler.handle(request, {
 		prefix: "/api/oas",
 		context: { locale, reqHeaders: request.headers },
 	});
