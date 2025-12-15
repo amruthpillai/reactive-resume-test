@@ -31,7 +31,8 @@ export function BreakpointIndicator({ position = "bottom-right" }: BreakpointInd
 			<span className="hidden lg:inline xl:hidden">LG</span>
 			<span className="hidden xl:inline 2xl:hidden">XL</span>
 			<span className="3xl:hidden hidden 2xl:inline">2XL</span>
-			<span className="3xl:inline hidden">3XL</span>
+			<span className="3xl:inline 4xl:hidden hidden">3XL</span>
+			<span className="4xl:inline hidden">4XL</span>
 		</div>
 	);
 }

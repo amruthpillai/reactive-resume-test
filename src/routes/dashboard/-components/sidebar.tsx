@@ -5,7 +5,6 @@ import { Trans } from "@lingui/react/macro";
 import {
 	GearSixIcon,
 	KeyIcon,
-	OpenAiLogoIcon,
 	ReadCvLogoIcon,
 	ShieldCheckIcon,
 	UserCircleIcon,
@@ -68,11 +67,6 @@ const settingsSidebarItems = [
 		icon: <KeyIcon />,
 		label: msg`API Keys`,
 		href: "/dashboard/settings/api-keys",
-	},
-	{
-		icon: <OpenAiLogoIcon />,
-		label: msg`Artificial Intelligence`,
-		href: "/dashboard/settings/ai",
 	},
 	{
 		icon: <WarningIcon />,

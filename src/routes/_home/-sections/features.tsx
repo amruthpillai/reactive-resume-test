@@ -1,8 +1,12 @@
+import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import {
 	CloudArrowUpIcon,
+	CodeSimpleIcon,
 	CurrencyDollarIcon,
 	DatabaseIcon,
+	DotsThreeIcon,
+	FileCssIcon,
 	FilesIcon,
 	GithubLogoIcon,
 	GlobeIcon,
@@ -15,6 +19,7 @@ import {
 	ShieldCheckIcon,
 	TranslateIcon,
 } from "@phosphor-icons/react";
+import { motion } from "motion/react";
 
 type Feature = {
 	id: string;
@@ -23,106 +28,131 @@ type Feature = {
 	description: string;
 };
 
-const features: Feature[] = [
+type FeatureCardProps = Feature & {
+	index: number;
+};
+
+export const getFeatures = (): Feature[] => [
 	{
 		id: "free",
 		icon: CurrencyDollarIcon,
-		title: "Free",
-		description: "Completely free, forever, no hidden costs.",
+		title: t`Free`,
+		description: t`Completely free, forever, no hidden costs.`,
 	},
 	{
 		id: "open-source",
 		icon: GithubLogoIcon,
-		title: "Open Source",
-		description: "By the community, for the community.",
+		title: t`Open Source`,
+		description: t`By the community, for the community.`,
 	},
 	{
 		id: "no-ads",
 		icon: ProhibitIcon,
-		title: "No Advertising, No Tracking",
-		description: "For a secure and distraction-free experience.",
+		title: t`No Advertising, No Tracking`,
+		description: t`For a secure and distraction-free experience.`,
 	},
 	{
 		id: "data-security",
 		icon: DatabaseIcon,
-		title: "Data Security",
-		description: "Your data is secure, and never shared or sold to anyone.",
+		title: t`Data Security`,
+		description: t`Your data is secure, and never shared or sold to anyone.`,
 	},
 	{
 		id: "self-host",
 		icon: CloudArrowUpIcon,
-		title: "Self-Host",
-		description: "You have the choice to deploy on your own infrastructure, or use the public version.",
+		title: t`Self-Host with Docker`,
+		description: t`You also have the option to deploy on your own servers using the Docker image.`,
 	},
 	{
 		id: "languages",
 		icon: TranslateIcon,
-		title: "Multilingual",
-		description: "Available in multiple languages. If you would like to contribute, check out Crowdin.",
+		title: t`Multilingual`,
+		description: t`Available in multiple languages. If you would like to contribute, check out Crowdin.`,
 	},
 	{
 		id: "auth",
 		icon: KeyIcon,
-		title: "Easy Sign-In",
-		description: "Sign in with GitHub, Google, Passkey, and more.",
+		title: t`One-Click Sign-In`,
+		description: t`Sign in with GitHub, Google or a custom OAuth provider.`,
 	},
 	{
 		id: "2fa",
 		icon: ShieldCheckIcon,
-		title: "Two-Factor Authentication",
-		description: "Enhanced security for your account.",
+		title: t`Passkeys & 2FA`,
+		description: t`Enhance the security of your account with additional layers of protection.`,
 	},
 	{
 		id: "unlimited-resumes",
 		icon: FilesIcon,
-		title: "Unlimited Resumes",
-		description: "Create as many resumes as you want, without limits.",
+		title: t`Unlimited Resumes`,
+		description: t`Create as many resumes as you want, without limits.`,
 	},
 	{
 		id: "design",
 		icon: PaletteIcon,
-		title: "Design Flexibility",
-		description: "Personalize your resume with any colors, fonts or designs, and make it your own.",
+		title: t`Flexibility`,
+		description: t`Personalize your resume with any colors, fonts or designs, and make it your own.`,
+	},
+	{
+		id: "css",
+		icon: FileCssIcon,
+		title: t`Custom CSS`,
+		description: t`Write your own CSS (or use an AI to generate it for you) to customize your resume to the fullest.`,
 	},
 	{
 		id: "templates",
 		icon: LayoutIcon,
-		title: "12+ Templates",
-		description: "Beautiful templates to choose from, with more on the way.",
+		title: t`12+ Templates`,
+		description: t`Beautiful templates to choose from, with more on the way.`,
 	},
 	{
 		id: "public",
 		icon: GlobeIcon,
-		title: "Shareable Links",
-		description: "Share your resume with a public URL, and let others view it.",
+		title: t`Shareable Links`,
+		description: t`Share your resume with a public URL, and let others view it.`,
 	},
 	{
 		id: "password-protection",
 		icon: LockSimpleIcon,
-		title: "Password Protection",
-		description: "Protect your resume with a password, and let only people with the password view it.",
+		title: t`Password Protection`,
+		description: t`Protect your resume with a password, and let only people with the password view it.`,
+	},
+	{
+		id: "api-access",
+		icon: CodeSimpleIcon,
+		title: t`API Access`,
+		description: t`Access your resumes and data programmatically using the API.`,
+	},
+	{
+		id: "more",
+		icon: DotsThreeIcon,
+		title: t`And many more...`,
+		description: t`New features are constantly being added and improved, so be sure to check back often.`,
 	},
 ];
 
-type FeatureCardProps = {
-	feature: Feature;
-};
-
-function FeatureCard({ feature }: FeatureCardProps) {
+function FeatureCard({ icon: Icon, title, description, index }: FeatureCardProps) {
 	return (
-		<div className="relative flex h-full min-h-[160px] flex-col justify-between overflow-hidden border-r border-b p-6">
-			<div className="relative z-10 flex flex-col gap-4">
-				{/* Icon */}
-				<div className="flex items-start justify-between">
-					<feature.icon size={32} weight="thin" />
-				</div>
+		<div className="flex min-h-48 flex-col gap-4 border-r border-b bg-background p-6 transition-colors hover:bg-secondary/20">
+			<motion.div
+				initial={{ opacity: 0, y: 10 }}
+				whileInView={{ opacity: 1, y: 0 }}
+				viewport={{ once: true, amount: 0.45 }}
+				transition={{ duration: 0.4, delay: index * 0.05, ease: "easeOut" }}
+			>
+				<Icon size={32} weight="thin" />
+			</motion.div>
 
-				{/* Content */}
-				<div className="flex flex-col gap-1">
-					<h3 className="font-semibold text-base leading-none tracking-tight">{feature.title}</h3>
-					<p className="text-muted-foreground leading-relaxed">{feature.description}</p>
-				</div>
-			</div>
+			<motion.div
+				initial={{ opacity: 0, y: 12 }}
+				whileInView={{ opacity: 1, y: 0 }}
+				viewport={{ once: true, amount: 0.45 }}
+				transition={{ duration: 0.5, delay: index * 0.05 + 0.05, ease: "easeOut" }}
+				className="flex flex-col gap-y-1"
+			>
+				<h3 className="font-medium text-base tracking-tight">{title}</h3>
+				<p className="text-muted-foreground leading-relaxed">{description}</p>
+			</motion.div>
 		</div>
 	);
 }
@@ -145,9 +175,9 @@ export function Features() {
 			</div>
 
 			{/* Features Grid */}
-			<div className="grid grid-cols-1 border-t sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-				{features.map((feature) => (
-					<FeatureCard key={feature.id} feature={feature} />
+			<div className="grid grid-cols-2 border-t xl:grid-cols-4">
+				{getFeatures().map((feature, index) => (
+					<FeatureCard key={feature.id} {...feature} index={index} />
 				))}
 			</div>
 		</section>
