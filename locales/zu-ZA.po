@@ -58,7 +58,7 @@ msgstr ""
 msgid "1 year"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:105
+#: src/routes/_home/-sections/features.tsx:106
 msgid "12+ Templates"
 msgstr ""
 
@@ -83,7 +83,7 @@ msgstr ""
 msgid "A new verification link has been sent to your email address. Please check your inbox to verify your account."
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:124
+#: src/routes/_home/-sections/features.tsx:125
 msgid "Access your resumes and data programmatically using the API."
 msgstr ""
 
@@ -205,7 +205,7 @@ msgstr ""
 msgid "An unknown error occurred while adding your passkey."
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:129
+#: src/routes/_home/-sections/features.tsx:130
 msgid "And many more..."
 msgstr ""
 
@@ -221,7 +221,7 @@ msgstr ""
 msgid "Anyone with the link can view and download the resume."
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:123
+#: src/routes/_home/-sections/features.tsx:124
 msgid "API Access"
 msgstr ""
 
@@ -287,7 +287,7 @@ msgstr ""
 msgid "Authentication"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:70
+#: src/routes/_home/-sections/features.tsx:71
 msgid "Available in multiple languages. If you would like to contribute, check out Crowdin."
 msgstr ""
 
@@ -320,7 +320,7 @@ msgstr ""
 msgid "Basics"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:106
+#: src/routes/_home/-sections/features.tsx:107
 msgid "Beautiful templates to choose from, with more on the way."
 msgstr ""
 
@@ -349,7 +349,7 @@ msgstr ""
 msgid "Bullet List"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:46
+#: src/routes/_home/-sections/features.tsx:47
 #: src/routes/_home/-sections/prefooter.tsx:11
 msgid "By the community, for the community."
 msgstr ""
@@ -442,7 +442,7 @@ msgstr ""
 msgid "Company"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:40
+#: src/routes/_home/-sections/features.tsx:41
 msgid "Completely free, forever, no hidden costs."
 msgstr ""
 
@@ -577,7 +577,7 @@ msgstr ""
 msgid "Create a Sample Resume"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:88
+#: src/routes/_home/-sections/features.tsx:89
 msgid "Create as many resumes as you want, without limits."
 msgstr ""
 
@@ -594,7 +594,7 @@ msgstr ""
 msgid "Current Password"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:99
+#: src/routes/_home/-sections/features.tsx:100
 #: src/utils/resume/section.tsx:113
 msgid "Custom CSS"
 msgstr ""
@@ -623,7 +623,7 @@ msgstr ""
 msgid "Dark theme"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:57
+#: src/routes/_home/-sections/features.tsx:58
 msgid "Data Security"
 msgstr ""
 
@@ -807,7 +807,7 @@ msgstr ""
 msgid "English"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:82
+#: src/routes/_home/-sections/features.tsx:83
 msgid "Enhance the security of your account with additional layers of protection."
 msgstr ""
 
@@ -831,7 +831,7 @@ msgstr ""
 msgid "Enter your password to disable two-factor authentication. Your account will be less secure without 2FA enabled."
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:170
+#: src/routes/_home/-sections/features.tsx:176
 msgid "Everything you need to create, customize, and share professional resumes. Built with privacy in mind, powered by open source, and completely free forever."
 msgstr ""
 
@@ -849,7 +849,7 @@ msgstr ""
 msgid "Expires on {0}"
 msgstr ""
 
-#: src/routes/_home/-sections/templates.tsx:88
+#: src/routes/_home/-sections/templates.tsx:89
 msgid "Explore our diverse selection of templates, each designed to fit different styles, professions, and personalities. Reactive Resume currently offers 12 templates, with more on the way. If you have ideas or requests for new templates, please share them with me at <0>{email}</0>."
 msgstr ""
 
@@ -865,7 +865,7 @@ msgstr ""
 msgid "Failed to setup two-factor authentication."
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:166
+#: src/routes/_home/-sections/features.tsx:172
 msgid "Features"
 msgstr ""
 
@@ -873,7 +873,7 @@ msgstr ""
 msgid "Filter by"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:93
+#: src/routes/_home/-sections/features.tsx:94
 msgid "Flexibility"
 msgstr ""
 
@@ -899,7 +899,7 @@ msgstr ""
 msgid "Font Weights"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:52
+#: src/routes/_home/-sections/features.tsx:53
 msgid "For a secure and distraction-free experience."
 msgstr ""
 
@@ -924,7 +924,7 @@ msgctxt "Page Format (A4 or Letter)"
 msgid "Format"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:39
+#: src/routes/_home/-sections/features.tsx:40
 msgid "Free"
 msgstr ""
 
@@ -989,7 +989,7 @@ msgstr ""
 msgid "Headline"
 msgstr ""
 
-#: src/routes/_home/-sections/testimonials.tsx:127
+#: src/routes/_home/-sections/testimonials.tsx:126
 msgid "Hear from the people who are using Reactive Resume to build their careers. If you have a story to share, please reach out to me at <0>hello@amruthpillai.com</0>."
 msgstr ""
 
@@ -1188,7 +1188,7 @@ msgstr ""
 msgid "Margin (Vertical)"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:69
+#: src/routes/_home/-sections/features.tsx:70
 msgid "Multilingual"
 msgstr ""
 
@@ -1208,7 +1208,7 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:130
+#: src/routes/_home/-sections/features.tsx:131
 msgid "New features are constantly being added and improved, so be sure to check back often."
 msgstr ""
 
@@ -1220,7 +1220,7 @@ msgstr ""
 msgid "New Password"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:51
+#: src/routes/_home/-sections/features.tsx:52
 msgid "No Advertising, No Tracking"
 msgstr ""
 
@@ -1248,7 +1248,7 @@ msgstr ""
 msgid "Notes"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:75
+#: src/routes/_home/-sections/features.tsx:76
 msgid "One-Click Sign-In"
 msgstr ""
 
@@ -1260,7 +1260,7 @@ msgstr ""
 msgid "Open Email Client"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:45
+#: src/routes/_home/-sections/features.tsx:46
 msgid "Open Source"
 msgstr ""
 
@@ -1302,7 +1302,7 @@ msgstr ""
 msgid "Passkeys"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:81
+#: src/routes/_home/-sections/features.tsx:82
 msgid "Passkeys & 2FA"
 msgstr ""
 
@@ -1320,7 +1320,7 @@ msgstr ""
 msgid "Password cannot be empty."
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:117
+#: src/routes/_home/-sections/features.tsx:118
 msgid "Password Protection"
 msgstr ""
 
@@ -1339,7 +1339,7 @@ msgstr ""
 msgid "Period"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:94
+#: src/routes/_home/-sections/features.tsx:95
 msgid "Personalize your resume with any colors, fonts or designs, and make it your own."
 msgstr ""
 
@@ -1411,7 +1411,7 @@ msgstr ""
 msgid "Protect your resume from unauthorized access with a password"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:118
+#: src/routes/_home/-sections/features.tsx:119
 msgid "Protect your resume with a password, and let only people with the password view it."
 msgstr ""
 
@@ -1504,6 +1504,7 @@ msgstr ""
 #: src/components/command-palette/pages/resumes.tsx:46
 #: src/components/command-palette/pages/resumes.tsx:48
 #: src/components/command-palette/pages/resumes.tsx:52
+#: src/routes/_home/-sections/statistics.tsx:12
 #: src/routes/dashboard/-components/sidebar.tsx:45
 #: src/routes/dashboard/resumes/index.tsx:58
 msgid "Resumes"
@@ -1566,7 +1567,7 @@ msgstr ""
 msgid "Select..."
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:63
+#: src/routes/_home/-sections/features.tsx:64
 msgid "Self-Host with Docker"
 msgstr ""
 
@@ -1603,11 +1604,11 @@ msgstr ""
 msgid "Shadow Width"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:112
+#: src/routes/_home/-sections/features.tsx:113
 msgid "Share your resume with a public URL, and let others view it."
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:111
+#: src/routes/_home/-sections/features.tsx:112
 msgid "Shareable Links"
 msgstr ""
 
@@ -1637,7 +1638,7 @@ msgstr ""
 msgid "Sign in to your account"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:76
+#: src/routes/_home/-sections/features.tsx:77
 msgid "Sign in with GitHub, Google or a custom OAuth provider."
 msgstr ""
 
@@ -1751,11 +1752,11 @@ msgstr ""
 msgid "Template Gallery"
 msgstr ""
 
-#: src/routes/_home/-sections/templates.tsx:84
+#: src/routes/_home/-sections/templates.tsx:85
 msgid "Templates"
 msgstr ""
 
-#: src/routes/_home/-sections/testimonials.tsx:123
+#: src/routes/_home/-sections/testimonials.tsx:122
 msgid "Testimonials"
 msgstr ""
 
@@ -1898,7 +1899,7 @@ msgstr ""
 msgid "Underline"
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:87
+#: src/routes/_home/-sections/features.tsx:88
 msgid "Unlimited Resumes"
 msgstr ""
 
@@ -2014,6 +2015,10 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
+#: src/routes/_home/-sections/statistics.tsx:7
+msgid "Users"
+msgstr ""
+
 #: src/components/input/rich-input.tsx:266
 msgid "Valid URLs must start with http:// or https://."
 msgstr ""
@@ -2089,11 +2094,11 @@ msgstr ""
 msgid "When locked, the resume cannot be updated or deleted."
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:100
+#: src/routes/_home/-sections/features.tsx:101
 msgid "Write your own CSS (or use an AI to generate it for you) to customize your resume to the fullest."
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:64
+#: src/routes/_home/-sections/features.tsx:65
 msgid "You also have the option to deploy on your own servers using the Docker image."
 msgstr ""
 
@@ -2127,7 +2132,7 @@ msgstr ""
 msgid "Your API key has been copied to the clipboard."
 msgstr ""
 
-#: src/routes/_home/-sections/features.tsx:58
+#: src/routes/_home/-sections/features.tsx:59
 msgid "Your data is secure, and never shared or sold to anyone."
 msgstr ""
 
