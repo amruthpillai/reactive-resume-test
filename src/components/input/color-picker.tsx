@@ -1,6 +1,5 @@
 import { EyedropperIcon } from "@phosphor-icons/react";
-import * as SliderPrimitive from "@radix-ui/react-slider";
-import { Slot } from "@radix-ui/react-slot";
+import { Slider as SliderPrimitive, Slot as SlotPrimitive } from "radix-ui";
 import * as React from "react";
 import { VisuallyHiddenInput } from "@/components/input/visually-hidden-input";
 import { Button } from "@/components/ui/button";
@@ -499,7 +498,7 @@ function ColorPickerRootImpl(props: ColorPickerRootImplProps) {
 		[store, onOpenChange],
 	);
 
-	const RootPrimitive = asChild ? Slot : "div";
+	const RootPrimitive = asChild ? SlotPrimitive.Slot : "div";
 
 	return (
 		<ColorPickerContext.Provider value={contextValue}>
@@ -527,7 +526,7 @@ function ColorPickerTrigger(props: ColorPickerTriggerProps) {
 	const { asChild, ...triggerProps } = props;
 	const context = useColorPickerContext("ColorPickerTrigger");
 
-	const TriggerPrimitive = asChild ? Slot : Button;
+	const TriggerPrimitive = asChild ? SlotPrimitive.Slot : Button;
 
 	return (
 		<PopoverTrigger asChild disabled={context.disabled}>
@@ -586,7 +585,7 @@ function ColorPickerSwatch(props: ColorPickerSwatchProps) {
 
 	const ariaLabel = !color ? "No color selected" : `Current color: ${rgbToString(color)}`;
 
-	const SwatchPrimitive = asChild ? Slot : "div";
+	const SwatchPrimitive = asChild ? SlotPrimitive.Slot : "div";
 
 	return (
 		<div className="flex size-9 items-center justify-start">
@@ -668,7 +667,7 @@ function ColorPickerArea(props: ColorPickerAreaProps) {
 	const hue = hsv?.h ?? 0;
 	const backgroundHue = hsvToRgb({ h: hue, s: 100, v: 100, a: 1 });
 
-	const AreaPrimitive = asChild ? Slot : "div";
+	const AreaPrimitive = asChild ? SlotPrimitive.Slot : "div";
 
 	return (
 		<AreaPrimitive

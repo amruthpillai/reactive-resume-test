@@ -1,4 +1,5 @@
-import { join } from "node:path";
+import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
 
 const GITHUB_API_URL = "https://api.github.com/repos/AmruthPillai/Reactive-Resume";
 const GITHUB_STARS_CACHE_FILE = join(process.cwd(), "data", "github", "stars.txt");
@@ -9,22 +10,29 @@ const LAST_KNOWN_STARS_COUNT = 34_073;
  * Reads and validates cached star count.
  */
 const readStarCountFromCache = async (): Promise<number | null> => {
-	const file = Bun.file(GITHUB_STARS_CACHE_FILE);
+	try {
+		const stats = await stat(GITHUB_STARS_CACHE_FILE);
+		const contents = await readFile(GITHUB_STARS_CACHE_FILE, "utf-8");
 
-	if (!(await file.exists())) return null;
+		if (stats.mtimeMs < Date.now() - CACHE_DURATION_MS) return null;
 
-	const [stats, contents] = await Promise.all([file.stat(), file.text()]);
-	if (stats.mtimeMs < Date.now() - CACHE_DURATION_MS) return null;
-
-	const num = Number.parseInt(contents, 10);
-	return Number.isFinite(num) && num > 0 ? num : null;
+		const numStars = Number.parseInt(contents, 10);
+		return Number.isFinite(numStars) && numStars > 0 ? numStars : null;
+	} catch {
+		return null;
+	}
 };
 
 /**
  * Writes the star count to cache as string, fire-and-forget with minimal error handling.
  */
-const writeStarCountToCache = (count: number) => {
-	void Bun.write(GITHUB_STARS_CACHE_FILE, String(count));
+const writeStarCountToCache = async (count: number) => {
+	try {
+		await mkdir(dirname(GITHUB_STARS_CACHE_FILE), { recursive: true });
+		await writeFile(GITHUB_STARS_CACHE_FILE, String(count), "utf-8");
+	} catch {
+		// Ignore errors, cache is not critical
+	}
 };
 
 export const githubService = {
@@ -42,9 +50,10 @@ export const githubService = {
 			if (response.ok) {
 				const data = await response.json();
 				const apiStars = Number(data.stargazers_count);
+
 				if (Number.isFinite(apiStars) && apiStars > 0) {
 					stars = apiStars;
-					writeStarCountToCache(apiStars);
+					await writeStarCountToCache(apiStars);
 				}
 			}
 		} catch {

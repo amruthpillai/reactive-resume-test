@@ -1,5 +1,4 @@
 import { ORPCError, os } from "@orpc/server";
-import type { RequestHeadersPluginContext } from "@orpc/server/plugins";
 import type { User } from "better-auth";
 import { eq } from "drizzle-orm";
 import { env } from "@/utils/env";
@@ -8,9 +7,9 @@ import { auth } from "../auth/config";
 import { db } from "../drizzle/client";
 import { user } from "../drizzle/schema";
 
-interface ORPCContext extends RequestHeadersPluginContext {
+interface ORPCContext {
 	locale: Locale;
-	apiUserId?: string; // The user ID of the API key used to authenticate the request (only set for API key requests)
+	reqHeaders?: Headers;
 }
 
 async function getUserFromHeaders(headers: Headers): Promise<User | null> {

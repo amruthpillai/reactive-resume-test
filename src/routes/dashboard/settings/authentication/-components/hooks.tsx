@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { GithubLogoIcon, GoogleLogoIcon, PasswordIcon, VaultIcon } from "@phosphor-icons/react";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
@@ -110,7 +110,7 @@ export function useAuthProviderActions() {
  * Possible values: "credential", "google", "github", "custom"
  */
 export function useEnabledProviders() {
-	const { data: enabledProviders = [] } = useSuspenseQuery(orpc.auth.providers.list.queryOptions());
+	const { data: enabledProviders = [] } = useQuery(orpc.auth.providers.list.queryOptions());
 
 	return { enabledProviders };
 }

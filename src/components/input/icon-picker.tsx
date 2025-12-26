@@ -97,7 +97,7 @@ export function IconPicker({ value, onChange, popoverProps, ...props }: IconPick
 				</Button>
 			</PopoverTrigger>
 
-			<PopoverContent align="start" className="h-[326px] w-[290px] p-0">
+			<PopoverContent align="start" className="h-[326px] w-[290px] gap-0 p-0">
 				<IconSearchInput value={search} onChange={setSearch} />
 
 				<div className="size-[290px]">

@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { LoadingScreen } from "@/components/layout/loading-screen";
@@ -43,9 +43,10 @@ function RouteComponent() {
 	const initialize = useResumeStore((state) => state.initialize);
 
 	const { username, slug } = Route.useParams();
-	const { data: resume } = useSuspenseQuery(orpc.resume.getBySlug.queryOptions({ input: { username, slug } }));
+	const { data: resume } = useQuery(orpc.resume.getBySlug.queryOptions({ input: { username, slug } }));
 
 	useEffect(() => {
+		if (!resume) return;
 		initialize(resume);
 		return () => initialize(null);
 	}, [resume, initialize]);

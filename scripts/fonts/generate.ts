@@ -5,9 +5,10 @@
  * Information about the Google Fonts Developer API can be found here: https://developers.google.com/fonts/docs/developer_api
  */
 
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import type { APIResponse, Variant, WebFont, Weight } from "./types";
 
-const args = Bun.argv.slice(2);
+const args = process.argv.slice(2);
 const argForce = args.includes("--force");
 const argCompress = args.includes("--compress");
 const argLimit = args.includes("--limit") ? parseInt(args[args.indexOf("--limit") + 1], 10) : 500;
@@ -15,9 +16,9 @@ const argLimit = args.includes("--limit") ? parseInt(args[args.indexOf("--limit"
 const blacklistedFonts = ["Material Icons", "Material Symbols", "Noto Color Emoji"];
 
 async function getGoogleFontsJSON() {
-	const file = Bun.file("data/fonts/response.json");
+	const contents = await readFile("data/fonts/response.json", "utf-8");
 
-	if (!argForce && (await file.exists())) return (await file.json()) as APIResponse;
+	if (!argForce && contents) return JSON.parse(contents) as APIResponse;
 
 	const apiKey = process.env.GOOGLE_CLOUD_API_KEY;
 	if (!apiKey) throw new Error("GOOGLE_CLOUD_API_KEY is not set");
@@ -27,7 +28,8 @@ async function getGoogleFontsJSON() {
 	const data = (await response.json()) as APIResponse;
 
 	const jsonString = argCompress ? JSON.stringify(data) : JSON.stringify(data, null, 2);
-	await file.write(jsonString);
+	await mkdir("data/fonts", { recursive: true });
+	await writeFile("data/fonts/response.json", jsonString, "utf-8");
 
 	return data;
 }
@@ -69,7 +71,8 @@ export async function generateFonts() {
 	});
 
 	const jsonString = argCompress ? JSON.stringify(result) : JSON.stringify(result, null, 2);
-	await Bun.write("data/fonts/webfontlist.json", jsonString);
+	await mkdir("data/fonts", { recursive: true });
+	await writeFile("data/fonts/webfontlist.json", jsonString, "utf-8");
 
 	console.log(`Generated ${result.length} fonts in the list.`);
 }

@@ -117,7 +117,7 @@ export function RichInput({ value, onChange, style, className, editorClassName, 
 				class: cn(
 					"group/editor",
 					"max-h-[400px] min-h-[100px] overflow-y-auto p-3 pb-0",
-					"rounded-md rounded-t-none border focus:outline-none focus-visible:border-ring",
+					"rounded-md rounded-t-none border outline-none focus-visible:border-ring",
 					"[td:has(.selectedCell)]:bg-primary",
 					styles.tiptap_content,
 					styles.editor_content,

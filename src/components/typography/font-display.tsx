@@ -5,15 +5,16 @@ import { cn } from "@/utils/style";
 interface FontDisplayProps {
 	name: string;
 	url?: string;
+	type: "local" | "web";
 }
 
 const loadedFonts = new Set<string>();
 
-export function FontDisplay({ name, url }: FontDisplayProps) {
-	const previewName = `${name} Preview`;
+export function FontDisplay({ name, url, type = "web" }: FontDisplayProps) {
+	const previewName = type === "local" ? name : `${name} Preview`;
 
 	const containerRef = useRef<HTMLDivElement>(null);
-	const [isLoaded, setIsLoaded] = useState(() => loadedFonts.has(previewName));
+	const [isLoaded, setIsLoaded] = useState(() => type === "local" || loadedFonts.has(previewName));
 	const isInView = useInView(containerRef, { once: true, amount: 0.1, margin: "50px" });
 
 	useEffect(() => {

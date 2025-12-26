@@ -10,11 +10,10 @@ const buttonVariants = cva(
 			variant: {
 				default: "bg-primary text-primary-foreground hover:bg-primary/80",
 				outline:
-					"border-border bg-background shadow-xs hover:bg-muted hover:text-foreground aria-expanded:bg-background aria-expanded:text-foreground dark:border-input dark:hover:bg-muted/50",
+					"border-border bg-background shadow-xs hover:bg-secondary/20 hover:text-foreground aria-expanded:bg-secondary/20 aria-expanded:text-foreground dark:border-input",
 				secondary:
 					"bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
-				ghost:
-					"hover:bg-muted hover:text-foreground aria-expanded:bg-background aria-expanded:text-foreground dark:hover:bg-muted/50",
+				ghost: "hover:bg-muted hover:text-foreground aria-expanded:text-foreground dark:hover:bg-muted/50",
 				destructive:
 					"bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 dark:hover:bg-destructive/30",
 				link: "text-primary underline-offset-4 hover:underline",
@@ -44,8 +43,8 @@ type ButtonProps = React.ComponentProps<"button"> & VariantProps<typeof buttonVa
 function Button({
 	className,
 	type = "button",
-	size = "default",
 	variant = "default",
+	size = "default",
 	asChild = false,
 	...props
 }: ButtonProps) {
@@ -55,8 +54,8 @@ function Button({
 		<Comp
 			type={type}
 			data-slot="button"
-			data-size={size}
 			data-variant={variant}
+			data-size={size}
 			className={cn(buttonVariants({ variant, size, className }))}
 			{...props}
 		/>

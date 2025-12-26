@@ -1,5 +1,4 @@
 import { DotsSixVerticalIcon } from "@phosphor-icons/react";
-
 import * as ResizablePrimitive from "react-resizable-panels";
 import { cn } from "@/utils/style";
 

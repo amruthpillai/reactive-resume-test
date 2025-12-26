@@ -67,7 +67,7 @@ const dialogTypeSchema = z.discriminatedUnion("type", [
 ]);
 
 type DialogSchema = z.infer<typeof dialogTypeSchema>;
-export type DialogType = DialogSchema["type"];
+type DialogType = DialogSchema["type"];
 
 type DialogData<T extends DialogType> = Extract<DialogSchema, { type: T }>["data"];
 

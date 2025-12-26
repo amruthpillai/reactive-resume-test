@@ -5,16 +5,13 @@ import { env } from "@/utils/env";
 export async function migrateDatabase() {
 	console.log("⌛ Running database migrations...");
 
-	const client = new Bun.SQL(env.DATABASE_URL);
-	const db = drizzle({ client });
+	const db = drizzle(env.DATABASE_URL);
 
 	try {
 		await migrate(db, { migrationsFolder: "./migrations" });
 		console.log("✅ Database migrations completed");
 	} catch (error) {
 		console.error("🚨 Database migrations failed:", error);
-	} finally {
-		await client.end();
 	}
 }
 

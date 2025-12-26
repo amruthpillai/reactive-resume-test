@@ -2,13 +2,13 @@ import { access, constants as fsConstants, mkdir, readdir } from "node:fs/promis
 import { dirname, extname, join } from "node:path";
 import { env } from "@/utils/env";
 
-export interface StorageWriteInput {
+interface StorageWriteInput {
 	key: string;
 	data: Uint8Array;
 	contentType: string;
 }
 
-export interface StorageReadResult {
+interface StorageReadResult {
 	data: Uint8Array;
 	size: number;
 	etag?: string;
@@ -16,15 +16,15 @@ export interface StorageReadResult {
 	contentType?: string;
 }
 
-export interface StorageService {
+interface StorageService {
 	list(prefix: string): Promise<string[]>;
 	write(input: StorageWriteInput): Promise<void>;
 	read(key: string): Promise<StorageReadResult | null>;
 	delete(key: string): Promise<boolean>;
-	healthCheck(): Promise<StorageHealthResult>;
+	healthcheck(): Promise<StorageHealthResult>;
 }
 
-export interface StorageHealthResult {
+interface StorageHealthResult {
 	status: "healthy" | "unhealthy";
 	type: "local" | "s3";
 	message: string;
@@ -111,7 +111,7 @@ export class LocalStorageService implements StorageService {
 		return true;
 	}
 
-	async healthCheck(): Promise<StorageHealthResult> {
+	async healthcheck(): Promise<StorageHealthResult> {
 		try {
 			await mkdir(this.rootDirectory, { recursive: true });
 			await access(this.rootDirectory, fsConstants.R_OK | fsConstants.W_OK);
@@ -192,7 +192,7 @@ class S3StorageService implements StorageService {
 		return true;
 	}
 
-	async healthCheck(): Promise<StorageHealthResult> {
+	async healthcheck(): Promise<StorageHealthResult> {
 		try {
 			await this.client.list({ maxKeys: 1 });
 

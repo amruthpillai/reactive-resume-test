@@ -10,6 +10,7 @@ export const env = createEnv({
 
 	server: {
 		// Basics
+		PORT: z.coerce.number().default(3000),
 		APP_URL: z.url({ protocol: /https?/ }),
 		PRINTER_APP_URL: z.url({ protocol: /https?/ }).optional(),
 

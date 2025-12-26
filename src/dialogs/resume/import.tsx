@@ -151,7 +151,7 @@ export function ImportResumeDialog({ open, onOpenChange }: DialogProps<"resume.i
 				</DialogHeader>
 
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-2">
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<FormField
 							control={form.control}
 							name="type"

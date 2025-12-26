@@ -38,7 +38,7 @@ function TemplateSectionForm() {
 				</div>
 
 				<div className="absolute inset-0 flex items-center justify-center">
-					<SwapIcon size={48} weight="thin" />
+					<SwapIcon size={48} weight="thin" className="size-12" />
 				</div>
 			</Button>
 

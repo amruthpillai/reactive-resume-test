@@ -1,9 +1,9 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { InfoIcon } from "@phosphor-icons/react";
-import { Accordion, AccordionContent, AccordionItem } from "@radix-ui/react-accordion";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
+import { Accordion } from "radix-ui";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { orpc } from "@/integrations/orpc/client";
 import { SectionBase } from "../shared/section-base";
@@ -18,9 +18,9 @@ export function StatisticsSectionBuilder() {
 
 	return (
 		<SectionBase type="statistics">
-			<Accordion collapsible type="single" value={statistics.isPublic ? "isPublic" : "isPrivate"}>
-				<AccordionItem value="isPrivate">
-					<AccordionContent className="pb-0">
+			<Accordion.Accordion collapsible type="single" value={statistics.isPublic ? "isPublic" : "isPrivate"}>
+				<Accordion.AccordionItem value="isPrivate">
+					<Accordion.AccordionContent className="pb-0">
 						<Alert>
 							<InfoIcon />
 							<AlertTitle>
@@ -33,11 +33,11 @@ export function StatisticsSectionBuilder() {
 								</Trans>
 							</AlertDescription>
 						</Alert>
-					</AccordionContent>
-				</AccordionItem>
+					</Accordion.AccordionContent>
+				</Accordion.AccordionItem>
 
-				<AccordionItem value="isPublic">
-					<AccordionContent className="grid @md:grid-cols-2 grid-cols-1 gap-4 pb-0">
+				<Accordion.AccordionItem value="isPublic">
+					<Accordion.AccordionContent className="grid @md:grid-cols-2 grid-cols-1 gap-4 pb-0">
 						<StatisticsItem
 							label={t`Views`}
 							value={statistics.views}
@@ -51,9 +51,9 @@ export function StatisticsSectionBuilder() {
 								statistics.lastDownloadedAt ? t`Last downloaded on ${statistics.lastDownloadedAt.toDateString()}` : null
 							}
 						/>
-					</AccordionContent>
-				</AccordionItem>
-			</Accordion>
+					</Accordion.AccordionContent>
+				</Accordion.AccordionItem>
+			</Accordion.Accordion>
 		</SectionBase>
 	);
 }

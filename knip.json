@@ -1,10 +1,8 @@
 {
 	"$schema": "https://unpkg.com/knip@5/schema.json",
-	"tags": ["-lintignore"],
 	"entry": ["src/router.tsx"],
-	"project": ["src/**/*.{js,jsx,ts,tsx,mdx,css}"],
 	"tailwind": { "entry": ["src/styles.css"] },
+	"project": ["src/**/*.{js,jsx,ts,tsx,mdx,css}"],
 	"ignoreDependencies": ["npm-check-updates", "node-addon-api", "node-gyp"],
-	"ignore": ["src/components/**/*.{ts,tsx}", "src/schema/**/*.ts"],
-	"ignoreExportsUsedInFile": { "type": true, "interface": true }
+	"ignore": ["src/components/**/*.{ts,tsx}", "src/schema/**/*.ts", "src/routeTree.gen.ts"]
 }

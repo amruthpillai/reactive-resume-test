@@ -53,7 +53,7 @@ async function checkDatabase() {
 async function checkStorage() {
 	try {
 		const storageService = getStorageService();
-		const result = await storageService.healthCheck();
+		const result = await storageService.healthcheck();
 		return result;
 	} catch (error) {
 		return {

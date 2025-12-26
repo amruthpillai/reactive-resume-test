@@ -6,8 +6,7 @@ import { generateId } from "@/utils/string";
 export async function seedDatabase() {
 	console.log("⌛ Seeding database...");
 
-	const client = new Bun.SQL(env.DATABASE_URL);
-	const db = drizzle({ client, schema });
+	const db = drizzle(env.DATABASE_URL, { schema });
 
 	try {
 		const userId = generateId();
@@ -30,8 +29,6 @@ export async function seedDatabase() {
 		});
 	} catch (error) {
 		console.error("🚨 Database seeding failed:", error);
-	} finally {
-		await client.end();
 	}
 }
 

@@ -8,8 +8,8 @@ import router from "@/integrations/orpc/router";
 import { getLocale } from "@/utils/locale";
 
 const getORPCClient = createIsomorphicFn()
-	.server(() =>
-		createRouterClient(router, {
+	.server((): RouterClient<typeof router> => {
+		return createRouterClient(router, {
 			interceptors: [
 				onError((error) => {
 					console.error(error);
@@ -24,8 +24,8 @@ const getORPCClient = createIsomorphicFn()
 
 				return { locale, reqHeaders };
 			},
-		}),
-	)
+		});
+	})
 	.client((): RouterClient<typeof router> => {
 		const link = new RPCLink({
 			url: `${window.location.origin}/api/rpc`,
@@ -43,9 +43,7 @@ const getORPCClient = createIsomorphicFn()
 		return createORPCClient(link);
 	});
 
-const client: RouterClient<typeof router> = getORPCClient();
-
-export const orpc = createTanstackQueryUtils(client);
+export const orpc = createTanstackQueryUtils(getORPCClient());
 
 export type RouterInput = InferRouterInputs<typeof router>;
 

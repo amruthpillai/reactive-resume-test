@@ -40,7 +40,7 @@ export const authService = {
 		if (!resume) throw new ORPCError("NOT_FOUND");
 
 		const passwordHash = resume.password as string;
-		const isValid = await Bun.password.verify(input.password, passwordHash);
+		const isValid = await Bun.password.verify(passwordHash, input.password);
 
 		if (!isValid) throw new ORPCError("INVALID_PASSWORD");
 

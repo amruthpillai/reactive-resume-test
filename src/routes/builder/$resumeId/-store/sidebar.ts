@@ -4,7 +4,7 @@ import { useWindowSize } from "usehooks-ts";
 import { create } from "zustand/react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-export type PanelImperativeHandle = ReturnType<typeof usePanelRef>;
+type PanelImperativeHandle = ReturnType<typeof usePanelRef>;
 
 interface BuilderSidebarState {
 	leftSidebar: PanelImperativeHandle | null;

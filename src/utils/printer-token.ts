@@ -31,9 +31,9 @@ export const verifyPrinterToken = createIsomorphicFn().server((token: string) =>
 
 	// Verify signature
 	const expectedSignature = new Bun.CryptoHasher("sha256").update(`${payloadBase64}.${env.AUTH_SECRET}`).digest("hex");
-
 	const signatureBuffer = Buffer.from(signature);
 	const expectedBuffer = Buffer.from(expectedSignature);
+
 	if (signatureBuffer.length !== expectedBuffer.length || !timingSafeEqual(signatureBuffer, expectedBuffer)) {
 		throw new Error("Invalid token signature");
 	}

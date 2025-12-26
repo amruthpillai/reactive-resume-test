@@ -1,5 +1,4 @@
-import { createHash } from "node:crypto";
-import path from "node:path";
+import { basename, extname, normalize } from "node:path";
 import { createFileRoute } from "@tanstack/react-router";
 import { buildStorageKey, getStorageService, inferContentType } from "@/integrations/orpc/services/storage";
 import { env } from "@/utils/env";
@@ -25,7 +24,7 @@ async function handler({ request }: { request: Request }) {
 
 	if (!storedFile) return new Response("Not Found", { status: 404 });
 
-	const ext = path.extname(fileId).toLowerCase();
+	const ext = extname(fileId).toLowerCase();
 	const contentType = storedFile.contentType ?? inferContentType(fileId);
 	const etag = createEtag(storedFile);
 
@@ -58,7 +57,7 @@ function parseRouteParams(url: string): { userId: string | undefined; fileId: st
  * Validates that a path segment does not contain directory traversal attempts.
  */
 function isValidPath(segment: string): boolean {
-	const normalized = path.normalize(segment).replace(/^(\.\.(\/|\\|$))+/, "");
+	const normalized = normalize(segment).replace(/^(\.\.(\/|\\|$))+/, "");
 
 	return normalized === segment;
 }
@@ -107,7 +106,7 @@ function buildResponseHeaders({
 	headers.set("Content-Length", storedFile.size.toString());
 
 	if (shouldForceDownload) {
-		headers.set("Content-Disposition", `attachment; filename="${path.basename(fileId)}"`);
+		headers.set("Content-Disposition", `attachment; filename="${encodeURIComponent(basename(fileId))}"`);
 	}
 
 	headers.set("Cache-Control", "public, max-age=31536000, immutable");
@@ -148,7 +147,7 @@ function createEtag(storedFile: { data: Uint8Array; size: number; etag?: string 
 		return `"${tag}"`;
 	}
 
-	const hash = createHash("sha1").update(storedFile.data).digest("hex");
+	const hash = new Bun.CryptoHasher("sha256").update(storedFile.data).digest("hex");
 
 	return `"${storedFile.size}-${hash}"`;
 }

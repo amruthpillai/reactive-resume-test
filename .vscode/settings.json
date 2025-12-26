@@ -14,11 +14,11 @@
 	"eslint.enable": false,
 	"files.readonlyInclude": {
 		"**/routeTree.gen.ts": true,
-		"bun.lockb": true
+		"bun.lock": true
 	},
 	"files.watcherExclude": {
 		"**/routeTree.gen.ts": true,
-		"bun.lockb": true
+		"bun.lock": true
 	},
 	"i18n-ally.enabledParsers": ["po"],
 	"i18n-ally.localesPaths": ["locales"],
@@ -26,7 +26,7 @@
 	"prettier.enable": false,
 	"search.exclude": {
 		"**/routeTree.gen.ts": true,
-		"bun.lockb": true
+		"bun.lock": true
 	},
 	"files.associations": {
 		"*.css": "tailwindcss"

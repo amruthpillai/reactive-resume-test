@@ -107,17 +107,21 @@ function Combobox<TValue extends string | number = string>({
 						<CommandGroup>
 							{options.map((option) => {
 								const isSelected = selectedValue === option.value;
+								const isDisabled = option.disabled ?? false;
 
 								return (
 									<CommandItem
 										key={String(option.value)}
 										value={String(option.value)}
 										keywords={option.keywords}
-										disabled={option.disabled}
+										disabled={isDisabled}
 										onSelect={onSelect}
 									>
-										<span>{option.label}</span>
-										<CheckIcon className={cn("ml-auto", isSelected ? "opacity-100" : "opacity-0")} />
+										<CheckIcon
+											aria-hidden
+											className={cn("size-4 shrink-0 transition-opacity", isSelected ? "opacity-100" : "opacity-0")}
+										/>
+										<span className={cn("truncate", isDisabled && "opacity-60")}>{option.label}</span>
 									</CommandItem>
 								);
 							})}

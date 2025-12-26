@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { BookOpenIcon, KeyIcon, LinkSimpleIcon, PlusIcon, TrashSimpleIcon } from "@phosphor-icons/react";
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { toast } from "sonner";
@@ -21,7 +21,7 @@ function RouteComponent() {
 	const queryClient = useQueryClient();
 	const openDialog = useDialogStore((state) => state.openDialog);
 
-	const { data: apiKeys } = useSuspenseQuery({
+	const { data: apiKeys = [] } = useQuery({
 		queryKey: ["auth", "api-keys"],
 		queryFn: () => authClient.apiKey.list(),
 		select: ({ data }) => {

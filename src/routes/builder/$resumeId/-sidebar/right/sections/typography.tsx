@@ -64,7 +64,7 @@ function TypographySectionForm() {
 							<FormControl>
 								<FontFamilyCombobox
 									value={field.value}
-									buttonProps={{ className: "h-auto text-base" }}
+									buttonProps={{ size: "lg", className: "text-base" }}
 									onValueChange={(value) => {
 										if (value === null) return;
 										field.onChange(value);
@@ -185,7 +185,7 @@ function TypographySectionForm() {
 							<FormControl>
 								<FontFamilyCombobox
 									value={field.value}
-									buttonProps={{ className: "h-auto text-base" }}
+									buttonProps={{ size: "lg", className: "text-base" }}
 									onValueChange={(value) => {
 										if (value === null) return;
 										field.onChange(value);

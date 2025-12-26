@@ -1,21 +1,17 @@
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-
+import { ScrollArea as ScrollAreaPrimitive } from "radix-ui";
+import type * as React from "react";
 import { cn } from "@/utils/style";
 
-type ScrollAreaProps = React.ComponentProps<typeof ScrollAreaPrimitive.Root> & {
-	orientation?: "vertical" | "horizontal";
-};
-
-function ScrollArea({ className, children, orientation = "vertical", ...props }: ScrollAreaProps) {
+function ScrollArea({ className, children, ...props }: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
 	return (
 		<ScrollAreaPrimitive.Root data-slot="scroll-area" className={cn("relative", className)} {...props}>
 			<ScrollAreaPrimitive.Viewport
 				data-slot="scroll-area-viewport"
-				className="size-full rounded-[inherit] outline-none focus-visible:outline-1"
+				className="size-full rounded-[inherit] outline-none transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50"
 			>
 				{children}
 			</ScrollAreaPrimitive.Viewport>
-			<ScrollBar orientation={orientation} />
+			<ScrollBar />
 			<ScrollAreaPrimitive.Corner />
 		</ScrollAreaPrimitive.Root>
 	);
@@ -23,17 +19,16 @@ function ScrollArea({ className, children, orientation = "vertical", ...props }:
 
 function ScrollBar({
 	className,
-	orientation,
+	orientation = "vertical",
 	...props
 }: React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>) {
 	return (
 		<ScrollAreaPrimitive.ScrollAreaScrollbar
 			data-slot="scroll-area-scrollbar"
+			data-orientation={orientation}
 			orientation={orientation}
 			className={cn(
-				"flex touch-none select-none p-px",
-				orientation === "vertical" && "h-full w-2.5 border-l border-l-transparent",
-				orientation === "horizontal" && "h-2.5 flex-col border-t border-t-transparent",
+				"flex touch-none select-none p-px transition-colors data-horizontal:h-2.5 data-vertical:h-full data-vertical:w-2.5 data-horizontal:flex-col data-horizontal:border-t data-horizontal:border-t-transparent data-vertical:border-l data-vertical:border-l-transparent",
 				className,
 			)}
 			{...props}

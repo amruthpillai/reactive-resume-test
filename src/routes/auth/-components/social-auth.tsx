@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { FingerprintSimpleIcon, GithubLogoIcon, GoogleLogoIcon, VaultIcon } from "@phosphor-icons/react";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { cn } from "@/utils/style";
 
 export function SocialAuth() {
 	const router = useRouter();
-	const { data: authProviders } = useSuspenseQuery(orpc.auth.providers.list.queryOptions());
+	const { data: authProviders = {} } = useQuery(orpc.auth.providers.list.queryOptions());
 
 	const handlePasskeyLogin = async () => {
 		const toastId = toast.loading(t`Signing in...`);

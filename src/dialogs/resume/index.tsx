@@ -115,7 +115,7 @@ export function CreateResumeDialog({ open, onOpenChange }: DialogProps<"resume.c
 				</DialogHeader>
 
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-2">
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<ResumeForm />
 
 						<DialogFooter>
@@ -131,7 +131,7 @@ export function CreateResumeDialog({ open, onOpenChange }: DialogProps<"resume.c
 										</Button>
 									</DropdownMenuTrigger>
 
-									<DropdownMenuContent align="end">
+									<DropdownMenuContent align="end" className="w-fit">
 										<DropdownMenuItem onSelect={onCreateSampleResume}>
 											<TestTubeIcon />
 											<Trans>Create a Sample Resume</Trans>
@@ -197,7 +197,7 @@ export function UpdateResumeDialog({ open, onOpenChange, data }: DialogProps<"re
 				</DialogHeader>
 
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-2">
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<ResumeForm />
 
 						<DialogFooter>
@@ -267,7 +267,7 @@ export function DuplicateResumeDialog({ open, onOpenChange, data }: DialogProps<
 				</DialogHeader>
 
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-2">
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<ResumeForm />
 
 						<DialogFooter>

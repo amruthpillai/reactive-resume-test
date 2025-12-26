@@ -83,7 +83,7 @@ const getAuthConfig = () => {
 			},
 			password: {
 				hash: (password) => Bun.password.hash(password),
-				verify: ({ password, hash }) => Bun.password.verify(password, hash),
+				verify: ({ password, hash }) => Bun.password.verify(hash, password),
 			},
 		},
 

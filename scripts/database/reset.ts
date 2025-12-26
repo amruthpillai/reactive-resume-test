@@ -5,8 +5,7 @@ import { env } from "@/utils/env";
 export async function resetDatabase() {
 	console.log("⌛ Resetting database...");
 
-	const client = new Bun.SQL(env.DATABASE_URL);
-	const db = drizzle({ client });
+	const db = drizzle(env.DATABASE_URL);
 
 	try {
 		await db.transaction(async (tx) => {
@@ -22,8 +21,6 @@ export async function resetDatabase() {
 		console.log("✅ Database reset completed");
 	} catch (error) {
 		console.error("🚨 Database reset failed:", error);
-	} finally {
-		await client.end();
 	}
 }
 

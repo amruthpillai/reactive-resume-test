@@ -8,15 +8,15 @@ This document provides essential information about the Reactive Resume project s
 
 - **License**: MIT
 - **Version**: v5.0.0
-- **Package Manager**: Bun v1.3.2
+- **Package Manager**: Bun v1.3.5
 - **Type**: ESM (ES Modules)
 
 ## Tech Stack
 
 ### Core Framework & Runtime
 
-- **Runtime**: Bun (JavaScript runtime)
-- **Framework**: TanStack Start (React framework with SSR)
+- **Runtime**: Node (JavaScript runtime)
+- **Framework**: TanStack Start (React Framework with SSR)
 - **UI Library**: React v19.2.0
 - **Language**: TypeScript v5.9.3 (strict mode enabled)
 
@@ -153,8 +153,8 @@ Routes are defined using TanStack Router's file-based routing system:
 - **Schema Location**: `src/integrations/drizzle/schema.ts`
 - **Database**: PostgreSQL
 - **Migrations**: Stored in `migrations/` directory
-- **Migrations Generated**: `bun run db:generate`
-- **Migrations Applied**: `bun run db:migrate` or auto-applied in production
+- **Migrations Generated**: `pnpm run db:generate`
+- **Migrations Applied**: `pnpm run db:migrate` or auto-applied in production
 
 ### Authentication (Better Auth)
 
@@ -175,28 +175,27 @@ Routes are defined using TanStack Router's file-based routing system:
 
 ```bash
 # Development
-bun run dev              # Start dev server on port 3000
+pnpm run dev              # Start dev server on port 3000
 
 # Building
-bun run build            # Build for production
+pnpm run build            # Build for production
 
 # Database
-bun run db:generate      # Generate migration files
-bun run db:migrate       # Run migrations
-bun run db:push          # Push schema changes directly
-bun run db:pull          # Pull schema from database
-bun run db:studio        # Open Drizzle Studio
+pnpm run db:generate      # Generate migration files
+pnpm run db:migrate       # Run migrations
+pnpm run db:push          # Push schema changes directly
+pnpm run db:pull          # Pull schema from database
+pnpm run db:studio        # Open Drizzle Studio
 
 # Code Quality
-bun run check            # Run Biome linter/formatter
-bun run typecheck        # Type check without emitting
+pnpm run check            # Run Biome linter/formatter
+pnpm run typecheck        # Type check without emitting
 
 # Internationalization
-bun run lingui:extract   # Extract translatable strings
+pnpm run lingui:extract   # Extract translatable strings
 
 # Production
-bun run start            # Start production server (Nitro)
-bun run start:bun        # Start production server (Bun)
+pnpm run start            # Start production server
 ```
 
 ### TypeScript Configuration
@@ -304,7 +303,7 @@ Key tables (from Drizzle schema):
 
 ## Important Notes
 
-1. **Package Manager**: Always use `bun` instead of `npm`, `pnpm` or `yarn`
+1. **Package Manager**: Always use `pnpm` instead of `npm` or `yarn`
 2. **Type Safety**: The project emphasizes end-to-end type safety (TypeScript + Zod + ORPC)
 3. **SSR**: TanStack Start provides SSR capabilities
 4. **Database Migrations**: Run automatically in production, manually in development
@@ -316,7 +315,7 @@ Key tables (from Drizzle schema):
 ### Adding a New Route
 
 1. Create a new file in `src/routes/` following TanStack Router conventions
-2. The route tree will auto-generate when running `bun run dev`
+2. The route tree will auto-generate when running `pnpm run dev`
 3. Use `Link` component from `@tanstack/react-router` for internal navigation
 
 ### Adding a New API Endpoint
@@ -328,11 +327,11 @@ Key tables (from Drizzle schema):
 ### Adding a New Database Table
 
 1. Define schema in `src/integrations/drizzle/schema.ts`
-2. Run `bun run db:generate` to create migration
-3. Run `bun run db:migrate` to apply migration
+2. Run `pnpm run db:generate` to create migration
+3. Run `pnpm run db:migrate` to apply migration
 
 ### Adding Translations
 
 1. Use `t` or `<Trans>` macro from `@lingui/core/macro` or `@lingui/react/macro` respectively in when translating inside components or functions
-2. Run `bun run lingui:extract` to extract strings
+2. Run `pnpm run lingui:extract` to extract strings
 3. Edit `.po` files in `locales/` directory

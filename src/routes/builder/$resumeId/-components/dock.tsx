@@ -9,7 +9,7 @@ import {
 	MagnifyingGlassMinusIcon,
 	MagnifyingGlassPlusIcon,
 } from "@phosphor-icons/react";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useCallback, useMemo } from "react";
@@ -29,13 +29,13 @@ export function BuilderDock() {
 	const params = useParams({ from: "/builder/$resumeId" });
 	const { zoomIn, zoomOut, resetTransform, centerView } = useControls();
 
-	const { data: resume } = useSuspenseQuery(orpc.resume.getById.queryOptions({ input: { id: params.resumeId } }));
+	const { data: resume } = useQuery(orpc.resume.getById.queryOptions({ input: { id: params.resumeId } }));
 	const { mutateAsync: printResumeAsPDF, isPending: isPrinting } = useMutation(
 		orpc.printer.printResumeAsPDF.mutationOptions(),
 	);
 
 	const publicUrl = useMemo(() => {
-		if (!session) return "";
+		if (!session || !resume) return "";
 		return `${window.location.origin}/${session.user.username}/${resume.slug}`;
 	}, [session, resume]);
 
@@ -50,6 +50,8 @@ export function BuilderDock() {
 	}, [publicUrl, copyToClipboard]);
 
 	const onDownloadPDF = useCallback(async () => {
+		if (!resume) return;
+
 		const filename = generateFilename(resume.data.basics.name, "pdf");
 		const file = await printResumeAsPDF({ id: resume.id });
 		const blob = new Blob([file], { type: "application/pdf" });

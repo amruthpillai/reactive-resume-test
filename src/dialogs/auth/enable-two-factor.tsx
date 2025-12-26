@@ -173,7 +173,7 @@ export function EnableTwoFactorDialog({ open, onOpenChange }: DialogProps<"auth.
 				{match(step)
 					.with("enable", () => (
 						<Form {...enableForm}>
-							<form onSubmit={enableForm.handleSubmit(onEnableSubmit)} className="space-y-4 py-2">
+							<form onSubmit={enableForm.handleSubmit(onEnableSubmit)} className="space-y-4">
 								<FormField
 									control={enableForm.control}
 									name="password"
@@ -213,7 +213,7 @@ export function EnableTwoFactorDialog({ open, onOpenChange }: DialogProps<"auth.
 					.with("verify", () => {
 						const secret = totpUri ? extractSecretFromTotpUri(totpUri) : null;
 						return (
-							<div className="space-y-4 py-2">
+							<div className="space-y-4">
 								{totpUri && secret && (
 									<>
 										<div className="flex items-center gap-x-2">
@@ -276,7 +276,7 @@ export function EnableTwoFactorDialog({ open, onOpenChange }: DialogProps<"auth.
 						);
 					})
 					.with("backup", () => (
-						<div className="space-y-4 py-2">
+						<div className="space-y-4">
 							{backupCodes && (
 								<div className="space-y-4">
 									<div className="grid grid-cols-2 gap-2">

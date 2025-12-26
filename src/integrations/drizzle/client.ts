@@ -5,23 +5,15 @@ import { schema } from "@/integrations/drizzle";
 import { env } from "@/utils/env";
 
 declare global {
-	var __databaseClient: Bun.SQL | undefined;
 	var __drizzleClient: BunSQLDatabase<typeof schema> | undefined;
 }
 
-function makeDatabaseClient() {
-	return new Bun.SQL(env.DATABASE_URL);
-}
-
-function makeDrizzleClient(client: Bun.SQL) {
-	return drizzle({ client, schema });
+function makeDrizzleClient() {
+	return drizzle(env.DATABASE_URL, { schema });
 }
 
 const getDatabaseServerFn = createServerOnlyFn(() => {
-	const client = globalThis.__databaseClient ?? makeDatabaseClient();
-	globalThis.__databaseClient = client;
-
-	const db = globalThis.__drizzleClient ?? makeDrizzleClient(client);
+	const db = globalThis.__drizzleClient ?? makeDrizzleClient();
 	globalThis.__drizzleClient = db;
 
 	return db;

@@ -3,13 +3,12 @@ import { Trans } from "@lingui/react/macro";
 import { BrainIcon, CheckCircleIcon, InfoIcon, XCircleIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { Alert, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import { Combobox, type ComboboxOption } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { type AIProvider, useAIStore } from "@/integrations/ai/store";
+import { cn } from "@/utils/style";
 import { DashboardHeader } from "../-components/header";
 
 export const Route = createFileRoute("/dashboard/settings/ai")({
@@ -81,7 +80,6 @@ function AIForm() {
 
 function RouteComponent() {
 	const enabled = useAIStore((state) => state.isEnabled());
-	const reset = useAIStore((state) => state.reset);
 
 	return (
 		<div className="space-y-4">
@@ -116,19 +114,12 @@ function RouteComponent() {
 
 				<Separator />
 
-				<Alert variant={enabled ? "success" : "destructive"}>
-					{enabled ? <CheckCircleIcon /> : <XCircleIcon />}
-
-					<AlertTitle>{enabled ? t`AI Integration Enabled` : t`AI Integration Disabled`}</AlertTitle>
-				</Alert>
-
 				<AIForm />
 
-				{enabled && (
-					<Button variant="destructive" className="justify-self-end" onClick={reset}>
-						<Trans>Reset</Trans>
-					</Button>
-				)}
+				<p className={cn("flex items-center gap-x-2", enabled ? "text-fd-success" : "text-destructive")}>
+					{enabled ? <CheckCircleIcon /> : <XCircleIcon />}
+					{enabled ? <Trans>Enabled</Trans> : <Trans>Disabled</Trans>}
+				</p>
 			</motion.div>
 		</div>
 	);

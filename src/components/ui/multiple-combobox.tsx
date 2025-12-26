@@ -178,11 +178,11 @@ function MultipleCombobox<TValue extends string | number = string>({
 										data-selected={isSelected ? "" : undefined}
 										aria-selected={isSelected}
 									>
-										<span className={cn("truncate", isDisabled && "opacity-60")}>{option.label}</span>
 										<CheckIcon
 											aria-hidden
-											className={cn("ml-auto size-4 transition-opacity", isSelected ? "opacity-100" : "opacity-0")}
+											className={cn("size-4 shrink-0 transition-opacity", isSelected ? "opacity-100" : "opacity-0")}
 										/>
+										<span className={cn("truncate", isDisabled && "opacity-60")}>{option.label}</span>
 									</CommandItem>
 								);
 							})}

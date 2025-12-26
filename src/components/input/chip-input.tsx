@@ -75,7 +75,7 @@ export function ChipInput({ value, defaultValue = [], onChange, className, ...pr
 			tabIndex={-1}
 			onClick={handleWrapperClick}
 			className={cn(
-				"flex min-h-9 flex-wrap items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 focus-within:border-ring",
+				"flex min-h-9 flex-wrap items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50",
 				className,
 			)}
 			{...props}
