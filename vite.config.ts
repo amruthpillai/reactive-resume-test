@@ -4,12 +4,15 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import mdx from "fumadocs-mdx/vite";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 import * as docsConfig from "./source.config";
 
 const config = defineConfig({
 	define: {
 		__APP_VERSION__: JSON.stringify(process.env.npm_package_version),
+	},
+
+	resolve: {
+		tsconfigPaths: true,
 	},
 
 	build: {
@@ -28,12 +31,11 @@ const config = defineConfig({
 	},
 
 	plugins: [
-		tsconfigPaths(),
 		tailwindcss(),
 		tanstackStart({ router: { semicolons: true, quoteStyle: "double" } }),
 		viteReact({ babel: { plugins: [["@lingui/babel-plugin-lingui-macro"]] } }),
 		lingui(),
-		mdx(docsConfig),
+		mdx(docsConfig, { updateViteConfig: false }),
 	],
 });
 

@@ -82,8 +82,8 @@ const getAuthConfig = () => {
 				console.log(`[EMAIL] [${user.email}] To reset your password, please visit the following URL: ${url}`);
 			},
 			password: {
-				hash: (password) => Bun.password.hash(password),
-				verify: ({ password, hash }) => Bun.password.verify(hash, password),
+				hash: (password) => Bun.password.hash(password, { algorithm: "argon2id" }),
+				verify: ({ password, hash }) => Bun.password.verify(hash, password, "argon2id"),
 			},
 		},
 

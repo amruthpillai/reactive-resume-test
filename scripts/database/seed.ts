@@ -25,7 +25,7 @@ export async function seedDatabase() {
 			id: generateId(),
 			userId,
 			accountId: userId,
-			password: await Bun.password.hash("password"),
+			password: await Bun.password.hash("password", { algorithm: "argon2id" }),
 		});
 	} catch (error) {
 		console.error("🚨 Database seeding failed:", error);

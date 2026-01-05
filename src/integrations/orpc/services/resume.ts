@@ -246,7 +246,7 @@ export const resumeService = {
 		let hashedPassword: string | null | undefined;
 
 		if (input.password !== undefined) {
-			hashedPassword = input.password ? await Bun.password.hash(input.password) : null;
+			hashedPassword = input.password ? await Bun.password.hash(input.password, { algorithm: "argon2id" }) : null;
 		}
 
 		const [resume] = await db
