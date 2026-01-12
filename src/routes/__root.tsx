@@ -41,7 +41,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 		return {
 			links: [
 				{ rel: "stylesheet", href: appCss },
-				{ rel: "manifest", href: "/manifest.json", type: "application/manifest+json" },
 				// Icons
 				{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
 				{ rel: "icon", href: "/favicon.ico", type: "image/x-icon", sizes: "48x48" },

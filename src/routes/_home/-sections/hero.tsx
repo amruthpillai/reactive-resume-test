@@ -91,10 +91,10 @@ export function Hero() {
 					</Button>
 
 					<Button asChild size="lg" variant="ghost" className="gap-2 px-4">
-						<Link to="/docs">
+						<a href="https://docs.rxresu.me" target="_blank" rel="noopener noreferrer">
 							<BookIcon className="size-4" />
 							<Trans>Learn More</Trans>
-						</Link>
+						</a>
 					</Button>
 				</motion.div>
 			</div>
