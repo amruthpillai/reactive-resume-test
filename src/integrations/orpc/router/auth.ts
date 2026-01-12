@@ -9,6 +9,7 @@ export const authRouter = {
 				method: "GET",
 				path: "/auth/providers/list",
 				tags: ["Authentication"],
+				summary: "List all authentication providers",
 				description:
 					"A list of all authentication providers, and their display names, supported by the instance of Reactive Resume.",
 			})
@@ -38,6 +39,7 @@ export const authRouter = {
 			method: "POST",
 			path: "/auth/verify-resume-password",
 			tags: ["Authentication", "Resume"],
+			summary: "Verify resume password",
 			description: "Verify a resume password, to grant access to the locked resume.",
 		})
 		.input(
@@ -61,6 +63,7 @@ export const authRouter = {
 			method: "DELETE",
 			path: "/auth/delete-account",
 			tags: ["Authentication"],
+			summary: "Delete user account",
 			description: "Delete the authenticated user's account and all associated data.",
 		})
 		.handler(async ({ context }): Promise<void> => {

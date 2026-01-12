@@ -25,6 +25,8 @@ export function SharingSectionBuilder() {
 	const params = useParams({ from: "/builder/$resumeId" });
 
 	const { mutateAsync: updateResume } = useMutation(orpc.resume.update.mutationOptions());
+	const { mutateAsync: setPassword } = useMutation(orpc.resume.setPassword.mutationOptions());
+	const { mutateAsync: removePassword } = useMutation(orpc.resume.removePassword.mutationOptions());
 	const { data: resume } = useSuspenseQuery(orpc.resume.getById.queryOptions({ input: { id: params.resumeId } }));
 
 	const publicUrl = useMemo(() => {
@@ -40,7 +42,7 @@ export function SharingSectionBuilder() {
 	const onTogglePublic = useCallback(
 		async (checked: boolean) => {
 			try {
-				await updateResume({ id: resume.id, isPublic: checked, password: null });
+				await updateResume({ id: resume.id, isPublic: checked });
 			} catch (error) {
 				const message = error instanceof ORPCError ? error.message : t`Something went wrong. Please try again.`;
 				toast.error(message);
@@ -67,13 +69,13 @@ export function SharingSectionBuilder() {
 		const toastId = toast.loading(t`Enabling password protection...`);
 
 		try {
-			await updateResume({ id: resume.id, password });
+			await setPassword({ id: resume.id, password });
 			toast.success(t`Password protection has been enabled.`, { id: toastId });
 		} catch (error) {
 			const message = error instanceof ORPCError ? error.message : t`Something went wrong. Please try again.`;
 			toast.error(message, { id: toastId });
 		}
-	}, [prompt, resume.id, updateResume]);
+	}, [prompt, resume.id, setPassword]);
 
 	const onRemovePassword = useCallback(async () => {
 		if (!resume.hasPassword) return;
@@ -88,13 +90,13 @@ export function SharingSectionBuilder() {
 		const toastId = toast.loading(t`Removing password protection...`);
 
 		try {
-			await updateResume({ id: resume.id, password: null });
+			await removePassword({ id: resume.id });
 			toast.success(t`Password protection has been disabled.`, { id: toastId });
 		} catch (error) {
 			const message = error instanceof ORPCError ? error.message : t`Something went wrong. Please try again.`;
 			toast.error(message, { id: toastId });
 		}
-	}, [confirm, resume.id, resume.hasPassword, updateResume]);
+	}, [confirm, resume.id, resume.hasPassword, removePassword]);
 
 	const isPasswordProtected = resume.hasPassword;
 

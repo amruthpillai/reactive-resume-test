@@ -10,6 +10,7 @@ const tagsRouter = {
 			method: "GET",
 			path: "/resume/tags/list",
 			tags: ["Resume"],
+			summary: "List all resume tags",
 			description: "List all tags for the authenticated user's resumes. Used to populate the filter in the dashboard.",
 		})
 		.output(z.array(z.string()))
@@ -24,6 +25,7 @@ const statisticsRouter = {
 			method: "GET",
 			path: "/resume/statistics/{id}",
 			tags: ["Resume"],
+			summary: "Get resume statistics",
 			description: "Get the statistics for a resume, such as number of views and downloads.",
 		})
 		.input(z.object({ id: z.string() }))
@@ -41,7 +43,7 @@ const statisticsRouter = {
 		}),
 
 	increment: publicProcedure
-		.route({ tags: ["Internal"] })
+		.route({ tags: ["Internal"], summary: "Increment resume statistics" })
 		.input(z.object({ id: z.string(), views: z.boolean().default(false), downloads: z.boolean().default(false) }))
 		.handler(async ({ input }) => {
 			return await resumeService.statistics.increment(input);
@@ -57,6 +59,7 @@ export const resumeRouter = {
 			method: "GET",
 			path: "/resume/list",
 			tags: ["Resume"],
+			summary: "List all resumes",
 			description: "List of all the resumes for the authenticated user.",
 		})
 		.input(
@@ -95,6 +98,7 @@ export const resumeRouter = {
 			method: "GET",
 			path: "/resume/{id}",
 			tags: ["Resume"],
+			summary: "Get resume by ID",
 			description: "Get a resume, along with its data, by its ID.",
 		})
 		.input(z.object({ id: z.string() }))
@@ -115,7 +119,7 @@ export const resumeRouter = {
 		}),
 
 	getByIdForPrinter: serverOnlyProcedure
-		.route({ tags: ["Internal"] })
+		.route({ tags: ["Internal"], summary: "Get resume by ID for printer" })
 		.input(z.object({ id: z.string() }))
 		.handler(async ({ input }) => {
 			return await resumeService.getByIdForPrinter({ id: input.id });
@@ -126,6 +130,7 @@ export const resumeRouter = {
 			method: "GET",
 			path: "/resume/{username}/{slug}",
 			tags: ["Resume"],
+			summary: "Get resume by username and slug",
 			description: "Get a resume, along with its data, by its username and slug.",
 		})
 		.input(z.object({ username: z.string(), slug: z.string() }))
@@ -149,6 +154,7 @@ export const resumeRouter = {
 			method: "POST",
 			path: "/resume/create",
 			tags: ["Resume"],
+			summary: "Create a new resume",
 			description: "Create a new resume, with the ability to initialize it with sample data.",
 		})
 		.input(
@@ -176,6 +182,7 @@ export const resumeRouter = {
 			method: "POST",
 			path: "/resume/import",
 			tags: ["Resume"],
+			summary: "Import a resume",
 			description: "Import a resume from a file.",
 		})
 		.input(z.object({ data: resumeDataSchema }))
@@ -199,6 +206,7 @@ export const resumeRouter = {
 			method: "PUT",
 			path: "/resume/{id}",
 			tags: ["Resume"],
+			summary: "Update a resume",
 			description: "Update a resume, along with its data, by its ID.",
 		})
 		.input(
@@ -209,8 +217,6 @@ export const resumeRouter = {
 				tags: z.array(z.string()).optional(),
 				data: resumeDataSchema.optional(),
 				isPublic: z.boolean().optional(),
-				isLocked: z.boolean().optional(),
-				password: z.string().min(6).max(64).nullable().optional(),
 			}),
 		)
 		.output(z.void())
@@ -223,8 +229,6 @@ export const resumeRouter = {
 				tags: input.tags,
 				data: input.data,
 				isPublic: input.isPublic,
-				isLocked: input.isLocked,
-				password: input.password,
 			});
 		}),
 
@@ -233,6 +237,7 @@ export const resumeRouter = {
 			method: "POST",
 			path: "/resume/{id}/set-locked",
 			tags: ["Resume"],
+			summary: "Set resume locked status",
 			description: "Toggle the locked status of a resume, by its ID.",
 		})
 		.input(z.object({ id: z.string(), isLocked: z.boolean() }))
@@ -245,11 +250,47 @@ export const resumeRouter = {
 			});
 		}),
 
+	setPassword: protectedProcedure
+		.route({
+			method: "POST",
+			path: "/resume/{id}/set-password",
+			tags: ["Resume"],
+			summary: "Set password on a resume",
+			description: "Set a password on a resume to protect it from unauthorized access when shared publicly.",
+		})
+		.input(z.object({ id: z.string(), password: z.string().min(6).max(64) }))
+		.output(z.void())
+		.handler(async ({ context, input }) => {
+			return await resumeService.setPassword({
+				id: input.id,
+				userId: context.user.id,
+				password: input.password,
+			});
+		}),
+
+	removePassword: protectedProcedure
+		.route({
+			method: "POST",
+			path: "/resume/{id}/remove-password",
+			tags: ["Resume"],
+			summary: "Remove password from a resume",
+			description: "Remove password protection from a resume.",
+		})
+		.input(z.object({ id: z.string() }))
+		.output(z.void())
+		.handler(async ({ context, input }) => {
+			return await resumeService.removePassword({
+				id: input.id,
+				userId: context.user.id,
+			});
+		}),
+
 	duplicate: protectedProcedure
 		.route({
 			method: "POST",
 			path: "/resume/{id}/duplicate",
 			tags: ["Resume"],
+			summary: "Duplicate a resume",
 			description: "Duplicate a resume, by its ID.",
 		})
 		.input(
@@ -279,6 +320,7 @@ export const resumeRouter = {
 			method: "DELETE",
 			path: "/resume/{id}",
 			tags: ["Resume"],
+			summary: "Delete a resume",
 			description: "Delete a resume, by its ID.",
 		})
 		.input(z.object({ id: z.string() }))

@@ -1,3 +1,4 @@
+import { randomBytes, scrypt } from "node:crypto";
 import { drizzle } from "drizzle-orm/bun-sql";
 import { schema } from "@/integrations/drizzle";
 import { env } from "@/utils/env";
@@ -25,7 +26,13 @@ export async function seedDatabase() {
 			id: generateId(),
 			userId,
 			accountId: userId,
-			password: await Bun.password.hash("password", { algorithm: "argon2id" }),
+			password: await new Promise((resolve, reject) => {
+				const salt = randomBytes(16).toString("hex");
+				scrypt("password", salt, 64, (err, derivedKey) => {
+					if (err) return reject(err);
+					resolve(`${salt}:${derivedKey.toString("hex")}`);
+				});
+			}),
 		});
 	} catch (error) {
 		console.error("🚨 Database seeding failed:", error);

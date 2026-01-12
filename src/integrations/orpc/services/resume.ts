@@ -6,6 +6,7 @@ import { db } from "@/integrations/drizzle/client";
 import type { ResumeData } from "@/schema/resume/data";
 import { defaultResumeData } from "@/schema/resume/data";
 import type { Locale } from "@/utils/locale";
+import { hashPassword } from "@/utils/password";
 import { generateId } from "@/utils/string";
 import { hasResumeAccess } from "../helpers/resume-access";
 
@@ -240,15 +241,7 @@ export const resumeService = {
 		tags?: string[];
 		data?: ResumeData;
 		isPublic?: boolean;
-		isLocked?: boolean;
-		password?: string | null;
 	}): Promise<void> => {
-		let hashedPassword: string | null | undefined;
-
-		if (input.password !== undefined) {
-			hashedPassword = input.password ? await Bun.password.hash(input.password, { algorithm: "argon2id" }) : null;
-		}
-
 		const [resume] = await db
 			.select({ isLocked: schema.resume.isLocked })
 			.from(schema.resume)
@@ -262,12 +255,7 @@ export const resumeService = {
 			tags: input.tags,
 			data: input.data,
 			isPublic: input.isPublic,
-			isLocked: input.isLocked,
 		};
-
-		if (input.password !== undefined) {
-			updateData.password = hashedPassword;
-		}
 
 		await db
 			.update(schema.resume)
@@ -281,6 +269,22 @@ export const resumeService = {
 		await db
 			.update(schema.resume)
 			.set({ isLocked: input.isLocked })
+			.where(and(eq(schema.resume.id, input.id), eq(schema.resume.userId, input.userId)));
+	},
+
+	setPassword: async (input: { id: string; userId: string; password: string }): Promise<void> => {
+		const hashedPassword = await hashPassword(input.password);
+
+		await db
+			.update(schema.resume)
+			.set({ password: hashedPassword })
+			.where(and(eq(schema.resume.id, input.id), eq(schema.resume.userId, input.userId)));
+	},
+
+	removePassword: async (input: { id: string; userId: string }): Promise<void> => {
+		await db
+			.update(schema.resume)
+			.set({ password: null })
 			.where(and(eq(schema.resume.id, input.id), eq(schema.resume.userId, input.userId)));
 	},
 

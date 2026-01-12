@@ -27,13 +27,17 @@
 				"groups": [
 					{
 						"group": "Getting Started",
-						"pages": [
-							"guides/getting-started/index",
-							"guides/getting-started/quickstart",
-							"guides/getting-started/development"
-						]
+						"pages": ["getting-started/index", "getting-started/quickstart"]
+					},
+					{
+						"group": "Contributing",
+						"pages": ["contributing/architecture", "contributing/development"]
 					}
 				]
+			},
+			{
+				"tab": "API Reference",
+				"openapi": "/spec.json"
 			}
 		],
 		"global": {

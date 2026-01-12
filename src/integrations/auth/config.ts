@@ -7,6 +7,7 @@ import { username } from "better-auth/plugins/username";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 import { db } from "@/integrations/drizzle/client";
 import { env } from "@/utils/env";
+import { hashPassword, verifyPassword } from "@/utils/password";
 import { generateId, toUsername } from "@/utils/string";
 import { schema } from "../drizzle";
 
@@ -82,8 +83,8 @@ const getAuthConfig = () => {
 				console.log(`[EMAIL] [${user.email}] To reset your password, please visit the following URL: ${url}`);
 			},
 			password: {
-				hash: (password) => Bun.password.hash(password, { algorithm: "argon2id" }),
-				verify: ({ password, hash }) => Bun.password.verify(hash, password, "argon2id"),
+				hash: (password) => hashPassword(password),
+				verify: ({ password, hash }) => verifyPassword(password, hash),
 			},
 		},
 

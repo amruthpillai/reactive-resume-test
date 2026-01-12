@@ -83,7 +83,7 @@ function RouteComponent() {
 						</p>
 
 						<Button asChild variant="link">
-							<a href="/api/oas" target="_blank" rel="noopener noreferrer">
+							<a href="https://docs.rxresu.me/api-reference" target="_blank" rel="noopener noreferrer">
 								<LinkSimpleIcon />
 								<Trans>API Documentation</Trans>
 							</a>

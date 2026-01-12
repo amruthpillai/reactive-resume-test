@@ -8,6 +8,7 @@ export const printerRouter = {
 			method: "GET",
 			path: "/printer/resume/{id}/pdf",
 			tags: ["Resume", "Printer"],
+			summary: "Export resume as PDF",
 			description: "Export a resume as a PDF.",
 		})
 		.input(z.object({ id: z.string() }))
@@ -21,6 +22,7 @@ export const printerRouter = {
 			method: "GET",
 			path: "/printer/resume/{id}/screenshot",
 			tags: ["Resume", "Printer"],
+			summary: "Get resume screenshot",
 			description: "Get a screenshot of a resume.",
 		})
 		.input(z.object({ id: z.string() }))

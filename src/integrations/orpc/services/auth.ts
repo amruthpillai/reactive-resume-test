@@ -4,6 +4,7 @@ import type { AuthProvider } from "@/integrations/auth/types";
 import { schema } from "@/integrations/drizzle";
 import { db } from "@/integrations/drizzle/client";
 import { env } from "@/utils/env";
+import { verifyPassword } from "@/utils/password";
 import { grantResumeAccess } from "../helpers/resume-access";
 import { getStorageService } from "./storage";
 
@@ -40,7 +41,7 @@ export const authService = {
 		if (!resume) throw new ORPCError("NOT_FOUND");
 
 		const passwordHash = resume.password as string;
-		const isValid = await Bun.password.verify(passwordHash, input.password, "argon2id");
+		const isValid = await verifyPassword(input.password, passwordHash);
 
 		if (!isValid) throw new ORPCError("INVALID_PASSWORD");
 

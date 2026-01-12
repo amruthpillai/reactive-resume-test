@@ -36,7 +36,7 @@ import { Route as DashboardSettingsDangerZoneRouteImport } from "./routes/dashbo
 import { Route as DashboardSettingsApiKeysRouteImport } from "./routes/dashboard/settings/api-keys";
 import { Route as DashboardSettingsAiRouteImport } from "./routes/dashboard/settings/ai";
 import { Route as ApiRpcSplatRouteImport } from "./routes/api/rpc.$";
-import { Route as ApiOasSplatRouteImport } from "./routes/api/oas.$";
+import { Route as ApiOpenapiSplatRouteImport } from "./routes/api/openapi.$";
 import { Route as ApiAuthSplatRouteImport } from "./routes/api/auth.$";
 import { Route as DashboardSettingsAuthenticationIndexRouteImport } from "./routes/dashboard/settings/authentication/index";
 
@@ -178,9 +178,9 @@ const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
   path: "/api/rpc/$",
   getParentRoute: () => rootRouteImport,
 } as any);
-const ApiOasSplatRoute = ApiOasSplatRouteImport.update({
-  id: "/api/oas/$",
-  path: "/api/oas/$",
+const ApiOpenapiSplatRoute = ApiOpenapiSplatRouteImport.update({
+  id: "/api/openapi/$",
+  path: "/api/openapi/$",
   getParentRoute: () => rootRouteImport,
 } as any);
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -214,7 +214,7 @@ export interface FileRoutesByFullPath {
   "/auth/": typeof AuthIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
   "/api/auth/$": typeof ApiAuthSplatRoute;
-  "/api/oas/$": typeof ApiOasSplatRoute;
+  "/api/openapi/$": typeof ApiOpenapiSplatRoute;
   "/api/rpc/$": typeof ApiRpcSplatRoute;
   "/dashboard/settings/ai": typeof DashboardSettingsAiRoute;
   "/dashboard/settings/api-keys": typeof DashboardSettingsApiKeysRoute;
@@ -242,7 +242,7 @@ export interface FileRoutesByTo {
   "/auth": typeof AuthIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
   "/api/auth/$": typeof ApiAuthSplatRoute;
-  "/api/oas/$": typeof ApiOasSplatRoute;
+  "/api/openapi/$": typeof ApiOpenapiSplatRoute;
   "/api/rpc/$": typeof ApiRpcSplatRoute;
   "/dashboard/settings/ai": typeof DashboardSettingsAiRoute;
   "/dashboard/settings/api-keys": typeof DashboardSettingsApiKeysRoute;
@@ -275,7 +275,7 @@ export interface FileRoutesById {
   "/auth/": typeof AuthIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
   "/api/auth/$": typeof ApiAuthSplatRoute;
-  "/api/oas/$": typeof ApiOasSplatRoute;
+  "/api/openapi/$": typeof ApiOpenapiSplatRoute;
   "/api/rpc/$": typeof ApiRpcSplatRoute;
   "/dashboard/settings/ai": typeof DashboardSettingsAiRoute;
   "/dashboard/settings/api-keys": typeof DashboardSettingsApiKeysRoute;
@@ -308,7 +308,7 @@ export interface FileRouteTypes {
     | "/auth/"
     | "/dashboard/"
     | "/api/auth/$"
-    | "/api/oas/$"
+    | "/api/openapi/$"
     | "/api/rpc/$"
     | "/dashboard/settings/ai"
     | "/dashboard/settings/api-keys"
@@ -336,7 +336,7 @@ export interface FileRouteTypes {
     | "/auth"
     | "/dashboard"
     | "/api/auth/$"
-    | "/api/oas/$"
+    | "/api/openapi/$"
     | "/api/rpc/$"
     | "/dashboard/settings/ai"
     | "/dashboard/settings/api-keys"
@@ -368,7 +368,7 @@ export interface FileRouteTypes {
     | "/auth/"
     | "/dashboard/"
     | "/api/auth/$"
-    | "/api/oas/$"
+    | "/api/openapi/$"
     | "/api/rpc/$"
     | "/dashboard/settings/ai"
     | "/dashboard/settings/api-keys"
@@ -391,7 +391,7 @@ export interface RootRouteChildren {
   ApiHealthRoute: typeof ApiHealthRoute;
   PrinterResumeIdRoute: typeof PrinterResumeIdRoute;
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute;
-  ApiOasSplatRoute: typeof ApiOasSplatRoute;
+  ApiOpenapiSplatRoute: typeof ApiOpenapiSplatRoute;
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute;
   UploadsUserIdFileIdRoute: typeof UploadsUserIdFileIdRoute;
 }
@@ -587,11 +587,11 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ApiRpcSplatRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    "/api/oas/$": {
-      id: "/api/oas/$";
-      path: "/api/oas/$";
-      fullPath: "/api/oas/$";
-      preLoaderRoute: typeof ApiOasSplatRouteImport;
+    "/api/openapi/$": {
+      id: "/api/openapi/$";
+      path: "/api/openapi/$";
+      fullPath: "/api/openapi/$";
+      preLoaderRoute: typeof ApiOpenapiSplatRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/api/auth/$": {
@@ -697,7 +697,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiHealthRoute: ApiHealthRoute,
   PrinterResumeIdRoute: PrinterResumeIdRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiOasSplatRoute: ApiOasSplatRoute,
+  ApiOpenapiSplatRoute: ApiOpenapiSplatRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
   UploadsUserIdFileIdRoute: UploadsUserIdFileIdRoute,
 };

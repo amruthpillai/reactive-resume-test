@@ -1,0 +1,335 @@
+---
+title: "Development Setup"
+description: "Set up a local development environment for Reactive Resume"
+---
+
+<Info>
+  **Prerequisites**:
+  - [Node.js](https://nodejs.org/) v20 or higher
+  - [Bun](https://bun.sh/) v1.3.5 or higher (package manager)
+  - [Docker](https://docs.docker.com/get-docker/) and Docker Compose
+  - [Git](https://git-scm.com/)
+</Info>
+
+This guide walks you through setting up Reactive Resume for local development. Whether you're contributing to the project or customizing it for your needs, these steps will get you up and running.
+
+---
+
+## Setting Up Your Development Environment
+
+<Steps>
+  <Step title="Clone the Repository">
+    ```bash
+    git clone https://github.com/AmruthPillai/Reactive-Resume.git
+    cd Reactive-Resume
+    ```
+  </Step>
+  
+  <Step title="Install Dependencies">
+    We use [Bun](https://bun.sh/) as our package manager for its speed and efficiency.
+    
+    ```bash
+    # Install Bun if you haven't already
+    curl -fsSL https://bun.sh/install | bash
+    
+    # Install project dependencies
+    bun install
+    ```
+  </Step>
+  
+  <Step title="Start Infrastructure Services">
+    Start the required services (PostgreSQL, SeaweedFS, Gotenberg) using Docker Compose:
+    
+    ```bash
+    docker compose up -d
+    ```
+    
+    <Tip>
+      Wait for all services to be healthy before proceeding. Check with `docker compose ps`.
+    </Tip>
+  </Step>
+  
+  <Step title="Configure Environment Variables">
+    Create a `.env` file in the project root:
+    
+    ```bash
+    # Application
+    APP_URL=http://localhost:3000
+
+    # Database
+    DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres
+
+    # Authentication
+    AUTH_SECRET=development-secret-change-in-production
+
+    # Storage (SeaweedFS)
+    S3_ACCESS_KEY_ID=seaweedfs
+    S3_SECRET_ACCESS_KEY=seaweedfs
+    S3_ENDPOINT=http://localhost:8333
+    S3_BUCKET=reactive-resume-start
+    ```
+  </Step>
+  
+  <Step title="Run Database Migrations">
+    Apply the database schema:
+    
+    ```bash
+    bun run db:migrate
+    ```
+  </Step>
+  
+  <Step title="Start the Development Server">
+    ```bash
+    bun run dev
+    ```
+    
+    Your local Reactive Resume instance will be available at [http://localhost:3000](http://localhost:3000).
+  </Step>
+</Steps>
+
+---
+
+## Available Scripts
+
+Here are the most commonly used scripts during development:
+
+### Development
+
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Start the development server with hot reload |
+| `bun run build` | Build the application for production |
+| `bun run start` | Start the production server |
+| `bun run check` | Run Biome linter and formatter |
+| `bun run typecheck` | Run TypeScript type checking |
+
+### Database
+
+| Command | Description |
+|---------|-------------|
+| `bun run db:generate` | Generate migration files from schema changes |
+| `bun run db:migrate` | Apply pending migrations |
+| `bun run db:push` | Push schema changes directly (dev only) |
+| `bun run db:pull` | Pull schema from existing database |
+| `bun run db:studio` | Open Drizzle Studio (database GUI) |
+
+### Internationalization
+
+| Command | Description |
+|---------|-------------|
+| `bun run lingui:extract` | Extract translatable strings from code |
+
+### Documentation
+
+| Command | Description |
+|---------|-------------|
+| `bun run docs` | Start the Mintlify docs development server |
+
+---
+
+## Understanding the Project Structure
+
+Understanding the project structure will help you navigate the codebase:
+
+```
+reactive-resume/
+├── src/
+│   ├── components/         # Reusable React components
+│   │   ├── ui/             # Base UI components (Button, Card, etc.)
+│   │   ├── resume/         # Resume-specific components
+│   │   └── ...
+│   ├── dialogs/            # Modal dialogs
+│   ├── hooks/              # Custom React hooks
+│   ├── integrations/       # Third-party integrations
+│   │   ├── auth/           # Better Auth integration
+│   │   ├── drizzle/        # Database schema & utilities
+│   │   └── orpc/           # API routes & services
+│   ├── routes/             # File-based routing (TanStack Router)
+│   │   ├── builder/        # Resume builder pages
+│   │   ├── dashboard/      # User dashboard
+│   │   ├── auth/           # Authentication pages
+│   │   └── ...
+│   ├── schema/             # Zod schemas for validation
+│   ├── utils/              # Utility functions
+│   └── styles/             # Global CSS styles
+├── public/                 # Static assets
+├── locales/                # Translation files (.po format)
+├── migrations/             # Database migrations
+├── docs/                   # Mintlify documentation
+└── data/                   # Local data (fonts, uploads)
+```
+
+---
+
+## Working with the Database
+
+### Viewing the Database
+
+Use Drizzle Studio to explore and manage your database:
+
+```bash
+bun run db:studio
+```
+
+This opens a web-based GUI at [https://local.drizzle.studio](https://local.drizzle.studio).
+
+### Making Schema Changes
+
+1. Edit the schema in `src/integrations/drizzle/schema.ts`
+2. Generate a migration:
+   ```bash
+   bun run db:generate
+   ```
+3. Apply the migration:
+   ```bash
+   bun run db:migrate
+   ```
+
+<Warning>
+  Always review generated migrations before applying them, especially when working with existing data.
+</Warning>
+
+---
+
+## Working with Translations
+
+Reactive Resume uses [Lingui](https://lingui.dev/) for internationalization.
+
+### Adding Translatable Text
+
+Use the `t` macro for strings or `<Trans>` component for JSX:
+
+```tsx
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+
+// For plain strings
+const message = t`Hello, World!`;
+
+// For JSX content
+<Trans>Welcome to Reactive Resume</Trans>
+```
+
+### Extracting Translations
+
+After adding new translatable text, extract them to the locale files:
+
+```bash
+bun run lingui:extract
+```
+
+Translation files are located in the `locales/` directory in `.po` format.
+
+---
+
+## Code Quality
+
+### Linting & Formatting
+
+We use [Biome](https://biomejs.dev/) for linting and formatting:
+
+```bash
+# Check and auto-fix issues
+bun run check
+```
+
+### Type Checking
+
+Run TypeScript type checking:
+
+```bash
+bun run typecheck
+```
+
+<Tip>
+  Configure your IDE to use Biome for automatic formatting on save. For VS Code, install the [Biome extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome).
+</Tip>
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Port 3000 is already in use">
+    Another process is using port 3000. Either stop that process or start the dev server on a different port:
+    
+    ```bash
+    PORT=3001 bun run dev
+    ```
+  </Accordion>
+  
+  <Accordion title="Database connection refused">
+    Ensure Docker containers are running:
+    
+    ```bash
+    docker compose ps
+    docker compose up -d
+    ```
+    
+    Check that PostgreSQL is healthy and accessible on port 5432.
+  </Accordion>
+  
+  <Accordion title="S3/Storage errors">
+    Verify SeaweedFS is running and the bucket exists:
+    
+    ```bash
+    docker compose logs seaweedfs
+    docker compose logs seaweedfs-create-bucket
+    ```
+    
+    If the bucket wasn't created, restart the bucket creation service:
+    
+    ```bash
+    docker compose restart seaweedfs-create-bucket
+    ```
+  </Accordion>
+  
+  <Accordion title="Bun installation issues">
+    If you encounter issues with Bun, try reinstalling:
+    
+    ```bash
+    curl -fsSL https://bun.sh/install | bash
+    ```
+    
+    Make sure your shell profile is reloaded:
+    
+    ```bash
+    source ~/.bashrc  # or ~/.zshrc
+    ```
+  </Accordion>
+  
+  <Accordion title="Type errors after pulling changes">
+    The route tree may need regeneration. Run the dev server which auto-generates routes:
+    
+    ```bash
+    bun run dev
+    ```
+    
+    Or run type checking to see specific errors:
+    
+    ```bash
+    bun run typecheck
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Project Architecture"
+    icon="folder-open"
+    href="/contributing/architecture"
+  >
+    Deep dive into the project architecture and codebase structure.
+  </Card>
+  <Card
+    title="GitHub Repository"
+    icon="github"
+    href="https://github.com/AmruthPillai/Reactive-Resume"
+  >
+    View the source code and contribute to the project.
+  </Card>
+</CardGroup>

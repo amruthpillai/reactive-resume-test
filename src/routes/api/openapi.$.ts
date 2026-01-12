@@ -1,12 +1,10 @@
 import { SmartCoercionPlugin } from "@orpc/json-schema";
 import { OpenAPIGenerator } from "@orpc/openapi";
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
-import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
 import { RequestHeadersPlugin } from "@orpc/server/plugins";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { createFileRoute } from "@tanstack/react-router";
-import { json } from "@tanstack/react-start";
 import router from "@/integrations/orpc/router";
 import { env } from "@/utils/env";
 import { getLocale } from "@/utils/locale";
@@ -22,34 +20,6 @@ const openAPIHandler = new OpenAPIHandler(router, {
 		new SmartCoercionPlugin({
 			schemaConverters: [new ZodToJsonSchemaConverter()],
 		}),
-		new OpenAPIReferencePlugin({
-			docsTitle: "API Reference | Reactive Resume",
-			schemaConverters: [new ZodToJsonSchemaConverter()],
-			specGenerateOptions: {
-				servers: [{ url: `${env.APP_URL}/api/oas` }],
-				info: { title: "Reactive Resume", version: "5.0.0" },
-				filter: ({ contract }) => !contract["~orpc"].route.tags?.includes("Internal"),
-				security: [{ apiKey: [] }],
-				components: {
-					securitySchemes: {
-						apiKey: {
-							in: "header",
-							type: "apiKey",
-							name: "x-api-key",
-						},
-					},
-				},
-			},
-			docsConfig: {
-				telemetry: false,
-				slug: "reactive-resume",
-				title: "Reactive Resume",
-				defaultOpenAllTags: true,
-				expandAllResponses: true,
-				hideTestRequestButton: true,
-				expandAllModelSections: true,
-			},
-		}),
 	],
 });
 
@@ -60,18 +30,37 @@ const openAPIGenerator = new OpenAPIGenerator({
 async function handler({ request }: { request: Request }) {
 	const locale = await getLocale();
 
+	console.log(request.url);
 	if (request.method === "GET" && request.url.endsWith("/spec.json")) {
 		const spec = await openAPIGenerator.generate(router, {
-			servers: [{ url: `${env.APP_URL}/api/oas` }],
-			info: { title: "Reactive Resume", version: "5.0.0" },
+			info: {
+				title: "Reactive Resume",
+				version: "5.0.0",
+				description: "Reactive Resume API",
+				license: { name: "MIT", url: "https://github.com/AmruthPillai/Reactive-Resume/blob/main/LICENSE" },
+				contact: { name: "Amruth Pillai", email: "hello@amruthpillai.com", url: "https://amruthpillai.com" },
+			},
+			servers: [{ url: `${env.APP_URL}/api/openapi` }],
+			externalDocs: { url: "https://docs.rxresu.me", description: "Reactive Resume Documentation" },
+			components: {
+				securitySchemes: {
+					apiKey: {
+						type: "apiKey",
+						name: "x-api-key",
+						in: "header",
+						description: "The API key to authenticate requests.",
+					},
+				},
+			},
+			security: [{ apiKey: [] }],
 			filter: ({ contract }) => !contract["~orpc"].route.tags?.includes("Internal"),
 		});
 
-		return json(spec);
+		return Response.json(spec);
 	}
 
 	const { response } = await openAPIHandler.handle(request, {
-		prefix: "/api/oas",
+		prefix: "/api/openapi",
 		context: { locale, reqHeaders: request.headers },
 	});
 
@@ -82,7 +71,7 @@ async function handler({ request }: { request: Request }) {
 	return response;
 }
 
-export const Route = createFileRoute("/api/oas/$")({
+export const Route = createFileRoute("/api/openapi/$")({
 	server: {
 		handlers: {
 			ANY: handler,

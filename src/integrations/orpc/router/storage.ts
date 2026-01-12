@@ -19,7 +19,7 @@ function buildPublicUrl(path: string): string {
 
 export const storageRouter = {
 	uploadFile: protectedProcedure
-		.route({ tags: ["Internal"] })
+		.route({ tags: ["Internal"], summary: "Upload a file" })
 		.input(fileSchema)
 		.output(
 			z.object({
@@ -72,7 +72,7 @@ export const storageRouter = {
 		}),
 
 	readFile: protectedProcedure
-		.route({ tags: ["Internal"] })
+		.route({ tags: ["Internal"], summary: "Read a file" })
 		.input(filenameSchema)
 		.output(
 			z.object({
@@ -106,7 +106,7 @@ export const storageRouter = {
 		}),
 
 	deleteFile: protectedProcedure
-		.route({ tags: ["Internal"] })
+		.route({ tags: ["Internal"], summary: "Delete a file" })
 		.input(filenameSchema)
 		.output(z.void())
 		.handler(async ({ context, input }): Promise<void> => {
