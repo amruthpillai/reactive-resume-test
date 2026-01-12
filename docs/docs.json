@@ -1,0 +1,81 @@
+{
+	"$schema": "https://mintlify.com/docs.json",
+	"theme": "mint",
+	"name": "Reactive Resume",
+	"favicon": "/favicon.svg",
+	"description": "A one-of-a-kind resume builder that keeps your privacy in mind. Completely secure, customizable, portable, open-source and free forever. Try it out today!",
+	"appearance": {
+		"default": "dark"
+	},
+	"fonts": {
+		"heading": {
+			"family": "IBM Plex Sans"
+		},
+		"body": {
+			"family": "IBM Plex Sans"
+		}
+	},
+	"colors": {
+		"primary": "#16A34A",
+		"light": "#07C983",
+		"dark": "#15803D"
+	},
+	"navigation": {
+		"tabs": [
+			{
+				"tab": "Guides",
+				"groups": [
+					{
+						"group": "Getting Started",
+						"pages": [
+							"guides/getting-started/index",
+							"guides/getting-started/quickstart",
+							"guides/getting-started/development"
+						]
+					}
+				]
+			}
+		],
+		"global": {
+			"anchors": [
+				{
+					"icon": "link",
+					"anchor": "Reactive Resume",
+					"href": "https://rxresu.me"
+				},
+				{
+					"icon": "github",
+					"anchor": "Source Code",
+					"href": "https://github.com/AmruthPillai/Reactive-Resume"
+				}
+			]
+		}
+	},
+	"logo": {
+		"light": "/logo/light.svg",
+		"dark": "/logo/dark.svg"
+	},
+	"navbar": {
+		"links": [
+			{
+				"label": "Support",
+				"href": "mailto:hello@amruthpillai.com"
+			}
+		],
+		"primary": {
+			"type": "button",
+			"label": "Go to App",
+			"href": "https://rxresu.me"
+		}
+	},
+	"contextual": {
+		"options": ["copy", "view"]
+	},
+	"footer": {
+		"socials": {
+			"x": "https://x.com/KingOKings",
+			"github": "https://github.com/AmruthPillai",
+			"linkedin": "https://linkedin.com/in/amruthpillai"
+		}
+	}
+}

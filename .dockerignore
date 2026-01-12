@@ -2,10 +2,10 @@
 .env*
 .nitro
 .output
-.source
 .tanstack
 .vercel
 /data
 coverage
 dist
+docs
 node_modules
