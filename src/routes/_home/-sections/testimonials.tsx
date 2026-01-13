@@ -1,149 +1,109 @@
 import { Trans } from "@lingui/react/macro";
-import { QuotesIcon, StarIcon } from "@phosphor-icons/react";
-import { motion, useMotionValue, useSpring } from "motion/react";
-import { useRef } from "react";
+import { UsersIcon } from "@phosphor-icons/react";
+import { motion } from "motion/react";
+import { useMemo } from "react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { getInitials } from "@/utils/string";
 
-const testimonials = [
+type Testimonial = {
+	name: string;
+	text: string;
+};
+
+const testimonials: Testimonial[] = [
 	{
-		name: "John Doe",
-		role: "Software Engineer",
-		avatar: "JD",
-		text: "Reactive Resume made it incredibly easy to create a polished, professional resume. The templates are beautiful and the customization options are endless.",
+		name: "F. DiCostanzo",
+		text: "Great site. Love the interactive interface. You can tell it's designed by someone who wants to use it.",
 	},
 	{
-		name: "Jane Smith",
-		role: "Product Designer",
-		avatar: "JS",
-		text: "I love how intuitive the interface is. Within minutes, I had a stunning resume ready to share. The real-time preview is a game changer!",
+		name: "J. Casais",
+		text: "Truly everything about the UX is so intuitive, fluid and lets you customize your CV how you want and so rapidly. I thank you so much for putting the work to release something like this.",
 	},
 	{
-		name: "Alex Johnson",
-		role: "Marketing Manager",
-		avatar: "AJ",
-		text: "Finally, a resume builder that respects my privacy and doesn't try to upsell me at every turn. It's completely free and works amazingly well.",
+		name: "C. Obi",
+		text: "I want to appreciate you for making your projects #openSource, most especially your Reactive Resume, which is the handiest truly-free resume maker I've come across. This is a big shoutout to you. Well done!",
 	},
 	{
-		name: "Sarah Williams",
-		role: "Data Analyst",
-		avatar: "SW",
-		text: "The ability to self-host was a huge plus for me. I deployed it on my own server and now have complete control over my data.",
+		name: "M. Valles",
+		text: "I'd like to appreciate the great work you've done with rxresu.me. The website's design, smooth functionality, and ease of use under the free plan are really impressive. It's clear that a lot of thought and effort has gone into building and maintaining such a useful platform.",
 	},
 	{
-		name: "Mike Chen",
-		role: "Full Stack Developer",
-		avatar: "MC",
-		text: "As a developer, I appreciate the attention to detail in the codebase. The custom CSS feature lets me fine-tune every aspect of my resume.",
+		name: "L. Bilal",
+		text: " I just wanted to reach you out and thank you personally for your wonderful project rxresu.me. It is very valuable, and the fact that it is open source, makes it all the more meaningful, since there are lots of people who struggle to make their CV look good. For my part, it saved me a lot of time and helped me shape my CV in a very efficient way.",
 	},
 	{
-		name: "Emily Davis",
-		role: "UX Researcher",
-		avatar: "ED",
-		text: "The multiple export options and shareable links make it so easy to apply to jobs. I've recommended Reactive Resume to all my colleagues.",
+		name: "M. Rabeeh",
+		text: "I appreciate your effort in open-sourcing and making it free for everyone to use, it's a great effort. By using this platform, I got a job secured in the government sector of Oman, that too in a ministry. Thank you for providing this platform. Keep going, appreciate the effort. ❤️",
 	},
 ];
 
 type TestimonialCardProps = {
-	testimonial: (typeof testimonials)[number];
-	index: number;
+	testimonial: Testimonial;
 };
 
-function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
-	const ref = useRef<HTMLDivElement>(null);
-	const x = useMotionValue(0);
-	const y = useMotionValue(0);
+function TestimonialCard({ testimonial }: TestimonialCardProps) {
+	return (
+		<motion.div
+			className="group relative w-[320px] shrink-0 sm:w-[360px] md:w-[400px]"
+			initial={{ scale: 1 }}
+			whileHover={{ scale: 1.05 }}
+			transition={{ type: "spring", stiffness: 300, damping: 20 }}
+		>
+			<div className="relative flex h-full flex-col rounded-xl border bg-card p-5 shadow-sm transition-shadow duration-300 group-hover:shadow-xl">
+				{/* Quote */}
+				<p className="mb-4 flex-1 text-muted-foreground leading-relaxed">"{testimonial.text}"</p>
 
-	const springConfig = { damping: 30, stiffness: 200 };
-	const xSpring = useSpring(x, springConfig);
-	const ySpring = useSpring(y, springConfig);
+				{/* Author */}
+				<div className="flex items-center gap-3">
+					<Avatar>
+						<AvatarFallback className="font-bold text-xs uppercase">{getInitials(testimonial.name)}</AvatarFallback>
+					</Avatar>
+					<p className="font-medium">{testimonial.name}</p>
+				</div>
+			</div>
+		</motion.div>
+	);
+}
 
-	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-		if (!ref.current) return;
+type MarqueeRowProps = {
+	testimonials: Testimonial[];
+	rowId: string;
+	direction: "left" | "right";
+	duration?: number;
+};
 
-		const rect = ref.current.getBoundingClientRect();
-		const centerX = rect.left + rect.width / 2;
-		const centerY = rect.top + rect.height / 2;
-
-		const distanceX = (e.clientX - centerX) * 0.08;
-		const distanceY = (e.clientY - centerY) * 0.08;
-
-		x.set(distanceX);
-		y.set(distanceY);
-	};
-
-	const handleMouseLeave = () => {
-		x.set(0);
-		y.set(0);
-	};
+function MarqueeRow({ testimonials, rowId, direction, duration = 30 }: MarqueeRowProps) {
+	const animateX = direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"];
 
 	return (
 		<motion.div
-			ref={ref}
-			className="group relative"
-			style={{ x: xSpring, y: ySpring }}
-			initial={{ opacity: 0, y: 30 }}
-			whileInView={{ opacity: 1, y: 0 }}
-			viewport={{ once: true, margin: "-50px" }}
-			transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
-			onMouseMove={handleMouseMove}
-			onMouseLeave={handleMouseLeave}
+			className="flex items-start gap-x-8 will-change-transform"
+			animate={{ x: animateX }}
+			transition={{ x: { repeat: Infinity, repeatType: "loop", duration, ease: "linear" } }}
 		>
-			<motion.div
-				className="relative flex h-full min-h-[220px] flex-col overflow-hidden rounded-xl border bg-card p-6 shadow-sm transition-all duration-300 group-hover:border-primary/20 group-hover:shadow-lg"
-				whileHover={{ scale: 1.02, zIndex: 10 }}
-				transition={{ type: "spring", stiffness: 400, damping: 25 }}
-			>
-				{/* Gradient overlay on hover */}
-				<div className="pointer-events-none absolute inset-0 rounded-xl bg-linear-to-br from-primary/5 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-				{/* Star ratings */}
-				<div className="relative mb-4 flex gap-0.5">
-					{[...Array(5)].map((_, i) => (
-						<motion.div
-							key={i}
-							initial={{ opacity: 0, scale: 0 }}
-							whileInView={{ opacity: 1, scale: 1 }}
-							viewport={{ once: true }}
-							transition={{ delay: index * 0.08 + i * 0.05 + 0.2 }}
-						>
-							<StarIcon size={14} weight="fill" className="text-amber-400" />
-						</motion.div>
-					))}
-				</div>
-
-				{/* Quote */}
-				<p className="relative mb-4 flex-1 text-muted-foreground text-sm leading-relaxed">"{testimonial.text}"</p>
-
-				{/* Author */}
-				<div className="relative flex items-center gap-3">
-					<div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary text-xs">
-						{testimonial.avatar}
-					</div>
-					<div>
-						<p className="font-semibold text-sm tracking-tight">{testimonial.name}</p>
-						<p className="text-muted-foreground text-xs">{testimonial.role}</p>
-					</div>
-				</div>
-
-				{/* Quote icon */}
-				<motion.div
-					className="pointer-events-none absolute top-4 right-4 text-primary/10"
-					initial={{ scale: 0, rotate: -10 }}
-					whileInView={{ scale: 1, rotate: 0 }}
-					viewport={{ once: true }}
-					transition={{ delay: index * 0.08 + 0.3, type: "spring", stiffness: 200, damping: 15 }}
-				>
-					<QuotesIcon size={32} weight="fill" />
-				</motion.div>
-			</motion.div>
+			{testimonials.map((testimonial, index) => (
+				<TestimonialCard key={`${rowId}-${index}`} testimonial={testimonial} />
+			))}
 		</motion.div>
 	);
 }
 
 export function Testimonials() {
+	const { row1, row2 } = useMemo(() => {
+		const half = Math.ceil(testimonials.length / 2);
+		const firstHalf = testimonials.slice(0, half);
+		const secondHalf = testimonials.slice(half);
+
+		return {
+			row1: [...firstHalf, ...firstHalf],
+			row2: [...secondHalf, ...secondHalf],
+		};
+	}, []);
+
 	return (
-		<section id="testimonials" className="flex flex-col gap-y-8 p-4 md:p-8 xl:py-16">
+		<section id="testimonials" className="overflow-hidden py-12 md:py-16 xl:py-20">
 			<motion.div
-				className="space-y-4"
+				className="mb-10 flex flex-col items-center space-y-4 px-4 text-center md:px-8"
 				initial={{ opacity: 0, y: 20 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true }}
@@ -153,10 +113,10 @@ export function Testimonials() {
 					<Trans>Testimonials</Trans>
 				</h2>
 
-				<p className="max-w-2xl text-muted-foreground leading-relaxed">
+				<p className="max-w-4xl text-balance text-muted-foreground leading-relaxed">
 					<Trans>
-						Hear from the people who are using Reactive Resume to build their careers. If you have a story to share,
-						please reach out to me at{" "}
+						A lot of people have written to me over the years to share their experiences with Reactive Resume and how it
+						has helped them, and I never get tired of reading them. If you have a story to share, drop me an email at{" "}
 						<a
 							href="mailto:hello@amruthpillai.com"
 							className="font-medium text-foreground underline underline-offset-2 transition-colors hover:text-primary"
@@ -166,12 +126,24 @@ export function Testimonials() {
 						.
 					</Trans>
 				</p>
+
+				<div className="flex items-center gap-2 text-muted-foreground">
+					<UsersIcon />
+					<Trans>{testimonials.length}+ testimonials and counting</Trans>
+				</div>
 			</motion.div>
 
-			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:gap-6">
-				{testimonials.map((testimonial, index) => (
-					<TestimonialCard key={index} testimonial={testimonial} index={index} />
-				))}
+			<div className="relative">
+				{/* Left fade */}
+				<div className="pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-16 bg-linear-to-r from-background to-transparent sm:w-24 md:w-32 lg:w-48" />
+
+				{/* Right fade */}
+				<div className="pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-16 bg-linear-to-l from-background to-transparent sm:w-24 md:w-32 lg:w-48" />
+
+				<div className="flex flex-col gap-y-8">
+					<MarqueeRow testimonials={row1} rowId="row1" direction="left" duration={50} />
+					<MarqueeRow testimonials={row2} rowId="row2" direction="right" duration={55} />
+				</div>
 			</div>
 		</section>
 	);

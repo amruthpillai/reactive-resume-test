@@ -1,11 +1,11 @@
-.DS_Store
+docs
+dist
 .env*
+/data
 .nitro
 .output
-.tanstack
 .vercel
-/data
 coverage
-dist
-docs
+.DS_Store
+.tanstack
 node_modules

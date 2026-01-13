@@ -71,7 +71,7 @@ msgid "A confirmation link has been sent to your current email address. Please c
 msgstr "A confirmation link has been sent to your current email address. Please check your inbox to confirm the change."
 
 #: src/routes/builder/$resumeId/-components/dock.tsx:49
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:37
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:39
 msgid "A link to your resume has been copied to clipboard."
 msgstr "A link to your resume has been copied to clipboard."
 
@@ -184,7 +184,7 @@ msgstr "Adding your passkey..."
 msgid "All data entered here is stored locally in your browser and is never sent to our servers. Your API keys and configuration remain private and secure on your device."
 msgstr "All data entered here is stored locally in your browser and is never sent to our servers. Your API keys and configuration remain private and secure on your device."
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:112
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:114
 msgid "Allow Public Access"
 msgstr "Allow Public Access"
 
@@ -209,15 +209,15 @@ msgstr "An unknown error occurred while importing your resume."
 msgid "And many more..."
 msgstr "And many more..."
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:54
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:56
 msgid "Anyone visiting the resume's public URL must enter this password to access it."
 msgstr "Anyone visiting the resume's public URL must enter this password to access it."
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:82
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:84
 msgid "Anyone who has the resume's public URL will be able to view and download your resume without entering a password."
 msgstr "Anyone who has the resume's public URL will be able to view and download your resume without entering a password."
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:116
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:118
 msgid "Anyone with the link can view and download the resume."
 msgstr "Anyone with the link can view and download the resume."
 
@@ -266,7 +266,7 @@ msgstr "Are you sure you want to delete your account?"
 msgid "Are you sure you want to lock this resume?"
 msgstr "Are you sure you want to lock this resume?"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:81
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:83
 msgid "Are you sure you want to remove password protection?"
 msgstr "Are you sure you want to remove password protection?"
 
@@ -391,7 +391,7 @@ msgstr "Can I export my resume to PDF?"
 #: src/dialogs/resume/sections/volunteer.tsx:68
 #: src/dialogs/resume/sections/volunteer.tsx:124
 #: src/hooks/use-prompt.tsx:52
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:84
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:86
 #: src/routes/dashboard/settings/api-keys.tsx:40
 #: src/routes/dashboard/settings/danger-zone.tsx:35
 #: src/routes/dashboard/settings/profile.tsx:222
@@ -465,7 +465,7 @@ msgstr "Completely free, forever, no hidden costs."
 
 #: src/dialogs/api-key/create.tsx:213
 #: src/hooks/use-prompt.tsx:53
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:83
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:85
 #: src/routes/dashboard/settings/danger-zone.tsx:34
 msgid "Confirm"
 msgstr "Confirm"
@@ -841,7 +841,7 @@ msgstr "Enable Two-Factor Authentication"
 msgid "Enabled"
 msgstr "Enabled"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:67
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:69
 msgid "Enabling password protection..."
 msgstr "Enabling password protection..."
 
@@ -1348,7 +1348,7 @@ msgstr "Open Email Client"
 msgid "Open Source"
 msgstr "Open Source"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:142
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:144
 msgid "Optionally, set a password so that only people with the password can view your resume through the link."
 msgstr "Optionally, set a password so that only people with the password can view your resume through the link."
 
@@ -1400,7 +1400,7 @@ msgstr "Passkeys & 2FA"
 msgid "Password"
 msgstr "Password"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:65
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:67
 msgid "Password cannot be empty."
 msgstr "Password cannot be empty."
 
@@ -1408,11 +1408,11 @@ msgstr "Password cannot be empty."
 msgid "Password Protection"
 msgstr "Password Protection"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:92
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:94
 msgid "Password protection has been disabled."
 msgstr "Password protection has been disabled."
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:71
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:73
 msgid "Password protection has been enabled."
 msgstr "Password protection has been enabled."
 
@@ -1490,7 +1490,7 @@ msgstr "Progress Bar"
 msgid "Projects"
 msgstr "Projects"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:53
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:55
 msgid "Protect your resume from unauthorized access with a password"
 msgstr "Protect your resume from unauthorized access with a password"
 
@@ -1550,11 +1550,11 @@ msgstr "Register New Device"
 msgid "Remember your password? <0><1>Sign in now <2/></1></0>"
 msgstr "Remember your password? <0><1>Sign in now <2/></1></0>"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:151
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:153
 msgid "Remove Password"
 msgstr "Remove Password"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:88
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:90
 msgid "Removing password protection..."
 msgstr "Removing password protection..."
 
@@ -1686,8 +1686,8 @@ msgstr "Sending password reset email..."
 msgid "Separator"
 msgstr "Separator"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:55
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:156
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:57
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:158
 #: src/routes/dashboard/settings/authentication/-components/password.tsx:48
 msgid "Set Password"
 msgstr "Set Password"
@@ -1776,9 +1776,9 @@ msgstr "Skills"
 msgid "Slug"
 msgstr "Slug"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:45
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:73
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:94
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:47
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:75
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:96
 msgid "Something went wrong. Please try again."
 msgstr "Something went wrong. Please try again."
 
@@ -2300,7 +2300,7 @@ msgstr "Your resume has been imported successfully."
 msgid "Your resume has been updated successfully."
 msgstr "Your resume has been updated successfully."
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:137
+#: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:139
 msgid "Your resume's public link is currently protected by a password. Share the password only with people you trust."
 msgstr "Your resume's public link is currently protected by a password. Share the password only with people you trust."
 

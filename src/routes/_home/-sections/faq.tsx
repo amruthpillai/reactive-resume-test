@@ -24,6 +24,10 @@ const getFaqItems = (): FAQItemData[] => [
 		answer: t`Absolutely! You can export your resume to PDF with a single click. The exported PDF maintains all your formatting and styling perfectly.`,
 	},
 	{
+		question: t`Is Reactive Resume available in multiple languages?`,
+		answer: t`Yes, Reactive Resume is available in multiple languages. You can choose your preferred language in the settings page, or using the language switcher in the top right corner. If you don't see your language, or you would like to improve the existing translations, you can contribute to the translations on Crowdin.`,
+	},
+	{
 		question: t`What makes Reactive Resume different from other resume builders?`,
 		answer: t`Reactive Resume is open-source, privacy-focused, and completely free. Unlike other builders, we don't show ads, track your data, or limit your features behind a paywall.`,
 	},

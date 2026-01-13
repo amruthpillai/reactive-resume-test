@@ -5,7 +5,7 @@ import { CountUp } from "../animation/count-up";
 import { Button } from "../ui/button";
 
 export function GithubStarsButton() {
-	const { data: starCount } = useQuery(orpc.github.getStarCount.queryOptions());
+	const { data: starCount } = useQuery(orpc.statistics.github.getStarCount.queryOptions());
 
 	return (
 		<Button asChild variant="outline">

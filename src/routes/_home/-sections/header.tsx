@@ -1,10 +1,11 @@
-import { TranslateIcon } from "@phosphor-icons/react";
+import { ArrowRightIcon, TranslateIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { GithubStarsButton } from "@/components/input/github-stars-button";
 import { LocaleCombobox } from "@/components/locale/combobox";
 import { ThemeToggleButton } from "@/components/theme/toggle-button";
 import { BrandIcon } from "@/components/ui/brand-icon";
+import { Button } from "@/components/ui/button";
 
 export function Header() {
 	return (
@@ -31,8 +32,14 @@ export function Header() {
 
 					<ThemeToggleButton />
 
-					<div className="hidden sm:block">
+					<div className="hidden items-center gap-x-4 sm:flex">
 						<GithubStarsButton />
+
+						<Button asChild size="icon">
+							<Link to="/dashboard">
+								<ArrowRightIcon />
+							</Link>
+						</Button>
 					</div>
 				</div>
 			</div>

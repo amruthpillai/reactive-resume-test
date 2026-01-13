@@ -4,6 +4,7 @@ import { GithubLogoIcon, LinkedinLogoIcon, XLogoIcon } from "@phosphor-icons/rea
 import { motion } from "motion/react";
 import { useState } from "react";
 import { BrandIcon } from "@/components/ui/brand-icon";
+import { Button } from "@/components/ui/button";
 import { Copyright } from "@/components/ui/copyright";
 
 type FooterLinkItem = {
@@ -38,8 +39,8 @@ const getCommunityLinks = (): FooterLinkItem[] => [
 
 const socialLinks: SocialLink[] = [
 	{ url: "https://github.com/AmruthPillai/Reactive-Resume", label: "GitHub", icon: GithubLogoIcon },
-	{ url: "https://linkedin.com/company/reactive-resume", label: "LinkedIn", icon: LinkedinLogoIcon },
-	{ url: "https://x.com/rxresu_me", label: "X (Twitter)", icon: XLogoIcon },
+	{ url: "https://linkedin.com/in/amruthpillai", label: "LinkedIn", icon: LinkedinLogoIcon },
+	{ url: "https://x.com/KingOKings", label: "X (Twitter)", icon: XLogoIcon },
 ];
 
 export function Footer() {
@@ -68,18 +69,11 @@ export function Footer() {
 					{/* Social Links */}
 					<div className="flex items-center gap-2 pt-2">
 						{socialLinks.map((social) => (
-							<motion.a
-								key={social.label}
-								href={social.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-								aria-label={social.label}
-							>
-								<social.icon size={18} />
-							</motion.a>
+							<Button key={social.label} size="icon-sm" variant="ghost">
+								<motion.a href={social.url} target="_blank" rel="noopener noreferrer" aria-label={social.label}>
+									<social.icon size={18} />
+								</motion.a>
+							</Button>
 						))}
 					</div>
 				</div>

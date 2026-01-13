@@ -3,6 +3,6 @@
 	"entry": ["src/router.tsx"],
 	"tailwind": { "entry": ["src/styles.css"] },
 	"project": ["src/**/*.{js,jsx,ts,tsx,mdx,css}"],
-	"ignoreDependencies": ["npm-check-updates", "node-addon-api", "node-gyp"],
+	"ignoreDependencies": ["npm-check-updates", "node-addon-api", "node-gyp", "mint"],
 	"ignore": ["src/components/**/*.{ts,tsx}", "src/schema/**/*.ts", "src/routeTree.gen.ts"]
 }

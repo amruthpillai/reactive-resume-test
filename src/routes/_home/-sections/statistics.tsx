@@ -1,8 +1,10 @@
 import { t } from "@lingui/core/macro";
 import type { Icon } from "@phosphor-icons/react";
 import { FileTextIcon, UsersIcon } from "@phosphor-icons/react";
+import { useSuspenseQueries } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { CountUp } from "@/components/animation/count-up";
+import { orpc } from "@/integrations/orpc/client";
 
 type Statistic = {
 	id: string;
@@ -11,17 +13,17 @@ type Statistic = {
 	icon: Icon;
 };
 
-const getStatistics = (): Statistic[] => [
+const getStatistics = (userCount: number, resumeCount: number): Statistic[] => [
 	{
 		id: "users",
 		label: t`Users`,
-		value: 650_000,
+		value: userCount,
 		icon: UsersIcon,
 	},
 	{
 		id: "resumes",
 		label: t`Resumes`,
-		value: 840_000,
+		value: resumeCount,
 		icon: FileTextIcon,
 	},
 ];
@@ -83,10 +85,14 @@ function StatisticCard({ statistic, index }: StatisticCardProps) {
 }
 
 export function Statistics() {
+	const [userCountResult, resumeCountResult] = useSuspenseQueries({
+		queries: [orpc.statistics.user.getCount.queryOptions(), orpc.statistics.resume.getCount.queryOptions()],
+	});
+
 	return (
 		<section id="statistics">
 			<div className="grid grid-cols-1 sm:grid-cols-2">
-				{getStatistics().map((statistic, index) => (
+				{getStatistics(userCountResult.data, resumeCountResult.data).map((statistic, index) => (
 					<StatisticCard key={statistic.id} statistic={statistic} index={index} />
 				))}
 			</div>

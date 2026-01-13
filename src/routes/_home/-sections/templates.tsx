@@ -110,7 +110,7 @@ export function Templates() {
 				</p>
 			</motion.div>
 
-			<div className="relative mt-8 -rotate-3 py-8 sm:-rotate-6 lg:mt-0 lg:-rotate-8">
+			<div className="relative mt-8 -rotate-3 py-8 sm:-rotate-4 lg:mt-0 lg:-rotate-5">
 				{/* Marquee container with minimum height */}
 				<div className="flex min-h-[280px] flex-col gap-y-4 sm:min-h-[320px] sm:gap-y-6 md:min-h-[380px] lg:min-h-[420px]">
 					{/* First row - moves left to right */}

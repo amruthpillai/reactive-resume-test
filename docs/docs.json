@@ -23,11 +23,15 @@
 	"navigation": {
 		"tabs": [
 			{
-				"tab": "Guides",
+				"tab": "Documentation",
 				"groups": [
 					{
 						"group": "Getting Started",
 						"pages": ["getting-started/index", "getting-started/quickstart"]
+					},
+					{
+						"group": "Guides",
+						"pages": ["guides/index", "guides/quickstart"]
 					},
 					{
 						"group": "Contributing",

@@ -7,9 +7,10 @@ const textClassName = cn("fill-transparent font-bold text-3xl leading-none track
 type TextMaskEffectProps = {
 	text: string;
 	duration?: number;
+	className?: string;
 };
 
-export const TextMaskEffect = ({ text, duration = 6 }: TextMaskEffectProps) => {
+export const TextMaskEffect = ({ text, duration = 6, className }: TextMaskEffectProps) => {
 	const svgRef = useRef<SVGSVGElement>(null);
 	const [cursor, setCursor] = useState({ x: 0, y: 0 });
 	const [hovered, setHovered] = useState(false);
@@ -31,7 +32,7 @@ export const TextMaskEffect = ({ text, duration = 6 }: TextMaskEffectProps) => {
 			width="100%"
 			height="100%"
 			viewBox="0 0 300 40"
-			className="select-none"
+			className={cn("select-none", className)}
 			xmlns="http://www.w3.org/2000/svg"
 			onMouseEnter={() => setHovered(true)}
 			onMouseLeave={() => setHovered(false)}

@@ -14,7 +14,7 @@ export function Prefooter() {
 			</div>
 
 			<div className="relative space-y-8">
-				<TextMaskEffect text="Reactive Resume" />
+				<TextMaskEffect text="Reactive Resume" className="hidden md:block" />
 
 				<motion.div
 					className="mx-auto max-w-3xl space-y-8 px-6 text-center md:px-8 xl:px-0"

@@ -1,11 +1,11 @@
-!.env.example
-.DS_Store
+dist
 .env*
+/data
 .nitro
 .output
-.tanstack
 .vercel
-/data
 coverage
-dist
+.DS_Store
+.tanstack
 node_modules
+!.env.example

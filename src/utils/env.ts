@@ -9,8 +9,8 @@ export const env = createEnv({
 	client: {},
 
 	server: {
-		// Basics
-		PORT: z.coerce.number().default(3000),
+		// Server
+		TZ: z.string().default("Etc/UTC"),
 		APP_URL: z.url({ protocol: /https?/ }),
 		PRINTER_APP_URL: z.url({ protocol: /https?/ }).optional(),
 
@@ -19,11 +19,11 @@ export const env = createEnv({
 		GOTENBERG_USERNAME: z.string().min(1).optional(),
 		GOTENBERG_PASSWORD: z.string().min(1).optional(),
 
-		// Authentication
-		AUTH_SECRET: z.string().min(1),
-
 		// Database
 		DATABASE_URL: z.url({ protocol: /postgres(ql)?/ }),
+
+		// Authentication
+		AUTH_SECRET: z.string().min(1),
 
 		// Social Auth (Google)
 		GOOGLE_CLIENT_ID: z.string().min(1).optional(),
@@ -33,13 +33,6 @@ export const env = createEnv({
 		GITHUB_CLIENT_ID: z.string().min(1).optional(),
 		GITHUB_CLIENT_SECRET: z.string().min(1).optional(),
 
-		// Storage (Optional)
-		S3_ACCESS_KEY_ID: z.string().min(1).optional(),
-		S3_SECRET_ACCESS_KEY: z.string().min(1).optional(),
-		S3_REGION: z.string().default("us-east-1"),
-		S3_ENDPOINT: z.url({ protocol: /https?/ }).optional(),
-		S3_BUCKET: z.string().min(1).optional(),
-
 		// Custom OAuth Provider
 		OAUTH_PROVIDER_NAME: z.string().min(1).optional(),
 		OAUTH_CLIENT_ID: z.string().min(1).optional(),
@@ -47,6 +40,13 @@ export const env = createEnv({
 		OAUTH_DISCOVERY_URL: z.url({ protocol: /https?/ }).optional(),
 		OAUTH_AUTHORIZATION_URL: z.url({ protocol: /https?/ }).optional(),
 		OAUTH_REDIRECT_URI: z.url({ protocol: /https?/, pattern: /\/api\/auth\/oauth2\/callback\/custom/ }).optional(),
+
+		// Storage (Optional)
+		S3_ACCESS_KEY_ID: z.string().min(1).optional(),
+		S3_SECRET_ACCESS_KEY: z.string().min(1).optional(),
+		S3_REGION: z.string().default("us-east-1"),
+		S3_ENDPOINT: z.url({ protocol: /https?/ }).optional(),
+		S3_BUCKET: z.string().min(1).optional(),
 
 		// Feature Flags
 		FLAG_DEBUG_PRINTER: z.stringbool().default(false),
