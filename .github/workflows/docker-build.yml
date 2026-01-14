@@ -56,7 +56,7 @@ jobs:
         with:
           logout: false
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: amruthpillai
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get version from package.json
