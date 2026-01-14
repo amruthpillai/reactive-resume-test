@@ -12,6 +12,9 @@ concurrency:
   group: docker-build
   cancel-in-progress: true
 
+env:
+  IMAGE: ${{ github.actor }}/${{ github.repository }}
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -26,6 +29,11 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+
+      # add step to print the image name
+      - name: Print image name
+        run: |
+          echo "IMAGE: ${{ env.IMAGE }}"
 
       - name: Install cosign
         if: github.event_name != 'pull_request'
@@ -65,8 +73,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/amruthpillai/reactive-resume-start
-            docker.io/amruthpillai/reactive-resume-start
+            ghcr.io/${{ env.IMAGE }}
+            docker.io/${{ env.IMAGE }}
           tags: |
             type=sha,format=short
             type=raw,value=latest
