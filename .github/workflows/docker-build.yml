@@ -7,7 +7,7 @@ on:
       - main
 
 concurrency:
-  group: docker-image-build-${{ github.ref }}
+  group: docker-build
   cancel-in-progress: true
 
 env:
