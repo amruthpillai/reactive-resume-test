@@ -71,9 +71,9 @@ jobs:
             ghcr.io/${{ env.IMAGE_NAME }}
             docker.io/${{ env.IMAGE_NAME }}
           tags: |
-            type=sha
+            type=sha,format=short
             type=raw,value=latest
-            type=semver,type={{raw}},value=v${{ env.VERSION }}
+            type=raw,value=v${{ env.VERSION }}
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
