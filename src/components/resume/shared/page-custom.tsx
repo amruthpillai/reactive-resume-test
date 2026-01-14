@@ -18,7 +18,7 @@ export function PageCustomSection({ sectionId, className }: PageCustomSectionPro
 	return (
 		<section
 			className={cn(
-				`page-section page-custom-section page-section-${sectionId}`,
+				`page-section page-section-custom page-section-${sectionId}`,
 				section.hidden && "hidden",
 				section.content === "" && "hidden",
 				className,

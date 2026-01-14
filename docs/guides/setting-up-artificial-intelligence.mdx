@@ -1,0 +1,52 @@
+---
+title: "Setting up artificial intelligence"
+description: "Learn how to configure an AI provider and API key for AI-assisted features in Reactive Resume"
+---
+
+<Steps>
+  <Step title="Sign in to the dashboard">
+    Head over to [https://rxresu.me](https://rxresu.me) and sign in with your account credentials.
+  </Step>
+
+  <Step title="Navigate to Artificial Intelligence settings">
+    Once you're in the dashboard, look for the sidebar navigation on the left. Under the <Badge>Settings</Badge> section, click on <Badge>Artificial Intelligence</Badge>.
+  </Step>
+
+  <Step title="Understand where your data is stored">
+    The configuration you enter on this page is stored locally in your browser.
+
+    <Info>
+      Your API key and AI configuration are never sent to Reactive Resume servers. They stay on your device.
+    </Info>
+  </Step>
+
+  <Step title="Choose a provider">
+    In the <Badge>Provider</Badge> field, choose one of the supported providers:
+
+    - **OpenAI**
+    - **Google Gemini**
+    - **Anthropic Claude**
+    - **Ollama** (coming soon)
+  </Step>
+
+  <Step title="Enter a model name">
+    In the <Badge>Model</Badge> field, enter the model you want to use (for example, <code>gpt-5.2</code>, <code>claude-4.5-opus</code>, or <code>gemini-3-flash</code>).
+  </Step>
+
+  <Step title="Paste your API key">
+    In the <Badge>API Key</Badge> field, paste your provider API key.
+
+    <Warning>
+      Treat this key like a password. Anyone with it can use your provider account and may incur costs.
+    </Warning>
+  </Step>
+
+  <Step title="Verify it's enabled">
+    After setting the provider, model, and API key, the status indicator at the bottom of the page should show <Badge>Enabled</Badge>.
+
+    <Tip>
+      If the status shows <Badge>Disabled</Badge>, double-check that all three fields are filled in.
+    </Tip>
+  </Step>
+</Steps>
+

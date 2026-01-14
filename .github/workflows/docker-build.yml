@@ -22,19 +22,12 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - name: Install cosign
-        if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@v4.0.0
-        with:
-          cosign-release: 'v3.0.3'
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v3
@@ -76,7 +69,6 @@ jobs:
             type=raw,value=v${{ env.VERSION }}
 
       - name: Build and Push Docker Image
-        id: build-and-push
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -86,15 +78,3 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Sign the images with GitHub OIDC Token
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        run: |
-          images=""
-          for tag in ${TAGS}; do
-            images+="${tag}@${DIGEST} "
-          done
-          cosign sign --yes ${images}

@@ -17,10 +17,6 @@ const searchSchema = z.object({ token: z.string().min(1) });
 
 export const Route = createFileRoute("/auth/reset-password")({
 	component: RouteComponent,
-	beforeLoad: async ({ context }) => {
-		if (context.session) throw redirect({ to: "/dashboard", replace: true });
-		return { session: null };
-	},
 	validateSearch: zodValidator(searchSchema),
 	onError: (error) => {
 		if (error instanceof SearchParamError) {
@@ -69,9 +65,15 @@ function RouteComponent() {
 
 	return (
 		<>
-			<h1 className="text-center font-bold text-2xl tracking-tight">
-				<Trans>Reset your password</Trans>
-			</h1>
+			<div className="space-y-1 text-center">
+				<h1 className="font-bold text-2xl tracking-tight">
+					<Trans>Reset your password</Trans>
+				</h1>
+
+				<div className="text-muted-foreground">
+					<Trans>Please enter a new password for your account</Trans>
+				</div>
+			</div>
 
 			<Form {...form}>
 				<form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
@@ -81,7 +83,7 @@ function RouteComponent() {
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel>
-									<Trans>Password</Trans>
+									<Trans>New Password</Trans>
 								</FormLabel>
 								<div className="flex items-center gap-x-1.5">
 									<FormControl>

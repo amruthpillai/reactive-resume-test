@@ -30,6 +30,36 @@
 						"pages": ["getting-started/index", "getting-started/quickstart"]
 					},
 					{
+						"group": "Account",
+						"pages": [
+							"guides/creating-an-account",
+							"guides/updating-your-profile",
+							"guides/linking-social-accounts",
+							"guides/deleting-your-account"
+						]
+					},
+					{
+						"group": "Resume Builder",
+						"pages": [
+							"guides/creating-your-first-resume",
+							"guides/exporting-your-resume",
+							"guides/sharing-your-resume-publicly",
+							"guides/using-custom-css"
+						]
+					},
+					{
+						"group": "Security",
+						"pages": ["guides/setting-up-two-factor-authentication", "guides/setting-up-passkeys"]
+					},
+					{
+						"group": "Integrations",
+						"pages": ["guides/using-the-api", "guides/setting-up-artificial-intelligence"]
+					},
+					{
+						"group": "Self-hosting",
+						"pages": ["guides/self-hosting-with-docker"]
+					},
+					{
 						"group": "Contributing",
 						"pages": ["contributing/architecture", "contributing/development"]
 					},

@@ -51,6 +51,7 @@ const CSS_SELECTORS = [
 	".page-section-publications",
 	".page-section-volunteer",
 	".page-section-references",
+	".page-section-custom",
 	// Generic item selectors
 	".section-item",
 	".section-item-header",
@@ -152,9 +153,18 @@ const CSS_SELECTORS = [
 	".references-item-name",
 	".references-item-description",
 	// Template-specific selectors
-	".template-onyx",
-	".template-ditto",
+	".template-azurill",
 	".template-bronzor",
+	".template-chikorita",
+	".template-ditto",
+	".template-gengar",
+	".template-glalie",
+	".template-kakuna",
+	".template-lapras",
+	".template-leafish",
+	".template-onyx",
+	".template-pikachu",
+	".template-rhyhorn",
 ];
 
 function CSSSectionForm() {

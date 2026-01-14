@@ -1,6 +1,7 @@
 import z from "zod";
 import { protectedProcedure, publicProcedure } from "../context";
 import { printerService } from "../services/printer";
+import { resumeService } from "../services/resume";
 
 export const printerRouter = {
 	printResumeAsPDF: publicProcedure
@@ -13,8 +14,14 @@ export const printerRouter = {
 		})
 		.input(z.object({ id: z.string() }))
 		.output(z.instanceof(File))
-		.handler(async ({ input }) => {
-			return await printerService.printResumeAsPDF({ id: input.id });
+		.handler(async ({ input, context }) => {
+			const file = await printerService.printResumeAsPDF({ id: input.id });
+
+			if (!context.user) {
+				await resumeService.statistics.increment({ id: input.id, downloads: true });
+			}
+
+			return file;
 		}),
 
 	getResumeScreenshot: protectedProcedure

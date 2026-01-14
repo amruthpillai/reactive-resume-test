@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
 import {
@@ -20,6 +21,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
+import { useAIStore } from "@/integrations/ai/store";
 import { DOCXParser } from "@/integrations/import/docx-parser";
 import { JSONResumeImporter } from "@/integrations/import/json-resume";
 import { PDFParser } from "@/integrations/import/pdf-parser";
@@ -70,7 +72,9 @@ const formSchema = z.discriminatedUnion("type", [
 type FormValues = z.infer<typeof formSchema>;
 
 export function ImportResumeDialog({ open, onOpenChange }: DialogProps<"resume.import">) {
+	const { isEnabled: isAIEnabled } = useAIStore();
 	const { closeDialog } = useDialogStore();
+
 	const inputRef = useRef<HTMLInputElement>(null);
 	const prevTypeRef = useRef<string>("");
 
@@ -129,11 +133,25 @@ export function ImportResumeDialog({ open, onOpenChange }: DialogProps<"resume.i
 			}
 
 			if (values.type === "pdf") {
+				if (!isAIEnabled()) {
+					toast.error(t`This feature requires AI Integration to be enabled. Please enable it in the settings.`, {
+						id: toastId,
+					});
+					return;
+				}
+
 				const parser = new PDFParser();
 				data = await parser.parse(values.file);
 			}
 
 			if (values.type === "docx") {
+				if (!isAIEnabled()) {
+					toast.error(t`This feature requires AI Integration to be enabled. Please enable it in the settings.`, {
+						id: toastId,
+					});
+					return;
+				}
+
 				const parser = new DOCXParser();
 				data = await parser.parse(values.file);
 			}
@@ -185,11 +203,25 @@ export function ImportResumeDialog({ open, onOpenChange }: DialogProps<"resume.i
 											value={field.value}
 											onValueChange={field.onChange}
 											options={[
-												{ label: "Reactive Resume (JSON)", value: "reactive-resume-json" },
-												{ label: "Reactive Resume v4 (JSON)", value: "reactive-resume-v4-json" },
-												{ label: "JSON Resume", value: "json-resume-json" },
-												{ label: "PDF", value: "pdf" },
-												{ label: "Microsoft Word", value: "docx" },
+												{ value: "reactive-resume-json", label: "Reactive Resume (JSON)" },
+												{ value: "reactive-resume-v4-json", label: "Reactive Resume v4 (JSON)" },
+												{ value: "json-resume-json", label: "JSON Resume" },
+												{
+													value: "pdf",
+													label: (
+														<div className="flex items-center gap-x-2">
+															PDF <Badge>{t`AI`}</Badge>
+														</div>
+													),
+												},
+												{
+													value: "docx",
+													label: (
+														<div className="flex items-center gap-x-2">
+															Microsoft Word <Badge>{t`AI`}</Badge>
+														</div>
+													),
+												},
 											]}
 										/>
 									</FormControl>
@@ -199,6 +231,7 @@ export function ImportResumeDialog({ open, onOpenChange }: DialogProps<"resume.i
 						/>
 
 						<FormField
+							key={type}
 							control={form.control}
 							name="file"
 							render={({ field }) => (

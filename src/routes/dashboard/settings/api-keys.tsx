@@ -72,7 +72,7 @@ function RouteComponent() {
 
 					<div className="flex-1 space-y-2">
 						<h3 className="font-semibold">
-							<Trans>What can I do with the API?</Trans>
+							<Trans>How do I use the API?</Trans>
 						</h3>
 
 						<p className="text-muted-foreground leading-relaxed">
@@ -85,7 +85,7 @@ function RouteComponent() {
 						<Button asChild variant="link">
 							<a href="https://docs.rxresu.me/api-reference" target="_blank" rel="noopener noreferrer">
 								<LinkSimpleIcon />
-								<Trans>API Documentation</Trans>
+								<Trans>API Reference</Trans>
 							</a>
 						</Button>
 					</div>
