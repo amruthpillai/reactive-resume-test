@@ -10,15 +10,10 @@ import { env } from "@/utils/env";
 import { hashPassword, verifyPassword } from "@/utils/password";
 import { generateId, toUsername } from "@/utils/string";
 import { schema } from "../drizzle";
+import { sendEmail } from "../email/service";
 
 function isCustomOAuthProviderEnabled() {
-	return (
-		env.OAUTH_CLIENT_ID &&
-		env.OAUTH_CLIENT_SECRET &&
-		env.OAUTH_DISCOVERY_URL &&
-		env.OAUTH_AUTHORIZATION_URL &&
-		env.OAUTH_REDIRECT_URI
-	);
+	return env.OAUTH_CLIENT_ID && env.OAUTH_CLIENT_SECRET && env.OAUTH_DISCOVERY_URL && env.OAUTH_AUTHORIZATION_URL;
 }
 
 const getAuthConfig = () => {
@@ -31,7 +26,7 @@ const getAuthConfig = () => {
 			clientSecret: env.OAUTH_CLIENT_SECRET,
 			discoveryUrl: env.OAUTH_DISCOVERY_URL,
 			authorizationUrl: env.OAUTH_AUTHORIZATION_URL,
-			redirectURI: env.OAUTH_REDIRECT_URI,
+			redirectURI: `${env.APP_URL}/api/auth/oauth2/callback/custom`,
 			mapProfileToUser: async (profile) => {
 				if (!profile.email) {
 					throw new BetterAuthError(
@@ -80,7 +75,11 @@ const getAuthConfig = () => {
 			requireEmailVerification: false,
 			disableSignUp: env.FLAG_DISABLE_SIGNUP,
 			sendResetPassword: async ({ user, url }) => {
-				console.log(`[EMAIL] [${user.email}] To reset your password, please visit the following URL: ${url}`);
+				await sendEmail({
+					to: user.email,
+					subject: "Reset your password",
+					text: `To reset your password, please visit the following URL: ${url}. If you did not request a password reset, please ignore this email.`,
+				});
 			},
 			password: {
 				hash: (password) => hashPassword(password),
@@ -92,7 +91,11 @@ const getAuthConfig = () => {
 			sendOnSignUp: true,
 			autoSignInAfterVerification: true,
 			sendVerificationEmail: async ({ user, url }) => {
-				console.log(`[EMAIL] [${user.email}] To verify your email, please visit the following URL: ${url}`);
+				await sendEmail({
+					to: user.email,
+					subject: "Verify your email",
+					text: `To verify your email, please visit the following URL: ${url}.`,
+				});
 			},
 		},
 
@@ -100,9 +103,11 @@ const getAuthConfig = () => {
 			changeEmail: {
 				enabled: true,
 				sendChangeEmailVerification: async ({ user, newEmail, url }) => {
-					console.log(
-						`[EMAIL] [${user.email}] To change your email to ${newEmail}, please visit the following URL: ${url}`,
-					);
+					await sendEmail({
+						to: newEmail,
+						subject: "Verify your new email",
+						text: `You recently requested to change your email on Reactive Resume from ${user.email} to ${newEmail}. To verify this change, please visit the following URL: ${url}.`,
+					});
 				},
 			},
 			additionalFields: {
@@ -110,6 +115,13 @@ const getAuthConfig = () => {
 					type: "string",
 					required: true,
 				},
+			},
+		},
+
+		account: {
+			accountLinking: {
+				enabled: true,
+				trustedProviders: ["google", "github"],
 			},
 		},
 

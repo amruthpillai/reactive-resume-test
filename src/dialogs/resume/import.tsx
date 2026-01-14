@@ -20,9 +20,11 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
+import { DOCXParser } from "@/integrations/import/docx-parser";
 import { JSONResumeImporter } from "@/integrations/import/json-resume";
 import { PDFParser } from "@/integrations/import/pdf-parser";
 import { ReactiveResumeJSONImporter } from "@/integrations/import/reactive-resume-json";
+import { ReactiveResumeV4JSONImporter } from "@/integrations/import/reactive-resume-v4-json";
 import { orpc } from "@/integrations/orpc/client";
 import type { ResumeData } from "@/schema/resume/data";
 import { cn } from "@/utils/style";
@@ -47,6 +49,12 @@ const formSchema = z.discriminatedUnion("type", [
 	}),
 	z.object({
 		type: z.literal("reactive-resume-json"),
+		file: z
+			.instanceof(File)
+			.refine((file) => file.type === "application/json", { message: "File must be a JSON file" }),
+	}),
+	z.object({
+		type: z.literal("reactive-resume-v4-json"),
 		file: z
 			.instanceof(File)
 			.refine((file) => file.type === "application/json", { message: "File must be a JSON file" }),
@@ -114,8 +122,19 @@ export function ImportResumeDialog({ open, onOpenChange }: DialogProps<"resume.i
 				data = importer.parse(json);
 			}
 
+			if (values.type === "reactive-resume-v4-json") {
+				const json = await values.file.text();
+				const importer = new ReactiveResumeV4JSONImporter();
+				data = importer.parse(json);
+			}
+
 			if (values.type === "pdf") {
 				const parser = new PDFParser();
+				data = await parser.parse(values.file);
+			}
+
+			if (values.type === "docx") {
+				const parser = new DOCXParser();
 				data = await parser.parse(values.file);
 			}
 
@@ -167,6 +186,7 @@ export function ImportResumeDialog({ open, onOpenChange }: DialogProps<"resume.i
 											onValueChange={field.onChange}
 											options={[
 												{ label: "Reactive Resume (JSON)", value: "reactive-resume-json" },
+												{ label: "Reactive Resume v4 (JSON)", value: "reactive-resume-v4-json" },
 												{ label: "JSON Resume", value: "json-resume-json" },
 												{ label: "PDF", value: "pdf" },
 												{ label: "Microsoft Word", value: "docx" },

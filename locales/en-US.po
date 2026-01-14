@@ -218,7 +218,7 @@ msgstr "An error occurred while loading the page."
 msgid "An unknown error occurred while adding your passkey."
 msgstr "An unknown error occurred while adding your passkey."
 
-#: src/dialogs/resume/import.tsx:131
+#: src/dialogs/resume/import.tsx:150
 msgid "An unknown error occurred while importing your resume."
 msgstr "An unknown error occurred while importing your resume."
 
@@ -456,7 +456,7 @@ msgstr "Circle"
 msgid "Clear selection"
 msgstr "Clear selection"
 
-#: src/dialogs/resume/import.tsx:203
+#: src/dialogs/resume/import.tsx:223
 msgid "Click here to select a file to import"
 msgstr "Click here to select a file to import"
 
@@ -507,7 +507,7 @@ msgstr "Continue"
 msgid "Continue where you left off"
 msgstr "Continue where you left off"
 
-#: src/dialogs/resume/import.tsx:145
+#: src/dialogs/resume/import.tsx:164
 msgid "Continue where you left off by importing an existing resume you created using Reactive Resume or any another resume builder. Supported formats include PDF, Microsoft Word, as well as JSON files from Reactive Resume."
 msgstr "Continue where you left off by importing an existing resume you created using Reactive Resume or any another resume builder. Supported formats include PDF, Microsoft Word, as well as JSON files from Reactive Resume."
 
@@ -1117,20 +1117,20 @@ msgstr "How is my data protected?"
 msgid "Icon"
 msgstr "Icon"
 
-#: src/dialogs/resume/import.tsx:217
+#: src/dialogs/resume/import.tsx:237
 msgid "Import"
 msgstr "Import"
 
-#: src/dialogs/resume/import.tsx:142
+#: src/dialogs/resume/import.tsx:161
 #: src/routes/dashboard/resumes/-components/import-card.tsx:11
 msgid "Import an existing resume"
 msgstr "Import an existing resume"
 
-#: src/dialogs/resume/import.tsx:100
+#: src/dialogs/resume/import.tsx:108
 msgid "Importing your resume..."
 msgstr "Importing your resume..."
 
-#: src/dialogs/resume/import.tsx:217
+#: src/dialogs/resume/import.tsx:237
 msgid "Importing..."
 msgstr "Importing..."
 
@@ -2009,7 +2009,7 @@ msgstr "Two-factor authentication has been disabled successfully."
 msgid "Two-factor authentication has been setup successfully."
 msgstr "Two-factor authentication has been setup successfully."
 
-#: src/dialogs/resume/import.tsx:161
+#: src/dialogs/resume/import.tsx:180
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx:272
 msgid "Type"
 msgstr "Type"
@@ -2034,7 +2034,7 @@ msgstr "Underline"
 msgid "Unlimited Resumes"
 msgstr "Unlimited Resumes"
 
-#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:88
+#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:87
 msgid "Unlinking your {providerName} account..."
 msgstr "Unlinking your {providerName} account..."
 
@@ -2267,14 +2267,6 @@ msgstr "You cannot use the passkey \"{0}\" anymore to sign in after deletion. Th
 msgid "You've got mail!"
 msgstr "You've got mail!"
 
-#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:77
-msgid "Your {providerName} account has been linked successfully."
-msgstr "Your {providerName} account has been linked successfully."
-
-#: src/routes/dashboard/settings/authentication/-components/hooks.tsx:96
-msgid "Your {providerName} account has been unlinked successfully."
-msgstr "Your {providerName} account has been unlinked successfully."
-
 #: src/routes/dashboard/settings/danger-zone.tsx:44
 msgid "Your account has been deleted successfully."
 msgstr "Your account has been deleted successfully."
@@ -2329,7 +2321,7 @@ msgstr "Your resume has been deleted successfully."
 msgid "Your resume has been duplicated successfully."
 msgstr "Your resume has been duplicated successfully."
 
-#: src/dialogs/resume/import.tsx:125
+#: src/dialogs/resume/import.tsx:144
 msgid "Your resume has been imported successfully."
 msgstr "Your resume has been imported successfully."
 

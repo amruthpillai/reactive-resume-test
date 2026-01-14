@@ -2,7 +2,7 @@
 
 const nextPackages = ["@monaco-editor/react"];
 
-const betaPackages = ["vite", "drizzle-orm", "drizzle-kit"];
+const betaPackages = ["drizzle-orm", "drizzle-kit"];
 
 const rejectedPackages = ["@tanstack/react-query"];
 

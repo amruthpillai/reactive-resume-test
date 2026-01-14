@@ -1,7 +1,7 @@
 {
 	"version": "8",
 	"dialect": "postgres",
-	"id": "fc92cfbb-dee7-4963-bd66-5b1aa8363a10",
+	"id": "ce0ad8e6-02da-4a87-a914-7cbe9f3962b9",
 	"prevIds": ["00000000-0000-0000-0000-000000000000"],
 	"ddl": [
 		{
@@ -59,7 +59,7 @@
 			"schema": "public"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -98,7 +98,7 @@
 			"table": "account"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -228,7 +228,7 @@
 			"table": "account"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -293,7 +293,7 @@
 			"table": "apikey"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -501,7 +501,7 @@
 			"table": "apikey"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -618,7 +618,7 @@
 			"table": "passkey"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -657,7 +657,7 @@
 			"table": "passkey"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -761,7 +761,7 @@
 			"table": "resume"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -800,7 +800,7 @@
 			"table": "resume"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -865,7 +865,7 @@
 			"table": "resume_statistics"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -904,7 +904,7 @@
 			"table": "resume_statistics"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -956,7 +956,7 @@
 			"table": "session"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -1008,7 +1008,7 @@
 			"table": "session"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -1021,7 +1021,7 @@
 			"table": "two_factor"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -1086,7 +1086,7 @@
 			"table": "two_factor"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,
@@ -1216,7 +1216,7 @@
 			"table": "user"
 		},
 		{
-			"type": "text",
+			"type": "uuid",
 			"typeSchema": null,
 			"notNull": true,
 			"dimensions": 0,

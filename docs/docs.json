@@ -32,6 +32,10 @@
 					{
 						"group": "Contributing",
 						"pages": ["contributing/architecture", "contributing/development"]
+					},
+					{
+						"group": "Legal",
+						"pages": ["legal/license", "legal/privacy-policy", "legal/terms-of-service"]
 					}
 				]
 			},

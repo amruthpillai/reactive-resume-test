@@ -1,8 +1,8 @@
 CREATE TABLE "account" (
-	"id" text PRIMARY KEY,
+	"id" uuid PRIMARY KEY,
 	"account_id" text NOT NULL,
 	"provider_id" text DEFAULT 'credential' NOT NULL,
-	"user_id" text NOT NULL,
+	"user_id" uuid NOT NULL,
 	"scope" text,
 	"id_token" text,
 	"password" text,
@@ -15,12 +15,12 @@ CREATE TABLE "account" (
 );
 --> statement-breakpoint
 CREATE TABLE "apikey" (
-	"id" text PRIMARY KEY,
+	"id" uuid PRIMARY KEY,
 	"name" text,
 	"start" text,
 	"prefix" text,
 	"key" text NOT NULL,
-	"user_id" text NOT NULL,
+	"user_id" uuid NOT NULL,
 	"refill_interval" integer,
 	"refill_amount" integer,
 	"last_refill_at" timestamp,
@@ -39,7 +39,7 @@ CREATE TABLE "apikey" (
 );
 --> statement-breakpoint
 CREATE TABLE "passkey" (
-	"id" text PRIMARY KEY,
+	"id" uuid PRIMARY KEY,
 	"name" text,
 	"aaguid" text,
 	"public_key" text NOT NULL,
@@ -48,13 +48,13 @@ CREATE TABLE "passkey" (
 	"device_type" text NOT NULL,
 	"backed_up" boolean DEFAULT false NOT NULL,
 	"transports" text NOT NULL,
-	"user_id" text NOT NULL,
+	"user_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "resume" (
-	"id" text PRIMARY KEY,
+	"id" uuid PRIMARY KEY,
 	"name" text NOT NULL,
 	"slug" text NOT NULL,
 	"tags" text[] DEFAULT '{}'::text[] NOT NULL,
@@ -62,37 +62,37 @@ CREATE TABLE "resume" (
 	"is_locked" boolean DEFAULT false NOT NULL,
 	"password" text,
 	"data" jsonb NOT NULL,
-	"user_id" text NOT NULL,
+	"user_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "resume_slug_user_id_unique" UNIQUE("slug","user_id")
 );
 --> statement-breakpoint
 CREATE TABLE "resume_statistics" (
-	"id" text PRIMARY KEY,
+	"id" uuid PRIMARY KEY,
 	"views" integer DEFAULT 0 NOT NULL,
 	"downloads" integer DEFAULT 0 NOT NULL,
 	"last_viewed_at" timestamp,
 	"last_downloaded_at" timestamp,
-	"resume_id" text NOT NULL UNIQUE,
+	"resume_id" uuid NOT NULL UNIQUE,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "session" (
-	"id" text PRIMARY KEY,
+	"id" uuid PRIMARY KEY,
 	"token" text NOT NULL UNIQUE,
 	"ip_address" text,
 	"user_agent" text,
-	"user_id" text NOT NULL,
+	"user_id" uuid NOT NULL,
 	"expires_at" timestamp NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "two_factor" (
-	"id" text PRIMARY KEY,
-	"user_id" text NOT NULL,
+	"id" uuid PRIMARY KEY,
+	"user_id" uuid NOT NULL,
 	"secret" text,
 	"backup_codes" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE "two_factor" (
 );
 --> statement-breakpoint
 CREATE TABLE "user" (
-	"id" text PRIMARY KEY,
+	"id" uuid PRIMARY KEY,
 	"image" text,
 	"name" text NOT NULL,
 	"email" text NOT NULL UNIQUE,
@@ -113,7 +113,7 @@ CREATE TABLE "user" (
 );
 --> statement-breakpoint
 CREATE TABLE "verification" (
-	"id" text PRIMARY KEY,
+	"id" uuid PRIMARY KEY,
 	"identifier" text NOT NULL UNIQUE,
 	"value" text NOT NULL,
 	"expires_at" timestamp NOT NULL,

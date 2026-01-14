@@ -1,0 +1,762 @@
+import { flattenError, ZodError } from "zod";
+import { type ResumeData, resumeDataSchema } from "@/schema/resume/data";
+import { type Template, templateSchema } from "@/schema/templates";
+import { parseRgbString } from "@/utils/color";
+import { generateId } from "@/utils/string";
+
+function colorToRgba(color: string): string {
+	const parsed = parseRgbString(color);
+	if (!parsed) return "rgba(0, 0, 0, 1)";
+	return `rgba(${parsed.r}, ${parsed.g}, ${parsed.b}, ${parsed.a})`;
+}
+
+type V4ResumeData = {
+	basics: {
+		name: string;
+		headline: string;
+		email: string;
+		phone: string;
+		location: string;
+		url: {
+			label: string;
+			href: string;
+		};
+		customFields: Array<{
+			id?: string;
+			icon?: string;
+			text?: string;
+		}>;
+		picture: {
+			url: string;
+			size: number;
+			aspectRatio: number;
+			borderRadius: number;
+			effects: {
+				hidden: boolean;
+				border: boolean;
+				grayscale: boolean;
+			};
+		};
+	};
+	sections: {
+		summary: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			content: string;
+		};
+		awards: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				name?: string;
+				title?: string;
+				awarder?: string;
+				date?: string;
+				summary?: string;
+				url?: {
+					label: string;
+					href: string;
+				};
+			}>;
+		};
+		certifications: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				name?: string;
+				issuer?: string;
+				date?: string;
+				summary?: string;
+				url?: {
+					label: string;
+					href: string;
+				};
+			}>;
+		};
+		education: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				institution?: string;
+				studyType?: string;
+				area?: string;
+				score?: string;
+				date?: string;
+				summary?: string;
+				url?: {
+					label: string;
+					href: string;
+				};
+			}>;
+		};
+		experience: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				company?: string;
+				position?: string;
+				location?: string;
+				date?: string;
+				summary?: string;
+				url?: {
+					label: string;
+					href: string;
+				};
+			}>;
+		};
+		volunteer: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				organization?: string;
+				position?: string;
+				location?: string;
+				date?: string;
+				summary?: string;
+				url?: {
+					label: string;
+					href: string;
+				};
+			}>;
+		};
+		interests: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				name?: string;
+				keywords?: string[];
+			}>;
+		};
+		languages: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				language?: string;
+				fluency?: string;
+				level?: number;
+			}>;
+		};
+		profiles: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				network?: string;
+				username?: string;
+				icon?: string;
+				url?: {
+					label: string;
+					href: string;
+				};
+			}>;
+		};
+		projects: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				name?: string;
+				description?: string;
+				date?: string;
+				summary?: string;
+				keywords?: string[];
+				url?: {
+					label: string;
+					href: string;
+				};
+			}>;
+		};
+		publications: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				name?: string;
+				publisher?: string;
+				date?: string;
+				summary?: string;
+				url?: {
+					label: string;
+					href: string;
+				};
+			}>;
+		};
+		references: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				name?: string;
+				description?: string;
+				summary?: string;
+				url?: {
+					label: string;
+					href: string;
+				};
+			}>;
+		};
+		skills: {
+			name: string;
+			columns: number;
+			separateLinks: boolean;
+			visible: boolean;
+			id: string;
+			items: Array<{
+				id: string;
+				visible: boolean;
+				name?: string;
+				description?: string;
+				level?: number;
+				keywords?: string[];
+			}>;
+		};
+		custom?: Record<
+			string,
+			{
+				name: string;
+				columns: number;
+				separateLinks: boolean;
+				visible: boolean;
+				id: string;
+				items: Array<{
+					id: string;
+					visible: boolean;
+					name?: string;
+					description?: string;
+					date?: string;
+					location?: string;
+					summary?: string;
+					keywords?: string[];
+					url?: {
+						label: string;
+						href: string;
+					};
+				}>;
+			}
+		>;
+	};
+	metadata: {
+		template: string;
+		layout: Array<Array<string[]>>;
+		css: {
+			value: string;
+			visible: boolean;
+		};
+		page: {
+			margin: number;
+			format: "a4" | "letter";
+			options: {
+				breakLine: boolean;
+				pageNumbers: boolean;
+			};
+		};
+		theme: {
+			background: string;
+			text: string;
+			primary: string;
+		};
+		typography: {
+			font: {
+				family: string;
+				subset: string;
+				variants: string[];
+				size: number;
+			};
+			lineHeight: number;
+			hideIcons: boolean;
+			underlineLinks: boolean;
+		};
+		notes: string;
+	};
+};
+
+export class ReactiveResumeV4JSONImporter {
+	parse(json: string): ResumeData {
+		try {
+			const v4Data = JSON.parse(json) as V4ResumeData;
+
+			// Transform v4 format to current format
+			// Clamp picture size to valid range (32-100, but schema says max 512, so use 100 as safe limit)
+			const pictureSize = Math.max(32, Math.min(100, v4Data.basics.picture?.size ?? 80));
+
+			const transformed: ResumeData = {
+				picture: {
+					hidden: v4Data.basics.picture?.effects?.hidden ?? false,
+					url: v4Data.basics.picture?.url ?? "",
+					size: pictureSize,
+					rotation: 0,
+					aspectRatio: v4Data.basics.picture?.aspectRatio ?? 1,
+					borderRadius: v4Data.basics.picture?.borderRadius ?? 0,
+					borderColor: v4Data.basics.picture?.effects?.border ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0)",
+					borderWidth: v4Data.basics.picture?.effects?.border ? 1 : 0,
+					shadowColor: "rgba(0, 0, 0, 0.5)",
+					shadowWidth: 0,
+				},
+				basics: {
+					name: v4Data.basics.name ?? "",
+					headline: v4Data.basics.headline ?? "",
+					email: v4Data.basics.email ?? "",
+					phone: v4Data.basics.phone ?? "",
+					location: v4Data.basics.location ?? "",
+					website: {
+						url: v4Data.basics.url?.href ?? "",
+						label: v4Data.basics.url?.label ?? "",
+					},
+					customFields: (v4Data.basics.customFields ?? []).map((field) => ({
+						id: field.id ?? generateId(),
+						icon: field.icon ?? "",
+						text: field.text ?? "",
+					})),
+				},
+				summary: {
+					title: v4Data.sections.summary?.name ?? "",
+					columns: v4Data.sections.summary?.columns ?? 1,
+					hidden: !(v4Data.sections.summary?.visible ?? true),
+					content: v4Data.sections.summary?.content ?? "",
+				},
+				sections: {
+					profiles: {
+						title: (v4Data.sections.profiles?.name ?? "").trim() || "Profiles",
+						columns: v4Data.sections.profiles?.columns ?? 1,
+						hidden: !(v4Data.sections.profiles?.visible ?? true),
+						items: (v4Data.sections.profiles?.items ?? [])
+							.filter((item) => item.network && item.network.trim().length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								icon: item.icon ?? "",
+								network: item.network?.trim() || "Other",
+								username: item.username ?? "",
+								website: {
+									url: item.url?.href ?? "",
+									label: item.url?.label ?? "",
+								},
+							})),
+					},
+					experience: {
+						title: (v4Data.sections.experience?.name ?? "").trim() || "Experience",
+						columns: v4Data.sections.experience?.columns ?? 1,
+						hidden: !(v4Data.sections.experience?.visible ?? true),
+						items: (v4Data.sections.experience?.items ?? [])
+							.filter((item) => item.company && item.company.trim().length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								company: item.company?.trim() || "Company",
+								position: item.position ?? "",
+								location: item.location ?? "",
+								period: item.date ?? "",
+								website: {
+									url: item.url?.href ?? "",
+									label: item.url?.label ?? "",
+								},
+								description: item.summary ?? "",
+							})),
+					},
+					education: {
+						title: (v4Data.sections.education?.name ?? "").trim() || "Education",
+						columns: v4Data.sections.education?.columns ?? 1,
+						hidden: !(v4Data.sections.education?.visible ?? true),
+						items: (v4Data.sections.education?.items ?? [])
+							.filter((item) => item.institution && item.institution.trim().length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								school: item.institution?.trim() || "School",
+								degree: item.studyType ?? "",
+								area: item.area ?? "",
+								grade: item.score ?? "",
+								location: "",
+								period: item.date ?? "",
+								website: {
+									url: item.url?.href ?? "",
+									label: item.url?.label ?? "",
+								},
+								description: item.summary ?? "",
+							})),
+					},
+					projects: {
+						title: (v4Data.sections.projects?.name ?? "").trim() || "Projects",
+						columns: v4Data.sections.projects?.columns ?? 1,
+						hidden: !(v4Data.sections.projects?.visible ?? true),
+						items: (v4Data.sections.projects?.items ?? [])
+							.filter((item) => item.name && item.name.trim().length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								name: item.name?.trim() || "Project",
+								period: item.date ?? "",
+								website: {
+									url: item.url?.href ?? "",
+									label: item.url?.label ?? "",
+								},
+								description: item.summary ?? item.description ?? "",
+							})),
+					},
+					skills: {
+						title: (v4Data.sections.skills?.name ?? "").trim() || "Skills",
+						columns: v4Data.sections.skills?.columns ?? 1,
+						hidden: !(v4Data.sections.skills?.visible ?? true),
+						items: (v4Data.sections.skills?.items ?? [])
+							.filter((item) => item.name && item.name.trim().length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								icon: "",
+								name: item.name?.trim() || "Skill",
+								proficiency: item.description ?? "",
+								level: item.level ?? 0,
+								keywords: item.keywords ?? [],
+							})),
+					},
+					languages: {
+						title: (v4Data.sections.languages?.name ?? "").trim() || "Languages",
+						columns: v4Data.sections.languages?.columns ?? 1,
+						hidden: !(v4Data.sections.languages?.visible ?? true),
+						items: (v4Data.sections.languages?.items ?? [])
+							.filter((item) => item.language && item.language.trim().length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								language: item.language?.trim() || "Language",
+								fluency: item.fluency ?? "",
+								level: item.level ?? 0,
+							})),
+					},
+					interests: {
+						title: (v4Data.sections.interests?.name ?? "").trim() || "Interests",
+						columns: v4Data.sections.interests?.columns ?? 1,
+						hidden: !(v4Data.sections.interests?.visible ?? true),
+						items: (v4Data.sections.interests?.items ?? [])
+							.filter((item) => item.name && item.name.trim().length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								icon: "",
+								name: item.name?.trim() || "Interest",
+								keywords: item.keywords ?? [],
+							})),
+					},
+					awards: {
+						title: (v4Data.sections.awards?.name ?? "").trim() || "Awards",
+						columns: v4Data.sections.awards?.columns ?? 1,
+						hidden: !(v4Data.sections.awards?.visible ?? true),
+						items: (v4Data.sections.awards?.items ?? [])
+							.filter((item) => (item.title || item.name) && (item.title?.trim() || item.name?.trim() || "").length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								title: (item.title || item.name)?.trim() || "Award",
+								awarder: item.awarder ?? "",
+								date: item.date ?? "",
+								website: {
+									url: item.url?.href ?? "",
+									label: item.url?.label ?? "",
+								},
+								description: item.summary ?? "",
+							})),
+					},
+					certifications: {
+						title: (v4Data.sections.certifications?.name ?? "").trim() || "Certifications",
+						columns: v4Data.sections.certifications?.columns ?? 1,
+						hidden: !(v4Data.sections.certifications?.visible ?? true),
+						items: (v4Data.sections.certifications?.items ?? [])
+							.filter((item) => item.name && item.name.trim().length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								title: item.name?.trim() || "Certification",
+								issuer: item.issuer ?? "",
+								date: item.date ?? "",
+								website: {
+									url: item.url?.href ?? "",
+									label: item.url?.label ?? "",
+								},
+								description: item.summary ?? "",
+							})),
+					},
+					publications: {
+						title: (v4Data.sections.publications?.name ?? "").trim() || "Publications",
+						columns: v4Data.sections.publications?.columns ?? 1,
+						hidden: !(v4Data.sections.publications?.visible ?? true),
+						items: (v4Data.sections.publications?.items ?? [])
+							.filter((item) => item.name && item.name.trim().length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								title: item.name?.trim() || "Publication",
+								publisher: item.publisher ?? "",
+								date: item.date ?? "",
+								website: {
+									url: item.url?.href ?? "",
+									label: item.url?.label ?? "",
+								},
+								description: item.summary ?? "",
+							})),
+					},
+					volunteer: {
+						title: (v4Data.sections.volunteer?.name ?? "").trim() || "Volunteering",
+						columns: v4Data.sections.volunteer?.columns ?? 1,
+						hidden: !(v4Data.sections.volunteer?.visible ?? true),
+						items: (v4Data.sections.volunteer?.items ?? [])
+							.filter((item) => item.organization && item.organization.trim().length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								organization: item.organization?.trim() || "Organization",
+								location: item.location ?? "",
+								period: item.date ?? "",
+								website: {
+									url: item.url?.href ?? "",
+									label: item.url?.label ?? "",
+								},
+								description: item.summary ?? "",
+							})),
+					},
+					references: {
+						title: (v4Data.sections.references?.name ?? "").trim() || "References",
+						columns: v4Data.sections.references?.columns ?? 1,
+						hidden: !(v4Data.sections.references?.visible ?? true),
+						items: (v4Data.sections.references?.items ?? [])
+							.filter((item) => item.name && item.name.trim().length > 0)
+							.map((item) => ({
+								id: item.id ?? generateId(),
+								hidden: !(item.visible ?? true),
+								name: item.name?.trim() || "Reference",
+								description: item.summary ?? item.description ?? "",
+							})),
+					},
+				},
+				customSections: Object.entries(v4Data.sections.custom ?? {}).map(([sectionId, section]) => {
+					// Convert items to HTML content
+					const itemsHtml = section.items
+						.filter((item) => item.visible !== false)
+						.map((item) => {
+							const parts: string[] = [];
+
+							// Name as heading
+							if (item.name) {
+								parts.push(`<h3>${item.name}</h3>`);
+							}
+
+							// Description
+							if (item.description) {
+								parts.push(`<p>${item.description}</p>`);
+							}
+
+							// Date and location as metadata
+							if (item.date || item.location) {
+								const details = [item.date, item.location].filter(Boolean).join(" • ");
+								if (details) parts.push(`<p><em>${details}</em></p>`);
+							}
+
+							// Summary/content
+							if (item.summary) {
+								parts.push(`<div>${item.summary}</div>`);
+							}
+
+							// Keywords as tags
+							if (item.keywords && item.keywords.length > 0) {
+								parts.push(`<p><strong>Keywords:</strong> ${item.keywords.join(", ")}</p>`);
+							}
+
+							// URL link
+							if (item.url?.href) {
+								const label = item.url.label || item.url.href;
+								parts.push(`<p><a href="${item.url.href}">${label}</a></p>`);
+							}
+
+							return parts.length > 0 ? `<div style="margin-bottom: 1em;">${parts.join("")}</div>` : "";
+						})
+						.filter(Boolean)
+						.join("");
+
+					return {
+						id: section.id || sectionId,
+						title: section.name ?? "",
+						columns: section.columns ?? 1,
+						hidden: !(section.visible ?? true),
+						content: itemsHtml || "",
+					};
+				}),
+				metadata: {
+					template: (templateSchema.safeParse(v4Data.metadata.template).success
+						? v4Data.metadata.template
+						: "onyx") as Template,
+					layout: {
+						sidebarWidth: 35,
+						pages: (v4Data.metadata.layout ?? []).map((page) => {
+							// v4 layout is a 2D array: [[mainColumn, sidebarColumn], ...]
+							const main = page[0] ?? [];
+							const sidebar = page[1] ?? [];
+							return {
+								fullWidth: sidebar.length === 0,
+								main: main.filter((id) => id !== "summary"),
+								sidebar: sidebar,
+							};
+						}),
+					},
+					css: {
+						enabled: v4Data.metadata.css?.visible ?? false,
+						value: v4Data.metadata.css?.value ?? "",
+					},
+					page: {
+						gapX: 4,
+						gapY: 6,
+						marginX: v4Data.metadata.page?.margin ?? 14,
+						marginY: v4Data.metadata.page?.margin ?? 14,
+						format: v4Data.metadata.page?.format ?? "a4",
+						locale: "en-US",
+					},
+					design: {
+						colors: {
+							primary: v4Data.metadata.theme?.primary
+								? colorToRgba(v4Data.metadata.theme.primary)
+								: "rgba(220, 38, 38, 1)",
+							text: v4Data.metadata.theme?.text ? colorToRgba(v4Data.metadata.theme.text) : "rgba(0, 0, 0, 1)",
+							background: v4Data.metadata.theme?.background
+								? colorToRgba(v4Data.metadata.theme.background)
+								: "rgba(255, 255, 255, 1)",
+						},
+						level: {
+							icon: "star",
+							type: "circle",
+						},
+					},
+					typography: {
+						body: {
+							fontFamily: v4Data.metadata.typography?.font?.family ?? "IBM Plex Serif",
+							fontWeights: (v4Data.metadata.typography?.font?.variants?.map((v) => {
+								// Convert variant names to weights (e.g., "regular" -> "400")
+								const weightMap: Record<string, "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900"> =
+									{
+										regular: "400",
+										italic: "400",
+										"100": "100",
+										"200": "200",
+										"300": "300",
+										"400": "400",
+										"500": "500",
+										"600": "600",
+										"700": "700",
+										"800": "800",
+										"900": "900",
+										bold: "700",
+										"bold-italic": "700",
+									};
+								return weightMap[v.toLowerCase()] ?? "400";
+							}) ?? ["400"]) as Array<"100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900">,
+							fontSize: v4Data.metadata.typography?.font?.size ?? 11,
+							lineHeight: v4Data.metadata.typography?.lineHeight ?? 1.5,
+						},
+						heading: {
+							fontFamily: v4Data.metadata.typography?.font?.family ?? "IBM Plex Serif",
+							fontWeights: (() => {
+								const weights = v4Data.metadata.typography?.font?.variants?.map((v) => {
+									const weightMap: Record<
+										string,
+										"100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900"
+									> = {
+										regular: "400",
+										italic: "400",
+										"100": "100",
+										"200": "200",
+										"300": "300",
+										"400": "400",
+										"500": "500",
+										"600": "600",
+										"700": "700",
+										"800": "800",
+										"900": "900",
+										bold: "700",
+										"bold-italic": "700",
+									};
+									return weightMap[v.toLowerCase()] ?? "600";
+								}) ?? ["600"];
+								const filtered = weights.filter((w) => Number.parseInt(w, 10) >= 600);
+								return (filtered.length > 0 ? filtered : ["600"]) as Array<
+									"100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900"
+								>;
+							})(),
+							fontSize: (v4Data.metadata.typography?.font?.size ?? 11) + 3,
+							lineHeight: v4Data.metadata.typography?.lineHeight ?? 1.5,
+						},
+					},
+					notes: v4Data.metadata.notes ?? "",
+				},
+			};
+
+			// Add summary to layout if it exists
+			if (v4Data.sections.summary?.visible && v4Data.sections.summary?.content) {
+				// Find the first page's main column and add summary at the beginning
+				if (transformed.metadata.layout.pages.length > 0) {
+					transformed.metadata.layout.pages[0].main.unshift("summary");
+				}
+			}
+
+			// Validate the transformed data
+			return resumeDataSchema.parse(transformed);
+		} catch (error: unknown) {
+			if (error instanceof ZodError) {
+				const errors = flattenError(error);
+				throw new Error(JSON.stringify(errors));
+			}
+
+			throw error;
+		}
+	}
+}

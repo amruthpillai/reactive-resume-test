@@ -4,7 +4,7 @@ import { generateId } from "@/utils/string";
 
 export const user = pg.pgTable("user", {
 	id: pg
-		.text("id")
+		.uuid("id")
 		.notNull()
 		.primaryKey()
 		.$defaultFn(() => generateId()),
@@ -27,7 +27,7 @@ export const session = pg.pgTable(
 	"session",
 	{
 		id: pg
-			.text("id")
+			.uuid("id")
 			.notNull()
 			.primaryKey()
 			.$defaultFn(() => generateId()),
@@ -35,7 +35,7 @@ export const session = pg.pgTable(
 		ipAddress: pg.text("ip_address"),
 		userAgent: pg.text("user_agent"),
 		userId: pg
-			.text("user_id")
+			.uuid("user_id")
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),
 		expiresAt: pg.timestamp("expires_at").notNull(),
@@ -53,14 +53,14 @@ export const account = pg.pgTable(
 	"account",
 	{
 		id: pg
-			.text("id")
+			.uuid("id")
 			.notNull()
 			.primaryKey()
 			.$defaultFn(() => generateId()),
 		accountId: pg.text("account_id").notNull(),
 		providerId: pg.text("provider_id").notNull().default("credential"),
 		userId: pg
-			.text("user_id")
+			.uuid("user_id")
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),
 		scope: pg.text("scope"),
@@ -82,7 +82,7 @@ export const account = pg.pgTable(
 
 export const verification = pg.pgTable("verification", {
 	id: pg
-		.text("id")
+		.uuid("id")
 		.notNull()
 		.primaryKey()
 		.$defaultFn(() => generateId()),
@@ -101,12 +101,12 @@ export const twoFactor = pg.pgTable(
 	"two_factor",
 	{
 		id: pg
-			.text("id")
+			.uuid("id")
 			.notNull()
 			.primaryKey()
 			.$defaultFn(() => generateId()),
 		userId: pg
-			.text("user_id")
+			.uuid("user_id")
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),
 		secret: pg.text("secret"),
@@ -125,7 +125,7 @@ export const passkey = pg.pgTable(
 	"passkey",
 	{
 		id: pg
-			.text("id")
+			.uuid("id")
 			.notNull()
 			.primaryKey()
 			.$defaultFn(() => generateId()),
@@ -138,7 +138,7 @@ export const passkey = pg.pgTable(
 		backedUp: pg.boolean("backed_up").notNull().default(false),
 		transports: pg.text("transports").notNull(),
 		userId: pg
-			.text("user_id")
+			.uuid("user_id")
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),
 		createdAt: pg.timestamp("created_at").notNull().defaultNow(),
@@ -155,7 +155,7 @@ export const resume = pg.pgTable(
 	"resume",
 	{
 		id: pg
-			.text("id")
+			.uuid("id")
 			.notNull()
 			.primaryKey()
 			.$defaultFn(() => generateId()),
@@ -171,7 +171,7 @@ export const resume = pg.pgTable(
 			.$type<ResumeData>()
 			.$defaultFn(() => defaultResumeData),
 		userId: pg
-			.text("user_id")
+			.uuid("user_id")
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),
 		createdAt: pg.timestamp("created_at").notNull().defaultNow(),
@@ -186,7 +186,7 @@ export const resume = pg.pgTable(
 
 export const resumeStatistics = pg.pgTable("resume_statistics", {
 	id: pg
-		.text("id")
+		.uuid("id")
 		.notNull()
 		.primaryKey()
 		.$defaultFn(() => generateId()),
@@ -195,7 +195,7 @@ export const resumeStatistics = pg.pgTable("resume_statistics", {
 	lastViewedAt: pg.timestamp("last_viewed_at"),
 	lastDownloadedAt: pg.timestamp("last_downloaded_at"),
 	resumeId: pg
-		.text("resume_id")
+		.uuid("resume_id")
 		.unique()
 		.notNull()
 		.references(() => resume.id, { onDelete: "cascade" }),
@@ -209,7 +209,7 @@ export const resumeStatistics = pg.pgTable("resume_statistics", {
 
 export const apikey = pg.pgTable("apikey", {
 	id: pg
-		.text("id")
+		.uuid("id")
 		.notNull()
 		.primaryKey()
 		.$defaultFn(() => generateId()),
@@ -218,7 +218,7 @@ export const apikey = pg.pgTable("apikey", {
 	prefix: pg.text("prefix"),
 	key: pg.text("key").notNull(),
 	userId: pg
-		.text("user_id")
+		.uuid("user_id")
 		.notNull()
 		.references(() => user.id, { onDelete: "cascade" }),
 	refillInterval: pg.integer("refill_interval"),

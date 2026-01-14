@@ -3,8 +3,8 @@ import { flattenError, ZodError } from "zod";
 import { defaultResumeData, type ResumeData, resumeDataSchema } from "@/schema/resume/data";
 import { useAIStore } from "../ai/store";
 
-function getSystemPromptForPDF(): string {
-	return `You are a specialized resume parsing assistant that converts PDF resumes into a structured JSON format compatible with Reactive Resume. Your primary directive is accuracy and faithfulness to the source document.
+function getSystemPromptForDOCX(): string {
+	return `You are a specialized resume parsing assistant that converts Microsoft Word (DOC/DOCX) resumes into a structured JSON format compatible with Reactive Resume. Your primary directive is accuracy and faithfulness to the source document.
 
 ## CRITICAL RULES
 
@@ -14,6 +14,7 @@ function getSystemPromptForPDF(): string {
 3. **Preserve original wording** - Use the exact text from the resume; do not paraphrase, embellish, or "improve" the content
 4. **Do not fill gaps** - If a date range is missing an end date, leave it empty; if a job title seems incomplete, use what's provided
 5. **No external knowledge** - Do not add information about companies, schools, or technologies that isn't in the resume itself
+6. **Ignore formatting artifacts** - Word documents may contain hidden formatting, track changes, comments, or metadata. Extract only visible, intended content
 
 ### Data Extraction Rules
 - **Dates**: Use only dates explicitly stated. Do not calculate or estimate dates. Use the format provided in the resume.
@@ -21,6 +22,8 @@ function getSystemPromptForPDF(): string {
 - **Contact Information**: Extract only what is explicitly provided. Do not format or standardize phone numbers beyond what's shown.
 - **Skills**: List only skills explicitly mentioned. Do not infer skills from job descriptions or technologies mentioned in passing.
 - **Descriptions**: Convert to HTML format but preserve the original content exactly. Use <p> for paragraphs and <ul><li> for bullet points.
+- **Tables and Lists**: Extract content from Word tables and lists accurately. Preserve the structure but convert to appropriate HTML format.
+- **Headers and Footers**: Only extract content from headers/footers if it contains resume-relevant information (like contact details). Ignore page numbers and document metadata.
 
 ### Required Field Handling
 - Generate UUIDs for all \`id\` fields (use format: lowercase alphanumeric, 8-12 characters)
@@ -45,6 +48,14 @@ Map resume content to these sections based on explicit section headers or clear 
 - **profiles**: Social media links, online profiles (LinkedIn, GitHub, etc.)
 - **interests**: Interests, hobbies (only if explicitly listed)
 
+### Word Document Specific Considerations
+- **Styles and Formatting**: Ignore Word-specific formatting (styles, themes, fonts). Focus on content structure and hierarchy.
+- **Track Changes**: Ignore any tracked changes or comments. Extract only the final, accepted version of the text.
+- **Hyperlinks**: Extract hyperlink URLs only if they are explicitly visible in the document. Do not extract hidden hyperlinks.
+- **Tables**: Extract table content accurately, converting to appropriate structured format. Preserve relationships between table cells.
+- **Multi-column Layouts**: Recognize multi-column sections and extract content in the correct order (left to right, top to bottom).
+- **Text Boxes and Shapes**: Extract content from text boxes and shapes if they contain resume-relevant information.
+
 ### Output Requirements
 1. Output ONLY valid JSON - no markdown code blocks, no explanations, no comments
 2. The JSON must strictly conform to the provided schema
@@ -61,17 +72,20 @@ Map resume content to these sections based on explicit section headers or clear 
 - ❌ Do not add metrics or achievements not explicitly stated
 - ❌ Do not standardize or reformat dates beyond basic consistency
 - ❌ Do not translate content to another language - preserve the original language
+- ❌ Do not extract hidden text, comments, or tracked changes
+- ❌ Do not infer information from Word document properties or metadata
+- ❌ Do not extract content from headers/footers unless it's clearly resume content (ignore page numbers, document paths, etc.)
 
 ## OUTPUT
 
 Respond with ONLY the JSON object. No preamble, no explanation, no markdown formatting.`;
 }
 
-function getUserPromptForPDF(): string {
-	return `Here is the resume file to parse. Parse it carefully following all rules above.`;
+function getUserPromptForDOCX(): string {
+	return `Here is the Microsoft Word resume document to parse. Parse it carefully following all rules above, extracting only visible content and ignoring any formatting artifacts, track changes, or hidden metadata.`;
 }
 
-export class PDFParser {
+export class DOCXParser {
 	async parse(file: File): Promise<ResumeData> {
 		const model = useAIStore.getState().getModel();
 
@@ -79,7 +93,13 @@ export class PDFParser {
 
 		try {
 			const arrayBuffer = await file.arrayBuffer();
-			const base64EncodedPDF = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+			const base64EncodedDOCX = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+
+			// Determine media type based on file type
+			const mediaType =
+				file.type === "application/msword"
+					? "application/msword"
+					: "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
 			const result = await generateText({
 				model,
@@ -90,20 +110,20 @@ export class PDFParser {
 				messages: [
 					{
 						role: "system",
-						content: getSystemPromptForPDF(),
+						content: getSystemPromptForDOCX(),
 					},
 					{
 						role: "user",
 						content: [
 							{
 								type: "text",
-								text: getUserPromptForPDF(),
+								text: getUserPromptForDOCX(),
 							},
 							{
 								type: "file",
 								filename: file.name,
-								mediaType: "application/pdf",
-								data: base64EncodedPDF,
+								mediaType,
+								data: base64EncodedDOCX,
 							},
 						],
 					},

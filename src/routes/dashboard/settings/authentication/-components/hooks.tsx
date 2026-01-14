@@ -74,7 +74,6 @@ export function useAuthProviderActions() {
 			fetchOptions: {
 				onSuccess: () => {
 					toast.dismiss(toastId);
-					toast.success(t`Your ${providerName} account has been linked successfully.`);
 				},
 				onError: ({ error }) => {
 					toast.error(error.message, { id: toastId });
@@ -93,7 +92,6 @@ export function useAuthProviderActions() {
 			fetchOptions: {
 				onSuccess: () => {
 					toast.dismiss(toastId);
-					toast.success(t`Your ${providerName} account has been unlinked successfully.`);
 				},
 				onError: ({ error }) => {
 					toast.error(error.message, { id: toastId });

@@ -45,7 +45,6 @@ declare module "bun" {
 		OAUTH_CLIENT_SECRET?: string;
 		OAUTH_DISCOVERY_URL?: string;
 		OAUTH_AUTHORIZATION_URL?: string;
-		OAUTH_REDIRECT_URI?: string;
 
 		// Feature Flags
 		FLAG_DEBUG_PRINTER: string | boolean;

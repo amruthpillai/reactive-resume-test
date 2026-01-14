@@ -39,7 +39,14 @@ export const env = createEnv({
 		OAUTH_CLIENT_SECRET: z.string().min(1).optional(),
 		OAUTH_DISCOVERY_URL: z.url({ protocol: /https?/ }).optional(),
 		OAUTH_AUTHORIZATION_URL: z.url({ protocol: /https?/ }).optional(),
-		OAUTH_REDIRECT_URI: z.url({ protocol: /https?/, pattern: /\/api\/auth\/oauth2\/callback\/custom/ }).optional(),
+
+		// Email (SMTP)
+		SMTP_HOST: z.string().min(1).optional(),
+		SMTP_PORT: z.coerce.number().int().min(1).max(65535).default(587),
+		SMTP_USER: z.string().min(1).optional(),
+		SMTP_PASS: z.string().min(1).optional(),
+		SMTP_FROM: z.string().min(1).optional(),
+		SMTP_SECURE: z.stringbool().default(false),
 
 		// Storage (Optional)
 		S3_ACCESS_KEY_ID: z.string().min(1).optional(),
