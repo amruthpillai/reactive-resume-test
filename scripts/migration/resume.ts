@@ -43,11 +43,11 @@ const USER_ID_MAP_FILE = "./scripts/migration/user-id-map.json";
 
 // You may tune this for your use case
 // Reduced from 10000 to avoid PostgreSQL message format errors
-const BATCH_SIZE = 500;
+const BATCH_SIZE = 5000;
 
 // Chunk size for actual inserts - smaller to avoid PostgreSQL message size limits
 // Especially important for resumes as they contain large JSONB data
-const INSERT_CHUNK_SIZE = 50;
+const INSERT_CHUNK_SIZE = 1000;
 
 async function loadUserIdMapFromFile(): Promise<Map<string, string>> {
 	try {
