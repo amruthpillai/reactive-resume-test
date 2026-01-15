@@ -33,7 +33,7 @@ msgstr "Name"
 msgid "{0}+ testimonials and counting"
 msgstr ""
 
-#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:157
+#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:160
 #: src/routes/builder/$resumeId/-sidebar/left/shared/section-menu.tsx:149
 msgid "{column, plural, one {# Column} other {# Columns}}"
 msgstr "{column, plural, one {# Spalte} other {# Spalten}}"
@@ -120,7 +120,7 @@ msgstr "Eine neue Auszeichnung hinzufügen"
 msgid "Add a new certification"
 msgstr "Eine neue Zertifizierung hinzufügen"
 
-#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:45
+#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:47
 msgid "Add a new custom section"
 msgstr "Einen neuen benutzerdefinierten Abschnitt hinzufügen"
 
@@ -168,11 +168,11 @@ msgstr "Eine neue Fähigkeit hinzufügen"
 msgid "Add a new volunteer experience"
 msgstr "Eine neue Freiwilligenerfahrung hinzufügen"
 
-#: src/components/input/rich-input.tsx:598
+#: src/components/input/rich-input.tsx:599
 msgid "Add Column After"
 msgstr "Spalte danach einfügen"
 
-#: src/components/input/rich-input.tsx:594
+#: src/components/input/rich-input.tsx:595
 msgid "Add Column Before"
 msgstr "Spalte davor einfügen"
 
@@ -180,11 +180,11 @@ msgstr "Spalte davor einfügen"
 msgid "Add Page"
 msgstr "Seite hinzufügen"
 
-#: src/components/input/rich-input.tsx:607
+#: src/components/input/rich-input.tsx:608
 msgid "Add Row After"
 msgstr "Zeile danach einfügen"
 
-#: src/components/input/rich-input.tsx:603
+#: src/components/input/rich-input.tsx:604
 msgid "Add Row Before"
 msgstr "Zeile davor einfügen"
 
@@ -196,6 +196,11 @@ msgstr "Hinzugefügt am {0}"
 #: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:24
 msgid "Adding your passkey..."
 msgstr "Ihr Passkey wird hinzugefügt..."
+
+#: src/dialogs/resume/import.tsx:213
+#: src/dialogs/resume/import.tsx:221
+msgid "AI"
+msgstr ""
 
 #: src/routes/dashboard/settings/ai.tsx:107
 msgid "All data entered here is stored locally in your browser and is never sent to our servers. Your API keys and configuration remain private and secure on your device."
@@ -218,7 +223,7 @@ msgstr "Beim Laden der Seite ist ein Fehler aufgetreten."
 msgid "An unknown error occurred while adding your passkey."
 msgstr "Beim Hinzufügen Ihres Passkeys ist ein unbekannter Fehler aufgetreten."
 
-#: src/dialogs/resume/import.tsx:150
+#: src/dialogs/resume/import.tsx:168
 msgid "An unknown error occurred while importing your resume."
 msgstr ""
 
@@ -242,10 +247,6 @@ msgstr "Jeder mit dem Link kann den Lebenslauf ansehen und herunterladen."
 msgid "API Access"
 msgstr ""
 
-#: src/routes/dashboard/settings/api-keys.tsx:88
-msgid "API Documentation"
-msgstr ""
-
 #: src/routes/dashboard/settings/ai.tsx:73
 msgid "API Key"
 msgstr ""
@@ -256,6 +257,10 @@ msgstr ""
 #: src/routes/dashboard/settings/api-keys.tsx:58
 msgid "API Keys"
 msgstr "API-Schlüssel"
+
+#: src/routes/dashboard/settings/api-keys.tsx:88
+msgid "API Reference"
+msgstr ""
 
 #: src/routes/dashboard/-components/sidebar.tsx:132
 msgid "App"
@@ -347,7 +352,7 @@ msgctxt "Body Text (paragraphs, lists, etc.)"
 msgid "Body"
 msgstr ""
 
-#: src/components/input/rich-input.tsx:322
+#: src/components/input/rich-input.tsx:323
 msgid "Bold"
 msgstr "Fett"
 
@@ -363,7 +368,7 @@ msgstr "Rahmenbreite"
 msgid "Builder Command Palette"
 msgstr "Befehlspalette des Builders"
 
-#: src/components/input/rich-input.tsx:501
+#: src/components/input/rich-input.tsx:502
 msgid "Bullet List"
 msgstr "Aufzählungsliste"
 
@@ -416,7 +421,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/components/input/rich-input.tsx:476
+#: src/components/input/rich-input.tsx:477
 msgid "Center Align"
 msgstr "Zentriert"
 
@@ -440,7 +445,7 @@ msgstr "Design ändern zu..."
 msgid "Changed your mind? Rename your resume to something more descriptive."
 msgstr "Sie haben es sich anders überlegt? Benennen Sie Ihren Lebenslauf in etwas Aussagekräftigeres um."
 
-#: src/routes/auth/forgot-password.tsx:113
+#: src/routes/auth/forgot-password.tsx:109
 msgid "Check your email for a link to reset your password."
 msgstr "Bitte prüfen Sie Ihre E-Mails auf einen Link zum Zurücksetzen Ihres Passworts."
 
@@ -456,15 +461,15 @@ msgstr "Kreis"
 msgid "Clear selection"
 msgstr "Auswahl löschen"
 
-#: src/dialogs/resume/import.tsx:223
+#: src/dialogs/resume/import.tsx:256
 msgid "Click here to select a file to import"
 msgstr ""
 
-#: src/components/input/rich-input.tsx:571
+#: src/components/input/rich-input.tsx:572
 msgid "Code Block"
 msgstr "Code-Block"
 
-#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:150
+#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:153
 #: src/routes/builder/$resumeId/-sidebar/left/shared/section-menu.tsx:142
 msgid "Columns"
 msgstr "Spalten"
@@ -507,7 +512,7 @@ msgstr "Weiter"
 msgid "Continue where you left off"
 msgstr ""
 
-#: src/dialogs/resume/import.tsx:164
+#: src/dialogs/resume/import.tsx:182
 msgid "Continue where you left off by importing an existing resume you created using Reactive Resume or any another resume builder. Supported formats include PDF, Microsoft Word, as well as JSON files from Reactive Resume."
 msgstr ""
 
@@ -685,7 +690,7 @@ msgid "Degree"
 msgstr "Abschluss"
 
 #: src/routes/builder/$resumeId/-components/header.tsx:152
-#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:170
+#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:173
 #: src/routes/builder/$resumeId/-sidebar/left/shared/section-item.tsx:141
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:164
 #: src/routes/dashboard/settings/api-keys.tsx:39
@@ -696,7 +701,7 @@ msgstr "Löschen"
 msgid "Delete Account"
 msgstr "Konto löschen"
 
-#: src/components/input/rich-input.tsx:612
+#: src/components/input/rich-input.tsx:613
 msgid "Delete Column"
 msgstr "Spalte löschen"
 
@@ -704,11 +709,11 @@ msgstr "Spalte löschen"
 msgid "Delete Page"
 msgstr "Seite löschen"
 
-#: src/components/input/rich-input.tsx:616
+#: src/components/input/rich-input.tsx:617
 msgid "Delete Row"
 msgstr "Zeile löschen"
 
-#: src/components/input/rich-input.tsx:621
+#: src/components/input/rich-input.tsx:622
 msgid "Delete Table"
 msgstr "Tabelle löschen"
 
@@ -787,6 +792,7 @@ msgid "Donate to Reactive Resume"
 msgstr "An Reactive Resume spenden"
 
 #: src/dialogs/auth/enable-two-factor.tsx:293
+#: src/routes/$username/$slug.tsx:86
 msgid "Download"
 msgstr "Herunterladen"
 
@@ -802,6 +808,10 @@ msgstr "Laden Sie eine Kopie Ihres Lebenslaufs im PDF-Format herunter. Nutzen Si
 msgid "Download PDF"
 msgstr ""
 
+#: src/routes/$username/$slug.tsx:86
+msgid "Downloading..."
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/statistics.tsx:48
 msgid "Downloads"
 msgstr "Downloads"
@@ -812,7 +822,7 @@ msgstr "Ziehen Sie Abschnitte hierher, um sie zwischen Spalten zu verschieben"
 
 #: src/dialogs/resume/index.tsx:275
 #: src/routes/builder/$resumeId/-components/header.tsx:140
-#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:144
+#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:147
 #: src/routes/builder/$resumeId/-sidebar/left/shared/section-item.tsx:132
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:152
 msgid "Duplicate"
@@ -838,14 +848,14 @@ msgstr "Ausbildung"
 msgid "Email"
 msgstr "E-Mail"
 
-#: src/routes/auth/forgot-password.tsx:86
+#: src/routes/auth/forgot-password.tsx:82
 #: src/routes/auth/login.tsx:109
 #: src/routes/auth/register.tsx:147
 #: src/routes/dashboard/settings/profile.tsx:175
 msgid "Email Address"
 msgstr "E-Mail-Adresse"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/css.tsx:244
+#: src/routes/builder/$resumeId/-sidebar/right/sections/css.tsx:254
 msgctxt "Turn On/Apply Custom CSS"
 msgid "Enable"
 msgstr "Aktivieren"
@@ -985,7 +995,7 @@ msgstr ""
 msgid "Forgot Password?"
 msgstr "Passwort vergessen?"
 
-#: src/routes/auth/forgot-password.tsx:63
+#: src/routes/auth/forgot-password.tsx:59
 msgid "Forgot your password?"
 msgstr "Passwort vergessen?"
 
@@ -1035,27 +1045,27 @@ msgctxt "Headings or Titles (H1, H2, H3, H4, H5, H6)"
 msgid "Heading"
 msgstr ""
 
-#: src/components/input/rich-input.tsx:410
+#: src/components/input/rich-input.tsx:411
 msgid "Heading 1"
 msgstr "Überschrift 1"
 
-#: src/components/input/rich-input.tsx:417
+#: src/components/input/rich-input.tsx:418
 msgid "Heading 2"
 msgstr "Überschrift 2"
 
-#: src/components/input/rich-input.tsx:424
+#: src/components/input/rich-input.tsx:425
 msgid "Heading 3"
 msgstr "Überschrift 3"
 
-#: src/components/input/rich-input.tsx:431
+#: src/components/input/rich-input.tsx:432
 msgid "Heading 4"
 msgstr "Überschrift 4"
 
-#: src/components/input/rich-input.tsx:438
+#: src/components/input/rich-input.tsx:439
 msgid "Heading 5"
 msgstr "Überschrift 5"
 
-#: src/components/input/rich-input.tsx:445
+#: src/components/input/rich-input.tsx:446
 msgid "Heading 6"
 msgstr "Überschrift 6"
 
@@ -1089,13 +1099,13 @@ msgstr ""
 msgid "Hidden"
 msgstr "Versteckt"
 
-#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:134
+#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:137
 #: src/routes/builder/$resumeId/-sidebar/left/shared/section-item.tsx:118
 #: src/routes/builder/$resumeId/-sidebar/left/shared/section-menu.tsx:131
 msgid "Hide"
 msgstr "Ausblenden"
 
-#: src/components/input/rich-input.tsx:370
+#: src/components/input/rich-input.tsx:371
 msgid "Highlight"
 msgstr "Hervorheben"
 
@@ -1108,6 +1118,10 @@ msgstr "Startseite"
 msgid "How do I share my resume?"
 msgstr ""
 
+#: src/routes/dashboard/settings/api-keys.tsx:75
+msgid "How do I use the API?"
+msgstr ""
+
 #: src/routes/_home/-sections/faq.tsx:19
 msgid "How is my data protected?"
 msgstr ""
@@ -1117,20 +1131,20 @@ msgstr ""
 msgid "Icon"
 msgstr "Symbol"
 
-#: src/dialogs/resume/import.tsx:237
+#: src/dialogs/resume/import.tsx:270
 msgid "Import"
 msgstr ""
 
-#: src/dialogs/resume/import.tsx:161
+#: src/dialogs/resume/import.tsx:179
 #: src/routes/dashboard/resumes/-components/import-card.tsx:11
 msgid "Import an existing resume"
 msgstr ""
 
-#: src/dialogs/resume/import.tsx:108
+#: src/dialogs/resume/import.tsx:112
 msgid "Importing your resume..."
 msgstr ""
 
-#: src/dialogs/resume/import.tsx:237
+#: src/dialogs/resume/import.tsx:270
 msgid "Importing..."
 msgstr ""
 
@@ -1138,11 +1152,11 @@ msgstr ""
 msgid "Information"
 msgstr "Informationen"
 
-#: src/components/input/rich-input.tsx:559
+#: src/components/input/rich-input.tsx:560
 msgid "Inline Code"
 msgstr "Inline-Code"
 
-#: src/components/input/rich-input.tsx:589
+#: src/components/input/rich-input.tsx:590
 msgid "Insert Table"
 msgstr "Tabelle einfügen"
 
@@ -1162,11 +1176,11 @@ msgstr ""
 msgid "Issuer"
 msgstr "Aussteller"
 
-#: src/components/input/rich-input.tsx:334
+#: src/components/input/rich-input.tsx:335
 msgid "Italic"
 msgstr "Kursiv"
 
-#: src/components/input/rich-input.tsx:490
+#: src/components/input/rich-input.tsx:491
 msgid "Justify Align"
 msgstr "Blocksatz"
 
@@ -1221,7 +1235,7 @@ msgstr "Mehr erfahren"
 msgid "Leave empty to reset the title to the original."
 msgstr "Leer lassen, um den Titel auf den Original zurückzusetzen."
 
-#: src/components/input/rich-input.tsx:469
+#: src/components/input/rich-input.tsx:470
 msgid "Left Align"
 msgstr "Linksbündig"
 
@@ -1329,11 +1343,12 @@ msgstr "Netzwerk"
 msgid "New features are constantly being added and improved, so be sure to check back often."
 msgstr ""
 
-#: src/components/input/rich-input.tsx:631
+#: src/components/input/rich-input.tsx:632
 msgid "New Line"
 msgstr "Neue Zeile"
 
 #: src/dialogs/auth/change-password.tsx:119
+#: src/routes/auth/reset-password.tsx:86
 msgid "New Password"
 msgstr "Neues Passwort"
 
@@ -1377,7 +1392,7 @@ msgstr ""
 msgid "Open"
 msgstr "Öffnen"
 
-#: src/routes/auth/forgot-password.tsx:119
+#: src/routes/auth/forgot-password.tsx:115
 msgid "Open Email Client"
 msgstr "E-Mail-Programm öffnen"
 
@@ -1394,7 +1409,7 @@ msgctxt "Choose to authenticate with a social provider (Google, GitHub, etc.) in
 msgid "or continue with"
 msgstr "oder weiter mit"
 
-#: src/components/input/rich-input.tsx:513
+#: src/components/input/rich-input.tsx:514
 msgid "Ordered List"
 msgstr "Nummerierte Liste"
 
@@ -1411,11 +1426,11 @@ msgstr "Seite"
 msgid "Page {0}"
 msgstr "Seite {0}"
 
-#: src/components/resume/preview.tsx:104
+#: src/components/resume/preview.tsx:107
 msgid "Page {pageNumber} of {totalNumberOfPages}"
 msgstr "Seite {pageNumber} von {totalNumberOfPages}"
 
-#: src/components/input/rich-input.tsx:402
+#: src/components/input/rich-input.tsx:403
 msgid "Paragraph"
 msgstr "Absatz"
 
@@ -1431,7 +1446,6 @@ msgstr ""
 #: src/dialogs/auth/enable-two-factor.tsx:183
 #: src/routes/auth/login.tsx:129
 #: src/routes/auth/register.tsx:169
-#: src/routes/auth/reset-password.tsx:84
 #: src/routes/auth/resume-password.tsx:104
 #: src/routes/dashboard/settings/authentication/-components/password.tsx:35
 msgid "Password"
@@ -1472,11 +1486,15 @@ msgstr "Telefon"
 msgid "Picture"
 msgstr "Bild"
 
+#: src/routes/auth/reset-password.tsx:74
+msgid "Please enter a new password for your account"
+msgstr ""
+
 #: src/routes/auth/resume-password.tsx:92
 msgid "Please enter the password shared with you by the owner of the resume to continue."
 msgstr "Bitte geben Sie das Passwort ein, das Ihnen vom Besitzer des Lebenslaufs mitgeteilt wurde, um fortzufahren."
 
-#: src/components/input/rich-input.tsx:255
+#: src/components/input/rich-input.tsx:256
 msgid "Please enter the URL you want to link to:"
 msgstr "Bitte geben Sie die URL ein, zu der Sie verlinken möchten:"
 
@@ -1579,7 +1597,7 @@ msgstr "Aktualisieren"
 msgid "Register New Device"
 msgstr "Neues Gerät registrieren"
 
-#: src/routes/auth/forgot-password.tsx:67
+#: src/routes/auth/forgot-password.tsx:63
 msgid "Remember your password? <0><1>Sign in now <2/></1></0>"
 msgstr "Sie erinnern sich wieder an Ihr Passwort? <0><1>Jetzt anmelden <2/></1></0>"
 
@@ -1615,11 +1633,11 @@ msgstr "Verifizierungs-E-Mail wird erneut gesendet..."
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: src/routes/auth/reset-password.tsx:107
+#: src/routes/auth/reset-password.tsx:109
 msgid "Reset Password"
 msgstr "Passwort zurücksetzen"
 
-#: src/routes/auth/reset-password.tsx:73
+#: src/routes/auth/reset-password.tsx:70
 msgid "Reset your password"
 msgstr "Setzen Sie Ihr Passwort zurück"
 
@@ -1627,7 +1645,7 @@ msgstr "Setzen Sie Ihr Passwort zurück"
 msgid "Reset zoom"
 msgstr ""
 
-#: src/routes/auth/reset-password.tsx:51
+#: src/routes/auth/reset-password.tsx:47
 msgid "Resetting your password..."
 msgstr "Ihr Passwort wird zurückgesetzt..."
 
@@ -1646,7 +1664,7 @@ msgstr ""
 msgid "Resumes"
 msgstr "Lebensläufe"
 
-#: src/components/input/rich-input.tsx:483
+#: src/components/input/rich-input.tsx:484
 msgid "Right Align"
 msgstr "Rechtsbündig"
 
@@ -1707,15 +1725,15 @@ msgstr "Auswählen..."
 msgid "Self-Host with Docker"
 msgstr ""
 
-#: src/routes/auth/forgot-password.tsx:97
+#: src/routes/auth/forgot-password.tsx:93
 msgid "Send Password Reset Email"
 msgstr "E-Mail zum Zurücksetzen des Passworts senden"
 
-#: src/routes/auth/forgot-password.tsx:40
+#: src/routes/auth/forgot-password.tsx:36
 msgid "Sending password reset email..."
 msgstr "E-Mail zum Zurücksetzen des Passworts wird gesendet..."
 
-#: src/components/input/rich-input.tsx:642
+#: src/components/input/rich-input.tsx:643
 msgid "Separator"
 msgstr "Trennzeichen"
 
@@ -1752,7 +1770,7 @@ msgstr ""
 msgid "Sharing"
 msgstr "Teilen"
 
-#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:134
+#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:137
 #: src/routes/builder/$resumeId/-sidebar/left/shared/section-item.tsx:118
 #: src/routes/builder/$resumeId/-sidebar/left/shared/section-menu.tsx:131
 msgid "Show"
@@ -1853,7 +1871,7 @@ msgstr "Erstellen Sie Ihren Lebenslauf von Grund auf"
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: src/components/input/rich-input.tsx:358
+#: src/components/input/rich-input.tsx:359
 msgid "Strike"
 msgstr "Durchgestrichen"
 
@@ -1869,7 +1887,7 @@ msgstr ""
 msgid "Support the app by doing what you can!"
 msgstr "Unterstützen Sie die App, wo Sie können!"
 
-#: src/components/input/rich-input.tsx:581
+#: src/components/input/rich-input.tsx:582
 msgid "Table"
 msgstr "Tabelle"
 
@@ -1921,7 +1939,7 @@ msgstr "Das eingegebene Passwort ist falsch"
 msgid "The resume you are trying to access is password protected"
 msgstr "Der Lebenslauf, auf den Sie zugreifen möchten, ist passwortgeschützt"
 
-#: src/components/input/rich-input.tsx:265
+#: src/components/input/rich-input.tsx:266
 msgid "The URL you entered is not valid."
 msgstr "Die eingegebene URL ist nicht gültig."
 
@@ -1943,6 +1961,11 @@ msgstr "Diese Aktion kann nicht rückgängig gemacht werden."
 #: src/routes/dashboard/settings/danger-zone.tsx:33
 msgid "This action cannot be undone. All your data will be permanently deleted."
 msgstr "Diese Aktion kann nicht rückgängig gemacht werden. Alle Ihre Daten werden dauerhaft gelöscht."
+
+#: src/dialogs/resume/import.tsx:137
+#: src/dialogs/resume/import.tsx:149
+msgid "This feature requires AI Integration to be enabled. Please enable it in the settings."
+msgstr ""
 
 #: src/dialogs/resume/index.tsx:342
 msgid "This is a URL-friendly name for your resume."
@@ -2009,7 +2032,7 @@ msgstr "Die Zwei-Faktor-Authentifizierung wurde erfolgreich deaktiviert."
 msgid "Two-factor authentication has been setup successfully."
 msgstr "Die Zwei-Faktor-Authentifizierung wurde erfolgreich eingerichtet."
 
-#: src/dialogs/resume/import.tsx:180
+#: src/dialogs/resume/import.tsx:198
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx:272
 msgid "Type"
 msgstr "Typ"
@@ -2026,7 +2049,7 @@ msgstr "Geben Sie einen Befehl ein oder suchen Sie..."
 msgid "Typography"
 msgstr "Typografie"
 
-#: src/components/input/rich-input.tsx:346
+#: src/components/input/rich-input.tsx:347
 msgid "Underline"
 msgstr "Unterstreichen"
 
@@ -2049,7 +2072,7 @@ msgid "Unverified"
 msgstr "Nicht verifiziert"
 
 #: src/routes/builder/$resumeId/-components/header.tsx:135
-#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:139
+#: src/routes/builder/$resumeId/-sidebar/left/sections/custom.tsx:142
 #: src/routes/builder/$resumeId/-sidebar/left/shared/section-item.tsx:127
 #: src/routes/dashboard/resumes/-components/resume-card.tsx:147
 msgid "Update"
@@ -2150,7 +2173,7 @@ msgstr "Benutzername"
 msgid "Users"
 msgstr ""
 
-#: src/components/input/rich-input.tsx:266
+#: src/components/input/rich-input.tsx:267
 msgid "Valid URLs must start with http:// or https://."
 msgstr "Gültige URLs müssen mit http:// oder https:// beginnen."
 
@@ -2203,10 +2226,6 @@ msgstr "Freiwillige Arbeit"
 #: src/routes/builder/$resumeId/-sidebar/left/sections/basics.tsx:130
 msgid "Website"
 msgstr "Website"
-
-#: src/routes/dashboard/settings/api-keys.tsx:75
-msgid "What can I do with the API?"
-msgstr ""
 
 #: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:21
 msgid "What do you want to call this passkey?"
@@ -2262,7 +2281,7 @@ msgstr ""
 msgid "You cannot use the passkey \"{0}\" anymore to sign in after deletion. This action cannot be undone."
 msgstr "Sie können den Passkey \"{0}\" nach dem Löschen nicht mehr zum Anmelden verwenden. Diese Aktion kann nicht rückgängig gemacht werden."
 
-#: src/routes/auth/forgot-password.tsx:110
+#: src/routes/auth/forgot-password.tsx:106
 #: src/routes/auth/register.tsx:207
 msgid "You've got mail!"
 msgstr "Sie haben Post!"
@@ -2295,7 +2314,7 @@ msgstr "Ihr Passkey wurde erfolgreich hinzugefügt."
 msgid "Your passkey has been deleted successfully."
 msgstr "Ihr Passkey wurde erfolgreich gelöscht."
 
-#: src/routes/auth/reset-password.tsx:58
+#: src/routes/auth/reset-password.tsx:54
 msgid "Your password has been reset successfully. You can now sign in with your new password."
 msgstr "Ihr Passwort wurde erfolgreich zurückgesetzt. Sie können sich nun mit Ihrem neuen Passwort anmelden."
 
@@ -2321,7 +2340,7 @@ msgstr "Ihr Lebenslauf wurde erfolgreich gelöscht."
 msgid "Your resume has been duplicated successfully."
 msgstr "Ihr Lebenslauf wurde erfolgreich dupliziert."
 
-#: src/dialogs/resume/import.tsx:144
+#: src/dialogs/resume/import.tsx:162
 msgid "Your resume has been imported successfully."
 msgstr ""
 
