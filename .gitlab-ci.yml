@@ -22,15 +22,18 @@ build-and-push:
     - if: $CI_PIPELINE_SOURCE == "web"
   before_script:
     - apk add --no-cache jq
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - |
       export VERSION=$(jq -r .version package.json)
       echo "VERSION=$VERSION" >> build.env
     - |
       # Create and reuse buildx builder (persists across pipelines for better cache performance)
-      # Using a named builder allows reuse and better caching
-      docker buildx create --name $BUILDX_BUILDER --driver docker-container --use --driver-opt network=host 2>/dev/null || \
-      docker buildx use $BUILDX_BUILDER
+      # Check if builder exists, create if not, then use it
+      if ! docker buildx ls | grep -q "$BUILDX_BUILDER"; then
+        docker buildx create --name $BUILDX_BUILDER --driver docker-container --use --driver-opt network=host
+      else
+        docker buildx use $BUILDX_BUILDER
+      fi
       docker buildx inspect --bootstrap
   script:
     - source build.env
