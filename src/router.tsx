@@ -4,7 +4,6 @@ import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query
 import { ErrorScreen } from "./components/layout/error-screen";
 import { LoadingScreen } from "./components/layout/loading-screen";
 import { NotFoundScreen } from "./components/layout/not-found-screen";
-import { getSession } from "./integrations/auth/functions";
 import { orpc } from "./integrations/orpc/client";
 import { routeTree } from "./routeTree.gen";
 import { getLocale, loadLocale } from "./utils/locale";
@@ -38,7 +37,7 @@ const getQueryClient = () => {
 export const getRouter = async () => {
 	const queryClient = getQueryClient();
 
-	const [theme, locale, session] = await Promise.all([getTheme(), getLocale(), getSession()]);
+	const [theme, locale] = await Promise.all([getTheme(), getLocale()]);
 	await loadLocale(locale);
 
 	const router = createRouter({
@@ -50,7 +49,7 @@ export const getRouter = async () => {
 		defaultErrorComponent: ErrorScreen,
 		defaultPendingComponent: LoadingScreen,
 		defaultNotFoundComponent: NotFoundScreen,
-		context: { orpc, queryClient, theme, locale, session },
+		context: { orpc, queryClient, theme, locale, session: null },
 	});
 
 	setupRouterSsrQueryIntegration({
