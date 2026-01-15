@@ -4,14 +4,14 @@
   <img src="public/pwa-512x512.png" alt="Reactive Resume" width="256px" />
 </a>
 
-<h2>Reactive Resume</h2>
+<h1>Reactive Resume</h1>
 <p>A free and open-source resume builder that respects your privacy.</p>
 
-<p>
+<h3>
   <a href="https://rxresu.me"><strong>Get Started</strong></a>
-  ·
-  <a href="https://docs.rxresu.me"><strong>Documentation</strong></a>
-</p>
+  ‎‎·‎‎
+  <a href="https://docs.rxresu.me"><strong>Learn More</strong></a>
+</h3>
 
 <p>
   <img src="https://img.shields.io/github/stars/AmruthPillai/Reactive-Resume?style=flat-square" alt="Stars" />

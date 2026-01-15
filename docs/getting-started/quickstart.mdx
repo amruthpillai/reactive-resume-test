@@ -95,7 +95,7 @@ Before you begin, ensure you have the following installed:
     S3_ACCESS_KEY_ID=seaweedfs
     S3_SECRET_ACCESS_KEY=seaweedfs
     S3_ENDPOINT=http://seaweedfs:8333
-    S3_BUCKET=reactive-resume-start
+    S3_BUCKET=reactive-resume
     ```
     
     <Warning>
@@ -172,6 +172,11 @@ Here's a complete list of environment variables you can configure:
 | `S3_BUCKET` | S3 bucket name | — |
 | `S3_REGION` | S3 region | — |
 | `FLAG_DISABLE_SIGNUP` | Disable new user registration | `false` |
+| `PRINTER_APP_URL` | URL for Gotenberg to reach the app | — |
+
+<Note>
+  **Hybrid Setup Note**: The `PRINTER_APP_URL` variable is required when running Reactive Resume outside of Docker while the Gotenberg PDF service is running inside Docker. In this scenario, Gotenberg needs to reach your local app to render resumes for PDF generation. Since Docker containers cannot access `localhost` on your host machine directly, you must set `PRINTER_APP_URL` to `http://host.docker.internal:3000`. This special hostname allows Docker containers to communicate with services running on your host machine.
+</Note>
 
 ---
 
