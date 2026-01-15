@@ -8,7 +8,7 @@
 <p>A free and open-source resume builder that respects your privacy.</p>
 
 <p>
-  <a href="https://rxresu.me"><strong>Build Your Resume →</strong></a>
+  <a href="https://rxresu.me"><strong>Get Started</strong></a>
   ·
   <a href="https://docs.rxresu.me"><strong>Documentation</strong></a>
 </p>
@@ -17,6 +17,9 @@
   <img src="https://img.shields.io/github/stars/AmruthPillai/Reactive-Resume?style=flat-square" alt="Stars" />
   <img src="https://img.shields.io/github/license/AmruthPillai/Reactive-Resume?style=flat-square" alt="License" />
   <img src="https://img.shields.io/docker/pulls/amruthpillai/reactive-resume?style=flat-square" alt="Docker Pulls" />
+  <a href="https://discord.gg/hbHqF6V"><img src="https://img.shields.io/discord/787558964360036382?label=Discord&style=flat-square&logo=discord" alt="Discord" /></a>
+  <a href="https://crowdin.com/project/reactive-resume"><img src="https://badges.crowdin.net/reactive-resume/localized.svg?style=flat-square" alt="Crowdin" /></a>
+  <a href="https://opencollective.com/reactive-resume"><img src="https://img.shields.io/opencollective/sponsors/reactive-resume?style=flat-square" alt="Open Collective" /></a>
 </p>
 
 </div>
