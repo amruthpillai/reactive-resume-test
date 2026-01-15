@@ -2,16 +2,21 @@ msgid ""
 msgstr ""
 "POT-Creation-Date: 2025-11-04 23:14+0100\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
-"Language: de-DE\n"
-"Project-Id-Version: \n"
+"Language: de\n"
+"Project-Id-Version: reactive-resume\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2026-01-15 22:41\n"
 "Last-Translator: \n"
-"Language-Team: \n"
-"Plural-Forms: \n"
+"Language-Team: German\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: reactive-resume\n"
+"X-Crowdin-Project-ID: 503410\n"
+"X-Crowdin-Language: de\n"
+"X-Crowdin-File: /main/locales/en-US.po\n"
+"X-Crowdin-File-ID: 518\n"
 
 #. js-lingui-explicit-id
 #: src/routes/dashboard/resumes/index.tsx:51
@@ -26,7 +31,7 @@ msgstr "Erstellt"
 #. js-lingui-explicit-id
 #: src/routes/dashboard/resumes/index.tsx:53
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 #. placeholder {0}: testimonials.length
 #: src/routes/_home/-sections/testimonials.tsx:134
@@ -264,7 +269,7 @@ msgstr ""
 
 #: src/routes/dashboard/-components/sidebar.tsx:132
 msgid "App"
-msgstr "App"
+msgstr ""
 
 #: src/routes/dashboard/settings/api-keys.tsx:37
 msgid "Are you sure you want to delete this API key?"
@@ -747,7 +752,7 @@ msgstr "Beschreibung"
 
 #: src/utils/resume/section.tsx:111
 msgid "Design"
-msgstr "Design"
+msgstr ""
 
 #: src/dialogs/auth/disable-two-factor.tsx:106
 #: src/routes/dashboard/settings/authentication/-components/two-factor.tsx:48
@@ -814,7 +819,7 @@ msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/statistics.tsx:48
 msgid "Downloads"
-msgstr "Downloads"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx:308
 msgid "Drag and drop sections here to move them between columns"
@@ -1002,7 +1007,7 @@ msgstr "Passwort vergessen?"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/page.tsx:73
 msgctxt "Page Format (A4 or Letter)"
 msgid "Format"
-msgstr "Format"
+msgstr ""
 
 #: src/routes/_home/-sections/features.tsx:40
 msgid "Free"
@@ -1225,7 +1230,7 @@ msgstr "Zuletzt angesehen am {0}"
 
 #: src/utils/resume/section.tsx:109
 msgid "Layout"
-msgstr "Layout"
+msgstr ""
 
 #: src/routes/_home/-sections/hero.tsx:96
 msgid "Learn More"
@@ -1333,7 +1338,7 @@ msgstr ""
 #: src/routes/builder/$resumeId/-sidebar/left/sections/basics.tsx:50
 #: src/routes/dashboard/settings/profile.tsx:136
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 #: src/dialogs/resume/sections/profile.tsx:168
 msgid "Network"
@@ -1436,7 +1441,7 @@ msgstr "Absatz"
 
 #: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:48
 msgid "Passkeys"
-msgstr "Passkeys"
+msgstr ""
 
 #: src/routes/_home/-sections/features.tsx:82
 msgid "Passkeys & 2FA"
@@ -1504,7 +1509,7 @@ msgstr "Hochformat"
 
 #: src/dialogs/resume/sections/experience.tsx:167
 msgid "Position"
-msgstr "Position"
+msgstr ""
 
 #: src/components/command-palette/pages/navigation.tsx:69
 #: src/components/command-palette/pages/navigation.tsx:74
@@ -1670,7 +1675,7 @@ msgstr "Rechtsbündig"
 
 #: src/routes/builder/$resumeId/-sidebar/left/sections/picture.tsx:185
 msgid "Rotation"
-msgstr "Rotation"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx:205
 #: src/dialogs/resume/sections/award.tsx:128
@@ -1825,7 +1830,7 @@ msgstr "Fähigkeiten"
 
 #: src/dialogs/resume/index.tsx:330
 msgid "Slug"
-msgstr "Slug"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:47
 #: src/routes/builder/$resumeId/-sidebar/right/sections/sharing.tsx:75
@@ -2157,7 +2162,7 @@ msgstr "Bild wird hochgeladen..."
 
 #: src/routes/builder/$resumeId/-sidebar/left/sections/picture.tsx:124
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 #: src/routes/auth/verify-2fa-backup.tsx:114
 msgid "Use Authenticator App"
@@ -2225,7 +2230,7 @@ msgstr "Freiwillige Arbeit"
 #: src/dialogs/resume/sections/volunteer.tsx:197
 #: src/routes/builder/$resumeId/-sidebar/left/sections/basics.tsx:130
 msgid "Website"
-msgstr "Website"
+msgstr ""
 
 #: src/routes/dashboard/settings/authentication/-components/passkeys.tsx:21
 msgid "What do you want to call this passkey?"
@@ -2366,4 +2371,5 @@ msgstr ""
 
 #: src/utils/locale.ts:18
 msgid "Zulu"
-msgstr "Zulu"
+msgstr ""
+
