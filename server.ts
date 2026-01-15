@@ -456,11 +456,11 @@ async function initializeStaticRoutes(clientDirectory: string): Promise<PreloadR
  * Migrate the database
  */
 async function migrateDatabase() {
-	if (!Bun.env.DATABASE_URL) throw new Error("DATABASE_URL is not set");
+	if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not set");
 
 	log.header("Running database migrations...");
 
-	const db = drizzle(Bun.env.DATABASE_URL);
+	const db = drizzle(process.env.DATABASE_URL);
 	await migrate(db, { migrationsFolder: "./migrations" });
 
 	log.success("Database migrations completed");

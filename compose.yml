@@ -11,7 +11,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
     healthcheck:
-      test: ["CMD", "pg_isready", "-h", "localhost"]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "postgres"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -24,7 +24,6 @@ services:
     environment:
       - WEBHOOK_DISABLE=true
       - CHROMIUM_AUTO_START=true
-      - API_ENABLE_BASIC_AUTH=true
       - LIBREOFFICE_DISABLE_ROUTES=true
       - PROMETHEUS_DISABLE_COLLECT=true
     healthcheck:

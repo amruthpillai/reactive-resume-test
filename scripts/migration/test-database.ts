@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/bun-sql";
 
-const client = new Bun.SQL({ url: Bun.env.DATABASE_URL });
+const client = new Bun.SQL({ url: process.env.DATABASE_URL });
 const db = drizzle({ client });
 
 try {
