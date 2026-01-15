@@ -4,6 +4,7 @@ dist
 .nitro
 .output
 .vercel
+.cursor
 coverage
 .DS_Store
 .tanstack

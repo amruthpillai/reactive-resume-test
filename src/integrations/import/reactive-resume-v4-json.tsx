@@ -10,6 +10,62 @@ function colorToRgba(color: string): string {
 	return `rgba(${parsed.r}, ${parsed.g}, ${parsed.b}, ${parsed.a})`;
 }
 
+const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
+
+const nonNegative = (value: number): number => Math.max(0, value);
+
+const pxToPt = (px: number): number => px * 0.75;
+
+const clampPictureSize = (size: number): number => clamp(size, 32, 512);
+
+const clampRotation = (rotation: number): number => clamp(rotation, 0, 360);
+
+const clampAspectRatio = (ratio: number): number => clamp(ratio, 0.5, 2.5);
+
+const clampBorderRadius = (radius: number): number => clamp(radius, 0, 100);
+
+const clampFontSize = (size: number): number => clamp(size, 6, 24);
+
+const clampLineHeight = (height: number): number => clamp(height, 0.5, 4);
+
+const clampSidebarWidth = (width: number): number => clamp(width, 10, 50);
+
+const clampLevel = (level: number): number => clamp(level, 0, 5);
+
+const convertAndClampFontSize = (px: number): number => clampFontSize(pxToPt(px));
+
+type FontWeight = "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900";
+
+const FONT_WEIGHT_MAP: Record<string, FontWeight> = {
+	regular: "400",
+	italic: "400",
+	"100": "100",
+	"200": "200",
+	"300": "300",
+	"400": "400",
+	"500": "500",
+	"600": "600",
+	"700": "700",
+	"800": "800",
+	"900": "900",
+	bold: "700",
+	"bold-italic": "700",
+};
+
+const convertFontVariantToWeight = (variant: string, defaultWeight: FontWeight = "400"): FontWeight =>
+	FONT_WEIGHT_MAP[variant.toLowerCase()] ?? defaultWeight;
+
+const convertFontVariants = (variants: string[] | undefined, defaultWeight: FontWeight = "400"): FontWeight[] => {
+	if (!variants || variants.length === 0) return [defaultWeight];
+	return variants.map((v) => convertFontVariantToWeight(v, defaultWeight));
+};
+
+const convertFontVariantsForHeading = (variants: string[] | undefined): FontWeight[] => {
+	const weights = convertFontVariants(variants, "600");
+	const filtered = weights.filter((w) => Number.parseInt(w, 10) >= 600);
+	return filtered.length > 0 ? filtered : ["600"];
+};
+
 type V4ResumeData = {
 	basics: {
 		name: string;
@@ -329,22 +385,18 @@ export class ReactiveResumeV4JSONImporter {
 		try {
 			const v4Data = JSON.parse(json) as V4ResumeData;
 
-			// Transform v4 format to current format
-			// Clamp picture size to valid range (32-100, but schema says max 512, so use 100 as safe limit)
-			const pictureSize = Math.max(32, Math.min(100, v4Data.basics.picture?.size ?? 80));
-
 			const transformed: ResumeData = {
 				picture: {
 					hidden: v4Data.basics.picture?.effects?.hidden ?? false,
 					url: v4Data.basics.picture?.url ?? "",
-					size: pictureSize,
-					rotation: 0,
-					aspectRatio: v4Data.basics.picture?.aspectRatio ?? 1,
-					borderRadius: v4Data.basics.picture?.borderRadius ?? 0,
+					size: clampPictureSize(v4Data.basics.picture?.size ?? 80),
+					rotation: clampRotation(0),
+					aspectRatio: clampAspectRatio(v4Data.basics.picture?.aspectRatio ?? 1),
+					borderRadius: clampBorderRadius(v4Data.basics.picture?.borderRadius ?? 0),
 					borderColor: v4Data.basics.picture?.effects?.border ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0)",
-					borderWidth: v4Data.basics.picture?.effects?.border ? 1 : 0,
+					borderWidth: nonNegative(v4Data.basics.picture?.effects?.border ? 1 : 0),
 					shadowColor: "rgba(0, 0, 0, 0.5)",
-					shadowWidth: 0,
+					shadowWidth: nonNegative(0),
 				},
 				basics: {
 					name: v4Data.basics.name ?? "",
@@ -459,7 +511,7 @@ export class ReactiveResumeV4JSONImporter {
 								icon: "",
 								name: item.name?.trim() || "Skill",
 								proficiency: item.description ?? "",
-								level: item.level ?? 0,
+								level: clampLevel(item.level ?? 0),
 								keywords: item.keywords ?? [],
 							})),
 					},
@@ -474,7 +526,7 @@ export class ReactiveResumeV4JSONImporter {
 								hidden: !(item.visible ?? true),
 								language: item.language?.trim() || "Language",
 								fluency: item.fluency ?? "",
-								level: item.level ?? 0,
+								level: clampLevel(item.level ?? 0),
 							})),
 					},
 					interests: {
@@ -582,39 +634,32 @@ export class ReactiveResumeV4JSONImporter {
 					},
 				},
 				customSections: Object.entries(v4Data.sections.custom ?? {}).map(([sectionId, section]) => {
-					// Convert items to HTML content
 					const itemsHtml = section.items
 						.filter((item) => item.visible !== false)
 						.map((item) => {
 							const parts: string[] = [];
 
-							// Name as heading
 							if (item.name) {
 								parts.push(`<h3>${item.name}</h3>`);
 							}
 
-							// Description
 							if (item.description) {
 								parts.push(`<p>${item.description}</p>`);
 							}
 
-							// Date and location as metadata
 							if (item.date || item.location) {
 								const details = [item.date, item.location].filter(Boolean).join(" • ");
 								if (details) parts.push(`<p><em>${details}</em></p>`);
 							}
 
-							// Summary/content
 							if (item.summary) {
 								parts.push(`<div>${item.summary}</div>`);
 							}
 
-							// Keywords as tags
 							if (item.keywords && item.keywords.length > 0) {
 								parts.push(`<p><strong>Keywords:</strong> ${item.keywords.join(", ")}</p>`);
 							}
 
-							// URL link
 							if (item.url?.href) {
 								const label = item.url.label || item.url.href;
 								parts.push(`<p><a href="${item.url.href}">${label}</a></p>`);
@@ -638,9 +683,8 @@ export class ReactiveResumeV4JSONImporter {
 						? v4Data.metadata.template
 						: "onyx") as Template,
 					layout: {
-						sidebarWidth: 35,
+						sidebarWidth: clampSidebarWidth(35),
 						pages: (v4Data.metadata.layout ?? []).map((page) => {
-							// v4 layout is a 2D array: [[mainColumn, sidebarColumn], ...]
 							const main = page[0] ?? [];
 							const sidebar = page[1] ?? [];
 							return {
@@ -655,10 +699,10 @@ export class ReactiveResumeV4JSONImporter {
 						value: v4Data.metadata.css?.value ?? "",
 					},
 					page: {
-						gapX: 4,
-						gapY: 6,
-						marginX: v4Data.metadata.page?.margin ?? 14,
-						marginY: v4Data.metadata.page?.margin ?? 14,
+						gapX: nonNegative(4),
+						gapY: nonNegative(6),
+						marginX: nonNegative(v4Data.metadata.page?.margin ?? 14),
+						marginY: nonNegative(v4Data.metadata.page?.margin ?? 14),
 						format: v4Data.metadata.page?.format ?? "a4",
 						locale: "en-US",
 					},
@@ -680,75 +724,27 @@ export class ReactiveResumeV4JSONImporter {
 					typography: {
 						body: {
 							fontFamily: v4Data.metadata.typography?.font?.family ?? "IBM Plex Serif",
-							fontWeights: (v4Data.metadata.typography?.font?.variants?.map((v) => {
-								// Convert variant names to weights (e.g., "regular" -> "400")
-								const weightMap: Record<string, "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900"> =
-									{
-										regular: "400",
-										italic: "400",
-										"100": "100",
-										"200": "200",
-										"300": "300",
-										"400": "400",
-										"500": "500",
-										"600": "600",
-										"700": "700",
-										"800": "800",
-										"900": "900",
-										bold: "700",
-										"bold-italic": "700",
-									};
-								return weightMap[v.toLowerCase()] ?? "400";
-							}) ?? ["400"]) as Array<"100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900">,
-							fontSize: v4Data.metadata.typography?.font?.size ?? 11,
-							lineHeight: v4Data.metadata.typography?.lineHeight ?? 1.5,
+							fontWeights: convertFontVariants(v4Data.metadata.typography?.font?.variants),
+							fontSize: convertAndClampFontSize(v4Data.metadata.typography?.font?.size ?? 14.67),
+							lineHeight: clampLineHeight(v4Data.metadata.typography?.lineHeight ?? 1.5),
 						},
 						heading: {
 							fontFamily: v4Data.metadata.typography?.font?.family ?? "IBM Plex Serif",
-							fontWeights: (() => {
-								const weights = v4Data.metadata.typography?.font?.variants?.map((v) => {
-									const weightMap: Record<
-										string,
-										"100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900"
-									> = {
-										regular: "400",
-										italic: "400",
-										"100": "100",
-										"200": "200",
-										"300": "300",
-										"400": "400",
-										"500": "500",
-										"600": "600",
-										"700": "700",
-										"800": "800",
-										"900": "900",
-										bold: "700",
-										"bold-italic": "700",
-									};
-									return weightMap[v.toLowerCase()] ?? "600";
-								}) ?? ["600"];
-								const filtered = weights.filter((w) => Number.parseInt(w, 10) >= 600);
-								return (filtered.length > 0 ? filtered : ["600"]) as Array<
-									"100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900"
-								>;
-							})(),
-							fontSize: (v4Data.metadata.typography?.font?.size ?? 11) + 3,
-							lineHeight: v4Data.metadata.typography?.lineHeight ?? 1.5,
+							fontWeights: convertFontVariantsForHeading(v4Data.metadata.typography?.font?.variants),
+							fontSize: clampFontSize(convertAndClampFontSize(v4Data.metadata.typography?.font?.size ?? 14.67) + 3),
+							lineHeight: clampLineHeight(v4Data.metadata.typography?.lineHeight ?? 1.5),
 						},
 					},
 					notes: v4Data.metadata.notes ?? "",
 				},
 			};
 
-			// Add summary to layout if it exists
 			if (v4Data.sections.summary?.visible && v4Data.sections.summary?.content) {
-				// Find the first page's main column and add summary at the beginning
 				if (transformed.metadata.layout.pages.length > 0) {
 					transformed.metadata.layout.pages[0].main.unshift("summary");
 				}
 			}
 
-			// Validate the transformed data
 			return resumeDataSchema.parse(transformed);
 		} catch (error: unknown) {
 			if (error instanceof ZodError) {
