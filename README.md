@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://rxresu.me">
-  <img src="public/logo/light.svg" alt="Reactive Resume" width="256px" />
+  <img src="public/pwa-512x512.png" alt="Reactive Resume" width="256px" />
 </a>
 
 <h3>Reactive Resume</h3>

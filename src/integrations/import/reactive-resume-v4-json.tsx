@@ -1,4 +1,4 @@
-import { flattenError, ZodError } from "zod";
+import z, { flattenError, ZodError } from "zod";
 import { type ResumeData, resumeDataSchema } from "@/schema/resume/data";
 import { type Template, templateSchema } from "@/schema/templates";
 import { parseRgbString } from "@/utils/color";
@@ -36,8 +36,7 @@ const convertAndClampFontSize = (px: number): number => clampFontSize(pxToPt(px)
 
 const isValidEmail = (email: string): boolean => {
 	if (!email) return false;
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-	return emailRegex.test(email);
+	return z.email().safeParse(email).success;
 };
 
 const sanitizeEmail = (email: string | undefined): string => {
