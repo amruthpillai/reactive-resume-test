@@ -33,7 +33,6 @@ COPY --from=builder /app/server.ts ./server.ts
 COPY --from=builder /app/migrations ./migrations
 COPY --from=dependencies /tmp/prod/node_modules ./node_modules
 
-USER bun
 EXPOSE 3000/tcp
 
 ENTRYPOINT ["bun", "run", "server.ts"]
