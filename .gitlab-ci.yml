@@ -4,10 +4,6 @@ stages:
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: "/certs"
-  DOCKER_BUILDKIT: 1
-  BUILDKIT_PROGRESS: plain
-  VERSION: $CI_COMMIT_SHORT_SHA
-  IMAGE: $CI_REGISTRY_IMAGE
 
 build-and-push:
   stage: build
@@ -25,58 +21,28 @@ build-and-push:
     - |
       export VERSION=$(jq -r .version package.json)
       echo "VERSION=$VERSION" >> build.env
-    - |
-      # Wait for Docker daemon to be ready
-      until docker info > /dev/null 2>&1; do
-        echo "Waiting for Docker daemon..."
-        sleep 1
-      done
-    - |
-      # Create buildx builder for this job
-      # Since GitLab CI jobs are ephemeral, we create a fresh builder each time
-      docker buildx create --name builder --driver docker-container --use || docker buildx use builder
-      docker buildx inspect --bootstrap
   script:
     - source build.env
     - |
-      # Extract metadata for tags
       SHORT_SHA=$CI_COMMIT_SHORT_SHA
-      TAGS="$CI_REGISTRY_IMAGE:$SHORT_SHA"
-      TAGS="$TAGS $CI_REGISTRY_IMAGE:latest"
+      PRIMARY_TAG="$CI_REGISTRY_IMAGE:$SHORT_SHA"
+      
+      # Build the image
+      docker build -f ./Dockerfile -t $PRIMARY_TAG .
+      
+      # Tag with additional tags
+      docker tag $PRIMARY_TAG $CI_REGISTRY_IMAGE:latest
       if [ -n "$VERSION" ] && [ "$VERSION" != "null" ]; then
-        TAGS="$TAGS $CI_REGISTRY_IMAGE:v$VERSION"
+        docker tag $PRIMARY_TAG $CI_REGISTRY_IMAGE:v$VERSION
       fi
       
-      # Build tags string for docker buildx
-      TAG_ARGS=""
-      for tag in $TAGS; do
-        TAG_ARGS="$TAG_ARGS -t $tag"
-      done
-      
-      # Build and push (only push if not a merge request)
+      # Push all tags (only if not a merge request)
       if [ "$CI_PIPELINE_SOURCE" != "merge_request_event" ]; then
-        # Multi-platform build with optimized registry cache
-        # Buildx handles parallel platform builds internally for better performance
-        docker buildx build \
-          --platform linux/amd64,linux/arm64 \
-          --file ./Dockerfile \
-          $TAG_ARGS \
-          --push \
-          --cache-from type=registry,ref=$CI_REGISTRY_IMAGE:buildcache \
-          --cache-to type=registry,ref=$CI_REGISTRY_IMAGE:buildcache,mode=max \
-          --build-arg BUILDKIT_INLINE_CACHE=1 \
-          --provenance=false \
-          --sbom=false \
-          .
-      else
-        # For merge requests, just build without pushing (single platform for speed)
-        docker buildx build \
-          --platform linux/amd64 \
-          --file ./Dockerfile \
-          $TAG_ARGS \
-          --load \
-          --cache-from type=registry,ref=$CI_REGISTRY_IMAGE:buildcache \
-          .
+        docker push $PRIMARY_TAG
+        docker push $CI_REGISTRY_IMAGE:latest
+        if [ -n "$VERSION" ] && [ "$VERSION" != "null" ]; then
+          docker push $CI_REGISTRY_IMAGE:v$VERSION
+        fi
       fi
   after_script:
     - docker logout $CI_REGISTRY || true
