@@ -1,4 +1,4 @@
-import { eq, or, sql } from "drizzle-orm";
+import { inArray, or, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/bun-sql";
 import { schema } from "@/integrations/drizzle";
 import { generateId, toUsername } from "@/utils/string";
@@ -58,10 +58,10 @@ const productionClient = new Bun.SQL({ url: productionUrl });
 const localClient = new Bun.SQL({ url: localUrl });
 
 // == Persistent mapping file path ==
-const USER_ID_MAP_FILE = "./scripts/migration/.user-id-map.json";
+const USER_ID_MAP_FILE = "./scripts/migration/user-id-map.json";
 
 // You may tune this for your use case
-const BATCH_SIZE = 1000;
+const BATCH_SIZE = 10000;
 
 async function loadUserIdMapFromFile(): Promise<Map<string, string>> {
 	try {
@@ -138,46 +138,78 @@ export async function migrateUsers() {
 			secretsMap.set(secret.userId, secret);
 		}
 
-		for (let i = 0; i < users.length; i++) {
-			const user = users[i];
-			const userStart = performance.now();
-
-			// The (global) processed user index for logging (1-based)
-			const runningIndex = totalUsersProcessed + i + 1;
-
-			// If this user was previously migrated (exists in our mapping), skip re-inserting them
+		// Filter out users already in userIdMap (previously migrated)
+		const usersToProcess = users.filter((user) => {
 			if (userIdMap.has(user.id)) {
-				console.log(`⏭️  Skipping user at index ${runningIndex} (already in userIdMap, likely already migrated)`);
 				skipped++;
-				continue;
+				return false;
 			}
+			return true;
+		});
 
-			try {
-				// Generate a new UUID v7 for the user
-				const newUserId = generateId();
-				userIdMap.set(user.id, newUserId);
+		if (usersToProcess.length === 0) {
+			console.log(`⏭️  All users in this batch were already migrated.`);
+			currentOffset += users.length;
+			totalUsersProcessed += users.length;
+			continue;
+		}
 
-				// Prepare username (lowercase, valid characters only)
-				const username = toUsername(user.username);
-				const displayUsername = user.username;
+		// Prepare usernames for all users
+		const userData = usersToProcess.map((user) => ({
+			user,
+			username: toUsername(user.username),
+			displayUsername: user.username,
+		}));
 
-				// Check if user with this email or username already exists
-				const existingUser = await localDb
-					.select()
-					.from(schema.user)
-					.where(or(eq(schema.user.email, user.email), eq(schema.user.username, username)))
-					.limit(1);
+		// Bulk check for existing users (by email or username)
+		const emails = userData.map((u) => u.user.email);
+		const usernames = userData.map((u) => u.username);
+		const displayUsernames = userData.map((u) => u.displayUsername);
 
-				if (existingUser.length > 0) {
-					console.log(`⏭️  Skipping user at index ${runningIndex} (already exists in target DB)`);
-					skipped++;
-					// Save userIdMap immediately—important for resuming!
-					await saveUserIdMapToFile(userIdMap);
-					continue;
-				}
+		const existingUsers = await localDb
+			.select()
+			.from(schema.user)
+			.where(
+				or(
+					inArray(schema.user.email, emails),
+					inArray(schema.user.username, usernames),
+					inArray(schema.user.displayUsername, displayUsernames),
+				),
+			);
 
-				// Insert user into the new database
-				await localDb.insert(schema.user).values({
+		const existingEmails = new Set(existingUsers.map((u) => u.email));
+		const existingUsernames = new Set(existingUsers.map((u) => u.username));
+		const existingDisplayUsernames = new Set(existingUsers.map((u) => u.displayUsername));
+
+		// Filter out users that already exist
+		const usersToInsert = userData.filter(({ user, username, displayUsername }) => {
+			if (
+				existingEmails.has(user.email) ||
+				existingUsernames.has(username) ||
+				existingDisplayUsernames.has(displayUsername)
+			) {
+				skipped++;
+				return false;
+			}
+			return true;
+		});
+
+		if (usersToInsert.length === 0) {
+			console.log(`⏭️  All users in this batch already exist in target DB.`);
+			currentOffset += users.length;
+			totalUsersProcessed += users.length;
+			await saveUserIdMapToFile(userIdMap);
+			continue;
+		}
+
+		console.log(`📝 Preparing to bulk insert ${usersToInsert.length} users...`);
+
+		// Prepare bulk insert data
+		const usersToInsertData = usersToInsert.map(({ user, username, displayUsername }) => {
+			const newUserId = generateId();
+			userIdMap.set(user.id, newUserId);
+			return {
+				userData: {
 					id: newUserId,
 					name: user.name,
 					email: user.email,
@@ -188,52 +220,76 @@ export async function migrateUsers() {
 					twoFactorEnabled: user.twoFactorEnabled,
 					createdAt: user.createdAt,
 					updatedAt: user.updatedAt,
-				});
-				usersCreated++;
+				},
+				originalUser: user,
+				newUserId: newUserId,
+			};
+		});
 
-				// Get the user's secrets
-				const userSecrets = secretsMap.get(user.id);
+		// Bulk insert users
+		const batchStart = performance.now();
+		try {
+			await localDb.insert(schema.user).values(usersToInsertData.map(({ userData }) => userData));
+			usersCreated += usersToInsertData.length;
 
-				// Create account entry
-				const providerId = mapProviderId(user.provider);
-				const accountId = providerId === "credential" ? newUserId : user.id; // For OAuth, we'd use the provider's account ID
+			// Prepare accounts for bulk insert
+			const accountsToInsert = usersToInsertData.map(({ originalUser, newUserId, userData }) => {
+				const userSecrets = secretsMap.get(originalUser.id);
+				const providerId = mapProviderId(originalUser.provider);
+				const accountId = providerId === "credential" ? newUserId : originalUser.id;
 
-				await localDb.insert(schema.account).values({
+				return {
 					id: generateId(),
 					userId: newUserId,
 					accountId: accountId,
 					providerId: providerId,
 					password: userSecrets?.password ?? null,
 					refreshToken: userSecrets?.refreshToken ?? null,
-					createdAt: user.createdAt,
-					updatedAt: user.updatedAt,
-				});
+					createdAt: userData.createdAt,
+					updatedAt: userData.updatedAt,
+				};
+			});
 
-				accountsCreated++;
+			// Bulk insert accounts
+			await localDb.insert(schema.account).values(accountsToInsert);
+			accountsCreated += accountsToInsert.length;
 
-				// Create two-factor entry if user has 2FA enabled and has secrets
-				if (user.twoFactorEnabled && userSecrets?.twoFactorSecret) {
-					await localDb.insert(schema.twoFactor).values({
-						id: generateId(),
-						userId: newUserId,
-						secret: userSecrets.twoFactorSecret,
-						backupCodes: userSecrets.twoFactorBackupCodes.join(","), // Convert array to comma-separated string
-						createdAt: user.createdAt,
-						updatedAt: user.updatedAt,
-					});
-					twoFactorCreated++;
-				}
+			// Prepare two-factor entries for bulk insert
+			const twoFactorToInsert = usersToInsertData
+				.map(({ originalUser, newUserId, userData }) => {
+					const userSecrets = secretsMap.get(originalUser.id);
 
-				const userEnd = performance.now();
-				const userTimeMs = userEnd - userStart;
+					if (originalUser.twoFactorEnabled && userSecrets?.twoFactorSecret) {
+						return {
+							id: generateId(),
+							userId: newUserId,
+							secret: userSecrets.twoFactorSecret,
+							backupCodes: userSecrets.twoFactorBackupCodes.join(","),
+							createdAt: userData.createdAt,
+							updatedAt: userData.updatedAt,
+						};
+					}
+					return null;
+				})
+				.filter((entry): entry is NonNullable<typeof entry> => entry !== null);
 
-				console.log(`✅ Migrated user at index ${runningIndex} (took ${userTimeMs.toFixed(1)} ms)`);
-
-				// Save progress after each successfully migrated user
-				await saveUserIdMapToFile(userIdMap);
-			} catch (error) {
-				console.error(`🚨 Failed to migrate user at index ${runningIndex}:`, error);
+			// Bulk insert two-factor entries
+			if (twoFactorToInsert.length > 0) {
+				await localDb.insert(schema.twoFactor).values(twoFactorToInsert);
+				twoFactorCreated += twoFactorToInsert.length;
 			}
+
+			const batchEnd = performance.now();
+			const batchTimeMs = batchEnd - batchStart;
+			console.log(
+				`✅ Bulk inserted ${usersToInsertData.length} users in ${batchTimeMs.toFixed(1)} ms (avg ${(batchTimeMs / usersToInsertData.length).toFixed(1)} ms/user)`,
+			);
+
+			// Save progress after each batch
+			await saveUserIdMapToFile(userIdMap);
+		} catch (error) {
+			console.error(`🚨 Failed to bulk insert users batch:`, error);
+			// Continue with next batch even if this one fails
 		}
 
 		currentOffset += users.length;

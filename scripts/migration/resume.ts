@@ -1,4 +1,4 @@
-import { and, eq, sql } from "drizzle-orm";
+import { and, inArray, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/bun-sql";
 import { schema } from "@/integrations/drizzle";
 import { ReactiveResumeV4JSONImporter } from "@/integrations/import/reactive-resume-v4-json";
@@ -39,10 +39,10 @@ const productionClient = new Bun.SQL({ url: productionUrl });
 const localClient = new Bun.SQL({ url: localUrl });
 
 // == Persistent mapping file path ==
-const USER_ID_MAP_FILE = "./scripts/migration/.user-id-map.json";
+const USER_ID_MAP_FILE = "./scripts/migration/user-id-map.json";
 
 // You may tune this for your use case
-const BATCH_SIZE = 1000;
+const BATCH_SIZE = 10000;
 
 async function loadUserIdMapFromFile(): Promise<Map<string, string>> {
 	try {
@@ -117,54 +117,97 @@ export async function migrateResumes() {
 			statisticsMap.set(stat.resumeId, stat);
 		}
 
-		for (let i = 0; i < resumes.length; i++) {
-			const resume = resumes[i];
-			const resumeStart = performance.now();
-
-			// The (global) processed resume index for logging (1-based)
-			const runningIndex = totalResumesProcessed + i + 1;
-
-			try {
-				// Get the new userId from the mapping
+		// Filter out resumes where userId is not in userIdMap
+		const resumesToProcess = resumes
+			.map((resume) => {
 				const newUserId = userIdMap.get(resume.userId);
 				if (!newUserId) {
-					console.log(`⏭️  Skipping resume at index ${runningIndex} (userId ${resume.userId} not found in userIdMap)`);
 					skipped++;
-					continue;
+					return null;
 				}
+				return { resume, newUserId };
+			})
+			.filter((item): item is NonNullable<typeof item> => item !== null);
 
-				// Check if the user exists in the local database
-				const existingUser = await localDb.select().from(schema.user).where(eq(schema.user.id, newUserId)).limit(1);
+		if (resumesToProcess.length === 0) {
+			console.log(`⏭️  All resumes in this batch have userIds not found in userIdMap.`);
+			currentOffset += resumes.length;
+			totalResumesProcessed += resumes.length;
+			continue;
+		}
 
-				if (existingUser.length === 0) {
-					console.log(`⏭️  Skipping resume at index ${runningIndex} (userId ${newUserId} not found in local database)`);
-					skipped++;
-					continue;
-				}
+		// Get unique userIds and bulk check if they exist in local database
+		const uniqueUserIds = [...new Set(resumesToProcess.map((r) => r.newUserId))];
+		const existingUsers = await localDb.select().from(schema.user).where(inArray(schema.user.id, uniqueUserIds));
 
-				// Check if resume with this slug and userId already exists
-				const existingResume = await localDb
-					.select()
-					.from(schema.resume)
-					.where(and(eq(schema.resume.slug, resume.slug), eq(schema.resume.userId, newUserId)))
-					.limit(1);
+		const existingUserIds = new Set(existingUsers.map((u) => u.id));
 
-				if (existingResume.length > 0) {
-					console.log(`⏭️  Skipping resume at index ${runningIndex} (already exists in target DB)`);
-					skipped++;
-					continue;
-				}
+		// Filter out resumes where user doesn't exist
+		const resumesWithValidUsers = resumesToProcess.filter(({ newUserId }) => {
+			if (!existingUserIds.has(newUserId)) {
+				skipped++;
+				return false;
+			}
+			return true;
+		});
 
-				// Generate a new UUID for the resume
-				const newResumeId = generateId();
+		if (resumesWithValidUsers.length === 0) {
+			console.log(`⏭️  All resumes in this batch have userIds not found in local database.`);
+			currentOffset += resumes.length;
+			totalResumesProcessed += resumes.length;
+			continue;
+		}
 
+		// Bulk check for existing resumes (by slug + userId)
+		// We need to check each unique combination
+		const slugUserIdPairs = resumesWithValidUsers.map(({ resume, newUserId }) => ({
+			slug: resume.slug,
+			userId: newUserId,
+		}));
+
+		// Get all unique slugs and userIds
+		const uniqueSlugs = [...new Set(slugUserIdPairs.map((p) => p.slug))];
+		const userIdsForSlugCheck = [...new Set(slugUserIdPairs.map((p) => p.userId))];
+
+		// Fetch all existing resumes that match any of our slugs and userIds
+		const existingResumes = await localDb
+			.select()
+			.from(schema.resume)
+			.where(and(inArray(schema.resume.slug, uniqueSlugs), inArray(schema.resume.userId, userIdsForSlugCheck)));
+
+		// Create a set of existing slug+userId combinations
+		const existingResumeKeys = new Set(existingResumes.map((r) => `${r.slug}:${r.userId}`));
+
+		// Filter out resumes that already exist
+		const resumesToInsert = resumesWithValidUsers.filter(({ resume, newUserId }) => {
+			const key = `${resume.slug}:${newUserId}`;
+			if (existingResumeKeys.has(key)) {
+				skipped++;
+				return false;
+			}
+			return true;
+		});
+
+		if (resumesToInsert.length === 0) {
+			console.log(`⏭️  All resumes in this batch already exist in target DB.`);
+			currentOffset += resumes.length;
+			totalResumesProcessed += resumes.length;
+			continue;
+		}
+
+		console.log(`📝 Preparing to bulk insert ${resumesToInsert.length} resumes...`);
+
+		// Prepare bulk insert data
+		const batchStart = performance.now();
+		try {
+			const resumesToInsertData = resumesToInsert.map(({ resume, newUserId }) => {
 				// Transform the data using the V4 importer
 				let transformedData = defaultResumeData;
 				try {
 					const dataJson = typeof resume.data === "string" ? resume.data : JSON.stringify(resume.data);
 					transformedData = importer.parse(dataJson);
 				} catch (error) {
-					console.error(`⚠️  Failed to parse resume data at index ${runningIndex}, using default data:`, error);
+					console.error(`⚠️  Failed to parse resume data for resume ${resume.id}, using default data:`, error);
 					// Use default data if parsing fails
 					transformedData = defaultResumeData;
 				}
@@ -172,28 +215,38 @@ export async function migrateResumes() {
 				// Map visibility to isPublic (visibility === "public" -> isPublic = true)
 				const isPublic = resume.visibility === "public";
 
-				// Insert resume into the new database
-				await localDb.insert(schema.resume).values({
-					id: newResumeId,
-					name: resume.title,
-					slug: resume.slug,
-					tags: [], // Default empty array
-					isPublic: isPublic,
-					isLocked: resume.locked,
-					password: null, // No password in old schema
-					data: transformedData,
-					userId: newUserId,
-					createdAt: resume.createdAt,
-					updatedAt: resume.updatedAt,
-				});
-				resumesCreated++;
+				const newResumeId = generateId();
 
-				// Get the resume's statistics
-				const resumeStatistics = statisticsMap.get(resume.id);
+				return {
+					resumeData: {
+						id: newResumeId,
+						name: resume.title,
+						slug: resume.slug,
+						tags: [], // Default empty array
+						isPublic: isPublic,
+						isLocked: resume.locked,
+						password: null, // No password in old schema
+						data: transformedData,
+						userId: newUserId,
+						createdAt: resume.createdAt,
+						updatedAt: resume.updatedAt,
+					},
+					originalResumeId: resume.id,
+					newResumeId: newResumeId,
+				};
+			});
 
-				// Create statistics entry if it exists
-				if (resumeStatistics) {
-					await localDb.insert(schema.resumeStatistics).values({
+			// Bulk insert resumes
+			await localDb.insert(schema.resume).values(resumesToInsertData.map(({ resumeData }) => resumeData));
+			resumesCreated += resumesToInsertData.length;
+
+			// Prepare statistics for bulk insert
+			const statisticsToInsert = resumesToInsertData
+				.map(({ originalResumeId, newResumeId }) => {
+					const resumeStatistics = statisticsMap.get(originalResumeId);
+					if (!resumeStatistics) return null;
+
+					return {
 						id: generateId(),
 						views: resumeStatistics.views,
 						downloads: resumeStatistics.downloads,
@@ -202,18 +255,25 @@ export async function migrateResumes() {
 						resumeId: newResumeId,
 						createdAt: resumeStatistics.createdAt,
 						updatedAt: resumeStatistics.updatedAt,
-					});
-					statisticsCreated++;
-				}
+					};
+				})
+				.filter((stat): stat is NonNullable<typeof stat> => stat !== null);
 
-				const resumeEnd = performance.now();
-				const resumeTimeMs = resumeEnd - resumeStart;
-
-				console.log(`✅ Migrated resume at index ${runningIndex} (took ${resumeTimeMs.toFixed(1)} ms)`);
-			} catch (error) {
-				console.error(`🚨 Failed to migrate resume at index ${runningIndex}:`, error);
-				errors++;
+			// Bulk insert statistics
+			if (statisticsToInsert.length > 0) {
+				await localDb.insert(schema.resumeStatistics).values(statisticsToInsert);
+				statisticsCreated += statisticsToInsert.length;
 			}
+
+			const batchEnd = performance.now();
+			const batchTimeMs = batchEnd - batchStart;
+			console.log(
+				`✅ Bulk inserted ${resumesToInsertData.length} resumes in ${batchTimeMs.toFixed(1)} ms (avg ${(batchTimeMs / resumesToInsertData.length).toFixed(1)} ms/resume)`,
+			);
+		} catch (error) {
+			console.error(`🚨 Failed to bulk insert resumes batch:`, error);
+			errors++;
+			// Continue with next batch even if this one fails
 		}
 
 		currentOffset += resumes.length;
