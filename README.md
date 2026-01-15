@@ -1,0 +1,234 @@
+<div align="center">
+
+<a href="https://rxresu.me">
+  <img src="public/logo/light.svg" alt="Reactive Resume" width="256px" />
+</a>
+
+<h3>Reactive Resume</h3>
+<p>A free and open-source resume builder that respects your privacy.</p>
+
+<p>
+  <a href="https://rxresu.me"><strong>Build Your Resume →</strong></a>
+  ·
+  <a href="https://docs.rxresu.me"><strong>Documentation</strong></a>
+</p>
+
+<p>
+  <img src="https://img.shields.io/github/stars/AmruthPillai/Reactive-Resume?style=flat-square" alt="Stars" />
+  <img src="https://img.shields.io/github/license/AmruthPillai/Reactive-Resume?style=flat-square" alt="License" />
+  <img src="https://img.shields.io/docker/pulls/amruthpillai/reactive-resume?style=flat-square" alt="Docker Pulls" />
+</p>
+
+</div>
+
+---
+
+Reactive Resume makes building resumes straightforward. Pick a template, fill in your details, and export to PDF—no account required for basic use. For those who want more control, the entire application can be self-hosted on your own infrastructure.
+
+Built with privacy as a core principle, Reactive Resume gives you complete ownership of your data. The codebase is fully open-source under the MIT license, with no tracking, no ads, and no hidden costs.
+
+## Features
+
+**Resume Building**
+
+- Real-time preview as you type
+- Multiple export formats (PDF, JSON)
+- Drag-and-drop section ordering
+- Custom sections for any content type
+- Rich text editor with formatting support
+
+**Templates**
+
+- 12 professionally designed templates
+- A4 and Letter size support
+- Customizable colors, fonts, and spacing
+- Custom CSS for advanced styling
+
+**Privacy & Control**
+
+- Self-host on your own infrastructure
+- No tracking or analytics by default
+- Full data export at any time
+- Delete your data permanently with one click
+
+**Extras**
+
+- AI integration (OpenAI, Google Gemini, Anthropic Claude)
+- Multi-language support
+- Share resumes via unique links
+- Import from JSON Resume format
+- Dark mode support
+- Passkey and two-factor authentication
+
+## Templates
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="public/templates/jpg/azurill.jpg" alt="Azurill" width="150" />
+      <br /><sub><b>Azurill</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/jpg/bronzor.jpg" alt="Bronzor" width="150" />
+      <br /><sub><b>Bronzor</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/jpg/chikorita.jpg" alt="Chikorita" width="150" />
+      <br /><sub><b>Chikorita</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/jpg/ditto.jpg" alt="Ditto" width="150" />
+      <br /><sub><b>Ditto</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/templates/jpg/gengar.jpg" alt="Gengar" width="150" />
+      <br /><sub><b>Gengar</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/jpg/glalie.jpg" alt="Glalie" width="150" />
+      <br /><sub><b>Glalie</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/jpg/kakuna.jpg" alt="Kakuna" width="150" />
+      <br /><sub><b>Kakuna</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/jpg/lapras.jpg" alt="Lapras" width="150" />
+      <br /><sub><b>Lapras</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/templates/jpg/leafish.jpg" alt="Leafish" width="150" />
+      <br /><sub><b>Leafish</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/jpg/onyx.jpg" alt="Onyx" width="150" />
+      <br /><sub><b>Onyx</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/jpg/pikachu.jpg" alt="Pikachu" width="150" />
+      <br /><sub><b>Pikachu</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/jpg/rhyhorn.jpg" alt="Rhyhorn" width="150" />
+      <br /><sub><b>Rhyhorn</b></sub>
+    </td>
+  </tr>
+</table>
+
+## Quick Start
+
+The quickest way to run Reactive Resume locally:
+
+```bash
+# Clone the repository
+git clone https://github.com/AmruthPillai/Reactive-Resume.git
+cd Reactive-Resume
+
+# Start infrastructure services
+docker compose up -d
+
+# Access the app
+open http://localhost:3000
+```
+
+For detailed setup instructions, environment configuration, and self-hosting guides, see the [documentation](https://docs.rxresu.me).
+
+## Tech Stack
+
+| Category         | Technology                           |
+| ---------------- | ------------------------------------ |
+| Framework        | TanStack Start (React 19, Vite, Bun) |
+| Runtime          | Bun                                  |
+| Language         | TypeScript                           |
+| Database         | PostgreSQL with Drizzle ORM          |
+| API              | ORPC (Type-safe RPC)                 |
+| Auth             | Better Auth                          |
+| Styling          | Tailwind CSS                         |
+| UI Components    | Radix UI                             |
+| State Management | Zustand + TanStack Query             |
+
+## Documentation
+
+Comprehensive guides are available at [docs.rxresu.me](https://docs.rxresu.me):
+
+| Guide                                                                       | Description                       |
+| --------------------------------------------------------------------------- | --------------------------------- |
+| [Getting Started](https://docs.rxresu.me/getting-started)                   | First-time setup and basic usage  |
+| [Self-Hosting](https://docs.rxresu.me/guides/self-hosting-with-docker)      | Deploy on your own server         |
+| [Development Setup](https://docs.rxresu.me/contributing/development)        | Local development environment     |
+| [Project Architecture](https://docs.rxresu.me/contributing/architecture)    | Codebase structure and patterns   |
+| [Exporting Your Resume](https://docs.rxresu.me/guides/exporting-your-resume)| PDF and JSON export options       |
+
+## Self-Hosting
+
+Reactive Resume can be self-hosted using Docker. The stack includes:
+
+- **PostgreSQL** — Database for storing user data and resumes
+- **SeaweedFS** — S3-compatible storage for file uploads
+- **Gotenberg** — Headless Chrome service for PDF generation
+
+Pull the latest image from Docker Hub or GitHub Container Registry:
+
+```bash
+# Docker Hub
+docker pull amruthpillai/reactive-resume:latest
+
+# GitHub Container Registry
+docker pull ghcr.io/amruthpillai/reactive-resume:latest
+```
+
+See the [self-hosting guide](https://docs.rxresu.me/guides/self-hosting-with-docker) for complete instructions.
+
+## Support
+
+Reactive Resume is and always will be free and open-source. If it has helped you land a job or saved you time, consider supporting continued development:
+
+<p>
+  <a href="https://github.com/sponsors/AmruthPillai">
+    <img src="https://img.shields.io/badge/GitHub%20Sponsors-Support-ea4aaa?style=flat-square&logo=github-sponsors" alt="GitHub Sponsors" />
+  </a>
+  <a href="https://opencollective.com/reactive-resume">
+    <img src="https://img.shields.io/badge/Open%20Collective-Contribute-7FADF2?style=flat-square&logo=open-collective" alt="Open Collective" />
+  </a>
+</p>
+
+Other ways to support:
+
+- Star this repository
+- Report bugs and suggest features
+- Improve documentation
+- Help with translations
+
+## Contributing
+
+Contributions make open-source thrive. Whether fixing a typo or adding a feature, all contributions are welcome.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+See the [development setup guide](https://docs.rxresu.me/contributing/development) for detailed instructions.
+
+## Community
+
+<p>
+  <a href="https://github.com/AmruthPillai/Reactive-Resume">
+    <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github" alt="GitHub" />
+  </a>
+  <a href="https://discord.gg/hzwkZbyvUW">
+    <img src="https://img.shields.io/badge/Discord-Join-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Discord" />
+  </a>
+  <a href="https://reddit.com/r/reactiveresume">
+    <img src="https://img.shields.io/badge/Reddit-Community-FF4500?style=flat-square&logo=reddit&logoColor=white" alt="Reddit" />
+  </a>
+</p>
+
+## License
+
+[MIT](./LICENSE) — do whatever you want with it.
