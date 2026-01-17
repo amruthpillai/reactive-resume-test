@@ -21,7 +21,7 @@ msgstr ""
 #. js-lingui-explicit-id
 #: src/routes/dashboard/resumes/index.tsx:51
 msgid "Last Updated"
-msgstr "Ultima Atualização"
+msgstr "Última Atualização"
 
 #. js-lingui-explicit-id
 #: src/routes/dashboard/resumes/index.tsx:52
