@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---------- Dependencies Layer ----------
-FROM node:24-alpine AS dependencies
+FROM node:24-slim AS dependencies
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -19,7 +19,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     cd /tmp/prod && pnpm install --frozen-lockfile --prod
 
 # ---------- Builder Layer ----------
-FROM node:24-alpine AS builder
+FROM node:24-slim AS builder
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -33,7 +33,7 @@ COPY . .
 RUN pnpm run build
 
 # ---------- Runtime Layer ----------
-FROM node:24-alpine AS runtime
+FROM node:24-slim AS runtime
 
 WORKDIR /app
 

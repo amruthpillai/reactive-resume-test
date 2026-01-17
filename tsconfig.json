@@ -10,6 +10,7 @@
 		/* Bundler mode */
 		"noEmit": true,
 		"moduleResolution": "bundler",
+		"esModuleInterop": true,
 		"verbatimModuleSyntax": false,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,

@@ -59,7 +59,7 @@ const config = defineConfig({
 		viteReact({ babel: { plugins: [["@lingui/babel-plugin-lingui-macro"]] } }),
 		nitro({
 			prerender: { routes: ["/"] },
-			plugins: ["plugins/migrate.ts"],
+			plugins: ["plugins/0.reflect-metadata.ts", "plugins/1.migrate.ts"],
 		}),
 		VitePWA({
 			registerType: "autoUpdate",
