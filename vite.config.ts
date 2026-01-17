@@ -57,11 +57,18 @@ const config = defineConfig({
 		tailwindcss(),
 		tanstackStart({ router: { semicolons: true, quoteStyle: "double" } }),
 		viteReact({ babel: { plugins: [["@lingui/babel-plugin-lingui-macro"]] } }),
-		nitro({ plugins: ["plugins/migrate.ts"] }),
+		nitro({
+			prerender: { routes: ["/"] },
+			plugins: ["plugins/migrate.ts"],
+		}),
 		VitePWA({
 			registerType: "autoUpdate",
-			injectRegister: "script-defer",
+			outDir: ".output/public",
+			includeAssets: ["**/*"],
 			workbox: {
+				globPatterns: ["**/*"],
+				clientsClaim: true,
+				cleanupOutdatedCaches: true,
 				maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10mb
 			},
 			manifest: {
