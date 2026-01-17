@@ -15,7 +15,7 @@ const pageDimensions = {
 	},
 } as const;
 
-const SCREENSHOT_TTL = 1000 * 60 * 10; // 10 minutes
+const SCREENSHOT_TTL = 1000 * 60 * 60; // 1 hour
 
 export const printerService = {
 	printResumeAsPDF: async (input: { id: string }): Promise<File> => {

@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { useEffect } from "react";
@@ -6,7 +5,7 @@ import { z } from "zod";
 import { LoadingScreen } from "@/components/layout/loading-screen";
 import { ResumePreview } from "@/components/resume/preview";
 import { useResumeStore } from "@/components/resume/store/resume";
-import { orpc } from "@/integrations/orpc/client";
+import { getORPCClient } from "@/integrations/orpc/client";
 import { env } from "@/utils/env";
 import { verifyPrinterToken } from "@/utils/printer-token";
 
@@ -29,21 +28,19 @@ export const Route = createFileRoute("/printer/$resumeId")({
 			throw redirect({ to: "/", search: {}, throw: true });
 		}
 	},
-	loader: async ({ context, params }) => {
-		const resume = await context.queryClient.ensureQueryData(
-			orpc.resume.getByIdForPrinter.queryOptions({ input: { id: params.resumeId } }),
-		);
+	loader: async ({ params }) => {
+		const client = getORPCClient();
+		const resume = await client.resume.getByIdForPrinter({ id: params.resumeId });
 
 		return { resume };
 	},
 });
 
 function RouteComponent() {
+	const { resume } = Route.useLoaderData();
+
 	const isReady = useResumeStore((state) => state.isReady);
 	const initialize = useResumeStore((state) => state.initialize);
-
-	const { resumeId } = Route.useParams();
-	const { data: resume } = useQuery(orpc.resume.getByIdForPrinter.queryOptions({ input: { id: resumeId } }));
 
 	useEffect(() => {
 		if (!resume) return;

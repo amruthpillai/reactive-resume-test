@@ -13,22 +13,6 @@ export const authRouter = {
 				description:
 					"A list of all authentication providers, and their display names, supported by the instance of Reactive Resume.",
 			})
-			.output(
-				z
-					.object({
-						credential: z
-							.string()
-							.default("Password")
-							.describe("The display name for the Password authentication provider."),
-						google: z.string().default("Google").describe("The display name for the Google authentication provider."),
-						github: z.string().default("GitHub").describe("The display name for the GitHub authentication provider."),
-						custom: z
-							.string()
-							.default("Custom OAuth")
-							.describe("The display name for the Custom OAuth authentication provider."),
-					})
-					.partial(),
-			)
 			.handler((): ProviderList => {
 				return authService.providers.list();
 			}),
