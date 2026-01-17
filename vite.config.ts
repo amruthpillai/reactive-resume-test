@@ -20,8 +20,13 @@ const config = defineConfig({
 
 	optimizeDeps: {
 		holdUntilCrawlEnd: true,
-		include: ["react", "react/jsx-runtime", "react-dom", "react-dom/client"],
-		exclude: ["@tanstack/start", "@tanstack/react-start", "@tanstack/start-server-core"],
+		include: ["react-dom", "react-dom/client", "react", "react/jsx-runtime"],
+		exclude: [
+			"@tanstack/react-start",
+			"@tanstack/react-start/client",
+			"@tanstack/react-start/server",
+			"@tanstack/start-server-core",
+		],
 	},
 
 	build: {
