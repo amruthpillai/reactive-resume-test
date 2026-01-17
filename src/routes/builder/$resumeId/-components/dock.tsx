@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { authClient } from "@/integrations/auth/client";
 import { orpc } from "@/integrations/orpc/client";
-import { downloadWithAnchor, generateFilename } from "@/utils/file";
+import { downloadFromUrl, generateFilename } from "@/utils/file";
 import { cn } from "@/utils/style";
 
 export function BuilderDock() {
@@ -53,10 +53,9 @@ export function BuilderDock() {
 		if (!resume) return;
 
 		const filename = generateFilename(resume.data.basics.name, "pdf");
-		const file = await printResumeAsPDF({ id: resume.id });
-		const blob = new Blob([file], { type: "application/pdf" });
+		const { url } = await printResumeAsPDF({ id: resume.id });
 
-		downloadWithAnchor(blob, filename);
+		downloadFromUrl(url, filename);
 	}, [resume, printResumeAsPDF]);
 
 	return (

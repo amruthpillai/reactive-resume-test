@@ -10,7 +10,7 @@ import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { orpc } from "@/integrations/orpc/client";
-import { downloadWithAnchor } from "@/utils/file";
+import { downloadFromUrl } from "@/utils/file";
 import { cn } from "@/utils/style";
 
 export const Route = createFileRoute("/$username/$slug")({
@@ -61,8 +61,8 @@ function RouteComponent() {
 
 	const handleDownload = useCallback(async () => {
 		if (!resume) return;
-		const file = await printResumeAsPDF({ id: resume.id });
-		downloadWithAnchor(file, `resume-${resume.name}.pdf`);
+		const { url } = await printResumeAsPDF({ id: resume.id });
+		downloadFromUrl(url, `resume-${resume.name}.pdf`);
 	}, [resume, printResumeAsPDF]);
 
 	if (!isReady) return <LoadingScreen />;

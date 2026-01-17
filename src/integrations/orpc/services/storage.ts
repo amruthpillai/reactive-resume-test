@@ -1,5 +1,6 @@
 import { access, constants as fsConstants, mkdir, readdir, rm } from "node:fs/promises";
 import { dirname, extname, join } from "node:path";
+import sharp from "sharp";
 import { env } from "@/utils/env";
 
 interface StorageWriteInput {
@@ -43,13 +44,54 @@ const CONTENT_TYPE_MAP: Record<string, string> = {
 
 const DEFAULT_CONTENT_TYPE = "application/octet-stream";
 
-export function buildStorageKey(userId: string, filename: string): string {
-	return `uploads/${userId}/${filename}`;
+const IMAGE_MIME_TYPES = ["image/gif", "image/png", "image/jpeg", "image/webp"];
+
+// Key builders for different upload types
+export function buildPictureKey(userId: string): string {
+	const timestamp = Date.now();
+	return `uploads/${userId}/pictures/${timestamp}.webp`;
+}
+
+export function buildScreenshotKey(userId: string, resumeId: string): string {
+	const timestamp = Date.now();
+	return `uploads/${userId}/screenshots/${resumeId}/${timestamp}.webp`;
+}
+
+export function buildPdfKey(userId: string, resumeId: string): string {
+	const timestamp = Date.now();
+	return `uploads/${userId}/pdfs/${resumeId}/${timestamp}.pdf`;
+}
+
+export function buildPublicUrl(path: string): string {
+	return new URL(path, env.APP_URL).toString();
 }
 
 export function inferContentType(filename: string): string {
 	const extension = extname(filename).toLowerCase();
 	return CONTENT_TYPE_MAP[extension] ?? DEFAULT_CONTENT_TYPE;
+}
+
+export function isImageFile(mimeType: string): boolean {
+	return IMAGE_MIME_TYPES.includes(mimeType);
+}
+
+export interface ProcessedImage {
+	data: Uint8Array;
+	contentType: string;
+}
+
+export async function processImageForUpload(file: File): Promise<ProcessedImage> {
+	const fileBuffer = await file.arrayBuffer();
+
+	const processedBuffer = await sharp(fileBuffer)
+		.resize(800, 800, { fit: "inside", withoutEnlargement: true })
+		.webp({ preset: "picture" })
+		.toBuffer();
+
+	return {
+		data: new Uint8Array(processedBuffer),
+		contentType: "image/webp",
+	};
 }
 
 export class LocalStorageService implements StorageService {
@@ -192,14 +234,17 @@ class S3StorageService implements StorageService {
 		};
 	}
 
-	async delete(key: string): Promise<boolean> {
-		const exists = await this.client.exists(key);
+	async delete(keyOrPrefix: string): Promise<boolean> {
+		// Use list to find all matching keys (handles both single file and folder/prefix)
+		const keys = await this.list(keyOrPrefix);
 
-		if (!exists) return false;
+		if (keys.length === 0) return false;
 
-		await this.client.delete(key);
+		// Delete all matching keys using Promise.allSettled
+		const results = await Promise.allSettled(keys.map((k) => this.client.delete(k)));
 
-		return true;
+		// Return true if at least one deletion succeeded
+		return results.some((r) => r.status === "fulfilled");
 	}
 
 	async healthcheck(): Promise<StorageHealthResult> {
@@ -238,4 +283,51 @@ export function getStorageService(): StorageService {
 
 	cachedService = createStorageService();
 	return cachedService;
+}
+
+// High-level upload types
+export type UploadType = "picture" | "screenshot" | "pdf";
+
+export interface UploadFileInput {
+	userId: string;
+	data: Uint8Array;
+	contentType: string;
+	type: UploadType;
+	resumeId?: string;
+}
+
+export interface UploadFileResult {
+	url: string;
+	key: string;
+}
+
+export async function uploadFile(input: UploadFileInput): Promise<UploadFileResult> {
+	const storageService = getStorageService();
+
+	let key: string;
+
+	switch (input.type) {
+		case "picture":
+			key = buildPictureKey(input.userId);
+			break;
+		case "screenshot":
+			if (!input.resumeId) throw new Error("resumeId is required for screenshot uploads");
+			key = buildScreenshotKey(input.userId, input.resumeId);
+			break;
+		case "pdf":
+			if (!input.resumeId) throw new Error("resumeId is required for pdf uploads");
+			key = buildPdfKey(input.userId, input.resumeId);
+			break;
+	}
+
+	await storageService.write({
+		key,
+		data: input.data,
+		contentType: input.contentType,
+	});
+
+	return {
+		key,
+		url: buildPublicUrl(key),
+	};
 }

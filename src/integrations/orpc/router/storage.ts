@@ -1,11 +1,7 @@
-import { Buffer } from "node:buffer";
 import { ORPCError } from "@orpc/server";
-import sharp from "sharp";
 import z from "zod";
-import { env } from "@/utils/env";
-import { generateId } from "@/utils/string";
 import { protectedProcedure } from "../context";
-import { buildStorageKey, getStorageService, inferContentType } from "../services/storage";
+import { getStorageService, isImageFile, processImageForUpload, uploadFile } from "../services/storage";
 
 const storageService = getStorageService();
 
@@ -13,95 +9,45 @@ const fileSchema = z.file().max(10 * 1024 * 1024, "File size must be less than 1
 
 const filenameSchema = z.object({ filename: z.string().min(1) });
 
-function buildPublicUrl(path: string): string {
-	return new URL(path, env.APP_URL).toString();
-}
-
 export const storageRouter = {
 	uploadFile: protectedProcedure
 		.route({ tags: ["Internal"], summary: "Upload a file" })
 		.input(fileSchema)
 		.output(
 			z.object({
-				filename: z.string(),
 				url: z.string(),
 				path: z.string(),
 				contentType: z.string(),
 			}),
 		)
 		.handler(async ({ context, input: file }) => {
-			const id = generateId();
-			const fileBuffer = await file.arrayBuffer();
 			const originalMimeType = file.type;
+			const isImage = isImageFile(originalMimeType);
 
-			let key: string;
-			let filename: string;
+			let data: Uint8Array;
 			let contentType: string;
-			let finalBuffer: Buffer | Uint8Array;
-
-			const imageMimeTypes = ["image/gif", "image/png", "image/jpeg", "image/webp"];
-			const isImage = imageMimeTypes.includes(originalMimeType);
 
 			if (isImage) {
-				filename = `${id}.webp`;
-				key = buildStorageKey(context.user.id, filename);
-				contentType = "image/webp";
-				finalBuffer = await sharp(fileBuffer)
-					.resize(800, 800, { fit: "inside", withoutEnlargement: true })
-					.webp({ preset: "picture" })
-					.toBuffer();
+				const processed = await processImageForUpload(file);
+				data = processed.data;
+				contentType = processed.contentType;
 			} else {
-				filename = `${id}`;
-				key = buildStorageKey(context.user.id, filename);
+				const fileBuffer = await file.arrayBuffer();
+				data = new Uint8Array(fileBuffer);
 				contentType = originalMimeType;
-				finalBuffer = new Uint8Array(fileBuffer);
 			}
 
-			await storageService.write({
-				key,
+			const result = await uploadFile({
+				userId: context.user.id,
+				data,
 				contentType,
-				data: new Uint8Array(finalBuffer),
+				type: "picture",
 			});
 
 			return {
-				filename,
-				url: buildPublicUrl(key),
-				path: key,
+				url: result.url,
+				path: result.key,
 				contentType,
-			};
-		}),
-
-	readFile: protectedProcedure
-		.route({ tags: ["Internal"], summary: "Read a file" })
-		.input(filenameSchema)
-		.output(
-			z.object({
-				filename: z.string(),
-				url: z.string(),
-				contentType: z.string(),
-				size: z.number(),
-				etag: z.string().optional(),
-				lastModified: z.string().optional(),
-				data: z.string(),
-			}),
-		)
-		.handler(async ({ context, input }) => {
-			const key = buildStorageKey(context.user.id, input.filename);
-			const result = await storageService.read(key);
-
-			if (!result) throw new ORPCError("NOT_FOUND");
-
-			const contentType = result.contentType ?? inferContentType(input.filename);
-			const data = Buffer.from(result.data).toString("base64");
-
-			return {
-				filename: input.filename,
-				url: buildPublicUrl(key),
-				contentType,
-				size: result.size,
-				etag: result.etag,
-				lastModified: result.lastModified?.toISOString(),
-				data,
 			};
 		}),
 
@@ -110,7 +56,12 @@ export const storageRouter = {
 		.input(filenameSchema)
 		.output(z.void())
 		.handler(async ({ context, input }): Promise<void> => {
-			const key = buildStorageKey(context.user.id, input.filename);
+			// The filename is now the full path from the URL (e.g., "uploads/userId/pictures/timestamp.webp")
+			// We need to extract just the path portion that matches the storage key
+			const key = input.filename.startsWith("uploads/")
+				? input.filename
+				: `uploads/${context.user.id}/pictures/${input.filename}`;
+
 			const deleted = await storageService.delete(key);
 
 			if (!deleted) throw new ORPCError("NOT_FOUND");

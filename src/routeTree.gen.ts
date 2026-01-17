@@ -29,7 +29,7 @@ import { Route as UsernameSlugRouteImport } from "./routes/$username/$slug";
 import { Route as BuilderResumeIdRouteRouteImport } from "./routes/builder/$resumeId/route";
 import { Route as DashboardResumesIndexRouteImport } from "./routes/dashboard/resumes/index";
 import { Route as BuilderResumeIdIndexRouteImport } from "./routes/builder/$resumeId/index";
-import { Route as UploadsUserIdFileIdRouteImport } from "./routes/uploads/$userId.$fileId";
+import { Route as UploadsUserIdSplatRouteImport } from "./routes/uploads/$userId.$";
 import { Route as DashboardSettingsProfileRouteImport } from "./routes/dashboard/settings/profile";
 import { Route as DashboardSettingsPreferencesRouteImport } from "./routes/dashboard/settings/preferences";
 import { Route as DashboardSettingsDangerZoneRouteImport } from "./routes/dashboard/settings/danger-zone";
@@ -139,9 +139,9 @@ const BuilderResumeIdIndexRoute = BuilderResumeIdIndexRouteImport.update({
   path: "/",
   getParentRoute: () => BuilderResumeIdRouteRoute,
 } as any);
-const UploadsUserIdFileIdRoute = UploadsUserIdFileIdRouteImport.update({
-  id: "/uploads/$userId/$fileId",
-  path: "/uploads/$userId/$fileId",
+const UploadsUserIdSplatRoute = UploadsUserIdSplatRouteImport.update({
+  id: "/uploads/$userId/$",
+  path: "/uploads/$userId/$",
   getParentRoute: () => rootRouteImport,
 } as any);
 const DashboardSettingsProfileRoute =
@@ -221,7 +221,7 @@ export interface FileRoutesByFullPath {
   "/dashboard/settings/danger-zone": typeof DashboardSettingsDangerZoneRoute;
   "/dashboard/settings/preferences": typeof DashboardSettingsPreferencesRoute;
   "/dashboard/settings/profile": typeof DashboardSettingsProfileRoute;
-  "/uploads/$userId/$fileId": typeof UploadsUserIdFileIdRoute;
+  "/uploads/$userId/$": typeof UploadsUserIdSplatRoute;
   "/builder/$resumeId/": typeof BuilderResumeIdIndexRoute;
   "/dashboard/resumes": typeof DashboardResumesIndexRoute;
   "/dashboard/settings/authentication": typeof DashboardSettingsAuthenticationIndexRoute;
@@ -249,7 +249,7 @@ export interface FileRoutesByTo {
   "/dashboard/settings/danger-zone": typeof DashboardSettingsDangerZoneRoute;
   "/dashboard/settings/preferences": typeof DashboardSettingsPreferencesRoute;
   "/dashboard/settings/profile": typeof DashboardSettingsProfileRoute;
-  "/uploads/$userId/$fileId": typeof UploadsUserIdFileIdRoute;
+  "/uploads/$userId/$": typeof UploadsUserIdSplatRoute;
   "/builder/$resumeId": typeof BuilderResumeIdIndexRoute;
   "/dashboard/resumes": typeof DashboardResumesIndexRoute;
   "/dashboard/settings/authentication": typeof DashboardSettingsAuthenticationIndexRoute;
@@ -282,7 +282,7 @@ export interface FileRoutesById {
   "/dashboard/settings/danger-zone": typeof DashboardSettingsDangerZoneRoute;
   "/dashboard/settings/preferences": typeof DashboardSettingsPreferencesRoute;
   "/dashboard/settings/profile": typeof DashboardSettingsProfileRoute;
-  "/uploads/$userId/$fileId": typeof UploadsUserIdFileIdRoute;
+  "/uploads/$userId/$": typeof UploadsUserIdSplatRoute;
   "/builder/$resumeId/": typeof BuilderResumeIdIndexRoute;
   "/dashboard/resumes/": typeof DashboardResumesIndexRoute;
   "/dashboard/settings/authentication/": typeof DashboardSettingsAuthenticationIndexRoute;
@@ -315,7 +315,7 @@ export interface FileRouteTypes {
     | "/dashboard/settings/danger-zone"
     | "/dashboard/settings/preferences"
     | "/dashboard/settings/profile"
-    | "/uploads/$userId/$fileId"
+    | "/uploads/$userId/$"
     | "/builder/$resumeId/"
     | "/dashboard/resumes"
     | "/dashboard/settings/authentication";
@@ -343,7 +343,7 @@ export interface FileRouteTypes {
     | "/dashboard/settings/danger-zone"
     | "/dashboard/settings/preferences"
     | "/dashboard/settings/profile"
-    | "/uploads/$userId/$fileId"
+    | "/uploads/$userId/$"
     | "/builder/$resumeId"
     | "/dashboard/resumes"
     | "/dashboard/settings/authentication";
@@ -375,7 +375,7 @@ export interface FileRouteTypes {
     | "/dashboard/settings/danger-zone"
     | "/dashboard/settings/preferences"
     | "/dashboard/settings/profile"
-    | "/uploads/$userId/$fileId"
+    | "/uploads/$userId/$"
     | "/builder/$resumeId/"
     | "/dashboard/resumes/"
     | "/dashboard/settings/authentication/";
@@ -393,7 +393,7 @@ export interface RootRouteChildren {
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute;
   ApiOpenapiSplatRoute: typeof ApiOpenapiSplatRoute;
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute;
-  UploadsUserIdFileIdRoute: typeof UploadsUserIdFileIdRoute;
+  UploadsUserIdSplatRoute: typeof UploadsUserIdSplatRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -538,11 +538,11 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof BuilderResumeIdIndexRouteImport;
       parentRoute: typeof BuilderResumeIdRouteRoute;
     };
-    "/uploads/$userId/$fileId": {
-      id: "/uploads/$userId/$fileId";
-      path: "/uploads/$userId/$fileId";
-      fullPath: "/uploads/$userId/$fileId";
-      preLoaderRoute: typeof UploadsUserIdFileIdRouteImport;
+    "/uploads/$userId/$": {
+      id: "/uploads/$userId/$";
+      path: "/uploads/$userId/$";
+      fullPath: "/uploads/$userId/$";
+      preLoaderRoute: typeof UploadsUserIdSplatRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/dashboard/settings/profile": {
@@ -699,7 +699,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiOpenapiSplatRoute: ApiOpenapiSplatRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
-  UploadsUserIdFileIdRoute: UploadsUserIdFileIdRoute,
+  UploadsUserIdSplatRoute: UploadsUserIdSplatRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

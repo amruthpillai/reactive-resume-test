@@ -54,15 +54,14 @@ export const authService = {
 		if (!input.userId || input.userId.length === 0) return;
 
 		const storageService = getStorageService();
-		let files: string[] = [];
 
+		// Delete all user files in one call (pictures, screenshots, pdfs)
+		// The storage service delete method supports recursive deletion via prefix
 		try {
-			files = await storageService.list(`uploads/${input.userId}`);
+			await storageService.delete(`uploads/${input.userId}`);
 		} catch {
-			// ignore error, and proceed with deleting user
+			// Ignore error and proceed with deleting user
 		}
-
-		await Promise.allSettled(files.map((file) => storageService.delete(file)));
 
 		try {
 			await db.delete(schema.user).where(eq(schema.user.id, input.userId));

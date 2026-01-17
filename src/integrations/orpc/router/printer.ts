@@ -10,18 +10,24 @@ export const printerRouter = {
 			path: "/printer/resume/{id}/pdf",
 			tags: ["Resume", "Printer"],
 			summary: "Export resume as PDF",
-			description: "Export a resume as a PDF.",
+			description: "Export a resume as a PDF. Returns a URL to download the PDF.",
 		})
 		.input(z.object({ id: z.string() }))
-		.output(z.instanceof(File))
+		.output(z.object({ url: z.string() }))
 		.handler(async ({ input, context }) => {
-			const file = await printerService.printResumeAsPDF({ id: input.id });
+			// Get resume to find the owner's userId for storage key
+			const resume = await resumeService.getByIdForPrinter({ id: input.id });
+
+			const url = await printerService.printResumeAsPDF({
+				id: input.id,
+				userId: resume.userId,
+			});
 
 			if (!context.user) {
 				await resumeService.statistics.increment({ id: input.id, downloads: true });
 			}
 
-			return file;
+			return { url };
 		}),
 
 	getResumeScreenshot: protectedProcedure
@@ -30,11 +36,16 @@ export const printerRouter = {
 			path: "/printer/resume/{id}/screenshot",
 			tags: ["Resume", "Printer"],
 			summary: "Get resume screenshot",
-			description: "Get a screenshot of a resume.",
+			description: "Get a screenshot of a resume. Returns a URL to the screenshot image.",
 		})
 		.input(z.object({ id: z.string() }))
-		.output(z.instanceof(File))
-		.handler(async ({ input }) => {
-			return await printerService.getResumeScreenshot({ id: input.id });
+		.output(z.object({ url: z.string() }))
+		.handler(async ({ input, context }) => {
+			const url = await printerService.getResumeScreenshot({
+				id: input.id,
+				userId: context.user.id,
+			});
+
+			return { url };
 		}),
 };

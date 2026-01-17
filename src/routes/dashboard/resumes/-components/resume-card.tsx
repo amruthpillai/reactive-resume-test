@@ -12,7 +12,7 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { toast } from "sonner";
 import {
 	ContextMenu,
@@ -34,7 +34,6 @@ type ResumeCardProps = React.ComponentProps<"div"> & {
 export function ResumeCard({ resume, ...props }: ResumeCardProps) {
 	const confirm = useConfirm();
 	const { openDialog } = useDialogStore();
-	const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
 
 	const { data: screenshotData, isLoading } = useQuery(
 		orpc.printer.getResumeScreenshot.queryOptions({ input: { id: resume.id } }),
@@ -43,18 +42,7 @@ export function ResumeCard({ resume, ...props }: ResumeCardProps) {
 	const { mutate: deleteResume } = useMutation(orpc.resume.delete.mutationOptions());
 	const { mutate: setLockedResume } = useMutation(orpc.resume.setLocked.mutationOptions());
 
-	useEffect(() => {
-		let objectUrl: string | null = null;
-
-		if (screenshotData) {
-			objectUrl = URL.createObjectURL(screenshotData);
-			setImageSrc(objectUrl);
-		}
-
-		return () => {
-			if (objectUrl) URL.revokeObjectURL(objectUrl);
-		};
-	}, [screenshotData]);
+	const imageSrc = screenshotData?.url;
 
 	const updatedAt = useMemo(() => {
 		return new Date(resume.updatedAt).toLocaleDateString();

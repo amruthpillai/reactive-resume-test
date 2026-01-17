@@ -1,38 +1,44 @@
 import { basename, extname, normalize } from "node:path";
 import { createFileRoute } from "@tanstack/react-router";
-import { buildStorageKey, getStorageService, inferContentType } from "@/integrations/orpc/services/storage";
+import { getStorageService, inferContentType } from "@/integrations/orpc/services/storage";
 import { env } from "@/utils/env";
 
 const storageService = getStorageService();
 
-export const Route = createFileRoute("/uploads/$userId/$fileId")({
+export const Route = createFileRoute("/uploads/$userId/$")({
 	server: { handlers: { GET: handler } },
 });
 
 /**
  * Handler for GET requests to serve uploaded files, supporting ETags, content security, and path validation.
+ * Handles nested paths like:
+ * - /uploads/{userId}/pictures/{timestamp}.webp
+ * - /uploads/{userId}/screenshots/{resumeId}/{timestamp}.webp
+ * - /uploads/{userId}/pdfs/{resumeId}/{timestamp}.pdf
  */
 async function handler({ request }: { request: Request }) {
-	const { userId, fileId } = parseRouteParams(request.url);
+	const { userId, filePath } = parseRouteParams(request.url);
 
-	if (!userId || !fileId) return new Response("Bad Request", { status: 400 });
+	if (!userId || !filePath) return new Response("Bad Request", { status: 400 });
 
-	if (!isValidPath(userId) || !isValidPath(fileId)) return new Response("Forbidden", { status: 403 });
+	if (!isValidPath(userId) || !isValidPathSegments(filePath)) return new Response("Forbidden", { status: 403 });
 
-	const key = buildStorageKey(userId, fileId);
+	// Build the full storage key: uploads/{userId}/{filePath}
+	const key = `uploads/${userId}/${filePath}`;
 	const storedFile = await storageService.read(key);
 
 	if (!storedFile) return new Response("Not Found", { status: 404 });
 
-	const ext = extname(fileId).toLowerCase();
-	const contentType = storedFile.contentType ?? inferContentType(fileId);
+	const filename = filePath.split("/").pop() ?? filePath;
+	const ext = extname(filename).toLowerCase();
+	const contentType = storedFile.contentType ?? inferContentType(filename);
 	const etag = createEtag(storedFile);
 
 	if (isNotModified(request.headers, etag)) return makeNotModifiedResponse(etag);
 
 	const shouldForceDownload = [".pdf"].includes(ext);
 	const headers = buildResponseHeaders({
-		fileId,
+		filename,
 		storedFile,
 		contentType,
 		etag,
@@ -45,12 +51,21 @@ async function handler({ request }: { request: Request }) {
 }
 
 /**
- * Extracts userId and fileId from the request URL.
+ * Extracts userId and the remaining file path from the request URL.
  */
-function parseRouteParams(url: string): { userId: string | undefined; fileId: string | undefined } {
-	const [userId, fileId] = new URL(url).pathname.replace("/uploads/", "").split("/");
+function parseRouteParams(url: string): { userId: string | undefined; filePath: string | undefined } {
+	const pathname = new URL(url).pathname;
+	const pathAfterUploads = pathname.replace("/uploads/", "");
+	const firstSlashIndex = pathAfterUploads.indexOf("/");
 
-	return { userId, fileId };
+	if (firstSlashIndex === -1) {
+		return { userId: pathAfterUploads, filePath: undefined };
+	}
+
+	const userId = pathAfterUploads.slice(0, firstSlashIndex);
+	const filePath = pathAfterUploads.slice(firstSlashIndex + 1);
+
+	return { userId, filePath: filePath || undefined };
 }
 
 /**
@@ -60,6 +75,15 @@ function isValidPath(segment: string): boolean {
 	const normalized = normalize(segment).replace(/^(\.\.(\/|\\|$))+/, "");
 
 	return normalized === segment;
+}
+
+/**
+ * Validates all segments in a path for directory traversal attempts.
+ */
+function isValidPathSegments(path: string): boolean {
+	const segments = path.split("/");
+
+	return segments.every((segment) => isValidPath(segment));
 }
 
 /**
@@ -83,7 +107,7 @@ function makeNotModifiedResponse(etag: string): Response {
 }
 
 type BuildResponseHeaderArgs = {
-	fileId: string;
+	filename: string;
 	storedFile: { size: number };
 	contentType: string;
 	etag: string;
@@ -94,7 +118,7 @@ type BuildResponseHeaderArgs = {
  * Builds all headers for serving the file, including caching, security, and download headers.
  */
 function buildResponseHeaders({
-	fileId,
+	filename,
 	storedFile,
 	contentType,
 	etag,
@@ -106,7 +130,7 @@ function buildResponseHeaders({
 	headers.set("Content-Length", storedFile.size.toString());
 
 	if (shouldForceDownload) {
-		headers.set("Content-Disposition", `attachment; filename="${encodeURIComponent(basename(fileId))}"`);
+		headers.set("Content-Disposition", `attachment; filename="${encodeURIComponent(basename(filename))}"`);
 	}
 
 	headers.set("Cache-Control", "public, max-age=31536000, immutable");

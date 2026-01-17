@@ -133,6 +133,7 @@ export const resumeService = {
 		const [resume] = await db
 			.select({
 				id: schema.resume.id,
+				userId: schema.resume.userId,
 				name: schema.resume.name,
 				slug: schema.resume.slug,
 				tags: schema.resume.tags,
@@ -298,8 +299,10 @@ export const resumeService = {
 				and(eq(schema.resume.id, input.id), eq(schema.resume.isLocked, false), eq(schema.resume.userId, input.userId)),
 			);
 
-		const deleteScreenshotsPromise = storageService.delete(`screenshots/${input.id}`);
+		// Delete screenshots and PDFs using the new key format
+		const deleteScreenshotsPromise = storageService.delete(`uploads/${input.userId}/screenshots/${input.id}`);
+		const deletePdfsPromise = storageService.delete(`uploads/${input.userId}/pdfs/${input.id}`);
 
-		await Promise.allSettled([deleteResumePromise, deleteScreenshotsPromise]);
+		await Promise.allSettled([deleteResumePromise, deleteScreenshotsPromise, deletePdfsPromise]);
 	},
 };

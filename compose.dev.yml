@@ -29,6 +29,7 @@ services:
       - CHROMIUM_AUTO_START=true
       - LIBREOFFICE_DISABLE_ROUTES=true
       - PROMETHEUS_DISABLE_COLLECT=true
+      - CHROMIUM_HOST_RESOLVER_RULES=MAP localhost host.docker.internal
     ports:
       - "4000:3000"
     healthcheck:

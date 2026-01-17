@@ -2,7 +2,7 @@ import { ORPCError } from "@orpc/server";
 import { env } from "@/utils/env";
 import { generatePrinterToken } from "@/utils/printer-token";
 import { resumeService } from "./resume";
-import { LocalStorageService } from "./storage";
+import { getStorageService, uploadFile } from "./storage";
 
 const pageDimensions = {
 	a4: {
@@ -18,7 +18,13 @@ const pageDimensions = {
 const SCREENSHOT_TTL = 1000 * 60 * 60; // 1 hour
 
 export const printerService = {
-	printResumeAsPDF: async (input: { id: string }): Promise<File> => {
+	printResumeAsPDF: async (input: { id: string; userId: string }): Promise<string> => {
+		const storageService = getStorageService();
+
+		// Delete any existing PDFs for this resume
+		const pdfPrefix = `uploads/${input.userId}/pdfs/${input.id}`;
+		await storageService.delete(pdfPrefix);
+
 		const resume = await resumeService.getByIdForPrinter({ id: input.id });
 		const format = resume.data.metadata.page.format;
 		const locale = resume.data.metadata.page.locale;
@@ -65,14 +71,24 @@ export const printerService = {
 		}
 
 		const pdfBuffer = await response.arrayBuffer();
-		return new File([new Uint8Array(pdfBuffer)], `resume-${input.id}.pdf`, { type: "application/pdf" });
+
+		// Store PDF and return URL
+		const result = await uploadFile({
+			userId: input.userId,
+			resumeId: input.id,
+			data: new Uint8Array(pdfBuffer),
+			contentType: "application/pdf",
+			type: "pdf",
+		});
+
+		return result.url;
 	},
 
-	getResumeScreenshot: async (input: { id: string }): Promise<File> => {
-		const localStorageService = new LocalStorageService();
-		const prefix = `screenshots/${input.id}`;
+	getResumeScreenshot: async (input: { id: string; userId: string }): Promise<string> => {
+		const storageService = getStorageService();
+		const screenshotPrefix = `uploads/${input.userId}/screenshots/${input.id}`;
 
-		const existingScreenshots = await localStorageService.list(prefix);
+		const existingScreenshots = await storageService.list(screenshotPrefix);
 		const now = Date.now();
 
 		if (existingScreenshots.length > 0) {
@@ -90,16 +106,12 @@ export const printerService = {
 				const age = now - latest.timestamp;
 
 				if (age < SCREENSHOT_TTL) {
-					const result = await localStorageService.read(latest.path);
-
-					if (result) {
-						return new File([result.data.slice()], `resume-${input.id}.webp`, {
-							type: result.contentType ?? "image/webp",
-						});
-					}
+					// Return URL of cached screenshot
+					return new URL(latest.path, env.APP_URL).toString();
 				}
 
-				await Promise.all(sortedFiles.map((file) => localStorageService.delete(file.path)));
+				// Delete old screenshots
+				await Promise.all(sortedFiles.map((file) => storageService.delete(file.path)));
 			}
 		}
 
@@ -140,25 +152,16 @@ export const printerService = {
 		}
 
 		const imageBuffer = await response.arrayBuffer();
-		const imageData = new Uint8Array(imageBuffer);
 
-		const timestamp = now;
-		const storageKey = `${prefix}/${timestamp}.webp`;
-
-		await localStorageService.write({
-			key: storageKey,
-			data: imageData,
+		// Store screenshot and return URL
+		const result = await uploadFile({
+			userId: input.userId,
+			resumeId: input.id,
+			data: new Uint8Array(imageBuffer),
 			contentType: "image/webp",
+			type: "screenshot",
 		});
 
-		const result = await localStorageService.read(storageKey);
-
-		if (!result) {
-			throw new ORPCError("INTERNAL_SERVER_ERROR", {
-				message: "Failed to read screenshot from storage after writing",
-			});
-		}
-
-		return new File([result.data.slice()], `resume-${input.id}.webp`, { type: result.contentType ?? "image/webp" });
+		return result.url;
 	},
 };

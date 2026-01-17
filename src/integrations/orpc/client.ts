@@ -1,5 +1,6 @@
 import { createORPCClient, onError } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
+import { BatchLinkPlugin } from "@orpc/client/plugins";
 import { createRouterClient, type InferRouterInputs, type InferRouterOutputs, type RouterClient } from "@orpc/server";
 import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 import { createIsomorphicFn } from "@tanstack/react-start";
@@ -38,6 +39,7 @@ export const getORPCClient = createIsomorphicFn()
 					console.error(error);
 				}),
 			],
+			plugins: [new BatchLinkPlugin({ groups: [{ condition: () => true, context: {} }] })],
 		});
 
 		return createORPCClient(link);

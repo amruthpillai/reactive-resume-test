@@ -1,31 +1,13 @@
-import { MutationCache, QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 import { ErrorScreen } from "./components/layout/error-screen";
 import { LoadingScreen } from "./components/layout/loading-screen";
 import { NotFoundScreen } from "./components/layout/not-found-screen";
 import { orpc } from "./integrations/orpc/client";
+import { getQueryClient } from "./integrations/query/client";
 import { routeTree } from "./routeTree.gen";
 import { getLocale, loadLocale } from "./utils/locale";
 import { getTheme } from "./utils/theme";
-
-const getQueryClient = () => {
-	const queryClient = new QueryClient({
-		defaultOptions: {
-			queries: {
-				gcTime: 5 * 60 * 1000, // 5 minutes
-				staleTime: 0, // Data considered instantly stale
-			},
-		},
-		mutationCache: new MutationCache({
-			onSettled: () => {
-				queryClient.invalidateQueries();
-			},
-		}),
-	});
-
-	return queryClient;
-};
 
 export const getRouter = async () => {
 	const queryClient = getQueryClient();

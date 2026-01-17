@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import { useResumeStore } from "@/components/resume/store/resume";
 import { Button } from "@/components/ui/button";
 import { orpc } from "@/integrations/orpc/client";
-import { downloadWithAnchor, generateFilename } from "@/utils/file";
+import { downloadFromUrl, downloadWithAnchor, generateFilename } from "@/utils/file";
 import { SectionBase } from "../shared/section-base";
 
 export function ExportSectionBuilder() {
@@ -25,10 +25,9 @@ export function ExportSectionBuilder() {
 
 	const onDownloadPDF = useCallback(async () => {
 		const filename = generateFilename(resume.data.basics.name, "pdf");
-		const file = await printResumeAsPDF({ id: resume.id });
-		const blob = new Blob([file], { type: "application/pdf" });
+		const { url } = await printResumeAsPDF({ id: resume.id });
 
-		downloadWithAnchor(blob, filename);
+		downloadFromUrl(url, filename);
 	}, [resume, printResumeAsPDF]);
 
 	return (
