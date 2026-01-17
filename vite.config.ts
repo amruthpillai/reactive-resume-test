@@ -59,7 +59,11 @@ const config = defineConfig({
 		viteReact({ babel: { plugins: [["@lingui/babel-plugin-lingui-macro"]] } }),
 		nitro({
 			prerender: { routes: ["/"] },
-			plugins: ["plugins/0.reflect-metadata.ts", "plugins/1.migrate.ts"],
+			plugins: ["plugins/1.migrate.ts"],
+			moduleSideEffects: ["reflect-metadata"],
+			rollupConfig: {
+				plugins: [{ name: "reflect-metadata", banner: "import 'reflect-metadata';" }],
+			},
 		}),
 		VitePWA({
 			outDir: "public",

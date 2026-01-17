@@ -14,20 +14,23 @@
 		"*.css": "tailwindcss"
 	},
 	"files.readonlyInclude": {
-		"**/routeTree.gen.ts": true,
-		"pnpm-lock.yaml": true
+		"locales/*.po": true,
+		"pnpm-lock.yaml": true,
+		"**/routeTree.gen.ts": true
 	},
 	"files.watcherExclude": {
-		"**/routeTree.gen.ts": true,
-		"pnpm-lock.yaml": true
+		"locales/*.po": true,
+		"pnpm-lock.yaml": true,
+		"**/routeTree.gen.ts": true
 	},
 	"i18n-ally.enabledParsers": ["po"],
 	"i18n-ally.localesPaths": ["locales"],
 	"i18n-ally.sourceLanguage": "en-US",
 	"prettier.enable": false,
 	"search.exclude": {
-		"**/routeTree.gen.ts": true,
-		"pnpm-lock.yaml": true
+		"locales/*.po": true,
+		"pnpm-lock.yaml": true,
+		"**/routeTree.gen.ts": true
 	},
 	"tailwindCSS.classFunctions": ["cn", "cva"],
 	"tailwindCSS.experimental.classRegex": [

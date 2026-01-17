@@ -173,7 +173,7 @@ const getAuthConfig = () => {
 				validationOrder: { username: "post-normalization", displayUsername: "post-normalization" },
 			}),
 			twoFactor({ issuer: "Reactive Resume" }),
-			passkey({ rpName: "Reactive Resume", rpID: "localhost" }),
+			passkey({ rpName: "Reactive Resume", rpID: "rxresu.me", origin: env.APP_URL }),
 			genericOAuth({ config: authConfigs }),
 			tanstackStartCookies(),
 		],
