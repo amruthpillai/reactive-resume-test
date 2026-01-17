@@ -1098,6 +1098,7 @@ msgid "Get Started"
 msgstr ""
 
 #: src/components/layout/not-found-screen.tsx:24
+#: src/routes/auth/verify-2fa-backup.tsx:114
 msgid "Go Back"
 msgstr ""
 

@@ -20,7 +20,7 @@ services:
       retries: 3
 
   gotenberg:
-    image: gotenberg/gotenberg:latest
+    image: gotenberg/gotenberg:8
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"

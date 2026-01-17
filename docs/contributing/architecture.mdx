@@ -291,7 +291,7 @@ export const myRouter = router({
 ### Adding Translations
 
 1. Wrap text with `t` macro or `<Trans>` component
-2. Run `bun run lingui:extract` to update locale files
+2. Run `pnpm run lingui:extract` to update locale files
 3. Edit the `.po` files in `locales/` to add translations
 
 ```tsx
@@ -339,9 +339,9 @@ const title = t`Welcome`;
   <Step title="Test Locally">
     Ensure the app works correctly with your changes:
     ```bash
-    bun run dev
-    bun run lint
-    bun run typecheck
+    pnpm run dev
+    pnpm run lint
+    pnpm run typecheck
     ```
   </Step>
   

@@ -1,12 +1,15 @@
-import { drizzle } from "drizzle-orm/bun-sql";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 import { schema } from "@/integrations/drizzle";
 import { env } from "@/utils/env";
+import { hashPassword } from "@/utils/password";
 import { generateId } from "@/utils/string";
 
 export async function seedDatabase() {
 	console.log("⌛ Seeding database...");
 
-	const db = drizzle(env.DATABASE_URL, { schema });
+	const pool = new Pool({ connectionString: env.DATABASE_URL });
+	const db = drizzle({ client: pool, schema });
 
 	try {
 		const userId = generateId();
@@ -25,10 +28,12 @@ export async function seedDatabase() {
 			id: generateId(),
 			userId,
 			accountId: userId,
-			password: await Bun.password.hash("password", "bcrypt"),
+			password: await hashPassword("password"),
 		});
 	} catch (error) {
 		console.error("🚨 Database seeding failed:", error);
+	} finally {
+		await pool.end();
 	}
 }
 

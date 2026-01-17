@@ -1,22 +1,34 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
-import { drizzle } from "drizzle-orm/bun-sql";
-import type { BunSQLDatabase } from "drizzle-orm/bun-sql/postgres/driver";
+import { drizzle, type NodePgDatabase } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 import { schema } from "@/integrations/drizzle";
 import { env } from "@/utils/env";
 
+// During hot reload (i.e., in development), global assignment ensures the pool/client persist across reloads.
+// This prevents exhausting connection limits due to re-creation on every reload.
+
 declare global {
-	var __drizzleClient: BunSQLDatabase<typeof schema> | undefined;
+	var __pool: Pool | undefined;
+	var __drizzle: NodePgDatabase<typeof schema> | undefined;
+}
+
+function getPool() {
+	if (!globalThis.__pool) {
+		globalThis.__pool = new Pool({ connectionString: env.DATABASE_URL });
+	}
+	return globalThis.__pool;
 }
 
 function makeDrizzleClient() {
-	return drizzle(env.DATABASE_URL, { schema });
+	const pool = getPool();
+	return drizzle({ client: pool, schema });
 }
 
 const getDatabaseServerFn = createServerOnlyFn(() => {
-	const db = globalThis.__drizzleClient ?? makeDrizzleClient();
-	globalThis.__drizzleClient = db;
-
-	return db;
+	if (!globalThis.__drizzle) {
+		globalThis.__drizzle = makeDrizzleClient();
+	}
+	return globalThis.__drizzle;
 });
 
 export const db = getDatabaseServerFn();

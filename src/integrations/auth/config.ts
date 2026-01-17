@@ -94,7 +94,7 @@ const getAuthConfig = () => {
 				await sendEmail({
 					to: user.email,
 					subject: "Verify your email",
-					text: `To verify your email, please visit the following URL: ${url}.`,
+					text: `You recently signed up for an account on Reactive Resume.\nTo verify your email, please visit the following URL: ${url}`,
 				});
 			},
 		},
@@ -106,7 +106,7 @@ const getAuthConfig = () => {
 					await sendEmail({
 						to: newEmail,
 						subject: "Verify your new email",
-						text: `You recently requested to change your email on Reactive Resume from ${user.email} to ${newEmail}. To verify this change, please visit the following URL: ${url}.`,
+						text: `You recently requested to change your email on Reactive Resume from ${user.email} to ${newEmail}.\nTo verify this change, please visit the following URL: ${url}\nIf you did not request this change, please ignore this email.`,
 					});
 				},
 			},

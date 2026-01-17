@@ -11,6 +11,8 @@
 		"noEmit": true,
 		"moduleResolution": "bundler",
 		"verbatimModuleSyntax": false,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
 		"allowImportingTsExtensions": true,
 
 		/* Linting */

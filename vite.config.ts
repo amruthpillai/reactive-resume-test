@@ -1,7 +1,9 @@
+import { fileURLToPath } from "node:url";
 import { lingui } from "@lingui/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
+import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
@@ -11,11 +13,32 @@ const config = defineConfig({
 	},
 
 	resolve: {
-		tsconfigPaths: true,
+		alias: {
+			"@": fileURLToPath(new URL("./src", import.meta.url)),
+		},
+	},
+
+	optimizeDeps: {
+		holdUntilCrawlEnd: true,
+		include: ["react-dom", "react-dom/client", "react", "react/jsx-runtime"],
+		exclude: [
+			"@tanstack/react-start",
+			"@tanstack/react-start/client",
+			"@tanstack/react-start/server",
+			"@tanstack/start-server-core",
+		],
 	},
 
 	build: {
 		chunkSizeWarningLimit: 10 * 1024, // 10mb
+
+		// Mute MODULE_LEVEL_DIRECTIVE warnings
+		rolldownOptions: {
+			onLog(level, log, defaultHandler) {
+				if (level === "warn" && log.code === "MODULE_LEVEL_DIRECTIVE") return;
+				defaultHandler(level, log);
+			},
+		},
 	},
 
 	server: {
@@ -30,9 +53,17 @@ const config = defineConfig({
 	},
 
 	plugins: [
+		lingui(),
+		tailwindcss(),
+		tanstackStart({ router: { semicolons: true, quoteStyle: "double" } }),
+		viteReact({ babel: { plugins: [["@lingui/babel-plugin-lingui-macro"]] } }),
+		nitro({ plugins: ["plugins/migrate.ts"] }),
 		VitePWA({
 			registerType: "autoUpdate",
 			injectRegister: "script-defer",
+			workbox: {
+				maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10mb
+			},
 			manifest: {
 				name: "Reactive Resume",
 				short_name: "Reactive Resume",
@@ -95,10 +126,6 @@ const config = defineConfig({
 				],
 			},
 		}),
-		tailwindcss(),
-		tanstackStart({ router: { semicolons: true, quoteStyle: "double" } }),
-		viteReact({ babel: { plugins: [["@lingui/babel-plugin-lingui-macro"]] } }),
-		lingui(),
 	],
 });
 

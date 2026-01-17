@@ -2,7 +2,7 @@ name: reactive_resume
 
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:18
     restart: unless-stopped
     environment:
       POSTGRES_DB: postgres
@@ -18,7 +18,7 @@ services:
       retries: 3
 
   gotenberg:
-    image: gotenberg/gotenberg:latest
+    image: gotenberg/gotenberg:8
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -64,14 +64,15 @@ services:
       seaweedfs:
         condition: service_healthy
 
-  reactive_resume:
-    image: ghcr.io/amruthpillai/reactive-resume:latest
+  app:
+    # image: ghcr.io/amruthpillai/reactive-resume:latest
+    image: reactive-resume-start:latest
     environment:
       # Server
       - TZ=Etc/UTC
       - NODE_ENV=production
       - APP_URL=http://localhost:3000
-      - PRINTER_APP_URL=http://reactive_resume:3000
+      - PRINTER_APP_URL=http://app:3000
       # Printer
       - GOTENBERG_ENDPOINT=http://gotenberg:3000
       # Database
@@ -98,9 +99,9 @@ services:
       test:
         [
           "CMD",
-          "bun",
+          "node",
           "-e",
-          "fetch('http://localhost:3000/api/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))",
+          "fetch('http://localhost:3000/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
         ]
       start_period: 10s
       interval: 30s

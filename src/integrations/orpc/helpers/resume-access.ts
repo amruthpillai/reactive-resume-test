@@ -1,4 +1,4 @@
-import { timingSafeEqual } from "node:crypto";
+import { createHash, timingSafeEqual } from "node:crypto";
 import { getCookie, setCookie } from "@tanstack/react-start/server";
 import { env } from "@/utils/env";
 
@@ -8,7 +8,7 @@ const RESUME_ACCESS_TTL_SECONDS = 60 * 10; // 10 minutes
 const getResumeAccessCookieName = (resumeId: string) => `${RESUME_ACCESS_COOKIE_PREFIX}_${resumeId}`;
 
 const signResumeAccessToken = (resumeId: string, passwordHash: string): string =>
-	new Bun.CryptoHasher("sha256").update(`${resumeId}:${passwordHash}`).digest("hex");
+	createHash("sha256").update(`${resumeId}:${passwordHash}`).digest("hex");
 
 const safeEquals = (value: string, expected: string) => {
 	const valueBuffer = Buffer.from(value);

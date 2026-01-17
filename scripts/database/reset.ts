@@ -1,11 +1,13 @@
 import { sql } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/bun-sql";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 import { env } from "@/utils/env";
 
 export async function resetDatabase() {
 	console.log("⌛ Resetting database...");
 
-	const db = drizzle(env.DATABASE_URL);
+	const pool = new Pool({ connectionString: env.DATABASE_URL });
+	const db = drizzle({ client: pool });
 
 	try {
 		await db.transaction(async (tx) => {
@@ -21,6 +23,8 @@ export async function resetDatabase() {
 		console.log("✅ Database reset completed");
 	} catch (error) {
 		console.error("🚨 Database reset failed:", error);
+	} finally {
+		await pool.end();
 	}
 }
 
