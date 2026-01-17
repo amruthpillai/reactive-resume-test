@@ -6,7 +6,7 @@ description: "Set up a local development environment for Reactive Resume"
 <Info>
   **Prerequisites**:
   - [Node.js](https://nodejs.org/) v20 or higher
-  - [Bun](https://bun.sh/) v1.3.5 or higher (package manager)
+  - [pnpm](https://pnpm.io/) v10.28.0 or higher (package manager)
   - [Docker](https://docs.docker.com/get-docker/) and Docker Compose
   - [Git](https://git-scm.com/)
 </Info>
@@ -26,14 +26,14 @@ This guide walks you through setting up Reactive Resume for local development. W
   </Step>
   
   <Step title="Install Dependencies">
-    We use [Bun](https://bun.sh/) as our package manager for its speed and efficiency.
+    This project uses [pnpm](https://pnpm.io/) as its package manager for its speed and efficiency.
     
     ```bash
-    # Install Bun if you haven't already
-    curl -fsSL https://bun.sh/install | bash
+    # Install pnpm if you haven't already
+    npm install -g pnpm
     
     # Install project dependencies
-    bun install
+    pnpm install
     ```
   </Step>
   
@@ -99,13 +99,13 @@ This guide walks you through setting up Reactive Resume for local development. W
     Apply the database schema:
     
     ```bash
-    bun run db:migrate
+    pnpm run db:migrate
     ```
   </Step>
   
   <Step title="Start the Development Server">
     ```bash
-    bun run dev
+    pnpm run dev
     ```
     
     Your local Reactive Resume instance will be available at [http://localhost:3000](http://localhost:3000).
@@ -122,33 +122,33 @@ Here are the most commonly used scripts during development:
 
 | Command | Description |
 |---------|-------------|
-| `bun run dev` | Start the development server with hot reload |
-| `bun run build` | Build the application for production |
-| `bun run start` | Start the production server |
-| `bun run lint` | Run Biome linter and formatter |
-| `bun run typecheck` | Run TypeScript type checking |
+| `pnpm run dev` | Start the development server with hot reload |
+| `pnpm run build` | Build the application for production |
+| `pnpm run start` | Start the production server |
+| `pnpm run lint` | Run Biome linter and formatter |
+| `pnpm run typecheck` | Run TypeScript type checking |
 
 ### Database
 
 | Command | Description |
 |---------|-------------|
-| `bun run db:generate` | Generate migration files from schema changes |
-| `bun run db:migrate` | Apply pending migrations |
-| `bun run db:push` | Push schema changes directly (dev only) |
-| `bun run db:pull` | Pull schema from existing database |
-| `bun run db:studio` | Open Drizzle Studio (database GUI) |
+| `pnpm run db:generate` | Generate migration files from schema changes |
+| `pnpm run db:migrate` | Apply pending migrations |
+| `pnpm run db:push` | Push schema changes directly (dev only) |
+| `pnpm run db:pull` | Pull schema from existing database |
+| `pnpm run db:studio` | Open Drizzle Studio (database GUI) |
 
 ### Internationalization
 
 | Command | Description |
 |---------|-------------|
-| `bun run lingui:extract` | Extract translatable strings from code |
+| `pnpm run lingui:extract` | Extract translatable strings from code |
 
 ### Documentation
 
 | Command | Description |
 |---------|-------------|
-| `bun run docs` | Start the Mintlify docs development server |
+| `pnpm run docs` | Start the Mintlify docs development server |
 
 ---
 
@@ -193,7 +193,7 @@ reactive-resume/
 Use Drizzle Studio to explore and manage your database:
 
 ```bash
-bun run db:studio
+pnpm run db:studio
 ```
 
 This opens a web-based GUI at [https://local.drizzle.studio](https://local.drizzle.studio).
@@ -203,11 +203,11 @@ This opens a web-based GUI at [https://local.drizzle.studio](https://local.drizz
 1. Edit the schema in `src/integrations/drizzle/schema.ts`
 2. Generate a migration:
    ```bash
-   bun run db:generate
+   pnpm run db:generate
    ```
 3. Apply the migration:
    ```bash
-   bun run db:migrate
+   pnpm run db:migrate
    ```
 
 <Warning>
@@ -240,7 +240,7 @@ const message = t`Hello, World!`;
 After adding new translatable text, extract them to the locale files:
 
 ```bash
-bun run lingui:extract
+pnpm run lingui:extract
 ```
 
 Translation files are located in the `locales/` directory in `.po` format.
@@ -255,7 +255,7 @@ We use [Biome](https://biomejs.dev/) for linting and formatting:
 
 ```bash
 # Check and auto-fix issues
-bun run lint
+pnpm run lint
 ```
 
 ### Type Checking
@@ -263,7 +263,7 @@ bun run lint
 Run TypeScript type checking:
 
 ```bash
-bun run typecheck
+pnpm run typecheck
 ```
 
 <Tip>
@@ -279,7 +279,7 @@ bun run typecheck
     Another process is using port 3000. Either stop that process or start the dev server on a different port:
     
     ```bash
-    PORT=3001 bun run dev
+    PORT=3001 pnpm run dev
     ```
   </Accordion>
   
@@ -309,31 +309,17 @@ bun run typecheck
     ```
   </Accordion>
   
-  <Accordion title="Bun installation issues">
-    If you encounter issues with Bun, try reinstalling:
-    
-    ```bash
-    curl -fsSL https://bun.sh/install | bash
-    ```
-    
-    Make sure your shell profile is reloaded:
-    
-    ```bash
-    source ~/.bashrc  # or ~/.zshrc
-    ```
-  </Accordion>
-  
   <Accordion title="Type errors after pulling changes">
     The route tree may need regeneration. Run the dev server which auto-generates routes:
     
     ```bash
-    bun run dev
+    pnpm run dev
     ```
     
     Or run type checking to see specific errors:
     
     ```bash
-    bun run typecheck
+    pnpm run typecheck
     ```
   </Accordion>
 </AccordionGroup>

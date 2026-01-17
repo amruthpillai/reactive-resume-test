@@ -1,5 +1,12 @@
-import { access, constants as fsConstants, mkdir, readdir, rm } from "node:fs/promises";
+import fs from "node:fs/promises";
 import { dirname, extname, join } from "node:path";
+import {
+	DeleteObjectCommand,
+	GetObjectCommand,
+	ListObjectsV2Command,
+	PutObjectCommand,
+	S3Client,
+} from "@aws-sdk/client-s3";
 import sharp from "sharp";
 import { env } from "@/utils/env";
 
@@ -105,7 +112,7 @@ export class LocalStorageService implements StorageService {
 		const fullPath = this.resolvePath(prefix);
 
 		try {
-			const files = await readdir(fullPath, { recursive: true });
+			const files = await fs.readdir(fullPath, { recursive: true });
 
 			return files.map((file) => join(prefix, file));
 		} catch (error: unknown) {
@@ -121,20 +128,16 @@ export class LocalStorageService implements StorageService {
 	async write({ key, data }: StorageWriteInput): Promise<void> {
 		const fullPath = this.resolvePath(key);
 
-		await mkdir(dirname(fullPath), { recursive: true });
-		await Bun.write(fullPath, data);
+		await fs.mkdir(dirname(fullPath), { recursive: true });
+		await fs.writeFile(fullPath, data, { encoding: "utf-8" });
 	}
 
 	async read(key: string): Promise<StorageReadResult | null> {
 		const fullPath = this.resolvePath(key);
-		const file = Bun.file(fullPath);
-
-		if (!(await file.exists())) return null;
-
-		const [arrayBuffer, stats] = await Promise.all([file.arrayBuffer(), file.stat()]);
+		const [arrayBuffer, stats] = await Promise.all([fs.readFile(fullPath), fs.stat(fullPath)]);
 
 		return {
-			data: new Uint8Array(arrayBuffer),
+			data: arrayBuffer,
 			size: stats.size,
 			etag: `"${stats.size}-${stats.mtime.getTime()}"`,
 			lastModified: stats.mtime,
@@ -147,14 +150,14 @@ export class LocalStorageService implements StorageService {
 
 		// Check if the path exists and whether it's a file or folder
 		try {
-			const stats = await Bun.file(fullPath).stat();
+			const stats = await fs.stat(fullPath);
 
 			if (stats.isDirectory()) {
 				// Delete the directory and its contents recursively
-				await rm(fullPath, { recursive: true });
+				await fs.rm(fullPath, { recursive: true });
 				return true;
 			} else {
-				await Bun.file(fullPath).delete();
+				await fs.unlink(fullPath);
 				return true;
 			}
 		} catch {
@@ -165,8 +168,8 @@ export class LocalStorageService implements StorageService {
 
 	async healthcheck(): Promise<StorageHealthResult> {
 		try {
-			await mkdir(this.rootDirectory, { recursive: true });
-			await access(this.rootDirectory, fsConstants.R_OK | fsConstants.W_OK);
+			await fs.mkdir(this.rootDirectory, { recursive: true });
+			await fs.access(this.rootDirectory, fs.constants.R_OK | fs.constants.W_OK);
 
 			return {
 				type: "local",
@@ -196,42 +199,62 @@ export class LocalStorageService implements StorageService {
 }
 
 class S3StorageService implements StorageService {
-	private readonly client: Bun.S3Client;
+	private readonly bucket: string;
+	private readonly client: S3Client;
 
 	constructor() {
-		this.client = new Bun.S3Client({
-			bucket: env.S3_BUCKET,
+		if (!env.S3_ACCESS_KEY_ID || !env.S3_SECRET_ACCESS_KEY || !env.S3_BUCKET) {
+			throw new Error("S3 credentials are not set");
+		}
+
+		this.bucket = env.S3_BUCKET;
+		this.client = new S3Client({
 			region: env.S3_REGION,
-			accessKeyId: env.S3_ACCESS_KEY_ID,
-			secretAccessKey: env.S3_SECRET_ACCESS_KEY,
 			endpoint: env.S3_ENDPOINT,
+			credentials: {
+				accessKeyId: env.S3_ACCESS_KEY_ID,
+				secretAccessKey: env.S3_SECRET_ACCESS_KEY,
+			},
 		});
 	}
 
 	async list(prefix: string): Promise<string[]> {
-		const objects = await this.client.list({ prefix });
-		if (!objects.contents) return [];
-		return objects.contents.map((object) => object.key);
+		const command = new ListObjectsV2Command({ Bucket: this.bucket, Prefix: prefix });
+		const response = await this.client.send(command);
+		if (!response.Contents) return [];
+		return response.Contents.map((object) => object.Key ?? "");
 	}
 
 	async write({ key, data, contentType }: StorageWriteInput): Promise<void> {
-		await this.client.write(key, data, { type: contentType, acl: "public-read" });
+		const command = new PutObjectCommand({
+			Bucket: this.bucket,
+			Key: key,
+			Body: data,
+			ACL: "public-read",
+			ContentType: contentType,
+		});
+
+		await this.client.send(command);
 	}
 
 	async read(key: string): Promise<StorageReadResult | null> {
-		const exists = await this.client.exists(key);
+		try {
+			const command = new GetObjectCommand({ Bucket: this.bucket, Key: key });
+			const response = await this.client.send(command);
+			if (!response.Body) return null;
 
-		if (!exists) return null;
+			const arrayBuffer = await response.Body.transformToByteArray();
 
-		const [arrayBuffer, stats] = await Promise.all([this.client.file(key).arrayBuffer(), this.client.stat(key)]);
-
-		return {
-			data: new Uint8Array(arrayBuffer),
-			size: stats.size,
-			etag: stats.etag,
-			lastModified: stats.lastModified,
-			contentType: stats.type ?? inferContentType(key),
-		};
+			return {
+				data: arrayBuffer,
+				size: response.ContentLength ?? 0,
+				etag: response.ETag,
+				lastModified: response.LastModified,
+				contentType: response.ContentType ?? inferContentType(key),
+			};
+		} catch {
+			return null;
+		}
 	}
 
 	async delete(keyOrPrefix: string): Promise<boolean> {
@@ -241,7 +264,8 @@ class S3StorageService implements StorageService {
 		if (keys.length === 0) return false;
 
 		// Delete all matching keys using Promise.allSettled
-		const results = await Promise.allSettled(keys.map((k) => this.client.delete(k)));
+		const deleteCommands = keys.map((k) => new DeleteObjectCommand({ Bucket: this.bucket, Key: k }));
+		const results = await Promise.allSettled(deleteCommands.map((c) => this.client.send(c)));
 
 		// Return true if at least one deletion succeeded
 		return results.some((r) => r.status === "fulfilled");
@@ -249,8 +273,11 @@ class S3StorageService implements StorageService {
 
 	async healthcheck(): Promise<StorageHealthResult> {
 		try {
-			await this.client.write("healthcheck", "OK");
-			await this.client.delete("healthcheck");
+			const putCommand = new PutObjectCommand({ Bucket: this.bucket, Key: "healthcheck", Body: "OK" });
+			await this.client.send(putCommand);
+
+			const deleteCommand = new DeleteObjectCommand({ Bucket: this.bucket, Key: "healthcheck" });
+			await this.client.send(deleteCommand);
 
 			return {
 				type: "s3",

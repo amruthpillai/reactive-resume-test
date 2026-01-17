@@ -1,5 +1,7 @@
+import fs from "node:fs/promises";
 import { inArray, or, sql } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/bun-sql";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 import { schema } from "@/integrations/drizzle";
 import { generateId, toUsername } from "@/utils/string";
 
@@ -54,8 +56,11 @@ const localUrl = process.env.DATABASE_URL;
 if (!productionUrl) throw new Error("PRODUCTION_DATABASE_URL is not set");
 if (!localUrl) throw new Error("DATABASE_URL is not set");
 
-const productionClient = new Bun.SQL({ url: productionUrl });
-const localClient = new Bun.SQL({ url: localUrl });
+const productionPool = new Pool({ connectionString: productionUrl });
+const localPool = new Pool({ connectionString: localUrl });
+
+const productionDb = drizzle({ client: productionPool });
+const localDb = drizzle({ client: localPool, schema });
 
 // == Persistent mapping file path ==
 const USER_ID_MAP_FILE = "./scripts/migration/user-id-map.json";
@@ -86,14 +91,11 @@ let shutdownRequested = false;
 
 async function loadProgress(): Promise<MigrationProgress | null> {
 	try {
-		const file = Bun.file(PROGRESS_FILE);
-		if (await file.exists()) {
-			const text = await file.text();
-			const progress = JSON.parse(text) as MigrationProgress;
-			console.log(`📂 Found existing progress file. Last updated: ${progress.lastUpdated}`);
-			console.log(`   Resuming from offset ${progress.currentOffset}...`);
-			return progress;
-		}
+		const text = await fs.readFile(PROGRESS_FILE, { encoding: "utf-8" });
+		const progress = JSON.parse(text) as MigrationProgress;
+		console.log(`📂 Found existing progress file. Last updated: ${progress.lastUpdated}`);
+		console.log(`   Resuming from offset ${progress.currentOffset}...`);
+		return progress;
 	} catch (e) {
 		console.warn("⚠️  Failed to load progress file, starting from beginning.", e);
 	}
@@ -103,7 +105,7 @@ async function loadProgress(): Promise<MigrationProgress | null> {
 async function saveProgress(progress: MigrationProgress): Promise<void> {
 	try {
 		progress.lastUpdated = new Date().toISOString();
-		await Bun.write(PROGRESS_FILE, JSON.stringify(progress, null, 2));
+		await fs.writeFile(PROGRESS_FILE, JSON.stringify(progress, null, 2), { encoding: "utf-8" });
 		console.log(`💾 Progress saved at offset ${progress.currentOffset}`);
 	} catch (e) {
 		console.error("🚨 Failed to save progress:", e);
@@ -112,12 +114,8 @@ async function saveProgress(progress: MigrationProgress): Promise<void> {
 
 async function clearProgress(): Promise<void> {
 	try {
-		const file = Bun.file(PROGRESS_FILE);
-		if (await file.exists()) {
-			const fs = await import("node:fs/promises");
-			await fs.unlink(PROGRESS_FILE);
-			console.log("🗑️  Progress file cleared.");
-		}
+		await fs.unlink(PROGRESS_FILE);
+		console.log("🗑️  Progress file cleared.");
 	} catch {
 		// Ignore errors when clearing
 	}
@@ -125,12 +123,9 @@ async function clearProgress(): Promise<void> {
 
 async function loadUserIdMapFromFile(): Promise<Map<string, string>> {
 	try {
-		const file = Bun.file(USER_ID_MAP_FILE);
-		if (await file.exists()) {
-			const text = await file.text();
-			const obj = JSON.parse(text);
-			return new Map(Object.entries(obj));
-		}
+		const text = await fs.readFile(USER_ID_MAP_FILE, { encoding: "utf-8" });
+		const obj = JSON.parse(text);
+		return new Map(Object.entries(obj));
 	} catch (e) {
 		console.warn("⚠️  Failed to load userIdMap from disk, continuing with empty map.", e);
 	}
@@ -139,16 +134,12 @@ async function loadUserIdMapFromFile(): Promise<Map<string, string>> {
 
 async function saveUserIdMapToFile(userIdMap: Map<string, string>) {
 	const obj: Record<string, string> = Object.fromEntries(userIdMap.entries());
-	await Bun.write(USER_ID_MAP_FILE, JSON.stringify(obj, null, "\t"));
+	await fs.writeFile(USER_ID_MAP_FILE, JSON.stringify(obj, null, "\t"), { encoding: "utf-8" });
 }
 
 export async function migrateUsers() {
 	const migrationStart = performance.now();
 	console.log("⌛ Starting user migration...");
-
-	// Connect to both databases
-	const productionDb = drizzle({ client: productionClient, connection: productionUrl });
-	const localDb = drizzle({ client: localClient, connection: localUrl });
 
 	let hasMore = true;
 	let currentOffset = 0;
@@ -446,7 +437,7 @@ if (import.meta.main) {
 	try {
 		await migrateUsers();
 	} finally {
-		await productionClient.close();
-		await localClient.close();
+		await productionPool.end();
+		await localPool.end();
 	}
 }

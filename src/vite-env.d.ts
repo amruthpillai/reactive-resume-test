@@ -6,8 +6,8 @@ declare module "*.css";
 declare module "@fontsource/*" {}
 declare module "@fontsource-variable/*" {}
 
-declare module "bun" {
-	interface Env {
+declare namespace NodeJS {
+	interface ProcessEnv {
 		// Basics
 		PORT: string;
 		APP_URL: string;

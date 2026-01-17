@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { basename, extname, normalize } from "node:path";
 import { createFileRoute } from "@tanstack/react-router";
 import { getStorageService, inferContentType } from "@/integrations/orpc/services/storage";
@@ -171,7 +172,7 @@ function createEtag(storedFile: { data: Uint8Array; size: number; etag?: string 
 		return `"${tag}"`;
 	}
 
-	const hash = new Bun.CryptoHasher("sha256").update(storedFile.data).digest("hex");
+	const hash = createHash("sha256").update(storedFile.data).digest("hex");
 
 	return `"${storedFile.size}-${hash}"`;
 }

@@ -15,11 +15,11 @@
 	},
 	"files.readonlyInclude": {
 		"**/routeTree.gen.ts": true,
-		"bun.lock": true
+		"pnpm-lock.yaml": true
 	},
 	"files.watcherExclude": {
 		"**/routeTree.gen.ts": true,
-		"bun.lock": true
+		"pnpm-lock.yaml": true
 	},
 	"i18n-ally.enabledParsers": ["po"],
 	"i18n-ally.localesPaths": ["locales"],
@@ -27,7 +27,7 @@
 	"prettier.enable": false,
 	"search.exclude": {
 		"**/routeTree.gen.ts": true,
-		"bun.lock": true
+		"pnpm-lock.yaml": true
 	},
 	"tailwindCSS.classFunctions": ["cn", "cva"],
 	"tailwindCSS.experimental.classRegex": [

@@ -11,7 +11,7 @@ module.exports = {
 	cooldown: 1,
 	upgrade: true,
 	install: "always",
-	packageManager: "bun",
+	packageManager: "pnpm",
 	reject: rejectedPackages,
 	target: (packageName) => {
 		if (nextPackages.includes(packageName)) return "@next";

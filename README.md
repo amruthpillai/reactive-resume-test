@@ -155,8 +155,8 @@ For detailed setup instructions, environment configuration, and self-hosting gui
 
 | Category         | Technology                           |
 | ---------------- | ------------------------------------ |
-| Framework        | TanStack Start (React 19, Vite, Bun) |
-| Runtime          | Bun                                  |
+| Framework        | TanStack Start (React 19, Vite)      |
+| Runtime          | Node.js                              |
 | Language         | TypeScript                           |
 | Database         | PostgreSQL with Drizzle ORM          |
 | API              | ORPC (Type-safe RPC)                 |

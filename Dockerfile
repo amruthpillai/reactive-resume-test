@@ -1,41 +1,40 @@
 # syntax=docker/dockerfile:1
 
 # ---------- Dependencies Layer ----------
-FROM oven/bun:1-slim AS dependencies
+FROM node:24-slim AS dependencies
 
 RUN mkdir -p /tmp/dev /tmp/prod
 
-COPY package.json bun.lock bunfig.toml /tmp/dev/
-COPY package.json bun.lock bunfig.toml /tmp/prod/
+COPY package.json pnpm-lock.yaml /tmp/dev/
+COPY package.json pnpm-lock.yaml /tmp/prod/
 
-RUN --mount=type=cache,target=/root/.bun/install/cache \
-    cd /tmp/dev && bun install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    cd /tmp/dev && pnpm install --frozen-lockfile
 
-RUN --mount=type=cache,target=/root/.bun/install/cache \
-    cd /tmp/prod && bun install --frozen-lockfile --production
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    cd /tmp/prod && pnpm install --frozen-lockfile --prod
 
 # ---------- Builder Layer ----------
-FROM oven/bun:1-slim AS builder
+FROM node:24-slim AS builder
 
 WORKDIR /app
 
 COPY --from=dependencies /tmp/dev/node_modules ./node_modules
 COPY . .
 
-RUN bun run build
+RUN pnpm run build
 
 # ---------- Runtime Layer ----------
-FROM oven/bun:1-slim AS runtime
+FROM node:24-slim AS runtime
 
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/server.ts ./server.ts
+COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/migrations ./migrations
 COPY --from=dependencies /tmp/prod/node_modules ./node_modules
 
 EXPOSE 3000/tcp
 
-ENTRYPOINT ["bun", "run", "server.ts"]
+ENTRYPOINT ["node", "-r", "reflect-metadata", ".output/server/index.mjs"]
