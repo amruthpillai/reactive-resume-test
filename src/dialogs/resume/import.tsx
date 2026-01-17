@@ -72,7 +72,7 @@ const formSchema = z.discriminatedUnion("type", [
 type FormValues = z.infer<typeof formSchema>;
 
 export function ImportResumeDialog({ open, onOpenChange }: DialogProps<"resume.import">) {
-	const { isEnabled: isAIEnabled } = useAIStore();
+	const isAIEnabled = useAIStore((state) => state.enabled);
 	const { closeDialog } = useDialogStore();
 
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -133,7 +133,7 @@ export function ImportResumeDialog({ open, onOpenChange }: DialogProps<"resume.i
 			}
 
 			if (values.type === "pdf") {
-				if (!isAIEnabled()) {
+				if (!isAIEnabled) {
 					toast.error(t`This feature requires AI Integration to be enabled. Please enable it in the settings.`, {
 						id: toastId,
 					});
@@ -145,7 +145,7 @@ export function ImportResumeDialog({ open, onOpenChange }: DialogProps<"resume.i
 			}
 
 			if (values.type === "docx") {
-				if (!isAIEnabled()) {
+				if (!isAIEnabled) {
 					toast.error(t`This feature requires AI Integration to be enabled. Please enable it in the settings.`, {
 						id: toastId,
 					});

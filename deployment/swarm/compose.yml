@@ -34,7 +34,7 @@ services:
         window: 120s
 
   gotenberg:
-    image: gotenberg/gotenberg:latest
+    image: gotenberg/gotenberg:8
     networks:
       - reactive_resume_network
     environment:

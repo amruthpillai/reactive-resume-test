@@ -1,4 +1,3 @@
-import { fileURLToPath, URL } from "node:url";
 import { lingui } from "@lingui/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -12,9 +11,7 @@ const config = defineConfig({
 	},
 
 	resolve: {
-		alias: {
-			"@": fileURLToPath(new URL("./src", import.meta.url)),
-		},
+		tsconfigPaths: true,
 	},
 
 	build: {

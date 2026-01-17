@@ -12,16 +12,9 @@ import { getTheme } from "./utils/theme";
 const getQueryClient = () => {
 	const queryClient = new QueryClient({
 		defaultOptions: {
-			mutations: {
-				retry: false,
-			},
 			queries: {
-				retry: false,
-				refetchOnMount: false,
-				refetchOnReconnect: false,
-				refetchOnWindowFocus: false,
-				gcTime: 60 * 1000, // 1 minute
-				staleTime: 60 * 1000, // 1 minute
+				gcTime: 5 * 60 * 1000, // 5 minutes
+				staleTime: 0, // Data considered instantly stale
 			},
 		},
 		mutationCache: new MutationCache({
