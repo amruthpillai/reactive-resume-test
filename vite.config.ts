@@ -56,25 +56,17 @@ const config = defineConfig({
 		lingui(),
 		tailwindcss(),
 		nitro({
-			prerender: { routes: ["/"] },
 			plugins: ["plugins/1.migrate.ts"],
 			rollupConfig: {
 				output: {
 					// @ts-expect-error - nitro types are not up to date
-					banner: (params: { type: "chunk"; name: string; isEntry: boolean }) => {
-						if (params.isEntry) {
-							console.log("rollUp entry", params.name);
-							return "import 'reflect-metadata';";
-						}
+					banner: (params: { isEntry: boolean }) => {
+						if (params.isEntry) return "import 'reflect-metadata';";
 					},
 				},
 			},
 		}),
-		tanstackStart({
-			router: { semicolons: true, quoteStyle: "double" },
-			sitemap: { enabled: true, host: "https://rxresu.me" },
-			prerender: { enabled: true, autoStaticPathsDiscovery: true },
-		}),
+		tanstackStart({ router: { semicolons: true, quoteStyle: "double" } }),
 		viteReact({ babel: { plugins: [["@lingui/babel-plugin-lingui-macro"]] } }),
 		VitePWA({
 			outDir: "public",
