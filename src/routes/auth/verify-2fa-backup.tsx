@@ -111,7 +111,7 @@ function RouteComponent() {
 						<Button type="button" variant="outline" className="flex-1" asChild>
 							<Link to="/auth/verify-2fa">
 								<ArrowLeftIcon />
-								<Trans>Use Authenticator App</Trans>
+								<Trans>Go Back</Trans>
 							</Link>
 						</Button>
 						<Button type="submit" className="flex-1">

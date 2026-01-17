@@ -1098,6 +1098,7 @@ msgid "Get Started"
 msgstr ""
 
 #: src/components/layout/not-found-screen.tsx:24
+#: src/routes/auth/verify-2fa-backup.tsx:114
 msgid "Go Back"
 msgstr ""
 
@@ -2362,10 +2363,6 @@ msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/left/sections/picture.tsx:124
 msgid "URL"
-msgstr ""
-
-#: src/routes/auth/verify-2fa-backup.tsx:114
-msgid "Use Authenticator App"
 msgstr ""
 
 #: src/dialogs/resume/sections/profile.tsx:185

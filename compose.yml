@@ -2,7 +2,7 @@ name: reactive_resume
 
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:18
     restart: unless-stopped
     environment:
       POSTGRES_DB: postgres
@@ -18,7 +18,7 @@ services:
       retries: 3
 
   gotenberg:
-    image: gotenberg/gotenberg:latest
+    image: gotenberg/gotenberg:8
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -65,7 +65,8 @@ services:
         condition: service_healthy
 
   app:
-    image: ghcr.io/amruthpillai/reactive-resume:latest
+    # image: ghcr.io/amruthpillai/reactive-resume:latest
+    image: reactive-resume-start:latest
     environment:
       # Server
       - TZ=Etc/UTC

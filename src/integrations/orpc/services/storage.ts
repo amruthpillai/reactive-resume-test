@@ -54,22 +54,22 @@ const DEFAULT_CONTENT_TYPE = "application/octet-stream";
 const IMAGE_MIME_TYPES = ["image/gif", "image/png", "image/jpeg", "image/webp"];
 
 // Key builders for different upload types
-export function buildPictureKey(userId: string): string {
+function buildPictureKey(userId: string): string {
 	const timestamp = Date.now();
 	return `uploads/${userId}/pictures/${timestamp}.webp`;
 }
 
-export function buildScreenshotKey(userId: string, resumeId: string): string {
+function buildScreenshotKey(userId: string, resumeId: string): string {
 	const timestamp = Date.now();
 	return `uploads/${userId}/screenshots/${resumeId}/${timestamp}.webp`;
 }
 
-export function buildPdfKey(userId: string, resumeId: string): string {
+function buildPdfKey(userId: string, resumeId: string): string {
 	const timestamp = Date.now();
 	return `uploads/${userId}/pdfs/${resumeId}/${timestamp}.pdf`;
 }
 
-export function buildPublicUrl(path: string): string {
+function buildPublicUrl(path: string): string {
 	return new URL(path, env.APP_URL).toString();
 }
 
@@ -101,7 +101,7 @@ export async function processImageForUpload(file: File): Promise<ProcessedImage>
 	};
 }
 
-export class LocalStorageService implements StorageService {
+class LocalStorageService implements StorageService {
 	private rootDirectory: string;
 
 	constructor() {
@@ -313,7 +313,7 @@ export function getStorageService(): StorageService {
 }
 
 // High-level upload types
-export type UploadType = "picture" | "screenshot" | "pdf";
+type UploadType = "picture" | "screenshot" | "pdf";
 
 export interface UploadFileInput {
 	userId: string;
