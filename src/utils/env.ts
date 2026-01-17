@@ -39,6 +39,13 @@ export const env = createEnv({
 		OAUTH_CLIENT_SECRET: z.string().min(1).optional(),
 		OAUTH_DISCOVERY_URL: z.url({ protocol: /https?/ }).optional(),
 		OAUTH_AUTHORIZATION_URL: z.url({ protocol: /https?/ }).optional(),
+		OAUTH_TOKEN_URL: z.url({ protocol: /https?/ }).optional(),
+		OAUTH_USER_INFO_URL: z.url({ protocol: /https?/ }).optional(),
+		OAUTH_SCOPES: z
+			.string()
+			.min(1)
+			.transform((value) => value.split(" "))
+			.default(["openid", "profile", "email"]),
 
 		// Email (SMTP)
 		SMTP_HOST: z.string().min(1).optional(),

@@ -207,8 +207,6 @@ class S3StorageService implements StorageService {
 			throw new Error("S3 credentials are not set");
 		}
 
-		console.log(env);
-
 		this.bucket = env.S3_BUCKET;
 		this.client = new S3Client({
 			region: env.S3_REGION,

@@ -30,7 +30,6 @@ const openAPIGenerator = new OpenAPIGenerator({
 async function handler({ request }: { request: Request }) {
 	const locale = await getLocale();
 
-	console.log(request.url);
 	if (request.method === "GET" && request.url.endsWith("/spec.json")) {
 		const spec = await openAPIGenerator.generate(router, {
 			info: {

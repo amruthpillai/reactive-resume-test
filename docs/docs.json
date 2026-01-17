@@ -57,7 +57,7 @@
 					},
 					{
 						"group": "Integrations",
-						"pages": ["guides/using-the-api", "guides/setting-up-artificial-intelligence"]
+						"pages": ["guides/using-the-api", "guides/using-ai"]
 					},
 					{
 						"group": "Self-hosting",

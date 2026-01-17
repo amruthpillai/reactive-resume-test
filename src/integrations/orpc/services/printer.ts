@@ -1,4 +1,5 @@
 import { ORPCError } from "@orpc/server";
+import { printMarginTemplates } from "@/schema/templates";
 import { env } from "@/utils/env";
 import { generatePrinterToken } from "@/utils/printer-token";
 import { resumeService } from "./resume";
@@ -38,11 +39,15 @@ export const printerService = {
 		const formData = new FormData();
 		const cookies = [{ name: "locale", value: locale, domain }];
 
+		const isPrintMargin = printMarginTemplates.includes(resume.data.metadata.template);
+		const marginX = isPrintMargin ? `${resume.data.metadata.page.marginX.toString()}pt` : "0";
+		const marginY = isPrintMargin ? `${resume.data.metadata.page.marginY.toString()}pt` : "0";
+
 		formData.append("url", url);
-		formData.append("marginTop", "0");
-		formData.append("marginLeft", "0");
-		formData.append("marginRight", "0");
-		formData.append("marginBottom", "0");
+		formData.append("marginTop", marginY);
+		formData.append("marginLeft", marginX);
+		formData.append("marginRight", marginX);
+		formData.append("marginBottom", marginY);
 		formData.append("printBackground", "true");
 		formData.append("skipNetworkIdleEvent", "false");
 		formData.append("cookies", JSON.stringify(cookies));

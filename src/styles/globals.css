@@ -148,12 +148,6 @@
 	}
 }
 
-@media print {
-	@page {
-		margin: 0;
-	}
-}
-
 .resume-preview-container {
 	.page-section,
 	.page-section .section-item {

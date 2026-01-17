@@ -113,6 +113,7 @@ Before you begin, ensure you have the following installed:
     - **PostgreSQL** — Database for storing user data and resumes
     - **SeaweedFS** — S3-compatible storage for file uploads
     - **Gotenberg** — PDF generation service
+    - **Reactive Resume** — The main application
   </Step>
   
   <Step title="Access Your Instance">
@@ -157,23 +158,44 @@ Here's a complete list of environment variables you can configure:
 |----------|-------------|---------|
 | `DATABASE_URL` | PostgreSQL connection string | `postgresql://user:pass@host:5432/db` |
 | `AUTH_SECRET` | Secret key for authentication | Generate with `openssl rand -base64 32` |
+| `APP_URL` | Public URL of your Application | `https://rxresu.me` |
+| `GOTENBERG_ENDPOINT` | URL of the Gotenberg PDF service | `http://gotenberg:4000` |
 
 ### Optional Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `APP_URL` | Public URL of your application | `http://localhost:3000` |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID | — |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | — |
-| `GITHUB_CLIENT_ID` | GitHub OAuth client ID | — |
-| `GITHUB_CLIENT_SECRET` | GitHub OAuth client secret | — |
-| `S3_ACCESS_KEY_ID` | S3 access key | — |
-| `S3_SECRET_ACCESS_KEY` | S3 secret key | — |
-| `S3_ENDPOINT` | S3-compatible endpoint URL | — |
-| `S3_BUCKET` | S3 bucket name | — |
-| `S3_REGION` | S3 region | — |
-| `FLAG_DISABLE_SIGNUP` | Disable new user registration | `false` |
-| `PRINTER_APP_URL` | URL for Gotenberg to reach the app | — |
+| `PRINTER_APP_URL` | Public URL for Gotenberg to access the Application | — |
+| `GOTENBERG_USERNAME` | Gotenberg Basic Auth Username (if enabled) | — |
+| `GOTENBERG_PASSWORD` | Gotenberg Basic Auth Password (if enabled) | — |
+| `GOOGLE_CLIENT_ID` | Google OAuth Client ID | — |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth Client Secret | — |
+| `GITHUB_CLIENT_ID` | GitHub OAuth Client ID | — |
+| `GITHUB_CLIENT_SECRET` | GitHub OAuth Client Secret | — |
+| `OAUTH_PROVIDER_NAME` | Custom OAuth Provider Name | — |
+| `OAUTH_CLIENT_ID` | Custom OAuth Client ID | — |
+| `OAUTH_CLIENT_SECRET` | Custom OAuth Client Secret | — |
+| `OAUTH_DISCOVERY_URL` | OIDC Discovery URL (use this OR manual URLs below) | — |
+| `OAUTH_AUTHORIZATION_URL` | OAuth Authorization URL (manual config) | — |
+| `OAUTH_TOKEN_URL` | OAuth Token URL (manual config) | — |
+| `OAUTH_USER_INFO_URL` | OAuth User Info URL (manual config) | — |
+| `OAUTH_SCOPES` | OAuth Scopes (space-separated) | `openid profile email` |
+| `SMTP_HOST` | SMTP Server Host (for email features) | — |
+| `SMTP_PORT` | SMTP Server Port | `587` |
+| `SMTP_USER` | SMTP Username | — |
+| `SMTP_PASS` | SMTP Password | — |
+| `SMTP_FROM` | Default FROM address for emails | — |
+| `SMTP_SECURE` | Use secure SMTP connection (`true` or `false`) | `false` |
+| `S3_ACCESS_KEY_ID` | S3 Access Key | — |
+| `S3_SECRET_ACCESS_KEY` | S3 Secret Key | — |
+| `S3_REGION` | S3 Region | `us-east-1` |
+| `S3_ENDPOINT` | S3-compatible Endpoint URL | — |
+| `S3_BUCKET` | S3 Bucket Name | — |
+| `S3_FORCE_PATH_STYLE` | Use path-style URLs for S3 (set `true` for MinIO/SeaweedFS) | `false` |
+| `FLAG_DEBUG_PRINTER` | Used for debugging the printer route | `false` |
+| `FLAG_DISABLE_SIGNUP` | Disables new user signups | `false` |
+
+> **Note:** Some variables are only required for using related features (OAuth, SMTP, S3, etc.) and can be left unset if unused.
 
 <Note>
   **Hybrid Setup Note**: The `PRINTER_APP_URL` variable is required when running Reactive Resume outside of Docker while the Gotenberg PDF service is running inside Docker. In this scenario, Gotenberg needs to reach your local app to render resumes for PDF generation. Since Docker containers cannot access `localhost` on your host machine directly, you must set `PRINTER_APP_URL` to `http://host.docker.internal:3000`. This special hostname allows Docker containers to communicate with services running on your host machine.

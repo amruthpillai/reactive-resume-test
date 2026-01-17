@@ -196,6 +196,7 @@ const DashboardSettingsAuthenticationIndexRoute =
   } as any);
 
 export interface FileRoutesByFullPath {
+  "/": typeof HomeIndexRoute;
   "/auth": typeof AuthRouteRouteWithChildren;
   "/dashboard": typeof DashboardRouteRouteWithChildren;
   "/schema.json": typeof SchemaDotjsonRoute;
@@ -210,7 +211,6 @@ export interface FileRoutesByFullPath {
   "/auth/verify-2fa": typeof AuthVerify2faRoute;
   "/auth/verify-2fa-backup": typeof AuthVerify2faBackupRoute;
   "/printer/$resumeId": typeof PrinterResumeIdRoute;
-  "/": typeof HomeIndexRoute;
   "/auth/": typeof AuthIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
   "/api/auth/$": typeof ApiAuthSplatRoute;
@@ -223,8 +223,8 @@ export interface FileRoutesByFullPath {
   "/dashboard/settings/profile": typeof DashboardSettingsProfileRoute;
   "/uploads/$userId/$": typeof UploadsUserIdSplatRoute;
   "/builder/$resumeId/": typeof BuilderResumeIdIndexRoute;
-  "/dashboard/resumes": typeof DashboardResumesIndexRoute;
-  "/dashboard/settings/authentication": typeof DashboardSettingsAuthenticationIndexRoute;
+  "/dashboard/resumes/": typeof DashboardResumesIndexRoute;
+  "/dashboard/settings/authentication/": typeof DashboardSettingsAuthenticationIndexRoute;
 }
 export interface FileRoutesByTo {
   "/schema.json": typeof SchemaDotjsonRoute;
@@ -290,6 +290,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
+    | "/"
     | "/auth"
     | "/dashboard"
     | "/schema.json"
@@ -304,7 +305,6 @@ export interface FileRouteTypes {
     | "/auth/verify-2fa"
     | "/auth/verify-2fa-backup"
     | "/printer/$resumeId"
-    | "/"
     | "/auth/"
     | "/dashboard/"
     | "/api/auth/$"
@@ -317,8 +317,8 @@ export interface FileRouteTypes {
     | "/dashboard/settings/profile"
     | "/uploads/$userId/$"
     | "/builder/$resumeId/"
-    | "/dashboard/resumes"
-    | "/dashboard/settings/authentication";
+    | "/dashboard/resumes/"
+    | "/dashboard/settings/authentication/";
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/schema.json"
@@ -422,7 +422,7 @@ declare module "@tanstack/react-router" {
     "/_home": {
       id: "/_home";
       path: "";
-      fullPath: "";
+      fullPath: "/";
       preLoaderRoute: typeof HomeRouteRouteImport;
       parentRoute: typeof rootRouteImport;
     };
@@ -527,7 +527,7 @@ declare module "@tanstack/react-router" {
     "/dashboard/resumes/": {
       id: "/dashboard/resumes/";
       path: "/resumes";
-      fullPath: "/dashboard/resumes";
+      fullPath: "/dashboard/resumes/";
       preLoaderRoute: typeof DashboardResumesIndexRouteImport;
       parentRoute: typeof DashboardRouteRoute;
     };
@@ -604,7 +604,7 @@ declare module "@tanstack/react-router" {
     "/dashboard/settings/authentication/": {
       id: "/dashboard/settings/authentication/";
       path: "/settings/authentication";
-      fullPath: "/dashboard/settings/authentication";
+      fullPath: "/dashboard/settings/authentication/";
       preLoaderRoute: typeof DashboardSettingsAuthenticationIndexRouteImport;
       parentRoute: typeof DashboardRouteRoute;
     };

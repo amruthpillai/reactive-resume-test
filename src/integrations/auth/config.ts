@@ -13,7 +13,11 @@ import { schema } from "../drizzle";
 import { sendEmail } from "../email/service";
 
 function isCustomOAuthProviderEnabled() {
-	return env.OAUTH_CLIENT_ID && env.OAUTH_CLIENT_SECRET && env.OAUTH_DISCOVERY_URL && env.OAUTH_AUTHORIZATION_URL;
+	const hasDiscovery = Boolean(env.OAUTH_DISCOVERY_URL);
+	const hasManual =
+		Boolean(env.OAUTH_AUTHORIZATION_URL) && Boolean(env.OAUTH_TOKEN_URL) && Boolean(env.OAUTH_USER_INFO_URL);
+
+	return Boolean(env.OAUTH_CLIENT_ID) && Boolean(env.OAUTH_CLIENT_SECRET) && (hasDiscovery || hasManual);
 }
 
 const getAuthConfig = () => {
@@ -23,9 +27,12 @@ const getAuthConfig = () => {
 		authConfigs.push({
 			providerId: "custom",
 			clientId: env.OAUTH_CLIENT_ID as string,
-			clientSecret: env.OAUTH_CLIENT_SECRET,
+			clientSecret: env.OAUTH_CLIENT_SECRET as string,
 			discoveryUrl: env.OAUTH_DISCOVERY_URL,
 			authorizationUrl: env.OAUTH_AUTHORIZATION_URL,
+			tokenUrl: env.OAUTH_TOKEN_URL,
+			userInfoUrl: env.OAUTH_USER_INFO_URL,
+			scopes: env.OAUTH_SCOPES,
 			redirectURI: `${env.APP_URL}/api/auth/oauth2/callback/custom`,
 			mapProfileToUser: async (profile) => {
 				if (!profile.email) {

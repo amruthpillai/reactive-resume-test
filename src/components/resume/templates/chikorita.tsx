@@ -35,7 +35,7 @@ export function ChikoritaTemplate({ pageIndex, pageLayout }: TemplateProps) {
 			{isFirstPage && <Header />}
 
 			<div className="flex">
-				<main data-layout="main" className="group page-main space-y-4 px-(--page-margin-x) pb-(--page-margin-y)">
+				<main data-layout="main" className="group page-main flex-1 space-y-4 px-(--page-margin-x) py-(--page-margin-y)">
 					{main.map((section) => {
 						const Component = getSectionComponent(section, { sectionClassName });
 						return <Component key={section} id={section} />;
@@ -63,7 +63,7 @@ function Header() {
 
 	return (
 		<div className="page-header relative flex">
-			<div className="flex items-center py-(--page-margin-y) pl-(--page-margin-x)">
+			<div className="flex items-center pt-(--page-margin-y) pl-(--page-margin-x)">
 				<PagePicture />
 
 				<div className="page-basics space-y-2 px-(--page-margin-x)">

@@ -89,8 +89,14 @@ GITHUB_CLIENT_SECRET=""
 OAUTH_PROVIDER_NAME=""
 OAUTH_CLIENT_ID=""
 OAUTH_CLIENT_SECRET=""
+# Use EITHER discovery URL (preferred for OIDC-compliant providers):
 OAUTH_DISCOVERY_URL=""
+# OR manual URLs (all three required if not using discovery):
 OAUTH_AUTHORIZATION_URL=""
+OAUTH_TOKEN_URL=""
+OAUTH_USER_INFO_URL=""
+# Custom scopes (space-separated, defaults to "openid profile email")
+OAUTH_SCOPES=""
 
 # --- Email (optional) ---
 # If all keys are disabled, the app logs the email to be sent to the console instead.
@@ -298,9 +304,12 @@ openssl rand -hex 32
 
     **Custom OAuth provider** (optional):
     - **`OAUTH_PROVIDER_NAME`**: Display name in the UI
-    - **`OAUTH_CLIENT_ID`** / **`OAUTH_CLIENT_SECRET`**
-    - **`OAUTH_DISCOVERY_URL`**: Preferred (OIDC discovery)
-    - **`OAUTH_AUTHORIZATION_URL`**: Fallback if discovery isn't available
+    - **`OAUTH_CLIENT_ID`** / **`OAUTH_CLIENT_SECRET`**: Required for any custom OAuth provider
+    - **`OAUTH_SCOPES`**: Space-separated scopes (defaults to `openid profile email`)
+    
+    Configure endpoints using **one** of these methods:
+    - **Option A — OIDC Discovery (preferred)**: Set `OAUTH_DISCOVERY_URL` to your provider's `.well-known/openid-configuration` URL
+    - **Option B — Manual URLs**: Set all three: `OAUTH_AUTHORIZATION_URL`, `OAUTH_TOKEN_URL`, and `OAUTH_USER_INFO_URL`
   </Accordion>
 
   <Accordion title="Email (SMTP, optional)">
@@ -355,14 +364,62 @@ This process ensures your app, database, and printer are all up-to-date while ke
 
 ## Backups (recommended)
 
-<CardGroup cols={2}>
-  <Card title="Database">
-    Back up your Postgres volume regularly (or use a managed Postgres service).
-  </Card>
-  <Card title="Uploads">
-    If using local storage, back up your <code>./data</code> directory. If using S3, consider lifecycle rules and (optionally) versioning.
-  </Card>
-</CardGroup>
+Regular backups are essential to protect your data. Reactive Resume stores data in two places: the PostgreSQL database and file uploads (either local storage or S3).
+
+### Database backups
+
+Your PostgreSQL database contains all user accounts, resumes, and application data. For self-hosted deployments, you can use `pg_dump` to create periodic backups of your database and store them in a secure location. Many hosting providers also offer automated backup solutions for managed PostgreSQL instances, which handle scheduling, retention, and restoration for you.
+
+### Upload backups
+
+If you're using local storage (the `./data` directory), include this directory in your regular backup routine. A simple approach is to use `rsync` or a similar tool to copy the directory to a remote server or cloud storage.
+
+If you're using S3-compatible storage, consider enabling versioning on your bucket to protect against accidental deletions. Most S3 providers also support lifecycle rules for automatic cleanup of old versions and cross-region replication for disaster recovery.
+
+## Health Checks
+
+Reactive Resume exposes a health check endpoint at `/api/health` that verifies the application and its dependencies are functioning correctly. If any critical service (such as the database connection) fails, the health check will return an unhealthy status.
+
+### How it works
+
+The Docker Compose configuration includes a health check that periodically calls the `/api/health` endpoint:
+
+```yaml
+healthcheck:
+  test: ["CMD-SHELL", "node -e \"fetch('http://localhost:3000/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))\""]
+  interval: 30s
+  timeout: 10s
+  retries: 3
+```
+
+When the health check fails, Docker marks the container as **unhealthy**. This status is visible when running `docker compose ps` or `docker ps`.
+
+### Reverse proxy integration
+
+Most reverse proxies (such as **Traefik**, **Caddy**, or **nginx** with upstream health checks) can use Docker's health status to make routing decisions:
+
+- **Healthy containers** receive traffic as normal
+- **Unhealthy containers** are automatically removed from the load balancer pool
+
+This is particularly useful in high-availability setups where you have multiple instances of Reactive Resume. If one instance becomes unhealthy (for example, it loses its database connection), the reverse proxy will stop routing traffic to it until it recovers.
+
+<Tip>
+  If you're using **Traefik**, it automatically respects Docker health checks when using the Docker provider. Unhealthy containers are excluded from routing without any additional configuration.
+</Tip>
+
+### Manually checking health
+
+You can manually verify the health of your Reactive Resume instance:
+
+```bash
+# From outside the container
+curl -f http://localhost:3000/api/health
+
+# Check Docker's health status
+docker compose ps
+```
+
+A healthy response returns HTTP 200. Any other response (or a connection failure) indicates a problem that should be investigated in the container logs.
 
 ## Troubleshooting
 

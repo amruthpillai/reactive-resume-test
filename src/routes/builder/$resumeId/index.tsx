@@ -10,7 +10,7 @@ export const Route = createFileRoute("/builder/$resumeId/")({
 function RouteComponent() {
 	return (
 		<div className="fixed inset-0">
-			<TransformWrapper centerOnInit limitToBounds={false} minScale={0.3} maxScale={6}>
+			<TransformWrapper centerOnInit limitToBounds={false} minScale={0.3} initialScale={0.6} maxScale={6}>
 				<TransformComponent wrapperClass="h-full! w-full!">
 					<ResumePreview
 						showPageNumbers

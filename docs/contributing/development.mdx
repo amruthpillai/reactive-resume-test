@@ -323,6 +323,30 @@ pnpm run typecheck
     pnpm run typecheck
     ```
   </Accordion>
+  
+  <Accordion title="Uploaded images not appearing in PDF exports">
+    When running in development mode (Docker services + app on host), images you upload to your resume may not appear in PDF exports. This is because the printer service runs inside Docker and cannot access URLs that resolve to `localhost` on your host machine.
+    
+    **Why this happens:**
+    
+    The app running on your host uploads images to SeaweedFS (S3 storage) using `localhost:8333`. When Gotenberg tries to fetch these images to render the PDF, it cannot resolve `localhost` the same way your host machine does — they're on different networks.
+    
+    **Solutions:**
+    
+    1. **Run the entire stack in Docker** (recommended for testing PDF exports):
+       
+       Use the production `compose.yml` instead of `compose.dev.yml` to run all services, including the app, on the same Docker network:
+       
+       ```bash
+       docker compose up -d
+       ```
+       
+       This ensures all services can communicate with each other seamlessly.
+    
+    2. **Use publicly accessible images**:
+       
+       If you need to test PDF exports while developing on the host, use images hosted on publicly accessible URLs (e.g., images already hosted online) instead of uploading local files. The printer service can fetch these without network issues.
+  </Accordion>
 </AccordionGroup>
 
 ---
