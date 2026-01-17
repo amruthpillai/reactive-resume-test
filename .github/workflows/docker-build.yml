@@ -160,3 +160,13 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ghcr.io/${{ env.IMAGE }}:latest
+
+      - name: Redeploy Service
+        uses: appleboy/ssh-action@v1
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          script: |
+            cd docker
+            ./manage_stack.sh up reactive_resume
