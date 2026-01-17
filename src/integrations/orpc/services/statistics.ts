@@ -1,4 +1,4 @@
-import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import fs from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { count } from "drizzle-orm";
 import { schema } from "@/integrations/drizzle";
@@ -18,7 +18,7 @@ const getCachePath = (key: string) => join(process.cwd(), "data", "statistics", 
 const readCache = async (key: string): Promise<number | null> => {
 	try {
 		const filePath = getCachePath(key);
-		const [stats, contents] = await Promise.all([stat(filePath), readFile(filePath, "utf-8")]);
+		const [stats, contents] = await Promise.all([fs.stat(filePath), fs.readFile(filePath, "utf-8")]);
 
 		if (stats.mtimeMs < Date.now() - CACHE_DURATION_MS) return null;
 
@@ -32,8 +32,8 @@ const readCache = async (key: string): Promise<number | null> => {
 const writeCache = async (key: string, value: number) => {
 	try {
 		const filePath = getCachePath(key);
-		await mkdir(dirname(filePath), { recursive: true });
-		await writeFile(filePath, String(value), "utf-8");
+		await fs.mkdir(dirname(filePath), { recursive: true });
+		await fs.writeFile(filePath, String(value), "utf-8");
 	} catch {
 		// Ignore errors, cache is not critical
 	}

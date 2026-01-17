@@ -129,7 +129,7 @@ class LocalStorageService implements StorageService {
 		const fullPath = this.resolvePath(key);
 
 		await fs.mkdir(dirname(fullPath), { recursive: true });
-		await fs.writeFile(fullPath, data, { encoding: "utf-8" });
+		await fs.writeFile(fullPath, data);
 	}
 
 	async read(key: string): Promise<StorageReadResult | null> {
